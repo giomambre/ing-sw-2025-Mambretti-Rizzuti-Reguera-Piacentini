@@ -8,6 +8,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "jkhasdjahsdjahsjkdhjkahsdk sono cice COMMIT GIT!" );
+        System.out.println( "ciao sono cice COMMIT GIT!" );
     }
 }
