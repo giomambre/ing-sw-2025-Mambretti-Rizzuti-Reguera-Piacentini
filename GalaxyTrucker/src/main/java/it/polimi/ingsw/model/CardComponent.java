@@ -2,6 +2,10 @@ package it.polimi.ingsw.model;
 
 import javax.smartcardio.Card;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class CardComponent {
     private ComponentType component_type;
@@ -24,6 +28,7 @@ public class CardComponent {
     }
     public List<ConnectorType> getvalidsconnectors(ConnectorType connector){
         List<ConnectorType> valids = new ArrayList<ConnectorType>();
+        return  valids;
         //da fare
     }
 }
