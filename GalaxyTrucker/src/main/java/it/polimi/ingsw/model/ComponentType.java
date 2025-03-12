@@ -7,5 +7,7 @@ public enum ComponentType {
     storage,
     cannon,
     engine,
-    start_cabin
+    start_cabin,
+    shield,
+    sewer_pipes
 }
