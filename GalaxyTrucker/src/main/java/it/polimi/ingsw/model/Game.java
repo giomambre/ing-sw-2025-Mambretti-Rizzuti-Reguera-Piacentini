@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model;
 
 import javax.smartcardio.Card;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
 
@@ -17,7 +14,7 @@ private List<Player> active_players = new ArrayList<>();
 private Player board_leader ;
 private List<CardComponent> deck_components = new ArrayList<>();
 
-
+Random random = new Random();
 
 public void startGame(){
 
@@ -54,12 +51,6 @@ public void startGame(){
         System.out.println(element);
     }
 
-
-
-
-
-
-
 }
 
 public void startAssembly(){
@@ -70,13 +61,18 @@ public void startAssembly(){
 
 public void addPlayer(Player player){
 
-    players.add(player);
 
 
 
 }
 public void checkShipValidity(){
 
+
+}
+
+public CardComponent GetRandomCardComponent(){
+    Collections.shuffle(deck_components);  //shuffle the list and remove the first (returns it)
+    return deck_components.remove(0);
 
 }
 }
