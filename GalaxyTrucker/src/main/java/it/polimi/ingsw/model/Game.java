@@ -1,5 +1,5 @@
 package it.polimi.ingsw.model;
 
 public class Game {
-int asdddsad = 0;
+int rimghio = 0;
 }
