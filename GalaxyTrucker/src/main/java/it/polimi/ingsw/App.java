@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Game;
+
 /**
  * Hello world!
  *
@@ -8,6 +10,9 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "ultimo commit" );
+
+        //prova di avvio
+        Game game = new Game();
+        game.startGame();
     }
 }

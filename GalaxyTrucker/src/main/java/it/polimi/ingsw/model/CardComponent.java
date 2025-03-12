@@ -1,18 +1,22 @@
 package it.polimi.ingsw.model;
 
 import javax.smartcardio.Card;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class CardComponent {
-    private ComponentType component_type;
-    private Map<Direction,ConnectorType> connectors = new HashMap<Direction,ConnectorType>();
+    private final ComponentType component_type;
+    private Map<Direction,ConnectorType> connectors = new EnumMap<>(Direction.class);
     private boolean face_down;
 
     //costruttore? ha senso che face down sia false all'inizio quando istanziata ?
+
+    public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors){
+
+        this.component_type = component_type;
+        this.connectors =new EnumMap<>(connectors);
+        this.face_down = true;
+    }
 
     public void changefaceshowed(){
         face_down = !face_down;
@@ -31,4 +35,15 @@ public class CardComponent {
         return  valids;
         //da fare
     }
+    @Override
+    public String toString() {
+        return "CardComponent{" +
+                "component_type=" + component_type +
+                ", connectors=" + connectors +
+                ", face_down=" + face_down +
+                '}';
+    }
+
 }
+
+
