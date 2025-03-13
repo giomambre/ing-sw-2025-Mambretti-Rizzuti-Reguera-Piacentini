@@ -17,7 +17,6 @@ public class Game {
     private List<Player> active_players = new ArrayList<>();
     private Player board_leader;
     private List<CardComponent> deck_components = new ArrayList<>();
-
     Random random = new Random();
 
     public void startGame() {
@@ -65,12 +64,12 @@ public class Game {
 
     public void checkShipValidity() {
 
-
+//da pensare bene
     }
 
     public CardComponent GetRandomCardComponent() {
         Collections.shuffle(deck_components);  //shuffle the list and remove the first (returns it)
-        return deck_components.remove(0);
+        return deck_components.removeFirst();
 
     }
 

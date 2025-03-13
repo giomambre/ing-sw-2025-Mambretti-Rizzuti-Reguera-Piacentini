@@ -11,6 +11,7 @@ public enum ComponentType {
     LivingUnit,
     MainUnit,
     Tubes,
-    Shield
+    Shield,
+    Empty
 
 }
