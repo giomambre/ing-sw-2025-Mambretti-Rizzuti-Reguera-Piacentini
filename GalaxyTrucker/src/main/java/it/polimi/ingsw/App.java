@@ -18,7 +18,7 @@ public class App
         Game game = new Game();
         game.startGame();
 
-        Player player = new Player("Mambre", Green);
+        Player player = new Player("raffa", Green);
         game.addPlayer(player);
 
     }
