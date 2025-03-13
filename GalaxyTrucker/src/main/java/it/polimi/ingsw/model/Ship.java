@@ -21,6 +21,11 @@ public class Ship {
     private int batteries = 0;
 
 
+    Ship(){
+        this.initializeShipPlance();
+
+    }
+
     public void AddComponent(CardComponent component,int row,int col) {
 
         //Controllo se è gia presente un elemento in quella pos, da capire se farlo nel controller o qui
@@ -30,7 +35,17 @@ public class Ship {
 
     }
 
+
     private void initializeShipPlance() {
+
+        //set all covered_side  all to False
+
+        covered_side.put(North, Boolean.FALSE);
+        covered_side.put(South, Boolean.FALSE);
+        covered_side.put(West, Boolean.FALSE);
+        covered_side.put(East, Boolean.FALSE);
+
+
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 

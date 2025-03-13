@@ -1,6 +1,9 @@
 package it.polimi.ingsw;
 
+import static it.polimi.ingsw.model.Color.*;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
+
 
 /**
  * Hello world!
@@ -14,5 +17,9 @@ public class App
         //prova di avvio
         Game game = new Game();
         game.startGame();
+
+        Player player = new Player("Mambre", Green);
+        game.addPlayer(player);
+
     }
 }
