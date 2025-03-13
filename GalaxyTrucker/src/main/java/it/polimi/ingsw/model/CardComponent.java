@@ -2,6 +2,8 @@ package it.polimi.ingsw.model;
 
 import javax.smartcardio.Card;
 import java.util.*;
+import static it.polimi.ingsw.model.Direction.*;
+import static it.polimi.ingsw.model.ConnectorType.*;
 
 
 public class CardComponent {
@@ -23,9 +25,6 @@ public class CardComponent {
         return;
     }
 
-    public ComponentType getComponent_type() {
-        return component_type;
-    }
 
     public ConnectorType getConnector_type(Direction direction) {
         return connectors.get(direction);
@@ -35,6 +34,50 @@ public class CardComponent {
         return  valids;
         //da fare
     }
+
+    public List<ConnectorType> getValidsConnectors(ConnectorType connector){
+        List<ConnectorType> valids= new ArrayList<>();
+        switch (connector){
+
+            case Double:
+                valids.add(Double);
+                valids.add(Universal);
+                break;
+            case Single:
+                valids.add(Single);
+                valids.add(Universal);
+                break;
+            case Universal:
+                valids.add(Universal);
+                valids.add(Double);
+                valids.add(Single);
+                break;
+
+
+        }
+        return valids;
+    }
+
+    public ComponentType GetComponent_type() {
+        return component_type;
+    }
+    public ConnectorType getConnector(Direction direction) {
+        return connectors.get(direction);
+    }
+
+    public void rotate() {
+        Map<Direction, ConnectorType> rotated = new EnumMap<>(Direction.class);
+
+        rotated.put(East, connectors.get(North));
+        rotated.put(South, connectors.get(East));
+        rotated.put(West, connectors.get(South));
+        rotated.put(North, connectors.get(West));
+
+
+        connectors = rotated;
+    }
+
+
     @Override
     public String toString() {
         return "CardComponent{" +
