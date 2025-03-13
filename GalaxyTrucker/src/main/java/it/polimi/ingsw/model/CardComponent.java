@@ -29,11 +29,7 @@ public class CardComponent {
     public ConnectorType getConnector_type(Direction direction) {
         return connectors.get(direction);
     }
-    public List<ConnectorType> getvalidsconnectors(ConnectorType connector){
-        List<ConnectorType> valids = new ArrayList<ConnectorType>();
-        return  valids;
-        //da fare
-    }
+
 
     public List<ConnectorType> getValidsConnectors(ConnectorType connector){
         List<ConnectorType> valids= new ArrayList<>();
@@ -64,6 +60,7 @@ public class CardComponent {
     public ConnectorType getConnector(Direction direction) {
         return connectors.get(direction);
     }
+    public boolean getFace() {return face_down;}
 
     public void rotate() {
         Map<Direction, ConnectorType> rotated = new EnumMap<>(Direction.class);
