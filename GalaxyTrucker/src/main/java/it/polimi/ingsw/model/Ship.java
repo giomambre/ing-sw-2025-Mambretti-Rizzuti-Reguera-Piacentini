@@ -26,7 +26,15 @@ public class Ship {
 
     }
 
-    public void AddComponent(CardComponent component,int row,int col) {
+    public List<CardComponent> getExtra_components() {
+        return extra_components;
+    }
+
+    public void setExtra_components(List<CardComponent> extra_components) {
+        this.extra_components = extra_components;
+    }
+
+    public void AddComponent(CardComponent component, int row, int col) {
 
         //Controllo se è gia presente un elemento in quella pos, da capire se farlo nel controller o qui
 
