@@ -21,6 +21,7 @@ public class Board {
         int not_occupied_spaces = 0;
         //i represent the effective position on the board, assumptions: every cell corresponds to a number(1...24)
         int i=startingPosition+1;
+        //assunzione dell'if dentro al while: in ogni momento del gioco, in player_position sono memorizzate SOLO le posizioni correnti dei giocatori, quelle vecchie vengono eliminate appena sposto la pedina (come sotto)
         while(not_occupied_spaces<pos){
             if(player_position.containsKey(i)){
                 i++;
