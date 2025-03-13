@@ -12,6 +12,9 @@ public class Player {
         this.nickname = nickname;
         this.color = color;
 
-        ship.PrintShipPlance();
+
+    }
+    public String getNickname() {
+        return nickname;
     }
 }

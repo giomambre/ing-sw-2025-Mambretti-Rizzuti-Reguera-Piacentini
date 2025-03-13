@@ -17,9 +17,19 @@ public class App
         //prova di avvio
         Game game = new Game();
         game.startGame();
+        Player p = new Player("raffa", Green);
+        game.addPlayer(p);
+        game.addPlayer(new Player("Isa", Red));
+        game.addPlayer(new Player("Cice", Blue));
+        game.addPlayer(new Player("Gio", Yellow));
 
-        Player player = new Player("raffa", Green);
-        game.addPlayer(player);
+        game.startAssembly();
+        game.startFlight();
+        game.getBoard().printBoard();
+        System.out.println("");
+        game.getBoard().MovePlayer(p,3);
+        game.getBoard().printBoard();
+
 
     }
 }

@@ -5,6 +5,16 @@ import java.util.*;
 public class Board {
     private final int BOARD_SIZE = 24;
     private Map<Integer, Player> player_position = new HashMap<>();
+    Random random = new Random();
+
+    public Board(List<Player> players) { //costruttore fatto ora per testare la move player, mette i player in pos a caso
+    int tmp = 1;
+        for (Player player : players) {
+            player_position.put(tmp, player);
+            tmp+=2;
+        }
+
+    }
 
     public void MovePlayer(Player p, int pos) { //pos è il numero di pos in aggiunta
 
@@ -46,7 +56,7 @@ public class Board {
     }
 
 
-    public Map<Integer, Player> GetBoard() {
+    public Map<Integer, Player> getBoard() {
         return player_position;
     }
 
@@ -62,6 +72,12 @@ public class Board {
         }
         return ranking;
 
+    }
+
+    public void printBoard() {
+        for (var entry : player_position.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue().getNickname());
+        }
     }
 
 }

@@ -9,7 +9,6 @@ import static it.polimi.ingsw.model.ComponentType.*;
 
 public class Game {
 
-    private Board board;
     private List<Player> players = new ArrayList<>();
     private int numPlayers;
     private List<CardAdventure> deck_adventure = new ArrayList<>();
@@ -17,7 +16,8 @@ public class Game {
     private List<Player> active_players = new ArrayList<>();
     private Player board_leader;
     private List<CardComponent> deck_components = new ArrayList<>();
-    Random random = new Random();
+    private Board board ;
+
 
     public void startGame() {
 
@@ -54,6 +54,10 @@ public class Game {
 
     }
 
+    public void startFlight(){
+        board = new Board(active_players);
+
+    }
 
     public void addPlayer(Player player) {
 
@@ -75,5 +79,10 @@ public class Game {
 
     public void removePlayer(Player player) {
         active_players.remove(player);
+    }
+
+
+    public Board getBoard() {
+        return board;
     }
 }
