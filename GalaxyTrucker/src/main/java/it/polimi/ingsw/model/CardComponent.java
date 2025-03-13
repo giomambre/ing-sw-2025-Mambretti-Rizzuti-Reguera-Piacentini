@@ -22,7 +22,6 @@ public class CardComponent {
 
     public void changefaceshowed(){
         face_down = !face_down;
-        return;
     }
 
 
