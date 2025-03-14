@@ -16,6 +16,9 @@ public class Player {
         ship.PrintShipPlance();
     }
 
+    public void EndBuild(){
+
+    }
 
     public void SecureComponent(CardComponent component) {
 
