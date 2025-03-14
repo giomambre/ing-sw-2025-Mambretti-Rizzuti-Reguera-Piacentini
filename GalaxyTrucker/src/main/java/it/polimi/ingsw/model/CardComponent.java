@@ -64,6 +64,7 @@ public class CardComponent {
     public ConnectorType getConnector(Direction direction) {
         return connectors.get(direction);
     }
+    public boolean getFace() {return face_down;}
 
     public void rotate() {
         Map<Direction, ConnectorType> rotated = new EnumMap<>(Direction.class);
