@@ -26,7 +26,7 @@ public class App
         game.startAssembly();
         game.startFlight();
         game.getBoard().printBoard();
-        System.out.println("");
+        System.out.println();
         game.getBoard().MovePlayer(p,3);
         game.getBoard().printBoard();
 
