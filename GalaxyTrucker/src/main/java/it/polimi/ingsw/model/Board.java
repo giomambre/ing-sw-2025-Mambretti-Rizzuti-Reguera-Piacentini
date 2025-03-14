@@ -5,6 +5,7 @@ import java.util.*;
 public class Board {
     private final int BOARD_SIZE = 24;
     private Map<Integer, Player> player_position = new HashMap<>();
+
     public Board(List<Player> players) { //costruttore fatto ora per testare la move player, mette i player in pos a caso
         int tmp = 1;
         for (Player player : players) {

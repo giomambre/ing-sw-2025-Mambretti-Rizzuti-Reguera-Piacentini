@@ -12,6 +12,7 @@ public enum ComponentType {
     MainUnit,
     Tubes,
     Shield,
-    Empty
+    Empty,
+    NotAccessible
 
 }

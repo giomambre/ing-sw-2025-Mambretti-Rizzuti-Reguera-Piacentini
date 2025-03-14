@@ -13,7 +13,7 @@ import static it.polimi.ingsw.model.Direction.*;
 import static it.polimi.ingsw.model.Direction.West;
 
 public class Ship {
-    private static final CardComponent EMPTY_CELL = new CardComponent(Empty, new EnumMap<>(Direction.class));
+
     int ROWS = 5,COLS = 7;
     private CardComponent[][] ship_plance = new CardComponent[ROWS][COLS];
     private List<CardComponent> extra_components = new ArrayList<>();
@@ -45,7 +45,8 @@ public class Ship {
         covered_side.put(West, Boolean.FALSE);
         covered_side.put(East, Boolean.FALSE);
 
-
+        CardComponent EMPTY_CELL = new CardComponent(Empty, new EnumMap<>(Direction.class));
+        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, new EnumMap<>(Direction.class));
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
@@ -57,9 +58,16 @@ public class Ship {
                     connectors.put(West, Universal);
 
                     ship_plance[row][col] = new CardComponent(MainUnit, connectors);
-                } else {
+                } else if (row==0 && (col == 0 || col == 1 ||col == 3 ||col == 5 || col == 6)   ) {
+                    ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
+                }
+                else if (row == 1 && (col == 0 || col==6) || row==4 && col==3) {
+                    ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
+
+                }else{
                     ship_plance[row][col] = EMPTY_CELL;
                 }
+
             }
         }
     }
