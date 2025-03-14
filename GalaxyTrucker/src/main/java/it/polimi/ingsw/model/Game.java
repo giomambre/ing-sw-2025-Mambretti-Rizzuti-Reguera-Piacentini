@@ -76,4 +76,12 @@ public class Game {
     public void removePlayer(Player player) {
         active_players.remove(player);
     }
+
+    public  List<CardComponent> getDeck_components() {
+        return deck_components;
+    }
+
+    public void setDeck_components(List<CardComponent> deck_components) {
+        this.deck_components = deck_components;
+    }
 }

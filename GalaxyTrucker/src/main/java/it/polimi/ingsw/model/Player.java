@@ -2,14 +2,12 @@ package it.polimi.ingsw.model;
 import java.util.List;
 import java.util.Random;
 
-import static  it.polimi.ingsw.model.Color.*;
-
 public class Player {
     private String nickname;
     private Color color;
     private Ship ship = new Ship();
     private int exposed_connectors = 0;
-
+    private Game game = new Game();
 
     public Player(String nickname, Color color) {
         this.nickname = nickname;
@@ -31,13 +29,20 @@ public class Player {
         ship.setExtra_components(extra_components);
     }
 
-    public void AddToShip(CardComponent component) {
-        int row=0;
-        int col=0;
-
-        // the player select the box of the ship where he wants to drop the card, controller???
+    public void AddToShip(CardComponent component, int row, int col) {
 
         ship.AddComponent(component, row, col);
+    }
+
+    public void DismissComponent(CardComponent component) {
+
+        component.changefaceshowed();
+
+        List<CardComponent> deck_components = game.getDeck_components();
+        deck_components.add(component);
+
+        game.setDeck_components(deck_components);
+
     }
 
     public void UseExtraComponent(CardComponent component) {
