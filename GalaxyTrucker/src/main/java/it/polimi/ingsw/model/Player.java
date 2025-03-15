@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
-import static  it.polimi.ingsw.model.Color.*;
+
+import static it.polimi.ingsw.model.Color.*;
 
 public class Player {
     private String nickname;
@@ -14,6 +15,12 @@ public class Player {
 
 
     }
+
+    public void EndBuild() {
+        //quando un player dichiara di aver finito o finisce per il tempo
+        // game lo aggiunge nella lista active_players
+    }
+
     public String getNickname() {
         return nickname;
     }

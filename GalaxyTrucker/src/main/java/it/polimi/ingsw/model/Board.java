@@ -6,11 +6,15 @@ public class Board {
     private final int BOARD_SIZE = 24;
     private Map<Integer, Player> player_position = new HashMap<>();
 
-    public Board(List<Player> players) { //costruttore fatto ora per testare la move player, mette i player in pos a caso
-        int tmp = 1;
+    public Board(List<Player> players) { //mette i player nelle posizioni di partenza,
+        //in caso di nave che non puo partite, tipo non ha motori, viene rimossa e il player dopo scala avanti???
+
+        int[] starting_positions = {7, 4, 2, 1}; // the first player that end the build is the first in the active player list
+        int i = 0;
         for (Player player : players) {
-            player_position.put(tmp, player);
-            tmp+=2;
+            player_position.put(starting_positions[i], player);
+            i++;
+
         }
 
     }
@@ -30,7 +34,8 @@ public class Board {
         //i represent the effective position on the board, assumptions: every cell corresponds to a number(1...24)
         if (pos > 0) {
             int i = startingPosition + 1;
-            //assunzione dell'if dentro al while: in ogni momento del gioco, in player_position sono memorizzate SOLO le posizioni correnti dei giocatori, quelle vecchie vengono eliminate appena sposto la pedina (come sotto)
+            //assunzione dell'if dentro al while: in ogni momento del gioco, in player_position sono memorizzate
+            // SOLO le posizioni correnti dei giocatori, quelle vecchie vengono eliminate appena sposto la pedina (come sotto)
             while (not_occupied_spaces < pos) {
                 if (player_position.containsKey(i)) {
                     i++;
@@ -69,7 +74,6 @@ public class Board {
                 player_position.remove(startingPosition);
                 return;
             } else {
-                //la sottrazione è da rivedere perchè non so se sei partito a contare le caselle da 0 o da 1, se le hai numerate da 1 dovrebbe essere corretto se sei partito da 0 aggiungi un -1
                 i = i + BOARD_SIZE + 1;
                 player_position.put(i, p);
                 player_position.remove(startingPosition);

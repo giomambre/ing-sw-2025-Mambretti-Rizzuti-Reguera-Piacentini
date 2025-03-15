@@ -36,6 +36,7 @@ public class LivingUnit extends CardComponent{
                 return;
             }
             //da continuare
+            // forse conviene anche evitare di farlo fare direttamente dalla view
 
     }
 

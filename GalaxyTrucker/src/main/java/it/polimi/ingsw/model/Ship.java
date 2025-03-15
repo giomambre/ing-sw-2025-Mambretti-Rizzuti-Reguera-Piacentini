@@ -8,25 +8,25 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.ConnectorType.Universal;
+import static it.polimi.ingsw.model.ConnectorType.*;
 import static it.polimi.ingsw.model.Direction.*;
 import static it.polimi.ingsw.model.Direction.West;
 
 public class Ship {
 
-    int ROWS = 5,COLS = 7;
+    int ROWS = 5, COLS = 7;
     private CardComponent[][] ship_plance = new CardComponent[ROWS][COLS];
     private List<CardComponent> extra_components = new ArrayList<>();
     private Map<Direction, Boolean> covered_side = new EnumMap<>(Direction.class);
     private int batteries = 0;
 
 
-    Ship(){
+    Ship() {
         this.initializeShipPlance();
 
     }
 
-    public void AddComponent(CardComponent component,int row,int col) {
+    public void AddComponent(CardComponent component, int row, int col) {
 
         //Controllo se è gia presente un elemento in quella pos, da capire se farlo nel controller o qui
 
@@ -58,25 +58,100 @@ public class Ship {
                     connectors.put(West, Universal);
 
                     ship_plance[row][col] = new CardComponent(MainUnit, connectors);
-                } else if (row==0 && (col == 0 || col == 1 ||col == 3 ||col == 5 || col == 6)   ) {
+                } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
                     ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
-                }
-                else if (row == 1 && (col == 0 || col==6) || row==4 && col==3) {
+                } else if (row == 1 && (col == 0 || col == 6) || row == 4 && col == 3) {
                     ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
 
-                }else{
+                } else {
                     ship_plance[row][col] = EMPTY_CELL;
                 }
 
             }
         }
     }
+
+    public double calculateCannonPower(Map<CardComponent, Boolean> battery_usage) { //after the validity check , get battery_usage from controller i think
+        double power = 0;
+        CardComponent tmp;
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                tmp = ship_plance[row][col];
+
+                switch (tmp.GetComponent_type()) {
+
+                    case Cannon:
+
+                        if (tmp.getConnector(North) == Cannon_Connector) power++;
+                        else power += 0.5;
+
+
+                    case DoubleCannon:
+                        double local_power = 0; //
+                        boolean useBattery = battery_usage.getOrDefault(tmp, false);
+
+                        if (tmp.getConnector(North) == Cannon_Connector) local_power++;
+
+                        else local_power += 0.5;
+
+                        if (useBattery) local_power *= 2;
+
+                        power += local_power;
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+        }
+        return power;
+
+    }
+
+    public double calculateEnginePower(Map<CardComponent, Boolean> battery_usage) { //after the validity check
+        double power = 0;
+        CardComponent tmp;
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+
+                tmp = ship_plance[row][col];
+
+                switch (tmp.GetComponent_type()) {
+
+                    case Engine:
+
+                        power++;
+                        break;
+
+                    case DoubleEngine:
+
+                        boolean useBattery = battery_usage.getOrDefault(tmp, false);
+
+                        if (useBattery) power += 2;
+                        else power += 1;
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+
+            }
+        }
+        return power;
+
+    }
+
     public void PrintShipPlance() {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
-                    System.out.println(ship_plance[row][col]);
-
+                System.out.println(ship_plance[row][col]);
 
 
             }
