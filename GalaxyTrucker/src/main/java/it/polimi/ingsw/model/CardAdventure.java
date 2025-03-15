@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class CardAdventure {
     private int level;
     private int cost_of_days;
@@ -15,3 +18,4 @@ public abstract class CardAdventure {
     }
 
 }
+
