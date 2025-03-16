@@ -31,7 +31,7 @@ public class Board {
 
         }
         int not_occupied_spaces = 0;
-        //i represent the effective position on the board, assumptions: every cell corresponds to a number(1...24)
+        //it represent the effective position on the board, assumptions: every cell corresponds to a number(1...24)
         if (pos > 0) {
             int i = startingPosition + 1;
             //assunzione dell'if dentro al while: in ogni momento del gioco, in player_position sono memorizzate

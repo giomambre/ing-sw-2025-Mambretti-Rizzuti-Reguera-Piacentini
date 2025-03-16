@@ -10,14 +10,13 @@ import java.util.Map;
 import static it.polimi.ingsw.model.ComponentType.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
 import static it.polimi.ingsw.model.Direction.*;
-import static it.polimi.ingsw.model.Direction.West;
+
 
 public class Ship {
 
     int ROWS = 5, COLS = 7;
     private CardComponent[][] ship_plance = new CardComponent[ROWS][COLS];
     private List<CardComponent> extra_components = new ArrayList<>();
-    private Map<Direction, Boolean> covered_side = new EnumMap<>(Direction.class);
     private int batteries = 0;
 
 
@@ -40,10 +39,6 @@ public class Ship {
 
         //set all covered_side  all to False
 
-        covered_side.put(North, Boolean.FALSE);
-        covered_side.put(South, Boolean.FALSE);
-        covered_side.put(West, Boolean.FALSE);
-        covered_side.put(East, Boolean.FALSE);
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, new EnumMap<>(Direction.class));
         CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, new EnumMap<>(Direction.class));
