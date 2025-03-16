@@ -10,6 +10,7 @@ public abstract class CardAdventure {
 
    //costruttore da vedere se metterlo qui o nelle sottoclassi(classe astratta)
 
+
     public void nextplayer(){
 
     }
