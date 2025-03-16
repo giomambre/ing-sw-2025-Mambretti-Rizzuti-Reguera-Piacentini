@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Aggiunto Classe Scudo e fatto costruttore &amp; rotate, rimosso shield da ConnectorType, tolto coverde_side in ship, gestiamo direttamente con una funzione" />
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Commit di test">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CardAdventure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CardAdventure.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,6 +85,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.CommitDialog&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -138,6 +142,8 @@
       <workItem from="1741969355543" duration="1288000" />
       <workItem from="1742036479546" duration="1826000" />
       <workItem from="1742130979207" duration="1642000" />
+      <workItem from="1742137922116" duration="876000" />
+      <workItem from="1742161946936" duration="706000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <option name="closed" value="true" />
@@ -299,18 +305,50 @@
       <option name="project" value="LOCAL" />
       <updated>1742137837579</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Commit di test">
+      <option name="closed" value="true" />
+      <created>1742138187365</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1742138187365</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Commit di test">
+      <option name="closed" value="true" />
+      <created>1742138224442</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1742138224442</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="c414cbe4-41c4-4d7c-97d4-34bdef2a32d2" value="TOOL_WINDOW" />
+      </map>
+    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
             <State />
+          </value>
+        </entry>
+        <entry key="c414cbe4-41c4-4d7c-97d4-34bdef2a32d2">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="false" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -322,6 +360,7 @@
     <MESSAGE value="Aggiunti qualche metodo in Board, aggiunto il Costruttore fatto un po di test nel main per la move player" />
     <MESSAGE value="Aggiunto ConnectorType Scudo" />
     <MESSAGE value="Aggiunto Classe Scudo e fatto costruttore &amp; rotate, rimosso shield da ConnectorType, tolto coverde_side in ship, gestiamo direttamente con una funzione" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunto Classe Scudo e fatto costruttore &amp; rotate, rimosso shield da ConnectorType, tolto coverde_side in ship, gestiamo direttamente con una funzione" />
+    <MESSAGE value="Commit di test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit di test" />
   </component>
 </project>
