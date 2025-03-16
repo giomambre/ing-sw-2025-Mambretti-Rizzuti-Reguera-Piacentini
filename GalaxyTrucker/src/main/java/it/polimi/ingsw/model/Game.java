@@ -829,14 +829,451 @@ public class Game {
         deck_components.add(new CardComponent(DoubleEngine, connectors));
 
 
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
 
 
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
 
 
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
 
 
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
 
 
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Single);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Single);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Single);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Double);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Double);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Universal);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Smooth);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Smooth);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Single);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Double);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Smooth);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Single);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Single);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(Cannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Single);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Universal);
+        connectors.put(West, Smooth);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Single);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Smooth);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(DoubleCannon, connectors));
+
+
+        connectors.put(North, Single);
+        connectors.put(South, Smooth);
+        connectors.put(East, Single);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+
+
+        connectors.put(North, Double);
+        connectors.put(South, Smooth);
+        connectors.put(East, Single);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+
+
+        connectors.put(North, Single);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+
+
+        connectors.put(North, Single);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+
+
+        connectors.put(North, Double);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Double);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Single);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+
+
+        connectors.put(North, Double);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Universal);
+        connectors.put(East, Single);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Shield, connectors)); //di defaul rivolti nord-est (da capire se fare sottoclasse)
+
+
+        connectors.put(North, Single);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Shield, connectors));
+
+
+        connectors.put(North, Double);
+        connectors.put(South, Double);
+        connectors.put(East, Single);
+        connectors.put(West, Single);
+
+        deck_components.add(new CardComponent(Shield, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Universal);
+        connectors.put(East, Smooth);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Shield, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Double);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Shield, connectors));
+
+
+        connectors.put(North, Single);
+        connectors.put(South, Single);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+
+        deck_components.add(new CardComponent(Shield, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(Shield, connectors));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Double);
+        connectors.put(East, Double);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(Shield, connectors));
 
 
         //print them all
