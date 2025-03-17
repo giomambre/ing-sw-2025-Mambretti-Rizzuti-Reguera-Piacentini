@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import com.sun.tools.javac.Main;
+import javafx.util.Pair;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -9,8 +10,9 @@ import java.util.Map;
 
 import static it.polimi.ingsw.model.ComponentType.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
-import static it.polimi.ingsw.model.Direction.*;
 
+import static it.polimi.ingsw.model.Direction.*;
+import static it.polimi.ingsw.model.Color.*;
 
 public class Ship {
 
@@ -18,10 +20,11 @@ public class Ship {
     private CardComponent[][] ship_plance = new CardComponent[ROWS][COLS];
     private List<CardComponent> extra_components = new ArrayList<>();
     private int batteries = 0;
+    private Player player;
 
 
-    Ship() {
-        this.initializeShipPlance();
+    public Ship(Player player) {
+        this.player = player;
 
     }
 
@@ -38,8 +41,22 @@ public class Ship {
     private void initializeShipPlance() {
 
         //set all covered_side  all to False
+        ComponentType main_unit;
+        switch (player.getColor()) {
+            case Red:
+                main_unit = MainUnitRed;
+                break;
+            case Yellow:
+                main_unit = MainUnitYellow;
+                break;
+            case Green:
+                main_unit = MainUnitGreen;
+                break;
+            default:
+                main_unit = MainUnitBlue;
+                break;
 
-
+        }
         CardComponent EMPTY_CELL = new CardComponent(Empty, new EnumMap<>(Direction.class));
         CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, new EnumMap<>(Direction.class));
         for (int row = 0; row < ROWS; row++) {
@@ -52,7 +69,7 @@ public class Ship {
                     connectors.put(East, Universal);
                     connectors.put(West, Universal);
 
-                    ship_plance[row][col] = new CardComponent(MainUnit, connectors);
+                    ship_plance[row][col] = new CardComponent(main_unit, connectors); //da mettere main unit in base al colore
                 } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
                     ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
                 } else if (row == 1 && (col == 0 || col == 6) || row == 4 && col == 3) {
@@ -141,6 +158,15 @@ public class Ship {
         return power;
 
     }
+
+
+    public List<Pair<Integer, Integer>> checkShipValidity(){
+
+
+
+    }
+
+
 
     public void PrintShipPlance() {
         for (int row = 0; row < ROWS; row++) {
