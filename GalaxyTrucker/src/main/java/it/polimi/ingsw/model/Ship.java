@@ -180,4 +180,11 @@ public class Ship {
     }
 
 
+    public void setExtra_components(List<CardComponent> extraComponents) {
+        this.extra_components = extraComponents;
+    }
+
+    public List<CardComponent> getExtra_components() {
+        return extra_components;
+    }
 }

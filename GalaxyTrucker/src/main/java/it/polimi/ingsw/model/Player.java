@@ -5,7 +5,7 @@ import java.util.Random;
 public class Player {
     private String nickname;
     private Color color;
-    private Ship ship = new Ship();
+    private Ship ship = new Ship(this);
     private int exposed_connectors = 0;
     private Game game = new Game();
 
@@ -65,5 +65,9 @@ public class Player {
 
     public Ship getShip() {
         return ship;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }
