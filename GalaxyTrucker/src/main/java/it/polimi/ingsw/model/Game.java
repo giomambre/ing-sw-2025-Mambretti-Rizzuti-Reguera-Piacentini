@@ -1284,6 +1284,10 @@ public class Game {
         deck_components.add(new CardComponent(Shield, connectors));
 
 
+        //to add : adventure deck creation and allocation
+
+
+
         //print them all
         for (CardComponent element : deck_components) {
             System.out.println(element);

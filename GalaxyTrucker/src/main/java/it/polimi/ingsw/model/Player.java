@@ -62,4 +62,8 @@ public class Player {
 
         return (dice1.nextInt(6)+1)+(dice2.nextInt(6)+1);
     }
+
+    public Ship getShip() {
+        return ship;
+    }
 }

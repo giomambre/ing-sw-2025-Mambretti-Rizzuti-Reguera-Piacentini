@@ -14,9 +14,18 @@ public abstract class CardAdventure {
     //sono abbastanza sicuro che debba fatto nel controller, ma il controller dovra chiamare qualche metodo
     // da fare nel player o qui????
 
-    public CardAdventure(int level, int cost_of_days) {}
+    public CardAdventure(int level, int cost_of_days) {
 
-    public void startAdventure(List <Player> players) {}
+        this.level = level;
+        this.cost_of_days = cost_of_days;
+
+
+    }
+
+    public void startAdventure(List <Player> players) {
+
+
+    }
     public void nextplayer(){
 
     }
