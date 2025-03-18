@@ -166,6 +166,20 @@ public class Ship {
 
     }
 
+    public boolean isProtected(Direction direction) {
+        for(int row = 0; row < ROWS; row++) {
+            for(int col = 0; col < COLS; col++) {
+                if(ship_plance[row][col].GetComponent_type() == Shield ) {
+                    Shield shieldObject = (Shield) ship_plance[row][col];
+                    if(shieldObject.getCoveredSides().get(direction) == Boolean.TRUE) {
+                        return true
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
 
     public void PrintShipPlance() {

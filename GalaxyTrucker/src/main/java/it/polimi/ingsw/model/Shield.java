@@ -18,6 +18,10 @@ public class Shield extends CardComponent {
             covered_sides.put(West,Boolean.FALSE);
 
         }
+
+        public Map<Direction, Boolean> getCoveredSides() {
+        return covered_sides;
+        }
     @Override
         public void rotate(){ //clockwise rotation
         super.rotate();
