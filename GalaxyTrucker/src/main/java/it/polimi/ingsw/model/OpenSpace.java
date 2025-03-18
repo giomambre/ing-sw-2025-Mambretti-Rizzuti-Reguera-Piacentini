@@ -3,7 +3,8 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenSpace extends  CardAdventure{
+public class OpenSpace extends  CardAdventure{ //every player in the lobby will move
+
     public OpenSpace(int level, int cost_of_days) {
         super(level, cost_of_days);
     }
