@@ -11,8 +11,6 @@ public class CardComponent {
     private Map<Direction,ConnectorType> connectors = new EnumMap<>(Direction.class);
     private boolean face_down;
 
-    //costruttore? ha senso che face down sia false all'inizio quando istanziata ?
-
     public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors){
 
         this.component_type = component_type;

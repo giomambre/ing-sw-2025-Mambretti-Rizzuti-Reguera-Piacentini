@@ -29,7 +29,6 @@ public class Game {
 
     public void startGame() {
 
-        //Created some components just to test the print and the constructor
 
 
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
