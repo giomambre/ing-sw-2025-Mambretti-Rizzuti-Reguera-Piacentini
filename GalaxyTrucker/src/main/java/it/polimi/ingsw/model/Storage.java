@@ -14,24 +14,7 @@ public class Storage extends CardComponent {
     }
 
     public void AddCargo(Cargo cargo){
-        if(carried_cargos.size()==size){
-            //non so se errore o eccezione
-            return;
-        }
-        if(cargo==Cargo.Blue || cargo==Cargo.Yellow || cargo==Cargo.Green){
-            carried_cargos.add(cargo);
-        }
 
-        if(cargo==Cargo.Red){
-            ComponentType type=this.GetComponent_type();
-            if(type==ComponentType.CargoRed){
-                carried_cargos.add(cargo);
-                return;
-            }
-            else{
-                //non so se errore o eccezione
-            }
-        }
     }
 
 

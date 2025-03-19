@@ -3,34 +3,91 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static junit.framework.Assert.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.*;
 public class BoardTest {
 
+
+
+    private Board board;
+    private Player player1, player2, player3, player4;
+
+    @BeforeEach //serve per fare il setup solo una volta per tutte prima di ogni test
+    //prima di ogni test si ha questa situazione non altre modificate dagli altri test!!!!!
+    public void setUp() {
+        player1 = new Player("Alice", Color.Yellow);
+        player2 = new Player("Mambre", Color.Blue);
+        player3 = new Player("isabel", Color.Red);
+        player4 = new Player("Raffa", Color.Green);
+
+        List<Player> players = Arrays.asList(player1, player2, player3, player4);
+        board = new Board(players);
+    }
+
     @Test
-    public void testMovePlayer() {
+    public void testInitialPositions() {
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertEquals(player1, playerPositions.get(7));
+        assertEquals(player2, playerPositions.get(4));
+        assertEquals(player3, playerPositions.get(2));
+        assertEquals(player4, playerPositions.get(1));
+    }
 
-        Player player1 = new Player("raffa", Color.Yellow);
-        List<Player> players = new ArrayList<>(Arrays.asList(player1));
-        Board board = new Board(players);
+    //CONSIGLIO PER CHI FA I TEST : li ho fatti a caso io, ma aiutatevi con le grafiche, però questo deve essere lo stile, inoltre per
+    //runnarli dovete runnare questo file, non  App.java
 
+    @Test
+    public void testMovePlayerForward() {
         board.MovePlayer(player1, 3);
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertNull(playerPositions.get(7));  // Vecchia posizione vuota
+        assertEquals(player1, playerPositions.get(10)); // Nuova posizione corretta
+    }
 
-        Map<Integer, Player> player_position = new HashMap<>();
-        player_position = board.GetBoard();
-        Integer playerPosition = 0;
+    @Test
+    public void testMovePlayerBackward() {
+        board.MovePlayer(player1, -2);
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertNull(playerPositions.get(7)); // Vecchia posizione vuota
+        assertEquals(player1, playerPositions.get(5)); // Nuova posizione corretta
+    }
 
-        for (var entry : player_position.entrySet()) {
-            if (entry.getValue().equals(player1)) {
-                playerPosition = entry.getKey();
-            }
-        }
+    @Test
+    public void testMovePlayerSkippingOccupiedSpaces() {
+        board.MovePlayer(player1, 3); // Alice dovrebbe muoversi a 10
+        board.MovePlayer(player2, 3); // Mambre dovrebbe andare a 8 (salta 7 perché occupata)
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertEquals(player1, playerPositions.get(10));
+        assertEquals(player2, playerPositions.get(8));
+    }
 
-        assertEquals(Optional.of(10), playerPosition);
+    @Test
+    public void testMovePlayerWrappingAroundBoard() {
+        board.MovePlayer(player1, 20); // Se la board ha 24 spazi, dovrebbe fare un giro e finire a (7+20) % 24 = 3
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertEquals(player1, playerPositions.get(3));
+    }
 
+    @Test
+    public void testMovePlayerBackwardWrappingAroundBoard() {
+        board.MovePlayer(player1, -8); // (7-8) + 24 = 23
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertEquals(player1, playerPositions.get(23));
+    }
+
+    @Test
+    public void testRankingOrder() {
+        board.MovePlayer(player1, 5); // Alice va avanti
+        board.MovePlayer(player2, 7); // Mambre va ancora più avanti
+        List<Player> ranking = board.GetRanking();
+
+        assertEquals(player2, ranking.get(3)); // Mambre è in testa
+        assertEquals(player1, ranking.get(2)); // Alice segue
+        assertEquals(player3, ranking.get(1)); // isabel
+        assertEquals(player4, ranking.get(0)); // Raffa è ultimo
     }
 }
