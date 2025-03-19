@@ -68,18 +68,21 @@ public class Board {
                     not_occupied_spaces++;
                     i--;
                 }
+                if (i<0)
+                    i=i+BOARD_SIZE; // lo ripristino qua per evitare casi in cui il giocatore torna indietro e ne becca uno che sta per terminare il giro
             }
             i++;
-            if (i > 0) {
-                player_position.put(i, p);
-                player_position.remove(startingPosition);
-                return;
-            } else {
+
+            player_position.put(i, p);
+            player_position.remove(startingPosition);
+            return;
+
+            /*else {
                 i = i + BOARD_SIZE + 1;
                 player_position.put(i, p);
                 player_position.remove(startingPosition);
                 return;
-            }
+            }*/
         }
 
     }

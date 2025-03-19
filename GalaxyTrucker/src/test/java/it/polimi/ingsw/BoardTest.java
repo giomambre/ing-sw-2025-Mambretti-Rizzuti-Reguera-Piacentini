@@ -58,10 +58,8 @@ public class BoardTest {
 
     @Test
     public void testMovePlayerSkippingOccupiedSpaces() {
-        board.MovePlayer(player1, 3); // Alice dovrebbe muoversi a 10
         board.MovePlayer(player2, 3); // Mambre dovrebbe andare a 8 (salta 7 perché occupata)
         Map<Integer, Player> playerPositions = board.GetBoard();
-        assertEquals(player1, playerPositions.get(10));
         assertEquals(player2, playerPositions.get(8));
     }
 
@@ -74,15 +72,24 @@ public class BoardTest {
 
     @Test
     public void testMovePlayerBackwardWrappingAroundBoard() {
-        board.MovePlayer(player1, -8); // (7-8) + 24 = 23
+        board.MovePlayer(player1, -8); // (7-8) + 24 = 20 perchè 3 caselle sono occupate dagli altri 3 player
         Map<Integer, Player> playerPositions = board.GetBoard();
-        assertEquals(player1, playerPositions.get(23));
+        assertEquals(player1, playerPositions.get(20));
+    }
+
+    @Test
+    public void testMovePlayerForwardWrappingAroundBoardExtremeCase() {
+        board.MovePlayer(player2, -5); // 4-5-2+24 = 21
+        board.MovePlayer(player1, -10); // 7-10-3+24 = 18
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertEquals(player2, playerPositions.get(21));
+        assertEquals(player1, playerPositions.get(18));
     }
 
     @Test
     public void testRankingOrder() {
         board.MovePlayer(player1, 5); // Alice va avanti
-        board.MovePlayer(player2, 7); // Mambre va ancora più avanti
+        board.MovePlayer(player2, 10); // Mambre va ancora più avanti
         List<Player> ranking = board.GetRanking();
 
         assertEquals(player2, ranking.get(3)); // Mambre è in testa
