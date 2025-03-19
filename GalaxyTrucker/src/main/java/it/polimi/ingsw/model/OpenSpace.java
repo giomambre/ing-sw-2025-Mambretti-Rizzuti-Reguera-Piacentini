@@ -2,20 +2,31 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OpenSpace extends  CardAdventure{ //every player in the lobby will move
+
+
 
     public OpenSpace(int level, int cost_of_days) {
         super(level, cost_of_days);
     }
 
-    public List<Integer> calculatePlayersPower(List<Player> players) { //returns a list with the player and thei relative enigne power, in
-        // the game class has to travel it in inverse order
+    public List<Integer>  calculatePlayersPower(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap) {
         List<Integer> powers = new ArrayList<>();
+
+
         for (Player player : players) {
-            powers.add(player.getShip().calculateEnginePower()); //manca da gestire la roba delle batteria
+            Map<CardComponent, Boolean> playerBatteryUsage = batteryUsageMap.getOrDefault(player, new HashMap<>());
+
+            int power = (int) player.getShip().calculateEnginePower(playerBatteryUsage); // Passiamo la mappa con l'uso delle batterie
+            powers.add(power);
         }
 
+        return powers;
     }
+
+
 
 }

@@ -33,5 +33,6 @@ public abstract class CardAdventure {
 
     }
 
+
 }
 

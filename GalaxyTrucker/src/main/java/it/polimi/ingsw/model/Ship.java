@@ -40,7 +40,7 @@ public class Ship {
 
     private void initializeShipPlance() {
 
-        //set all covered_side  all to False
+
         ComponentType main_unit;
         switch (player.getColor()) {
             case Red:
@@ -123,6 +123,21 @@ public class Ship {
 
     }
 
+    private List<CardComponent> getAvailableBatteries() {
+        List<CardComponent> batteries = new ArrayList<>();
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                CardComponent component = ship_plance[row][col];
+
+                if (component != null && component.GetComponent_type() == ComponentType.Battery) {
+                    batteries.add(component);
+                }
+            }
+        }
+        return batteries;
+    }
+
     public double calculateEnginePower(Map<CardComponent, Boolean> battery_usage) { //after the validity check
         double power = 0;
         CardComponent tmp;
@@ -159,13 +174,11 @@ public class Ship {
 
     }
 
-/*
+
     public List<Pair<Integer, Integer>> checkShipValidity(){
 
 
-
     }
-*/
 
     public boolean isProtected(Direction direction) {
         for(int row = 0; row < ROWS; row++) {
