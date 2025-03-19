@@ -18,6 +18,7 @@ public class Board {
         }
 
     }
+
     public void MovePlayer(Player p, int pos) { //pos è il numero di pos in aggiunta
 
         //List<Integer> keys = new ArrayList<>(player_position.keySet());
@@ -101,6 +102,8 @@ public class Board {
         return ranking;
 
     }
+
+
 
     public void printBoard() {
         for (var entry : player_position.entrySet()) {

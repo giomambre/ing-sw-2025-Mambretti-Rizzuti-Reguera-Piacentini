@@ -17,7 +17,7 @@ public class Player {
     }
 
     public void EndBuild(){
-
+        
     }
 
     public void SecureComponent(CardComponent component) {
@@ -69,5 +69,9 @@ public class Player {
 
     public Color getColor() {
         return color;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }
