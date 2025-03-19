@@ -5,5 +5,11 @@ public enum CardAdventureType {
     AbandonedStation,
     AbandonedShip,
     Planets,
-
+    MeteorSwarm,
+    CombatZone,
+    Stardust,
+    Smugglers,
+    Pirates,
+    Slayers,
+    Epidemic
 }

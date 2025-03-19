@@ -38,7 +38,7 @@ public class Ship {
     }
 
 
-    private void initializeShipPlance() {
+    public void initializeShipPlance() {
 
 
         ComponentType main_unit;
@@ -72,7 +72,7 @@ public class Ship {
                     ship_plance[row][col] = new CardComponent(main_unit, connectors); //da mettere main unit in base al colore
                 } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
                     ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
-                } else if (row == 1 && (col == 0 || col == 6) || row == 4 && col == 3) {
+                } else if ((row == 1 && (col == 0 || col == 6)) ||( row == 4 && col == 3)) {
                     ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
 
                 } else {
@@ -196,6 +196,10 @@ public class Ship {
 
 
 
+    public CardComponent getComponent(int x, int y){
+        return ship_plance[x][y];
+    }
+
     public void PrintShipPlance() {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -206,6 +210,7 @@ public class Ship {
             }
         }
     }
+
 
 
     public void setExtra_components(List<CardComponent> extraComponents) {

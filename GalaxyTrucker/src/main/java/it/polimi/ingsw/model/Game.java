@@ -17,7 +17,7 @@ public class Game {
     private List<Player> active_players = new ArrayList<>();
     private Player board_leader;
     private List<CardComponent> deck_components = new ArrayList<>();
-    private Board board ;
+    private Board board;
 
 
     public void setDeck_components(List<CardComponent> deck_components) {
@@ -31,7 +31,6 @@ public class Game {
     public void startGame() {
 
 
-
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
 
         connectors.put(North, Universal);
@@ -39,7 +38,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -47,7 +46,7 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -55,7 +54,7 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Double);
@@ -63,7 +62,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -71,7 +70,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -79,7 +78,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -87,7 +86,7 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -95,7 +94,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -103,7 +102,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -111,7 +110,7 @@ public class Game {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -119,7 +118,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2)); 
+        deck_components.add(new Battery(Battery, connectors, 2));
 
 
         connectors.put(North, Single);
@@ -127,7 +126,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3)); 
+        deck_components.add(new Battery(Battery, connectors, 3));
 
 
         connectors.put(North, Single);
@@ -135,7 +134,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3)); 
+        deck_components.add(new Battery(Battery, connectors, 3));
 
 
         connectors.put(North, Double);
@@ -143,7 +142,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3)); 
+        deck_components.add(new Battery(Battery, connectors, 3));
 
 
         connectors.put(North, Double);
@@ -151,7 +150,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3)); 
+        deck_components.add(new Battery(Battery, connectors, 3));
 
 
         connectors.put(North, Double);
@@ -159,7 +158,7 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3)); 
+        deck_components.add(new Battery(Battery, connectors, 3));
 
 
         connectors.put(North, Smooth);
@@ -167,7 +166,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 3)); 
+        deck_components.add(new Battery(Battery, connectors, 3));
 
 
         connectors.put(North, Double);
@@ -175,7 +174,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Double);
@@ -183,7 +182,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Double);
@@ -191,7 +190,7 @@ public class Game {
         connectors.put(East, Universal);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -199,7 +198,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -207,7 +206,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -215,7 +214,7 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Double);
@@ -223,7 +222,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -231,7 +230,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -239,7 +238,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -247,7 +246,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-       deck_components.add(new Storage(BlueStorage, connectors, 3)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 3));
 
 
         connectors.put(North, Single);
@@ -255,7 +254,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-       deck_components.add(new Storage(BlueStorage, connectors, 3)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 3));
 
 
         connectors.put(North, Smooth);
@@ -263,7 +262,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-       deck_components.add(new Storage(BlueStorage, connectors, 3)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 3));
 
 
         connectors.put(North, Double);
@@ -271,7 +270,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-       deck_components.add(new Storage(BlueStorage, connectors, 3)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 3));
 
 
         connectors.put(North, Single);
@@ -279,7 +278,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-       deck_components.add(new Storage(BlueStorage, connectors, 3)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 3));
 
 
         connectors.put(North, Double);
@@ -287,7 +286,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-       deck_components.add(new Storage(BlueStorage, connectors, 3)); 
+        deck_components.add(new Storage(BlueStorage, connectors, 3));
 
 
         connectors.put(North, Smooth);
@@ -295,7 +294,7 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-       deck_components.add(new Storage(RedStorage, connectors, 1)); 
+        deck_components.add(new Storage(RedStorage, connectors, 1));
 
 
         connectors.put(North, Smooth);
@@ -303,7 +302,7 @@ public class Game {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-       deck_components.add(new Storage(RedStorage, connectors, 1)); 
+        deck_components.add(new Storage(RedStorage, connectors, 1));
 
 
         connectors.put(North, Single);
@@ -311,7 +310,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-       deck_components.add(new Storage(RedStorage, connectors, 1)); 
+        deck_components.add(new Storage(RedStorage, connectors, 1));
 
 
         connectors.put(North, Double);
@@ -319,7 +318,7 @@ public class Game {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-       deck_components.add(new Storage(RedStorage, connectors, 1)); 
+        deck_components.add(new Storage(RedStorage, connectors, 1));
 
 
         connectors.put(North, Double);
@@ -327,7 +326,7 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-       deck_components.add(new Storage(RedStorage, connectors, 1)); 
+        deck_components.add(new Storage(RedStorage, connectors, 1));
 
 
         connectors.put(North, Universal);
@@ -335,7 +334,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-       deck_components.add(new Storage(RedStorage, connectors, 1)); 
+        deck_components.add(new Storage(RedStorage, connectors, 1));
 
 
         connectors.put(North, Smooth);
@@ -343,7 +342,7 @@ public class Game {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(RedStorage, connectors, 2)); 
+        deck_components.add(new Storage(RedStorage, connectors, 2));
 
 
         connectors.put(North, Smooth);
@@ -351,14 +350,14 @@ public class Game {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(RedStorage, connectors, 2)); 
+        deck_components.add(new Storage(RedStorage, connectors, 2));
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new Storage(RedStorage, connectors, 2)); 
+        deck_components.add(new Storage(RedStorage, connectors, 2));
 
 
         connectors.put(North, Universal);
@@ -393,7 +392,6 @@ public class Game {
         deck_components.add(new CardComponent(MainUnitYellow, connectors));
 
 
-
         connectors.put(North, Smooth);
         connectors.put(South, Universal);
         connectors.put(East, Smooth);
@@ -610,14 +608,12 @@ public class Game {
         deck_components.add(new CardComponent(Engine, connectors));
 
 
-
         connectors.put(North, Single);
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
         deck_components.add(new CardComponent(Engine, connectors));
-
 
 
         connectors.put(North, Single);
@@ -722,7 +718,6 @@ public class Game {
         connectors.put(West, Double);
 
         deck_components.add(new CardComponent(Engine, connectors));
-
 
 
         connectors.put(North, Universal);
@@ -1289,8 +1284,6 @@ public class Game {
         Collections.shuffle(deck_components);
 
 
-
-
     }
 
     public void startAssembly() {
@@ -1299,7 +1292,7 @@ public class Game {
 
     }
 
-    public void startFlight(){
+    public void startFlight() {
         board = new Board(active_players);
 
     }
@@ -1322,19 +1315,41 @@ public class Game {
     }
 
     public CardAdventure GetRandomCardAdventure() {
-
-        return deck_adventure.removeFirst();
+        CardAdventure adventure = deck_adventure.removeFirst();
+        if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO");
+        return adventure;
 
     }
 
-    public void startAdventure(){
+    public void startAdventure() {
 
         CardAdventure adventure = GetRandomCardAdventure();
 
-        switch (adventure.getType()){
+        switch (adventure.getType()) {
 
-            case  OpenSpace :
+            case OpenSpace:
 
+                break;
+            case AbandonedShip:
+                break;
+            case AbandonedStation:
+                break;
+            case MeteorSwarm:
+                break;
+            case Planets:
+                break;
+
+            case CombatZone:
+                break;
+            case Smugglers:
+                break;
+            case Pirates:
+                break;
+
+            case Slayers:
+                break;
+            case Epidemic:
+                break;
 
 
         }

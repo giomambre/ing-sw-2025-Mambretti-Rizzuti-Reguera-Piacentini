@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class CardAdventure {
     private int level;
     private int cost_of_days; //it can be 0
     private CardAdventureType type;
+    protected Board board;
 
    //costruttore da vedere se metterlo qui o nelle sottoclassi(classe astratta) si va fattto
 
@@ -14,13 +15,16 @@ public abstract class CardAdventure {
     //sono abbastanza sicuro che debba fatto nel controller, ma il controller dovra chiamare qualche metodo
     // da fare nel player o qui????
 
-    public CardAdventure(int level, int cost_of_days) {
+    public CardAdventure(int level, int cost_of_days ,CardAdventureType type, Board board) {
 
         this.level = level;
         this.cost_of_days = cost_of_days;
-
+        this.board = board;
+        this.type = type;
 
     }
+
+    public abstract void executeAdventureEffects(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap);
 
     public void startAdventure(List <Player> players) {
 
@@ -35,6 +39,11 @@ public abstract class CardAdventure {
 
     public CardAdventureType getType() {
         return type;
+    }
+
+
+    public Board getBoard() {
+        return board;
     }
 
 

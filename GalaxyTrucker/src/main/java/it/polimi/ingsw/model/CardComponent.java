@@ -14,13 +14,12 @@ public class CardComponent {
     public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors){
 
         this.component_type = component_type;
-        this.connectors =new EnumMap<>(connectors);
+        this.connectors = new EnumMap<>(connectors);
         this.face_down = true;
     }
 
     public void changefaceshowed(){
-        face_down = !face_down;
-        return;
+
     }
 
 
