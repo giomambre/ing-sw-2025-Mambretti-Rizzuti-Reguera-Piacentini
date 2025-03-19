@@ -6,6 +6,7 @@ import java.util.*;
 import static it.polimi.ingsw.model.Direction.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
 import static it.polimi.ingsw.model.ComponentType.*;
+import static it.polimi.ingsw.model.CardAdventureType.*;
 
 public class Game {
 
@@ -1285,12 +1286,10 @@ public class Game {
 
         //to add : adventure deck creation and allocation
 
+        Collections.shuffle(deck_components);
 
 
-        //print them all
-        for (CardComponent element : deck_components) {
-            System.out.println(element);
-        }
+
 
     }
 
@@ -1318,8 +1317,27 @@ public class Game {
     }
 
     public CardComponent GetRandomCardComponent() {
-        Collections.shuffle(deck_components);  //shuffle the list and remove the first (returns it)
         return deck_components.removeFirst();
+
+    }
+
+    public CardAdventure GetRandomCardAdventure() {
+
+        return deck_adventure.removeFirst();
+
+    }
+
+    public void startAdventure(){
+
+        CardAdventure adventure = GetRandomCardAdventure();
+
+        switch (adventure.getType()){
+
+            case  OpenSpace :
+
+
+
+        }
 
     }
 

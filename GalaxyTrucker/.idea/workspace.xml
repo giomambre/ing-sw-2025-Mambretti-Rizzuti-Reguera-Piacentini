@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Aggiunto metodo isProtected">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Aggiunto Enum Adventure Type e iniziato startAdventure in Game">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CardAdventureType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CardAdventure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/CardAdventure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/OpenSpace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/OpenSpace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -149,7 +150,7 @@
       <workItem from="1742231091422" duration="11000" />
       <workItem from="1742243838931" duration="1551000" />
       <workItem from="1742326572998" duration="698000" />
-      <workItem from="1742378974531" duration="2563000" />
+      <workItem from="1742378974531" duration="3421000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <option name="closed" value="true" />
@@ -351,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742327220572</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Aggiunte metodo per le battery in ship e Completato la classe OpenSpace">
+      <option name="closed" value="true" />
+      <created>1742382793961</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1742382793961</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -393,6 +402,8 @@
     <MESSAGE value="Commit di test" />
     <MESSAGE value="Aggiunto composizione ship player, aggiunto getColor e fixato errore mainunit" />
     <MESSAGE value="Aggiunto metodo isProtected" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunto metodo isProtected" />
+    <MESSAGE value="Aggiunte metodo per le battery in ship e Completato la classe OpenSpace" />
+    <MESSAGE value="Aggiunto Enum Adventure Type e iniziato startAdventure in Game" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunto Enum Adventure Type e iniziato startAdventure in Game" />
   </component>
 </project>

@@ -175,10 +175,10 @@ public class Ship {
     }
 
 
-    public List<Pair<Integer, Integer>> checkShipValidity(){
+  //  public List<Pair<Integer, Integer>> checkShipValidity(){
 
 
-    }
+    //}
 
     public boolean isProtected(Direction direction) {
         for(int row = 0; row < ROWS; row++) {

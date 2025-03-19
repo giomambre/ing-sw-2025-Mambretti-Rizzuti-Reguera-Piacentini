@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class CardAdventure {
     private int level;
     private int cost_of_days; //it can be 0
-
+    private CardAdventureType type;
 
    //costruttore da vedere se metterlo qui o nelle sottoclassi(classe astratta) si va fattto
 
@@ -31,6 +31,10 @@ public abstract class CardAdventure {
     }
     public void endadventure(){
 
+    }
+
+    public CardAdventureType getType() {
+        return type;
     }
 
 
