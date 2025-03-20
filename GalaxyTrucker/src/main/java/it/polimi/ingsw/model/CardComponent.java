@@ -21,14 +21,19 @@ public class CardComponent {
         this.face_down = true;
     }
 
-    public void changefaceshowed(){
+    public void changeFaceShowed(){
+        face_down = !face_down;
+    }
 
+    public boolean getFaceDown(){
+        return face_down;
     }
 
 
     public ConnectorType getConnector_type(Direction direction) {
         return connectors.get(direction);
     }
+
     public List<ConnectorType> getvalidsconnectors(ConnectorType connector){
         List<ConnectorType> valids = new ArrayList<ConnectorType>();
         return  valids;
@@ -52,7 +57,6 @@ public class CardComponent {
                 valids.add(Double);
                 valids.add(Single);
                 break;
-
 
         }
         return valids;

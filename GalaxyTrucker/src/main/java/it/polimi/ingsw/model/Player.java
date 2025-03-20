@@ -35,7 +35,7 @@ public class Player {
 
     public void DismissComponent(CardComponent component) {
 
-        component.changefaceshowed();
+        component.changeFaceShowed();
 
         List<CardComponent> deck_components = game.getDeck_components();
         deck_components.add(component);

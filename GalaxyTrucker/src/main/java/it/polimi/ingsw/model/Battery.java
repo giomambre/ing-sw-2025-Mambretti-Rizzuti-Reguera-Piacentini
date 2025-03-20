@@ -35,5 +35,9 @@ public class Battery extends CardComponent  {
         }
      }
 
+     public int getStored(){
+        return stored;
+     }
+
 
 }
