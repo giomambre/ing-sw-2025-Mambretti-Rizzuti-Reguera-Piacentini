@@ -8,7 +8,6 @@ public class Battery extends CardComponent  {
     private int size;
     //effectively stored
     private int stored;
-
     public Battery(ComponentType component_type, Map<Direction, ConnectorType> connectors, int size) {
         super(component_type, connectors);
         this.size = size;

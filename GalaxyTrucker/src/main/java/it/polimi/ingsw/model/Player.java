@@ -21,19 +21,15 @@ public class Player {
     }
 
     public void SecureComponent(CardComponent component) {
-
         List<CardComponent> extra_components = ship.getExtra_components();
-
-        if (extra_components.size()>1)
-            System.out.println("You have more than one extra component");
-        else
+        if(extra_components.size() < 2) {
             extra_components.add(component);
-
+        }
         ship.setExtra_components(extra_components);
+
     }
 
     public void AddToShip(CardComponent component, int row, int col) {
-
         ship.AddComponent(component, row, col);
     }
 
@@ -49,9 +45,7 @@ public class Player {
     }
 
     public void UseExtraComponent(CardComponent component) {
-
         List<CardComponent> extra_components = ship.getExtra_components();
-
         extra_components.remove(component);
         ship.setExtra_components(extra_components);
     }

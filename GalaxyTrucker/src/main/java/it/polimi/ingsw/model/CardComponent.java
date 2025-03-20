@@ -5,6 +5,9 @@ import java.util.*;
 import static it.polimi.ingsw.model.Direction.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
 
+/**
+ * This class
+ */
 
 public class CardComponent {
     private final ComponentType component_type;
