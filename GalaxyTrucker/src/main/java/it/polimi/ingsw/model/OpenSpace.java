@@ -1,6 +1,5 @@
     package it.polimi.ingsw.model;
 
-    import java.util.ArrayList;
     import java.util.List;
     import java.util.HashMap;
     import java.util.Map;
@@ -12,8 +11,10 @@
         public OpenSpace(int level, int cost_of_days, CardAdventureType type , Board board) {
             super(level, cost_of_days,type ,board);
         }
-
-        public void executeAdventureEffects(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap) {
+        public void execute(){
+            System.out.println("metodo cuscinetto");
+        }
+        public void execute(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap) {
 
 
             for (Player player : players) {

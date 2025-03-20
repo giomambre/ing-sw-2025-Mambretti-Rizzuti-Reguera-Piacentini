@@ -88,21 +88,24 @@ public class ShipTest {
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
+
         player1.getShip().AddComponent(new CardComponent(DoubleEngine, connectors), 3, 2);
         player1.getShip().AddComponent(new CardComponent(Engine, connectors), 4, 1);
+
+        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
+        player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
+        player1BatteryUsage.put(player1.getShip().getComponent(4, 1), false);
+
 
         player2.getShip().AddComponent(new CardComponent(DoubleEngine, connectors), 3, 1);
         player2.getShip().AddComponent(new CardComponent(Engine, connectors), 3, 2);
         player2.getShip().AddComponent(new CardComponent(Engine, connectors), 3, 3);
         player2.getShip().AddComponent(new CardComponent(DoubleEngine, connectors), 3, 4);
 
-        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
-        player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
-        player1BatteryUsage.put(player1.getShip().getComponent(4, 1), false);
-
         Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
 
         player2BatteryUsage.put(player2.getShip().getComponent(3, 1), true);
+
 
 
         assertEquals(3 , player1.getShip().calculateEnginePower(player1BatteryUsage));
@@ -122,14 +125,15 @@ public class ShipTest {
         player1.getShip().AddComponent(new CardComponent(DoubleCannon, connectors), 3, 2);
         player1.getShip().AddComponent(new CardComponent( Cannon, connectors), 4, 1);
 
+        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
+        player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
+        player1BatteryUsage.put(player1.getShip().getComponent(4, 1), false);
+
         player2.getShip().AddComponent(new CardComponent(DoubleCannon, connectors), 3, 1);
         player2.getShip().AddComponent(new CardComponent(Cannon, connectors), 3, 2);
         player2.getShip().AddComponent(new CardComponent(Cannon, connectors), 3, 3);
         player2.getShip().AddComponent(new CardComponent(DoubleCannon, connectors), 3, 4);
 
-        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
-        player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
-        player1BatteryUsage.put(player1.getShip().getComponent(4, 1), false);
 
         Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
 

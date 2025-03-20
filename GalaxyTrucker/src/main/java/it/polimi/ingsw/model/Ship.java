@@ -96,7 +96,7 @@ public class Ship {
 
                         if (tmp.getConnector(North) == Cannon_Connector) power++;
                         else power += 0.5;
-
+                        break;
 
                     case DoubleCannon:
                         double local_power = 0; //

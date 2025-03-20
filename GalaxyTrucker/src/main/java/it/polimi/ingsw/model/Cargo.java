@@ -4,5 +4,6 @@ public enum Cargo {
     Blue,
     Yellow,
     Red,
-    Green
+    Green,
+    Empty
 }

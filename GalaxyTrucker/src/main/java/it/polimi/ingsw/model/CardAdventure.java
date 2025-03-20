@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class contains some common methods between the 8 different CardAdventure
@@ -25,7 +26,7 @@ public abstract class CardAdventure {
     private CardAdventureType type;
     protected Board board;
 
-    //chiedere al player se accetta o meno:controller
+
 
     /**
      *
@@ -43,7 +44,7 @@ public abstract class CardAdventure {
 
     }
 
-    public abstract void executeAdventureEffects(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap);
+    public abstract void execute();
 
     public void startAdventure(List <Player> players) {
 
@@ -51,15 +52,10 @@ public abstract class CardAdventure {
     }
 
     /**
-     * This method is called when a card needs to be passed to another player. The order is decrising, starting to the group leader,
+     * This method is called when a card needs to be passed to another player. The order is decreasing, starting to the group leader,
      * based on the position of the rockets on the board.
      */
-    public void nextplayer(){
 
-    }
-    public void endadventure(){
-
-    }
 
     public CardAdventureType getType() {
         return type;

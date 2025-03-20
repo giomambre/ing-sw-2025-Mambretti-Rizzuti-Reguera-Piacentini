@@ -10,8 +10,6 @@ import static it.polimi.ingsw.model.Color.*;
 import java.util.*;
 
 
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 public class OpenSpaceTest {
     private OpenSpace openSpace ;
@@ -85,7 +83,7 @@ public class OpenSpaceTest {
 
         List <Player> players = Arrays.asList(player1, player2, player3);
 
-        openSpace.executeAdventureEffects(players,batteryUsageMap);
+        openSpace.execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.GetBoard();
 
@@ -112,10 +110,10 @@ public class OpenSpaceTest {
         }
 
         List<Player> players = Arrays.asList(player1, player2, player3);
-        openSpace.executeAdventureEffects(players, batteryUsageMap);
+        openSpace.execute(players, batteryUsageMap);
 
-        // Controlla le nuove posizioni
         Map<Integer, Player> playerPositions = board.GetBoard();
+
         //partenza 2,4,7
 
         assertEquals(player1, playerPositions.get(9));
@@ -157,7 +155,7 @@ public class OpenSpaceTest {
 
         List <Player> players = Arrays.asList(player1, player2, player3);
 
-        openSpace.executeAdventureEffects(players,batteryUsageMap);
+        openSpace.execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.GetBoard();
 
