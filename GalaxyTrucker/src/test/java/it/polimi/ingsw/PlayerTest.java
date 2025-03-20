@@ -5,27 +5,43 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
+import static it.polimi.ingsw.model.ConnectorType.*;
+import static it.polimi.ingsw.model.ConnectorType.Smooth;
+import static it.polimi.ingsw.model.Direction.*;
+import static it.polimi.ingsw.model.Direction.West;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
 
     private Player player;
     private CardComponent component;
-    private Ship ship;
-    private Map<Direction, ConnectorType> Map;
+    private Map<Direction, ConnectorType> connectors;
 
 
     @BeforeEach
     public void setUp() {
         player = new Player("raffa", Color.Yellow);
-        ship = new Ship(player);
-        Map = java.util.Map.of(Direction.East , ConnectorType.Universal);
-        component = new CardComponent(ComponentType.Cannon, Map);
+
+        connectors = new HashMap<>();
+        connectors.put(North, Universal);
+        connectors.put(South, Cannon_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+
+        component = new CardComponent(ComponentType.Cannon, connectors);
     }
 
+    @Test
+    public void testsecureComponent() {
+        player.SecureComponent(component);
+        assertEquals(1, player.getShip().getExtra_components().size());
+    }
 
+    @Test
+    public void testuseExtraComponent() {
+        player.SecureComponent(component);
+        player.UseExtraComponent(component);
+        assertEquals(0, player.getShip().getExtra_components().size());
 
-
-
-
+    }
 }
