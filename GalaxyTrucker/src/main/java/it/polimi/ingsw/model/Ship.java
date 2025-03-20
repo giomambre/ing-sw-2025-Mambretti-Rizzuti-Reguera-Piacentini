@@ -145,7 +145,7 @@ public class Ship {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
-                tmp = ship_plance[row][col];
+                tmp = this.getComponent(row, col);
 
                 switch (tmp.GetComponent_type()) {
 
