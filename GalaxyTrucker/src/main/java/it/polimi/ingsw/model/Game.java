@@ -1297,6 +1297,13 @@ public class Game {
 
     }
 
+    public List<Player> getActivePlayers() {
+        return active_players;
+    }
+    public void setActivePlayers(List<Player> active_players) {
+        this.active_players = active_players;
+    }
+
     public void addPlayer(Player player) {
 
         players.add(player);

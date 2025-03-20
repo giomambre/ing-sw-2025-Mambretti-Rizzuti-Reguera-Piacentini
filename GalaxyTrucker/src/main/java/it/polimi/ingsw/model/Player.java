@@ -17,7 +17,9 @@ public class Player {
     }
 
     public void EndBuild(){
-        
+        List<Player> active_players = game.getActivePlayers();
+        active_players.remove(this);
+        game.setActivePlayers(active_players);
     }
 
     public void SecureComponent(CardComponent component) {
@@ -34,14 +36,10 @@ public class Player {
     }
 
     public void DismissComponent(CardComponent component) {
-
         component.changeFaceShowed();
-
         List<CardComponent> deck_components = game.getDeck_components();
         deck_components.add(component);
-
         game.setDeck_components(deck_components);
-
     }
 
     public void UseExtraComponent(CardComponent component) {
@@ -67,5 +65,9 @@ public class Player {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public Game getGame() {
+        return game;
     }
 }
