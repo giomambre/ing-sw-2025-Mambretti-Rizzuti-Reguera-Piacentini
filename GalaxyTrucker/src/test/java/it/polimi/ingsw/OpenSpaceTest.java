@@ -18,6 +18,8 @@ public class OpenSpaceTest {
     private Board board;
     private Player player1, player2, player3, player4;
     private  Map<Player, Map<CardComponent, Boolean>> batteryUsageMap;
+    Map<Direction, ConnectorType> connectors = new HashMap<>();
+
     @BeforeEach
 
     public void setUp() {
@@ -28,11 +30,13 @@ public class OpenSpaceTest {
         player2 = new Player("Mambre", Blue);
         player3 = new Player("isabel", Red);
 
-        board = new Board(Arrays.asList(player1, player2, player3, player4));
+        player1.getShip().initializeShipPlance();
+        player2.getShip().initializeShipPlance();
+        player3.getShip().initializeShipPlance();
+        board = new Board(Arrays.asList(player1, player2, player3));
 
         openSpace = new OpenSpace(2,0,OpenSpace,board);
 
-        Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Universal);
         connectors.put(South, Engine_Connector );
         connectors.put(East, Smooth);
@@ -48,24 +52,6 @@ public class OpenSpaceTest {
 
 
 
-         batteryUsageMap = new HashMap<>();
-
-        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
-        player1BatteryUsage.put(player1.getShip().getComponent(3,2), true);   // totale = 3
-        player1BatteryUsage.put(player1.getShip().getComponent(4,1),false);
-        batteryUsageMap.put(player1, player1BatteryUsage);
-
-        Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
-        player1BatteryUsage.put(player2.getShip().getComponent(3,2), false); // totale = 2
-        player1BatteryUsage.put(player2.getShip().getComponent(4,5),false);
-        batteryUsageMap.put(player2, player2BatteryUsage);
-
-        Map<CardComponent, Boolean> player3BatteryUsage = new HashMap<>();
-        player1BatteryUsage.put(player3.getShip().getComponent(3,2), true); //totale = 2
-
-        batteryUsageMap.put(player3, player3BatteryUsage);
-
-
 
 
 
@@ -79,7 +65,25 @@ public class OpenSpaceTest {
     @Test
     public void testExecuteAdventureEffects() {
 
-        List <Player> players = Arrays.asList(player1, player2, player3, player4);
+        batteryUsageMap = new HashMap<>();
+
+        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
+        player1BatteryUsage.put(player1.getShip().getComponent(3,2), true);   // totale = 3
+        player1BatteryUsage.put(player1.getShip().getComponent(4,1),false);
+        batteryUsageMap.put(player1, player1BatteryUsage);
+
+        Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
+        player2BatteryUsage.put(player2.getShip().getComponent(3,2), false); // totale = 2
+        player2BatteryUsage.put(player2.getShip().getComponent(4,5),false);
+        batteryUsageMap.put(player2, player2BatteryUsage);
+
+        Map<CardComponent, Boolean> player3BatteryUsage = new HashMap<>();
+        player3BatteryUsage.put(player3.getShip().getComponent(3,2), true); //totale = 2
+
+        batteryUsageMap.put(player3, player3BatteryUsage);
+
+
+        List <Player> players = Arrays.asList(player1, player2, player3);
 
         openSpace.executeAdventureEffects(players,batteryUsageMap);
 
@@ -87,8 +91,87 @@ public class OpenSpaceTest {
 
         //partenza 2,4,7
         assertEquals(playerPositions.get(10), player1);
-        assertNull(playerPositions.get(7));
         assertEquals(playerPositions.get(6), player2);
         assertEquals(playerPositions.get(4), player3);
+
+        assertNull(playerPositions.get(7));
+        assertNull(playerPositions.get(2));
+
     }
+
+    @Test
+    public void testExecuteAdventureEffects_NoBatteries() {
+
+        batteryUsageMap = new HashMap<>();
+
+
+
+        // Disattiva tutte le batterie
+        for (Map<CardComponent, Boolean> batteryMap : batteryUsageMap.values()) {
+            batteryMap.replaceAll((k, v) -> false);
+        }
+
+        List<Player> players = Arrays.asList(player1, player2, player3);
+        openSpace.executeAdventureEffects(players, batteryUsageMap);
+
+        // Controlla le nuove posizioni
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        //partenza 2,4,7
+
+        assertEquals(player1, playerPositions.get(9));
+        assertEquals(player2, playerPositions.get(6));
+        assertEquals(player3, playerPositions.get(3));
+        assertNull(playerPositions.get(7));
+        assertNull(playerPositions.get(2));
+        assertNull(playerPositions.get(4));
+
+    }
+
+
+
+    @Test
+
+    public void testExecuteAdventureEffects_CorrectOrder() {
+        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,3);
+        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,4);
+        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,5);
+        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,6);
+
+        batteryUsageMap = new HashMap<>();
+
+        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
+        player1BatteryUsage.put(player1.getShip().getComponent(3,2), true);   // totale = 3
+        player1BatteryUsage.put(player1.getShip().getComponent(4,1),false);
+        batteryUsageMap.put(player1, player1BatteryUsage);
+
+        Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
+        player2BatteryUsage.put(player2.getShip().getComponent(3,2), false); // totale = 6
+        player2BatteryUsage.put(player2.getShip().getComponent(4,5),false);
+        batteryUsageMap.put(player2, player2BatteryUsage);
+
+        Map<CardComponent, Boolean> player3BatteryUsage = new HashMap<>();
+        player3BatteryUsage.put(player3.getShip().getComponent(3,2), true); //totale = 2
+
+        batteryUsageMap.put(player3, player3BatteryUsage);
+
+
+        List <Player> players = Arrays.asList(player1, player2, player3);
+
+        openSpace.executeAdventureEffects(players,batteryUsageMap);
+
+        Map<Integer, Player> playerPositions = board.GetBoard();
+
+        //partenza 2,4,7
+        //player 1 si muove prima di player 2 che arrivano entrambi a 10, ma il player 2 lo sorpassa
+
+        assertEquals(playerPositions.get(10), player1);
+        assertEquals(playerPositions.get(11),player2);
+        assertNull(playerPositions.get(7));
+        assertNull(playerPositions.get(2));
+        assertEquals(playerPositions.get(4), player3);
+
+
+
+    }
+
 }
