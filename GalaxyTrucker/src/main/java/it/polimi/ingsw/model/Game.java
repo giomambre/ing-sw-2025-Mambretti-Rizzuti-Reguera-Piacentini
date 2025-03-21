@@ -32,10 +32,19 @@ public class Game {
         this.deck_components = deck_components;
     }
 
+    /**
+     *
+     * @return return a list containing the deck of CardCardComponents
+     */
     public List<CardComponent> getDeck_components() {
         return deck_components;
     }
 
+    //più che startGame lo chiamerei InitializeComponentsDeck
+
+    /**
+     * this method add every Card Component existent to the deck of card components and then shuffles it
+     */
     public void startGame() {
 
 
@@ -1294,24 +1303,46 @@ public class Game {
 
     }
 
+    /**
+     * this method is called to start the assembly phase
+     */
     public void startAssembly() {
 
         active_players.addAll(players);
 
     }
 
+    //secondo me StartFlight non ha senso pensato così perchè le pedine sulla board non vengono messe in una fase specifica ma una a una dal singolo giocatore quando finisce di assemblare
+
+    /**
+     * this method is called to start the flight phase putting al the rockets on the board
+     */
     public void startFlight() {
         board = new Board(active_players);
 
     }
 
+    /**
+     *
+     * @return return the list of players who are still competing
+     */
     public List<Player> getActivePlayers() {
         return active_players;
     }
-    public void setActivePlayers(List<Player> active_players) {
-        this.active_players = active_players;
+
+    /**
+     * this method is called at the beginning of the game to add all the participants to the list of active_players
+     * @param players the list of participants in the game
+     */
+    public void setActivePlayers(List<Player> players) {
+        this.active_players = players;
     }
 
+    //metodo joinGame nel player? o è una cosa del controller quando riceve la richiesta dal player?
+    /**
+     * this method is called when a player join the game
+     * @param player the participant
+     */
     public void addPlayer(Player player) {
 
         players.add(player);
@@ -1319,15 +1350,23 @@ public class Game {
 
     }
 
+    /**
+     * this method is used at the end of the assembly phase in order to check the validity of a ship
+     */
     public void checkShipValidity() {
 
 //da pensare bene
     }
 
+    /**
+     * @return return a random card component from the deck
+     * @see CardComponent as 'random card component' we mean a card component whose face_down=true
+     */
     public CardComponent GetRandomCardComponent() {
         return deck_components.removeFirst();
 
     }
+    //metodo per SCEGLIERE un componente non random? mi riferisco alla fase in cui un componente è rimesso a faccia in su nel mazzo e può essere scelto
 
     public CardAdventure GetRandomCardAdventure() {
         CardAdventure adventure = deck_adventure.removeFirst();
