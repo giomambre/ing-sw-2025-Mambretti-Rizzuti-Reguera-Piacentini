@@ -8,11 +8,11 @@ public class Player {
     private Ship ship = new Ship(this);
     private int exposed_connectors = 0;
     private Game game = new Game();
-
+    private int credits;
     public Player(String nickname, Color color) {
         this.nickname = nickname;
         this.color = color;
-
+        this.credits = 0;
         ship.PrintShipPlance();
     }
 
@@ -54,6 +54,20 @@ public class Player {
 
         return (dice1.nextInt(6)+1)+(dice2.nextInt(6)+1);
     }
+
+    public void reciveCredits(int credits) {
+        this.credits += credits ;
+    }
+
+
+    public int getExposed_connectors() {
+        return exposed_connectors;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
 
     public Ship getShip() {
         return ship;

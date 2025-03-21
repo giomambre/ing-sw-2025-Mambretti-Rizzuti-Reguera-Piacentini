@@ -5,38 +5,45 @@ import java.util.Map;
 public class LivingUnit extends CardComponent{
 
     private int num_astronaut;
-    private Crewmate_type crewmateType;
+    private CrewmateType crewate_type;
 
     public LivingUnit(ComponentType component_type, Map<Direction, ConnectorType> connectors, int num_astronaut) {
         super(component_type, connectors);
         this.num_astronaut = 0;
     }
 
-    public void addCrewmate(Crewmate_type crewmateType) {
-    switch (crewmateType) {
-        case astronaut:
+    public void addCrewmate(CrewmateType crewate_type) {
+    switch (crewate_type) {
+        case Astronaut:
             this.num_astronaut=2;
-            this.crewmateType=crewmateType;
+            this.crewate_type=crewate_type;
             break;
-        case Pink_alien:
+        case PinkAlien:
             this.num_astronaut=1;
-            this.crewmateType=crewmateType;
+            this.crewate_type=crewate_type;
             break;
 
-        case Brown_alien:
+        case BrownAlien:
             this.num_astronaut=1;
-            this.crewmateType=crewmateType;
+            this.crewate_type=crewate_type;
             break;
     }
     }
 
-    public void RemoveCrewmate(int num_to_remove){
-            if(num_to_remove>2){
-                System.out.println("non so se errore o exception");
-                return;
-            }
-            //da continuare
-            // forse conviene anche evitare di farlo fare direttamente dalla view
+    public int getNum_astronaut() {
+        return num_astronaut;
+    }
+
+    public CrewmateType getCrewate_type() {
+        return crewate_type;
+    }
+
+    public void RemoveCrewmates(int num_to_remove){
+
+        num_astronaut -= num_to_remove;
+
+        if(num_astronaut == 0) crewate_type=CrewmateType.None;
+
 
     }
 

@@ -12,7 +12,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class OpenSpaceTest {
-    private OpenSpace openSpace ;
+    private CardAdventure openSpace ;
     private Board board;
     private Player player1, player2, player3, player4;
     private  Map<Player, Map<CardComponent, Boolean>> batteryUsageMap;
@@ -83,7 +83,7 @@ public class OpenSpaceTest {
 
         List <Player> players = Arrays.asList(player1, player2, player3);
 
-        openSpace.execute(players,batteryUsageMap);
+        ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.GetBoard();
 
@@ -110,7 +110,7 @@ public class OpenSpaceTest {
         }
 
         List<Player> players = Arrays.asList(player1, player2, player3);
-        openSpace.execute(players, batteryUsageMap);
+        ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.GetBoard();
 
@@ -155,7 +155,7 @@ public class OpenSpaceTest {
 
         List <Player> players = Arrays.asList(player1, player2, player3);
 
-        openSpace.execute(players,batteryUsageMap);
+        ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.GetBoard();
 

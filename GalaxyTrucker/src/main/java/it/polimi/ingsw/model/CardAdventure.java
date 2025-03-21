@@ -61,6 +61,9 @@ public abstract class CardAdventure {
         return type;
     }
 
+    public int getCost_of_days() {
+        return cost_of_days;
+    }
 
     public Board getBoard() {
         return board;
@@ -68,4 +71,6 @@ public abstract class CardAdventure {
 
 
 }
+
+
 

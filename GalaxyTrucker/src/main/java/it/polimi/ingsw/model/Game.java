@@ -1376,40 +1376,6 @@ public class Game {
 
     }
 
-    public void startAdventure() {
-
-        CardAdventure adventure = GetRandomCardAdventure();
-
-        switch (adventure.getType()) {
-
-            case OpenSpace:
-
-                break;
-            case AbandonedShip:
-                break;
-            case AbandonedStation:
-                break;
-            case MeteorSwarm:
-                break;
-            case Planets:
-                break;
-
-            case CombatZone:
-                break;
-            case Smugglers:
-                break;
-            case Pirates:
-                break;
-
-            case Slayers:
-                break;
-            case Epidemic:
-                break;
-
-
-        }
-
-    }
 
     public void removePlayer(Player player) {
         active_players.remove(player);

@@ -16,7 +16,7 @@ import static it.polimi.ingsw.model.Color.*;
 
 public class Ship {
 
-    int ROWS = 5, COLS = 7;
+    private int ROWS = 5, COLS = 7;
     private CardComponent[][] ship_plance = new CardComponent[ROWS][COLS];
     private List<CardComponent> extra_components = new ArrayList<>();
     private int batteries = 0;
@@ -26,6 +26,14 @@ public class Ship {
     public Ship(Player player) {
         this.player = player;
 
+    }
+
+    public int getROWS() {
+        return ROWS;
+    }
+
+    public int getCOLS() {
+        return COLS;
     }
 
     public void AddComponent(CardComponent component, int row, int col) {
@@ -72,7 +80,7 @@ public class Ship {
                     ship_plance[row][col] = new CardComponent(main_unit, connectors); //da mettere main unit in base al colore
                 } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
                     ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
-                } else if ((row == 1 && (col == 0 || col == 6)) ||( row == 4 && col == 3)) {
+                } else if ((row == 1 && (col == 0 || col == 6)) || (row == 4 && col == 3)) {
                     ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
 
                 } else {
@@ -174,18 +182,31 @@ public class Ship {
 
     }
 
+    public int getNumOfCrewmates() {
+        CardComponent tmp;
+        int total = 0;
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                tmp = this.getComponent(row, col);
+                if (tmp instanceof LivingUnit) {
+                    total += ((LivingUnit) tmp).getNum_astronaut();
+                }
+            }
 
-  //  public List<Pair<Integer, Integer>> checkShipValidity(){
+        }
+        return total;
+    }
+    //  public List<Pair<Integer, Integer>> checkShipValidity(){
 
 
     //}
 
     public boolean isProtected(Direction direction) {
-        for(int row = 0; row < ROWS; row++) {
-            for(int col = 0; col < COLS; col++) {
-                if(ship_plance[row][col].GetComponent_type() == Shield ) {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (ship_plance[row][col].GetComponent_type() == Shield) {
                     Shield shieldObject = (Shield) ship_plance[row][col];
-                    if(shieldObject.getCoveredSides().get(direction) == Boolean.TRUE) {
+                    if (shieldObject.getCoveredSides().get(direction) == Boolean.TRUE) {
                         return true;
                     }
                 }
@@ -195,8 +216,7 @@ public class Ship {
     }
 
 
-
-    public CardComponent getComponent(int x, int y){
+    public CardComponent getComponent(int x, int y) {
         return ship_plance[x][y];
     }
 
@@ -210,7 +230,6 @@ public class Ship {
             }
         }
     }
-
 
 
     public void setExtra_components(List<CardComponent> extraComponents) {
