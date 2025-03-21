@@ -1363,6 +1363,7 @@ public class Game {
      * @see CardComponent as 'random card component' we mean a card component whose face_down=true
      */
     public CardComponent GetRandomCardComponent() {
+        //ci vuole un controllo che face down sia uguale a false
         return deck_components.removeFirst();
 
     }
