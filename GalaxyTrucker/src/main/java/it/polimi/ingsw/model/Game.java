@@ -8,6 +8,9 @@ import static it.polimi.ingsw.model.ConnectorType.*;
 import static it.polimi.ingsw.model.ComponentType.*;
 import static it.polimi.ingsw.model.CardAdventureType.*;
 
+/**
+ * This class represents the game in general during the various phases.
+ */
 public class Game {
 
     private List<Player> players = new ArrayList<>();
@@ -19,7 +22,12 @@ public class Game {
     private List<CardComponent> deck_components = new ArrayList<>();
     private Board board;
 
+//manca metodo costruttore? non so se serva
 
+    /**
+     *this method is used to initialise the deck of CardComponents before building the ship
+     * @param deck_components the entire list of CardComponent used to build the ships
+     */
     public void setDeck_components(List<CardComponent> deck_components) {
         this.deck_components = deck_components;
     }
