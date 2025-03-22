@@ -18,17 +18,30 @@ public class AbandonedStation extends  CardAdventure{
 
     }
 
-    @Override
-    public void execute() {
-        System.out.println("metodo cuscinetto");
 
 
-    }
 //eventuale controllo se nessuno accetta la carte, da fare nel controller, tutto rimane invariato nel model
-    public void execute(Player player,Map<Storage , Map<Integer,Cargo>> new_cargo_positions) {
+    public void execute(Player player,Map<CardComponent , Map<Cargo,Integer>> new_cargo_positions) {
 
+        Ship ship_player = player.getShip();
+        board.MovePlayer(player, -getCost_of_days());
+        for (int i = 0; i < ship_player.getROWS(); i++) {
+            for (int j = 0; j < ship_player.getROWS(); j++) {
+
+                CardComponent card = ship_player.getComponent(i, j);
+                for (CardComponent storage : new_cargo_positions.keySet()) {
+
+                    if (card.equals(storage)) {
+                        ((Storage) storage).addCargo(new_cargo_positions.get(storage));
+                    }
+
+
+
+                }
+            }
+
+        }
     }
-
 
 
     public List<Cargo> getCargo() {

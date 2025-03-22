@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import static it.polimi.ingsw.model.Direction.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
 import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.CardAdventureType.*;
 import static it.polimi.ingsw.model.Color.*;
 
 import java.util.*;
@@ -37,16 +36,16 @@ public class ShipTest {
         ship1.initializeShipPlance();
 
 
-        assertEquals(MainUnitGreen, ship1.getComponent(2, 3).GetComponent_type());
+        assertEquals(MainUnitGreen, ship1.getComponent(2, 3).getComponentType());
 
-        assertEquals(NotAccessible, ship1.getComponent(0, 0).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 1).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 3).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 5).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 6).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(1, 0).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(1, 6).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(4, 3).GetComponent_type());
+        assertEquals(NotAccessible, ship1.getComponent(0, 0).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 1).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 3).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 5).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 6).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(1, 0).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(1, 6).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(4, 3).getComponentType());
 
 
     }

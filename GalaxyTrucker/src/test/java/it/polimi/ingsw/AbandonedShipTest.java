@@ -20,6 +20,7 @@ public class AbandonedShipTest {
     private Player player;
     private Ship ship;
     private Board board;
+
     @BeforeEach
     void setUp() {
 
@@ -69,7 +70,6 @@ public class AbandonedShipTest {
          Map<Integer, Player> playerPositions = board.GetBoard();
          assertNull(playerPositions.get(7));
          assertEquals(player,playerPositions.get(2));
-
 
 
 
