@@ -50,8 +50,20 @@ public class Board {
             return;
         }
         else{
+                //the keys of the HM are the positions of the players
+                List<Integer> positions=new ArrayList<>(player_position.keySet());
+                //let's find out the max position
+                int max= positions.get(0);
+                for(int i=0; i<positions.size(); i++){
+                    if(positions.get(i)>max){
+                        max=positions.get(i);
+                    }
+                }
+                if(possible_leaders.contains(player_position.get(max))){
+                    board_leader= player_position.get(max);
+                }
 
-            }
+        }
         }
 
 
