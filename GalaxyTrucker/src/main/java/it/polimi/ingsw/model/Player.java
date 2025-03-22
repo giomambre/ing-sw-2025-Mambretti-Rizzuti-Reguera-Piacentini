@@ -9,11 +9,13 @@ public class Player {
     private int exposed_connectors = 0;
     private Game game = new Game();
     private int credits;
+    private int num_laps;
     public Player(String nickname, Color color) {
         this.nickname = nickname;
         this.color = color;
         this.credits = 0;
         ship.PrintShipPlance();
+        this.num_laps = 0;
     }
 
     public void EndBuild(){
@@ -84,4 +86,6 @@ public class Player {
     public Game getGame() {
         return game;
     }
+
+    public int getNum_laps() {return num_laps;}
 }
