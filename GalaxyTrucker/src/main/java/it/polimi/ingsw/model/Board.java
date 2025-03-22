@@ -5,6 +5,7 @@ import java.util.*;
 public class Board {
     private final int BOARD_SIZE = 24;
     private Map<Integer, Player> player_position = new HashMap<>();
+    private Player board_leader;
 
     public Board(List<Player> players) { //mette i player nelle posizioni di partenza,
         //in caso di nave che non puo partite, tipo non ha motori, viene rimossa e il player dopo scala avanti???
@@ -16,6 +17,14 @@ public class Board {
             i++;
 
         }
+
+    }
+
+    public Player getBoard_leader() {
+        return board_leader;
+    }
+
+    public void checkLeader(){
 
     }
 

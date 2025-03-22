@@ -18,7 +18,6 @@ public class Game {
     private List<CardAdventure> deck_adventure = new ArrayList<>();
     private static final int clock_time = 30; //30 sec messi a caso
     private List<Player> active_players = new ArrayList<>();
-    private Player board_leader;
     private List<CardComponent> deck_components = new ArrayList<>();
     private Board board;
     private Ship ship;
@@ -1408,7 +1407,7 @@ public class Game {
 
     /**
      * @param player the one who wants to draw a random card from the deck
-     * @return return a random card component from the deck
+     * @return return a random card component from the deck that is faced up
      * @see CardComponent as 'random card component' we mean a card component whose face_down==true
      */
     public CardComponent GetRandomCardComponent(Player player) {
@@ -1417,6 +1416,7 @@ public class Game {
             player.DismissComponent(card_drawn);
             card_drawn=deck_components.removeFirst();
         }
+        card_drawn.changeFaceShowed();
         return card_drawn;
     }
 
