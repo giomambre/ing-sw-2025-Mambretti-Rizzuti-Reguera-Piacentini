@@ -36,7 +36,7 @@ public class Player {
     }
 
     public void DismissComponent(CardComponent component) {
-        component.changeFaceShowed();
+        //component.changeFaceShowed(); no pk quando il player decide di rifiutare una carta l'ha già girata a faccia in su e va rimessa a faccia in giù nel mazzo
         List<CardComponent> deck_components = game.getDeck_components();
         deck_components.add(component);
         game.setDeck_components(deck_components);
