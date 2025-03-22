@@ -24,7 +24,8 @@ public class Game {
     private Ship ship;
 
 
-//manca metodo costruttore? non so se serva
+//manca metodo costruttore? GIOVANNI
+
 
     /**
      *this method is used to initialise the deck of CardComponents before building the ship
@@ -42,12 +43,11 @@ public class Game {
         return deck_components;
     }
 
-    //più che startGame lo chiamerei InitializeComponentsDeck
 
     /**
-     * this method add every Card Component existent to the deck of card components and then shuffles it
+     * this method adds every Card Component existent to the deck of card components and then shuffles it
      */
-    public void startGame() {
+    public void InitializeDeckComponents() {
 
 
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -1340,7 +1340,6 @@ public class Game {
         this.active_players = players;
     }
 
-    //metodo joinGame nel player? o è una cosa del controller quando riceve la richiesta dal player?
     /**
      * this method is called when a player join the game
      * @param player the participant
@@ -1408,16 +1407,40 @@ public class Game {
     }
 
     /**
+     * @param player the one who wants to draw a random card from the deck
      * @return return a random card component from the deck
-     * @see CardComponent as 'random card component' we mean a card component whose face_down=true
+     * @see CardComponent as 'random card component' we mean a card component whose face_down==true
      */
-    public CardComponent GetRandomCardComponent() {
-        //ci vuole un controllo che face down sia uguale a false
-        return deck_components.removeFirst();
-
+    public CardComponent GetRandomCardComponent(Player player) {
+        CardComponent card_drawn= deck_components.removeFirst();
+        while(card_drawn.getFace()==false){
+            player.DismissComponent(card_drawn);
+            card_drawn=deck_components.removeFirst();
+        }
+        return card_drawn;
     }
-    //metodo per SCEGLIERE un componente non random? mi riferisco alla fase in cui un componente è rimesso a faccia in su nel mazzo e può essere scelto
 
+    /**
+     * This method is called when the player wants to pick a card that is face up
+     * @see CardComponent as 'Not Random Card' we mean a card that is already face up (face_down==false)
+     * @param player the one who wants to pick a known card from the deck
+     * @return it returns the list of Card Components that are already known
+     */
+    public List<CardComponent> GetNotRandomComponents(Player player) {
+        List<CardComponent> choosable=new ArrayList<>();
+        for(int i=0; i<deck_components.size(); i++){
+            if(deck_components.get(i).getFace()==false){
+                choosable.add(deck_components.get(i));
+            }
+        }
+        return choosable;
+    }
+
+    /**
+     * this method is called by the leader to draw the next card adventure
+     * @return it returns the first card adventure of the deck, if we already solved all the adventures it returns null
+     */
+    //secondo me potrebbe avere senso una exception
     public CardAdventure GetRandomCardAdventure() {
         CardAdventure adventure = deck_adventure.removeFirst();
         if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO");
@@ -1425,7 +1448,10 @@ public class Game {
 
     }
 
-
+    /**
+     * this method is called when a player loose or choose to give up
+     * @param player
+     */
     public void removePlayer(Player player) {
         active_players.remove(player);
     }
