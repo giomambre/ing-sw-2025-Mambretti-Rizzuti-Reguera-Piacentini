@@ -142,4 +142,14 @@ public class ShipTest {
         assertEquals(1.5 , player1.getShip().calculateCannonPower(player1BatteryUsage));
         assertEquals(2.5 ,player2.getShip().calculateCannonPower(player2BatteryUsage));
     }
+
+    @Test
+    public void checkShipConnectionsTest(){
+        Ship ship = player1.getShip();
+        ship.initializeShipPlance();
+
+        ship.AddComponent(new CardComponent(Engine,0,2));
+
+
+    }
 }

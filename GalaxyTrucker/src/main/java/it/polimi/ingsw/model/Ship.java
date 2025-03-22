@@ -235,7 +235,7 @@ public class Ship {
         return  true;
     }
 
-    public List<Pair<Integer, Integer> checkShipValidity() {
+    public List<Pair<Integer, Integer>> checkShipConnections() {
 
         CardComponent component;
         List<Pair<Integer, Integer>> invalids = new ArrayList<>();
@@ -271,6 +271,7 @@ public class Ship {
 
             }
         }
+        return invalids;
     }
 
 
