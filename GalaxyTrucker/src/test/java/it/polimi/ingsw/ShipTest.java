@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
+import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -146,10 +147,44 @@ public class ShipTest {
     @Test
     public void checkShipConnectionsTest(){
         Ship ship = player1.getShip();
-        ship.initializeShipPlance();
+        ship.initializeShipPlance(); //2,3 main unit
+        Map<Direction, ConnectorType> connectors = new HashMap<>();
+        connectors.put(North, Smooth);
+        connectors.put(South, Cannon_Connector);
+        connectors.put(East, Double);
+        connectors.put(West, Single);
+        ship.AddComponent(new CardComponent(Cannon,connectors),1,2);
 
-        ship.AddComponent(new CardComponent(Engine,0,2));
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Single);
+        connectors.put(West, Double);
+        ship.AddComponent(new CardComponent(Cannon,connectors),1,3);
 
+        connectors.put(North, Smooth);
+        connectors.put(South, Engine_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+        ship.AddComponent(new CardComponent(Engine,connectors),1,4);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new Storage(BlueStorage,connectors,2),2,2);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Universal);
+        connectors.put(East, Universal);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new Battery(Battery,connectors,2),2,1);
+
+        List<Pair<Integer, Integer>> invalids = ship.checkShipConnections();
+
+        for(Pair<Integer, Integer> pair : invalids) {
+            System.out.println(pair);
+
+        }
 
     }
 }

@@ -63,7 +63,7 @@ public class Ship {
                 break;
 
         }
-        Map<Direction, ConnectorType> connectors = new EnumMap<>(CardComponent.class);
+        Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
         connectors.put(North,EmptyConnector);
         connectors.put(South,EmptyConnector);
         connectors.put(East,EmptyConnector);
@@ -192,8 +192,11 @@ public class Ship {
 
 
 
-    public Boolean checkCorrectConnections(CardComponent card, int x, int y) {
-
+    public Boolean checkCorrectConnections( int x, int y) {
+        CardComponent card = getComponent(x, y);
+        if(card.getComponentType() == Empty || card.getComponentType() == NotAccessible) {
+            return true;
+        }
         for (Direction direction : Direction.values()) {
 
             if(card.getConnector(direction) == Engine_Connector ) {
@@ -237,36 +240,16 @@ public class Ship {
 
     public List<Pair<Integer, Integer>> checkShipConnections() {
 
-        CardComponent component;
+
         List<Pair<Integer, Integer>> invalids = new ArrayList<>();
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
-                component = getComponent(row, col);
-
-                switch (component.getComponentType()) {
-
-                    case Engine, DoubleEngine:
-
-                        if (component.getConnector(South) != Engine_Connector) {
-                            invalids.add(new Pair<>(row, col));
-                            break;
-                        }
+               if (!checkCorrectConnections(row, col)) {
+                   invalids.add(new Pair<>(row, col));
+               }
 
 
-
-                        if (getComponent(row + 1, col).getComponentType() != NotAccessible && getComponent(row + 1, col).getComponentType() != Empty) {
-                            invalids.add(new Pair<>(row, col));
-
-                            break;
-
-                        }
-
-                        if (!checkCorrectConnections(component, row, col))
-                            invalids.add(new Pair<>(row, col));
-
-
-                }
 
 
             }
