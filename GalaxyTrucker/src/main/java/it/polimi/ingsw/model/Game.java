@@ -21,6 +21,8 @@ public class Game {
     private Player board_leader;
     private List<CardComponent> deck_components = new ArrayList<>();
     private Board board;
+    private Ship ship;
+
 
 //manca metodo costruttore? non so se serva
 
@@ -1354,8 +1356,55 @@ public class Game {
      * this method is used at the end of the assembly phase in order to check the validity of a ship
      */
     public void checkShipValidity() {
+        int ROWS = 5, COLS = 7;
+        CardComponent component;
+        for(int row=0; row<ROWS; row++) {
+            for(int col=0; col<COLS; col++) {
 
-//da pensare bene
+                component = ship.getComponent(row,col);
+
+                switch(component.GetComponent_type()){
+
+                    case Engine, DoubleEngine:
+                        for(Direction direction : Direction.values()) {
+
+                            switch(component.getConnector(direction)) {
+
+                                case Universal, Double, Single, Smooth :
+                                    component.getValidsConnectors(component.getConnector(direction)).contains(ship.getComponent(row + 1, col).getConnector(Direction.values()[(direction.ordinal() + 2) % 4]));
+                                    break;
+
+                                case Engine_Connector:
+                                    switch(direction) {
+                                        case East:
+                                            if (ship.getComponent(row, col+1) != null) {
+                                            }
+                                            break;
+
+                                        case West:
+                                            if (ship.getComponent(row, col-1) != null) {
+                                            }
+                                            break;
+
+                                        case North:
+                                            if (ship.getComponent(row+1, col) != null) {}
+                                            break;
+
+                                        case South:
+                                            if (ship.getComponent(row-1, col) != null) {}
+                                            break;
+
+                                    }
+                            }
+                        }
+                }
+
+
+
+            }
+        }
+
+
     }
 
     /**
