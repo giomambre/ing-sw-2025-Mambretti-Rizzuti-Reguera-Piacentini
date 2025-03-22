@@ -44,7 +44,6 @@ public abstract class CardAdventure {
 
     }
 
-    public abstract void execute();
 
     public void startAdventure(List <Player> players) {
 

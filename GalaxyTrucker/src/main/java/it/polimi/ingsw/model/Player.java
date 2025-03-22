@@ -20,7 +20,7 @@ public class Player {
 
     public void EndBuild(){
         List<Player> active_players = game.getActivePlayers();
-        active_players.remove(this);
+        active_players.add(this);
         game.setActivePlayers(active_players);
     }
 
@@ -38,7 +38,6 @@ public class Player {
     }
 
     public void DismissComponent(CardComponent component) {
-        //component.changeFaceShowed(); no pk quando il player decide di rifiutare una carta l'ha già girata a faccia in su e va rimessa a faccia in giù nel mazzo
         List<CardComponent> deck_components = game.getDeck_components();
         deck_components.add(component);
         game.setDeck_components(deck_components);

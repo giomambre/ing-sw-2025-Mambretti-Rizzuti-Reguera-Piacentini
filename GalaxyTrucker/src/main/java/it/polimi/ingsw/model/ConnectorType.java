@@ -6,5 +6,6 @@ public enum ConnectorType {
     Single,
     Smooth,
     Cannon_Connector,
-    Engine_Connector
+    Engine_Connector,
+    EmptyConnector
 }

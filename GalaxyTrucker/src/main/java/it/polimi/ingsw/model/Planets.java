@@ -14,8 +14,5 @@ public class Planets extends CardAdventure{
     public List<Cargo> givePlayerRewards(Player player, int num_planet) {
         return cargo_reward.get(num_planet);
     }
-    @Override
-    public void execute() {
 
-    }
 }
