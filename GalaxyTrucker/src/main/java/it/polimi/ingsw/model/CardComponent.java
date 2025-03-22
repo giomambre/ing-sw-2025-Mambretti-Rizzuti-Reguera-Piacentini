@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import javax.smartcardio.Card;
 import java.util.*;
 import static it.polimi.ingsw.model.Direction.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
@@ -47,22 +46,32 @@ public class CardComponent {
             case Double:
                 valids.add(Double);
                 valids.add(Universal);
+                valids.add(Universal);
+                valids.add(EmptyConnector);
+
                 break;
             case Single:
                 valids.add(Single);
                 valids.add(Universal);
+                valids.add(EmptyConnector);
+
                 break;
             case Universal:
                 valids.add(Universal);
                 valids.add(Double);
                 valids.add(Single);
+                valids.add(EmptyConnector);
+
                 break;
 
+            case Engine_Connector,Cannon_Connector:
+                valids.add(EmptyConnector);
+                break;
         }
         return valids;
     }
 
-    public ComponentType GetComponent_type() {
+    public ComponentType getComponentType() {
         return component_type;
     }
     public ConnectorType getConnector(Direction direction) {

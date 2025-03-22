@@ -23,6 +23,7 @@ public class Game {
     private Ship ship;
 
 
+
 //manca metodo costruttore? GIOVANNI
 
 
@@ -30,6 +31,9 @@ public class Game {
      *this method is used to initialise the deck of CardComponents before building the ship
      * @param deck_components the entire list of CardComponent used to build the ships
      */
+
+
+
     public void setDeck_components(List<CardComponent> deck_components) {
         this.deck_components = deck_components;
     }
@@ -1319,6 +1323,7 @@ public class Game {
      * this method is called to start the flight phase putting al the rockets on the board
      */
     public void startFlight() {
+
         board = new Board(active_players);
 
     }
@@ -1353,54 +1358,8 @@ public class Game {
     /**
      * this method is used at the end of the assembly phase in order to check the validity of a ship
      */
-    public void checkShipValidity() {
-        int ROWS = 5, COLS = 7;
-        CardComponent component;
-        for(int row=0; row<ROWS; row++) {
-            for(int col=0; col<COLS; col++) {
+    public void checkShipsValidity() {
 
-                component = ship.getComponent(row,col);
-
-                switch(component.GetComponent_type()){
-
-                    case Engine, DoubleEngine:
-                        for(Direction direction : Direction.values()) {
-
-                            switch(component.getConnector(direction)) {
-
-                                case Universal, Double, Single, Smooth :
-                                    component.getValidsConnectors(component.getConnector(direction)).contains(ship.getComponent(row + 1, col).getConnector(Direction.values()[(direction.ordinal() + 2) % 4]));
-                                    break;
-
-                                case Engine_Connector:
-                                    switch(direction) {
-                                        case East:
-                                            if (ship.getComponent(row, col+1) != null) {
-                                            }
-                                            break;
-
-                                        case West:
-                                            if (ship.getComponent(row, col-1) != null) {
-                                            }
-                                            break;
-
-                                        case North:
-                                            if (ship.getComponent(row+1, col) != null) {}
-                                            break;
-
-                                        case South:
-                                            if (ship.getComponent(row-1, col) != null) {}
-                                            break;
-
-                                    }
-                            }
-                        }
-                }
-
-
-
-            }
-        }
 
 
     }
@@ -1420,13 +1379,15 @@ public class Game {
         return card_drawn;
     }
 
+
+
+
     /**
      * This method is called when the player wants to pick a card that is face up
      * @see CardComponent as 'Not Random Card' we mean a card that is already face up (face_down==false)
-     * @param player the one who wants to pick a known card from the deck
      * @return it returns the list of Card Components that are already known
      */
-    public List<CardComponent> GetNotRandomComponents(Player player) {
+    public List<CardComponent> GetNotRandomComponents() {
         List<CardComponent> choosable=new ArrayList<>();
         for(int i=0; i<deck_components.size(); i++){
             if(deck_components.get(i).getFace()==false){
@@ -1436,6 +1397,12 @@ public class Game {
         return choosable;
     }
 
+
+    public CardComponent GetCardComponentAtIndex(int index) {
+        List<CardComponent> choosable  = GetNotRandomComponents();
+        return choosable.remove(index);
+    }
+
     /**
      * this method is called by the leader to draw the next card adventure
      * @return it returns the first card adventure of the deck, if we already solved all the adventures it returns null
@@ -1443,7 +1410,7 @@ public class Game {
     //secondo me potrebbe avere senso una exception
     public CardAdventure GetRandomCardAdventure() {
         CardAdventure adventure = deck_adventure.removeFirst();
-        if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO");
+        if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO"); //manca da fare la gestione della fine del gioco
         return adventure;
 
     }

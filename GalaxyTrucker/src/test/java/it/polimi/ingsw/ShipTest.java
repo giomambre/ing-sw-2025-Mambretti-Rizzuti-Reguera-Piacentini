@@ -1,13 +1,13 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
+import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static it.polimi.ingsw.model.Direction.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
 import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.CardAdventureType.*;
 import static it.polimi.ingsw.model.Color.*;
 
 import java.util.*;
@@ -37,16 +37,16 @@ public class ShipTest {
         ship1.initializeShipPlance();
 
 
-        assertEquals(MainUnitGreen, ship1.getComponent(2, 3).GetComponent_type());
+        assertEquals(MainUnitGreen, ship1.getComponent(2, 3).getComponentType());
 
-        assertEquals(NotAccessible, ship1.getComponent(0, 0).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 1).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 3).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 5).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(0, 6).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(1, 0).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(1, 6).GetComponent_type());
-        assertEquals(NotAccessible, ship1.getComponent(4, 3).GetComponent_type());
+        assertEquals(NotAccessible, ship1.getComponent(0, 0).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 1).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 3).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 5).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(0, 6).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(1, 0).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(1, 6).getComponentType());
+        assertEquals(NotAccessible, ship1.getComponent(4, 3).getComponentType());
 
 
     }
@@ -142,5 +142,49 @@ public class ShipTest {
 
         assertEquals(1.5 , player1.getShip().calculateCannonPower(player1BatteryUsage));
         assertEquals(2.5 ,player2.getShip().calculateCannonPower(player2BatteryUsage));
+    }
+
+    @Test
+    public void checkShipConnectionsTest(){
+        Ship ship = player1.getShip();
+        ship.initializeShipPlance(); //2,3 main unit
+        Map<Direction, ConnectorType> connectors = new HashMap<>();
+        connectors.put(North, Smooth);
+        connectors.put(South, Cannon_Connector);
+        connectors.put(East, Double);
+        connectors.put(West, Single);
+        ship.AddComponent(new CardComponent(Cannon,connectors),1,2);
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Universal);
+        connectors.put(East, Single);
+        connectors.put(West, Double);
+        ship.AddComponent(new CardComponent(Cannon,connectors),1,3);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Engine_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+        ship.AddComponent(new CardComponent(Engine,connectors),1,4);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new Storage(BlueStorage,connectors,2),2,2);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Universal);
+        connectors.put(East, Universal);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new Battery(Battery,connectors,2),2,1);
+
+        List<Pair<Integer, Integer>> invalids = ship.checkShipConnections();
+
+        for(Pair<Integer, Integer> pair : invalids) {
+            System.out.println(pair);
+
+        }
+
     }
 }

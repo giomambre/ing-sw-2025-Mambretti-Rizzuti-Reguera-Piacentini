@@ -24,14 +24,57 @@ public class Board {
         return board_leader;
     }
 
+    //NELLA MOVE PLAYER MANCA LA LOGICA CHE INCREMENTA IL NUMERO DI GIRI!!!!!!!!!!!!!!!
+    //manca anche chiamare checkleader nelle altre funzioni
     public void checkLeader(){
+        List<Player> players=new ArrayList<>(player_position.values());
 
-    }
+        //a player is the board_leader based on #laps if he is the maybe_leader and is the only possible candidate (possible_leaders.size()==1)
+        Player maybe_leader=players.get(0);
+        List<Player> possible_leaders=new ArrayList<>();
+        possible_leaders.add(maybe_leader);
+
+        // first of all find the player who did the most number of laps
+        for(int i=1; i< players.size(); i++){
+            if(players.get(i).getNum_laps()>maybe_leader.getNum_laps()){
+                possible_leaders.clear();
+                possible_leaders.add(players.get(i));
+                maybe_leader=players.get(i);
+            }
+            if(players.get(i).getNum_laps()==maybe_leader.getNum_laps()){
+                possible_leaders.add(players.get(i));
+            }
+        }
+        if(possible_leaders.size()==1){
+            board_leader=maybe_leader;
+            return;
+        }
+        else{
+                //the keys of the HM are the positions of the players
+                List<Integer> positions=new ArrayList<>(player_position.keySet());
+                while(positions.size()>0) {
+                    //let's find out the max position
+                    int max = positions.get(0);
+                    for (int i = 0; i < positions.size(); i++) {
+                        if (positions.get(i) > max) {
+                            max = positions.get(i);
+                        }
+                    }
+                    if (possible_leaders.contains(player_position.get(max))) {
+                        board_leader = player_position.get(max);
+                        return;
+                    } else {
+                        positions.remove(max);
+                    }
+                }
+
+        }
+        }
+
+
+
 
     public void MovePlayer(Player p, int pos) { //pos è il numero di pos in aggiunta
-
-        //List<Integer> keys = new ArrayList<>(player_position.keySet());
-        //keys.sort(Integer::compareTo);
         int startingPosition = 0;
         for (var entry : player_position.entrySet()) {
 
@@ -41,7 +84,7 @@ public class Board {
 
         }
         int not_occupied_spaces = 0;
-        //it represent the effective position on the board, assumptions: every cell corresponds to a number(1...24)
+        //it represents the effective position on the board, assumptions: every cell corresponds to a number(1...24)
         if (pos > 0) {
             int i = startingPosition + 1;
             //assunzione dell'if dentro al while: in ogni momento del gioco, in player_position sono memorizzate
