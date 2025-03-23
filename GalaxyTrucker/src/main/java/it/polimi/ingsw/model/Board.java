@@ -123,15 +123,12 @@ public class Board {
                 }
             }
             i--;
-            if (i < BOARD_SIZE && i>0) {
+            if (i < BOARD_SIZE) {
                 player_position.put(i, p);
                 //changeBoard_leader();
                 return;
             } else {
-                if(i==0){
-                    player_position.put(1, p);
-                }
-                i = i - BOARD_SIZE+1;
+                i=i-BOARD_SIZE+1;
                 player_position.put(i, p);
                 //p.addLap();
                 //changeBoard_leader();
@@ -152,11 +149,6 @@ public class Board {
             i++;
             if (i>0) {
                 player_position.put(i, p);
-                //changeBoard_leader();
-                return;
-            }
-            if(i==0){
-                player_position.put(1, p);
                 //changeBoard_leader();
                 return;
             }
