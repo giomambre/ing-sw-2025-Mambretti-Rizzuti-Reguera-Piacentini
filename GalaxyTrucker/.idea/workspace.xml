@@ -4,21 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="finita check ship e aggiunta anche il contrllo sui tronconi">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="AbandonedStation finita e testata">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/AbandonedStation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/AbandonedStation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Planets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Planets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Storage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedStationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedStationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/CardComponent$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/CardComponent$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/CardComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/CardComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/LivingUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/LivingUnit.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedShipTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedShipTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/BoardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/BoardTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/AbandonedStation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/AbandonedStation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Planets.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Planets.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Storage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedStationTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedStationTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +85,9 @@
     "Application.App.executor": "Run",
     "JUnit.AbandonedShipTest.testAbandonedShip.executor": "Run",
     "JUnit.AbandonedStationTest.testAbandonedStation.executor": "Run",
+    "JUnit.BoardTest.checkLeaderTest.executor": "Run",
     "JUnit.BoardTest.executor": "Run",
+    "JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces.executor": "Run",
     "JUnit.OpenSpaceTest.executor": "Run",
     "JUnit.OpenSpaceTest.testAccept_CorrectOrder.executor": "Run",
     "JUnit.OpenSpaceTest.testAccept_NoBatteries.executor": "Run",
@@ -126,23 +121,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.AbandonedStationTest.testAbandonedStation">
-    <configuration name="AbandonedShipTest.testAbandonedShip" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PSP17" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.AbandonedShipTest" />
-      <option name="METHOD_NAME" value="testAbandonedShip" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="AbandonedStationTest.testAbandonedStation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PSP17" />
       <extension name="coverage">
@@ -159,6 +138,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BoardTest.checkLeaderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PSP17" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.BoardTest" />
+      <option name="METHOD_NAME" value="checkLeaderTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.testMovePlayerSkippingOccupiedSpaces" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PSP17" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="it.polimi.ingsw.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.BoardTest" />
+      <option name="METHOD_NAME" value="testMovePlayerSkippingOccupiedSpaces" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ShipTest.checkConnection" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PSP17" />
       <extension name="coverage">
@@ -170,22 +181,6 @@
       <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.ShipTest" />
       <option name="METHOD_NAME" value="checkConnection" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ShipTest.checkShipConnectionsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PSP17" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="it.polimi.ingsw.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.ShipTest" />
-      <option name="METHOD_NAME" value="checkShipConnectionsTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -209,11 +204,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces" />
+        <item itemvalue="JUnit.BoardTest.checkLeaderTest" />
         <item itemvalue="JUnit.AbandonedStationTest.testAbandonedStation" />
         <item itemvalue="JUnit.ShipTest.findShipPieces" />
         <item itemvalue="JUnit.ShipTest.checkConnection" />
-        <item itemvalue="JUnit.ShipTest.checkShipConnectionsTest" />
-        <item itemvalue="JUnit.AbandonedShipTest.testAbandonedShip" />
       </list>
     </recent_temporary>
   </component>
@@ -264,7 +259,7 @@
       <workItem from="1742643179740" duration="197000" />
       <workItem from="1742644598380" duration="1300000" />
       <workItem from="1742649431630" duration="8894000" />
-      <workItem from="1742728191297" duration="2795000" />
+      <workItem from="1742728191297" duration="5668000" />
     </task>
     <task id="LOCAL-00001" summary="First Commit">
       <option name="closed" value="true" />
@@ -570,7 +565,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742691556874</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="AbandonedStation finita e testata">
+      <option name="closed" value="true" />
+      <created>1742731042984</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1742731042984</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -626,6 +629,7 @@
     <MESSAGE value="ShipValidity e Test" />
     <MESSAGE value="ShipValidityTest" />
     <MESSAGE value="finita check ship e aggiunta anche il contrllo sui tronconi" />
-    <option name="LAST_COMMIT_MESSAGE" value="finita check ship e aggiunta anche il contrllo sui tronconi" />
+    <MESSAGE value="AbandonedStation finita e testata" />
+    <option name="LAST_COMMIT_MESSAGE" value="AbandonedStation finita e testata" />
   </component>
 </project>
