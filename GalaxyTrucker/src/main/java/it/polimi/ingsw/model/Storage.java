@@ -29,5 +29,13 @@ public class Storage extends CardComponent {
         return carried_cargos.get(index);
     }
 
+    public int getCargoCount(){
+        int cargo_count = 0;
+        for(int i = 0; i < carried_cargos.size(); i++){
+            if(!carried_cargos.get(i).equals(Cargo.Empty)) cargo_count++;
+        }
+        return cargo_count;
+
+    }
 
 }

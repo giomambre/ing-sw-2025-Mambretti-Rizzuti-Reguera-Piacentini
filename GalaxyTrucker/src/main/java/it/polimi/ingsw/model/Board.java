@@ -194,10 +194,10 @@ public class Board {
             ranking.add(tmp_player);
             for (var entry : tmp_player_position.entrySet()) {
                 if (entry.getValue().equals(tmp_player)) {
-                 tmp_player_position.remove(entry.getKey());
+                    tmp_player_position.remove(entry.getKey());
                 }
             }
-            }
+        }
         return ranking;
     }
 
@@ -211,4 +211,3 @@ public class Board {
 
 
 }
-

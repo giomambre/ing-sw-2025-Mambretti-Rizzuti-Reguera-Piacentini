@@ -97,4 +97,29 @@ public class BoardTest {
         assertEquals(player3, ranking.get(1)); // isabel
         assertEquals(player4, ranking.get(0)); // Raffa è ultimo
     }
+
+
+    @Test
+    public void checkLeaderTest(){
+
+        Map<Integer, Player> playerPositions = board.GetBoard();
+        assertEquals(player1, playerPositions.get(7));
+        assertEquals(player2, playerPositions.get(4));
+        assertEquals(player3, playerPositions.get(2));
+        assertEquals(player4, playerPositions.get(1));
+        board.changeBoard_leader();
+        assertEquals(player1, board.getBoard_leader());
+
+        board.MovePlayer(player2, 3);
+
+        board.changeBoard_leader();
+        assertEquals(player2, board.getBoard_leader());
+
+
+        board.MovePlayer(player2, 23);
+
+        System.out.println(board.GetBoard());
+
+
+    }
 }
