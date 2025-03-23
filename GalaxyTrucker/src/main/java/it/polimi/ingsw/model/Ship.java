@@ -390,13 +390,13 @@ public class Ship {
 
                         case East:
                             if((component.getConnector(East)==Universal || component.getConnector(East)==Double || component.getConnector(East)==Single)
-                                    && this.getComponent(row , col-1).getConnector(West) == EmptyConnector)
+                                    && this.getComponent(row , col+1).getConnector(West) == EmptyConnector)
                                 exposed_connectors++;
                             break;
 
                         case West:
                             if((component.getConnector(West)==Universal || component.getConnector(West)==Double || component.getConnector(West)==Single)
-                                    && this.getComponent(row , col+1).getConnector(East) == EmptyConnector)
+                                    && this.getComponent(row , col-1).getConnector(East) == EmptyConnector)
                                 exposed_connectors++;
                             break;
 
