@@ -45,7 +45,7 @@ public class Board {
 
     /**
      * this method is called to check who's the current board leader on the board that is passed as parameter
-     * @param player_position The map on wich we want to find out who's the leader at the moment
+     * @param player_position The map on which we want to find out who's the leader at the moment
      * @return returns the current leader
      */
     public Player checkLeader(Map<Integer, Player> player_position) {
@@ -113,8 +113,7 @@ public class Board {
         //it represents the effective position on the board, assumptions: every cell corresponds to a number(1...24)
         if (pos > 0) {
             int i = startingPosition + 1;
-            //assunzione dell'if dentro al while: in ogni momento del gioco, in player_position sono memorizzate
-            // SOLO le posizioni correnti dei giocatori, quelle vecchie vengono eliminate appena sposto la pedina (come sotto)
+
             while (not_occupied_spaces < pos) {
                 if (player_position.containsKey(i)) {
                     i++;
@@ -130,7 +129,7 @@ public class Board {
                 changeBoard_leader();
                 return;
             } else {
-                i = i - BOARD_SIZE;
+                i = i - BOARD_SIZE+1;
                 player_position.put(i, p);
                 player_position.remove(startingPosition);
                 p.addLap();
@@ -148,23 +147,27 @@ public class Board {
                     not_occupied_spaces++;
                     i--;
                 }
-                if (i < 0) {
-                    i = i + BOARD_SIZE; // lo ripristino qua per evitare casi in cui il giocatore torna indietro e ne becca uno che sta per terminare il giro
-                    p.subLap();
-                }
-                i++;
-
+            }
+            i++;
+            if (i>0) {
                 player_position.put(i, p);
                 player_position.remove(startingPosition);
                 changeBoard_leader();
                 return;
-
-            /*else {
-                i = i + BOARD_SIZE + 1;
+            }
+            if(i==0){
+                player_position.put(1, p);
+                player_position.remove(startingPosition);
+                changeBoard_leader();
+                return;
+            }
+            if (i < 0) {
+                i = i + BOARD_SIZE+1;
+                p.subLap();
                 player_position.put(i, p);
                 player_position.remove(startingPosition);
+                changeBoard_leader();
                 return;
-            }*/
             }
 
         }
