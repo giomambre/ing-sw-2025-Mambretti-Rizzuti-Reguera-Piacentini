@@ -363,6 +363,79 @@ public class Ship {
         }
     }
 
+    public int calculateExposedConnectors(){
+        int exposed_connectors = 0;
+        CardComponent component;
+
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+
+                component = this.getComponent(row, col);
+
+                for (Direction direction : Direction.values()){
+                    switch (direction) {
+
+                        case North:
+                            if((component.getConnector(North)==Universal || component.getConnector(North)==Double || component.getConnector(North)==Single)
+                            && this.getComponent(row-1 , col).getConnector(South) == EmptyConnector)
+                                exposed_connectors++;
+                            break;
+
+                        case South:
+                            if((component.getConnector(South)==Universal || component.getConnector(South)==Double || component.getConnector(South)==Single)
+                                    && this.getComponent(row+1 , col).getConnector(North) == EmptyConnector)
+                                exposed_connectors++;
+                            break;
+
+                        case East:
+                            if((component.getConnector(East)==Universal || component.getConnector(East)==Double || component.getConnector(East)==Single)
+                                    && this.getComponent(row , col-1).getConnector(West) == EmptyConnector)
+                                exposed_connectors++;
+                            break;
+
+                        case West:
+                            if((component.getConnector(West)==Universal || component.getConnector(West)==Double || component.getConnector(West)==Single)
+                                    && this.getComponent(row , col+1).getConnector(East) == EmptyConnector)
+                                exposed_connectors++;
+                            break;
+
+                    }
+                }
+
+
+
+                switch(col){
+                    case 0:
+                        if (component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
+                            exposed_connectors++;
+                        break;
+
+                    case 6:
+                        if (component.getConnector(East) == Universal || component.getConnector(East) == Double || component.getConnector(East) == Single)
+                            exposed_connectors++;
+                        break;
+                }
+
+                switch(row){
+                    case 0:
+                        if (component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
+                            exposed_connectors++;
+                        break;
+
+                    case 4:
+                        if (component.getConnector(South) == Universal || component.getConnector(South) == Double || component.getConnector(South) == Single)
+                            exposed_connectors++;
+                        break;
+
+                }
+
+            }
+        }
+
+        return exposed_connectors;
+    }
+
     public CardComponent getComponent(int x, int y) {
         return ship_plance[x][y];
     }
