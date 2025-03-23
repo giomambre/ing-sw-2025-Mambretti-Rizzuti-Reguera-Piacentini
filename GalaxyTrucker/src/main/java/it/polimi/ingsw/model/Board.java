@@ -2,6 +2,15 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
+/**
+ * this class represents the game board and all the logic regarding the movement of the rockets on it
+ * <ul>
+ *      <li>BOARD_SIZE= 24
+ *      <li>player_position: for each cell on the map return the player who's on it, null if it's empty
+ *      <li>board_leader: the current player who's the first on the ranking based on the positions on the map
+ * </ul>
+ */
+
 public class Board {
     private final int BOARD_SIZE = 24;
     private Map<Integer, Player> player_position = new HashMap<>();
@@ -24,56 +33,73 @@ public class Board {
         return board_leader;
     }
 
-    //NELLA MOVE PLAYER MANCA LA LOGICA CHE INCREMENTA IL NUMERO DI GIRI!!!!!!!!!!!!!!!
-    //manca anche chiamare checkleader nelle altre funzioni
-    public void checkLeader(){
-        List<Player> players=new ArrayList<>(player_position.values());
+    /**
+     * this method is called to eventually change the board leader.
+     * @see Board checkleader method used at the beginning to check who's the leader
+     */
+    public void changeBoard_leader() {
+        Player new_leader = checkLeader(player_position);
+        this.board_leader = new_leader;
+        return;
+    }
+
+    /**
+     * this method is called to check who's the current board leader on the board that is passed as parameter
+     * @param player_position The map on wich we want to find out who's the leader at the moment
+     * @return returns the current leader
+     */
+    public Player checkLeader(Map<Integer, Player> player_position) {
+        List<Player> players = new ArrayList<>(player_position.values());
 
         //a player is the board_leader based on #laps if he is the maybe_leader and is the only possible candidate (possible_leaders.size()==1)
-        Player maybe_leader=players.get(0);
-        List<Player> possible_leaders=new ArrayList<>();
+        Player maybe_leader = players.get(0);
+        List<Player> possible_leaders = new ArrayList<>();
         possible_leaders.add(maybe_leader);
 
         // first of all find the player who did the most number of laps
-        for(int i=1; i< players.size(); i++){
-            if(players.get(i).getNum_laps()>maybe_leader.getNum_laps()){
+        for (int i = 1; i < players.size(); i++) {
+            if (players.get(i).getNum_laps() > maybe_leader.getNum_laps()) {
                 possible_leaders.clear();
                 possible_leaders.add(players.get(i));
-                maybe_leader=players.get(i);
+                maybe_leader = players.get(i);
             }
-            if(players.get(i).getNum_laps()==maybe_leader.getNum_laps()){
+            if (players.get(i).getNum_laps() == maybe_leader.getNum_laps()) {
                 possible_leaders.add(players.get(i));
             }
         }
-        if(possible_leaders.size()==1){
-            board_leader=maybe_leader;
-            return;
-        }
-        else{
-                //the keys of the HM are the positions of the players
-                List<Integer> positions=new ArrayList<>(player_position.keySet());
-                while(positions.size()>0) {
-                    //let's find out the max position
-                    int max = positions.get(0);
-                    for (int i = 0; i < positions.size(); i++) {
-                        if (positions.get(i) > max) {
-                            max = positions.get(i);
-                        }
-                    }
-                    if (possible_leaders.contains(player_position.get(max))) {
-                        board_leader = player_position.get(max);
-                        return;
-                    } else {
-                        positions.remove(max);
+        if (possible_leaders.size() == 1) {
+            return maybe_leader;
+
+        } else {
+            //the keys of the HM are the positions of the players
+            List<Integer> positions = new ArrayList<>(player_position.keySet());
+            while (positions.size() > 0) {
+                //let's find out the max position
+                int max = positions.get(0);
+                for (int i = 0; i < positions.size(); i++) {
+                    if (positions.get(i) > max) {
+                        max = positions.get(i);
                     }
                 }
+                if (possible_leaders.contains(player_position.get(max))) {
+                    return player_position.get(max);
+                } else {
+                    positions.remove(max);
+                }
+            }
 
         }
-        }
+        //non dovrebbe mai succedere...
+        return null;
+    }
 
 
-
-
+    /**
+     * This method moves the player p on the board of n=pos positions.
+     * <ul></ul>Then update his position in player_positions and deletes the old one.
+     * @param p the player that needs to move his rocket
+     * @param pos the number of position gained (if pos>0) or lost (if pos<0)
+     */
     public void MovePlayer(Player p, int pos) { //pos è il numero di pos in aggiunta
         int startingPosition = 0;
         for (var entry : player_position.entrySet()) {
@@ -101,12 +127,14 @@ public class Board {
             if (i < BOARD_SIZE) {
                 player_position.put(i, p);
                 player_position.remove(startingPosition);
+                changeBoard_leader();
                 return;
             } else {
-                //la sottrazione è da rivedere perchè non so se sei partito a contare le caselle da 0 o da 1, se le hai numerate da 1 dovrebbe essere corretto se sei partito da 0 aggiungi un -1
                 i = i - BOARD_SIZE;
                 player_position.put(i, p);
                 player_position.remove(startingPosition);
+                p.addLap();
+                changeBoard_leader();
                 return;
             }
         }
@@ -120,14 +148,16 @@ public class Board {
                     not_occupied_spaces++;
                     i--;
                 }
-                if (i<0)
-                    i=i+BOARD_SIZE; // lo ripristino qua per evitare casi in cui il giocatore torna indietro e ne becca uno che sta per terminare il giro
-            }
-            i++;
+                if (i < 0) {
+                    i = i + BOARD_SIZE; // lo ripristino qua per evitare casi in cui il giocatore torna indietro e ne becca uno che sta per terminare il giro
+                    p.subLap();
+                }
+                i++;
 
-            player_position.put(i, p);
-            player_position.remove(startingPosition);
-            return;
+                player_position.put(i, p);
+                player_position.remove(startingPosition);
+                changeBoard_leader();
+                return;
 
             /*else {
                 i = i + BOARD_SIZE + 1;
@@ -135,8 +165,9 @@ public class Board {
                 player_position.remove(startingPosition);
                 return;
             }*/
-        }
+            }
 
+        }
     }
 
 
@@ -144,18 +175,30 @@ public class Board {
         return player_position;
     }
 
-    public List<Player> GetRanking() { //restituisce la lista ordinata
-
-
-        List<Integer> keys = new ArrayList<>(player_position.keySet());
-        keys.sort(Integer::compareTo);
+    /**
+     * this method returns the ranking of the players based on their position on the board
+     * @return it returns a sorted list based of the positions (starting with the first and going on)
+     * <ul>
+     *     <li>ranking.get(0)= first player on the board
+     *     <li>ranking.get(1)= second player on the board
+     *     <li>and so on...
+     * </ul>
+     */
+    public List<Player> GetRanking() {
         List<Player> ranking = new ArrayList<>();
-        for (Integer i : keys) {
-            ranking.add(player_position.get(i));
-
-        }
+        HashMap<Integer, Player> tmp_player_position = new HashMap<>();
+        tmp_player_position.putAll(player_position);
+        Player tmp_player;
+        while (tmp_player_position.size() > 0) {
+            tmp_player=checkLeader(tmp_player_position);
+            ranking.add(tmp_player);
+            for (var entry : tmp_player_position.entrySet()) {
+                if (entry.getValue().equals(tmp_player)) {
+                 tmp_player_position.remove(entry.getKey());
+                }
+            }
+            }
         return ranking;
-
     }
 
 
