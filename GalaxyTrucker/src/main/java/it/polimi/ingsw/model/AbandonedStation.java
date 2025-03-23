@@ -26,7 +26,7 @@ public class AbandonedStation extends  CardAdventure{
         Ship ship_player = player.getShip();
         board.MovePlayer(player, -getCost_of_days());
         for (int i = 0; i < ship_player.getROWS(); i++) {
-            for (int j = 0; j < ship_player.getROWS(); j++) {
+            for (int j = 0; j < ship_player.getCOLS(); j++) {
 
                 CardComponent card = ship_player.getComponent(i, j);
                 for (CardComponent storage : new_cargo_positions.keySet()) {
@@ -47,8 +47,11 @@ public class AbandonedStation extends  CardAdventure{
     public List<Cargo> getCargo() {
         return cargo_reward;
     }
-// 0 : Red , 2: Blue
-    //non finita da fare l'aggiunta dei cargo e la rimozione degli astronauti
+
+    public int getNeeded_crewmates() {
+        return needed_crewmates;
+    }
+
 
 
 
