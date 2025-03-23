@@ -46,7 +46,7 @@ public class CardComponent {
             case Double:
                 valids.add(Double);
                 valids.add(Universal);
-                valids.add(Universal);
+
                 valids.add(EmptyConnector);
 
                 break;
@@ -63,6 +63,12 @@ public class CardComponent {
                 valids.add(EmptyConnector);
 
                 break;
+
+            case Smooth:
+                valids.add(Smooth);
+                valids.add(EmptyConnector);
+
+
 
             case Engine_Connector,Cannon_Connector:
                 valids.add(EmptyConnector);

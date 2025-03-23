@@ -7,7 +7,7 @@ public class LivingUnit extends CardComponent{
     private int num_astronaut;
     private CrewmateType crewate_type;
 
-    public LivingUnit(ComponentType component_type, Map<Direction, ConnectorType> connectors, int num_astronaut) {
+    public LivingUnit(ComponentType component_type, Map<Direction, ConnectorType> connectors) {
         super(component_type, connectors);
         this.num_astronaut = 0;
     }

@@ -34,13 +34,13 @@ public class AbandonedShipTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        ship.AddComponent(new LivingUnit(LivingUnit, connectors, 0),3,1);
+        ship.AddComponent(new LivingUnit(LivingUnit, connectors),3,1);
         ((LivingUnit)ship.getComponent(3,1)).addCrewmate(CrewmateType.Astronaut);
 
-        ship.AddComponent(new LivingUnit(LivingUnit, connectors, 0),3,2);
+        ship.AddComponent(new LivingUnit(LivingUnit, connectors),3,2);
         ((LivingUnit)ship.getComponent(3,2)).addCrewmate(CrewmateType.BrownAlien);
 
-        ship.AddComponent(new LivingUnit(LivingUnit, connectors, 0),3,3);
+        ship.AddComponent(new LivingUnit(LivingUnit, connectors),3,3);
         ((LivingUnit)ship.getComponent(3,3)).addCrewmate(CrewmateType.PinkAlien);
 
     }

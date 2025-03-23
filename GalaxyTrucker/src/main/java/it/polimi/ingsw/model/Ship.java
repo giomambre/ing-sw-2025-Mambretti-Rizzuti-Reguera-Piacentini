@@ -2,10 +2,7 @@ package it.polimi.ingsw.model;
 
 import javafx.util.Pair;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 import static it.polimi.ingsw.model.ComponentType.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
@@ -292,21 +289,119 @@ public class Ship {
     }
 
 
-    public CardComponent getComponent(int x, int y) {
-        return ship_plance[x][y];
-    }
 
-    public void PrintShipPlance() {
+
+    public List<List<Pair<Integer, Integer>>> findShipPieces() {
+        List<List<Pair<Integer, Integer>>> pieces = new ArrayList<>(); // lista di Tronconi
+        Set<Pair<Integer, Integer>> visited = new HashSet<>();
+
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
-                System.out.println(ship_plance[row][col]);
+                Pair<Integer, Integer> currentPos = new Pair<>(row, col);
+
+                // Se è un componente valido e non è stato visitato, avvia una nuova esplorazione DFS
+                if (!visited.contains(currentPos) && isValidComponent(row, col)) {
+
+                    List<Pair<Integer, Integer>> piece = new ArrayList<>();
+                    explorePiece(row, col, visited, piece);
+
+                    pieces.add(piece);
+                }
+            }
+        }
+        return pieces;
+    }
+
+    private boolean isValidComponent(int row, int col) {
+        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return false;
+        CardComponent component = ship_plance[row][col];
+        return component != null && component.getComponentType() != Empty && component.getComponentType() != NotAccessible;
+    }
 
 
+    // DFS per trovare un pezzo connesso della nave
+    private void explorePiece(int x, int y, Set<Pair<Integer, Integer>> visited, List<Pair<Integer, Integer>> piece) {
+        Pair<Integer, Integer> pos = new Pair<>(x, y);
+        if (x < 0 || x >= ROWS || y < 0 || y >= COLS || visited.contains(pos) || !isValidComponent(x, y)) {
+            return;
+        }
+
+        visited.add(pos);
+        piece.add(pos);
+
+        for (Direction dir : Direction.values()) {
+            int newX = x, newY = y;
+
+            switch (dir) {
+                case North:
+                    newX--;
+                    break;
+                case South:
+                    newX++;
+                    break;
+                case East:
+                    newY++;
+                    break;
+                case West:
+                    newY--;
+                    break;
+            }
+
+            if (newX >= 0 && newX < ROWS && newY >= 0 && newY < COLS) {
+                CardComponent neighbor = ship_plance[newX][newY];
+
+                if (neighbor.getComponentType() != Empty && neighbor.getComponentType() != NotAccessible
+                        && ship_plance[x][y].getConnector(dir) != Smooth) {
+
+                    if (ship_plance[x][y].getValidsConnectors(ship_plance[x][y].getConnector(dir))
+                            .contains(neighbor.getConnector(getOpposite(dir)))) {
+                        explorePiece(newX, newY, visited, piece);
+                    }
+                }
             }
         }
     }
 
+    public CardComponent getComponent(int x, int y) {
+        return ship_plance[x][y];
+    }
+
+    public Boolean validatePiece(List<Pair<Integer,Integer>> piece) {
+        int valide = 0;
+        for (Pair<Integer, Integer> pos : piece) {
+            int x = pos.getKey();
+            int y = pos.getValue();
+
+            CardComponent component = ship_plance[x][y];
+            if(component.getComponentType() == Engine || component.getComponentType() == DoubleEngine ) {
+            valide++;
+        }else if(component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_astronaut()>=1 ){
+
+                valide++;
+
+            }
+        }
+
+        return  valide == 2 ;
+
+
+
+    }
+
+
+   public void removeComponent(int x, int y) {
+       Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
+       connectors.put(North,EmptyConnector);
+       connectors.put(South,EmptyConnector);
+       connectors.put(East,EmptyConnector);
+       connectors.put(West,EmptyConnector);
+
+
+
+       CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        ship_plance[x][y] = EMPTY_CELL;
+   }
 
     public void setExtra_components(List<CardComponent> extraComponents) {
         this.extra_components = extraComponents;
@@ -315,4 +410,14 @@ public class Ship {
     public List<CardComponent> getExtra_components() {
         return extra_components;
     }
+
+        public Direction getOpposite(Direction dir){
+            switch (dir){
+                case North: return South;
+                case East: return West;
+                case South: return North;
+                default: return East;
+
+            }
+        }
 }

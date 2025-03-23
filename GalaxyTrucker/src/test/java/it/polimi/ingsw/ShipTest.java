@@ -107,9 +107,8 @@ public class ShipTest {
         player2BatteryUsage.put(player2.getShip().getComponent(3, 1), true);
 
 
-
-        assertEquals(3 , player1.getShip().calculateEnginePower(player1BatteryUsage));
-        assertEquals(5,player2.getShip().calculateEnginePower(player2BatteryUsage));
+        assertEquals(3, player1.getShip().calculateEnginePower(player1BatteryUsage));
+        assertEquals(5, player2.getShip().calculateEnginePower(player2BatteryUsage));
     }
 
 
@@ -123,7 +122,7 @@ public class ShipTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
         player1.getShip().AddComponent(new CardComponent(DoubleCannon, connectors), 3, 2);
-        player1.getShip().AddComponent(new CardComponent( Cannon, connectors), 4, 1);
+        player1.getShip().AddComponent(new CardComponent(Cannon, connectors), 4, 1);
 
         Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
         player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
@@ -140,12 +139,13 @@ public class ShipTest {
         player2BatteryUsage.put(player2.getShip().getComponent(3, 1), true);
 
 
-        assertEquals(1.5 , player1.getShip().calculateCannonPower(player1BatteryUsage));
-        assertEquals(2.5 ,player2.getShip().calculateCannonPower(player2BatteryUsage));
+        assertEquals(1.5, player1.getShip().calculateCannonPower(player1BatteryUsage));
+        assertEquals(2.5, player2.getShip().calculateCannonPower(player2BatteryUsage));
     }
 
+
     @Test
-    public void checkShipConnectionsTest(){
+    public void checkConnection() {
         Ship ship = player1.getShip();
         ship.initializeShipPlance(); //2,3 main unit
         Map<Direction, ConnectorType> connectors = new HashMap<>();
@@ -153,38 +153,199 @@ public class ShipTest {
         connectors.put(South, Cannon_Connector);
         connectors.put(East, Double);
         connectors.put(West, Single);
-        ship.AddComponent(new CardComponent(Cannon,connectors),1,2);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 1, 2);
 
         connectors.put(North, Cannon_Connector);
         connectors.put(South, Universal);
         connectors.put(East, Single);
         connectors.put(West, Double);
-        ship.AddComponent(new CardComponent(Cannon,connectors),1,3);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 1, 3);
 
         connectors.put(North, Smooth);
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        ship.AddComponent(new CardComponent(Engine,connectors),1,4);
+        ship.AddComponent(new CardComponent(Engine, connectors), 1, 4);
 
-        connectors.put(North, Smooth);
-        connectors.put(South, Smooth);
-        connectors.put(East, Universal);
-        connectors.put(West, Smooth);
-        ship.AddComponent(new Storage(BlueStorage,connectors,2),2,2);
 
         connectors.put(North, Smooth);
         connectors.put(South, Universal);
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
-        ship.AddComponent(new Battery(Battery,connectors,2),2,1);
+        ship.AddComponent(new Battery(Battery, connectors, 2), 2, 1);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(West, Double);
+        ship.AddComponent(new Storage(BlueStorage, connectors, 2), 2, 2);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Engine_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+        ship.AddComponent(new Storage(BlueStorage, connectors, 2), 2, 2);
+
+        connectors.put(North, Universal);
+        connectors.put(South, Double);
+        connectors.put(East, Cannon_Connector);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 2, 5);
+
+        connectors.put(North, Single);
+        connectors.put(South, Universal);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+        ship.AddComponent(new Storage(BlueStorage, connectors, 2), 3, 1);
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Double);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 3, 2);
+
+        connectors.put(North, Double);
+        connectors.put(South, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(West, Cannon_Connector);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 3, 3);
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Double);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 3, 4);
+
+        connectors.put(North, Double);
+        connectors.put(South, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+
+        ship.AddComponent(new Battery(Battery, connectors, 2), 3, 5);
+
+        connectors.put(North, Single);
+        connectors.put(South, Smooth);
+        connectors.put(East, Cannon_Connector);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 4, 1);
+
+        connectors.put(North, Single);
+        connectors.put(South, Engine_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new CardComponent(Engine, connectors), 4, 2);
+
+        connectors.put(North, Double);
+        connectors.put(South, Single);
+        connectors.put(East, Universal);
+        connectors.put(West, Cannon_Connector);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 4, 4);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Cannon_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Double);
+        ship.AddComponent(new CardComponent(Engine, connectors), 4, 5);
 
         List<Pair<Integer, Integer>> invalids = ship.checkShipConnections();
 
-        for(Pair<Integer, Integer> pair : invalids) {
-            System.out.println(pair);
 
-        }
+
+        assertTrue(invalids.contains(new Pair<>(1, 2)));
+        assertTrue(invalids.contains(new Pair<>(2, 2)));
+        assertTrue(invalids.contains(new Pair<>(3, 2)));
+        assertTrue(invalids.contains(new Pair<>(3, 3)));
+        assertTrue(invalids.contains(new Pair<>(4, 2)));
+        assertTrue(invalids.contains(new Pair<>(4, 1)));
 
     }
+
+    @Test
+    public void findShipPieces() {
+
+        Ship ship = player1.getShip();
+        ship.initializeShipPlance(); //2,3 main unit
+        Map<Direction, ConnectorType> connectors = new HashMap<>();
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Single);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 1, 2);
+
+        connectors.put(North, Single);
+        connectors.put(South, Single);
+        connectors.put(East, Double);
+        connectors.put(West, Double);
+        ship.AddComponent(new LivingUnit(LivingUnit, connectors), 1, 3);
+        ((LivingUnit) ship.getComponent(1,3)).addCrewmate(CrewmateType.Astronaut);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Single);
+        connectors.put(East, Smooth);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new Storage(BlueStorage, connectors, 2), 3, 1);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Engine_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+        ship.AddComponent(new CardComponent(Engine, connectors), 2, 4);
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(South, Smooth);
+        connectors.put(East, Single);
+        connectors.put(West, Smooth);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 3, 2);
+
+        connectors.put(North, Single);
+        connectors.put(South, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(West, Universal);
+        ship.AddComponent(new Storage(RedStorage, connectors, 1), 3, 3);
+
+        connectors.put(North, Single);
+        connectors.put(South, Engine_Connector);
+        connectors.put(East, Single);
+        connectors.put(West, Smooth);
+
+        ship.AddComponent(new CardComponent(Engine, connectors), 4, 1);
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Cannon_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(West, Universal);
+        ship.AddComponent(new CardComponent(Cannon, connectors), 4, 2);
+
+        assertTrue(ship.checkShipConnections().isEmpty());
+
+
+        List<Pair<Integer,Integer>> tronconi_1 = new ArrayList<>();
+        tronconi_1.add(new Pair<>(1, 2));
+        tronconi_1.add(new Pair<>(1, 3));
+        tronconi_1.add(new Pair<>(2, 3));
+        tronconi_1.add(new Pair<>(3, 3));
+        tronconi_1.add(new Pair<>(3, 2));
+        tronconi_1.add(new Pair<>(2, 4));
+
+
+        assertTrue( ship.findShipPieces().get(0).containsAll(tronconi_1));
+
+        List<Pair<Integer,Integer>> tronconi_2 = new ArrayList<>();
+        tronconi_2.add(new Pair<>(3, 1));
+        tronconi_2.add(new Pair<>(4, 1));
+        tronconi_2.add(new Pair<>(4, 2));
+        assertTrue( ship.findShipPieces().get(1).containsAll(tronconi_2));
+
+        assertEquals(Boolean.TRUE, ship.validatePiece(ship.findShipPieces().get(0)));
+        assertEquals(Boolean.FALSE, ship.validatePiece(ship.findShipPieces().get(1)));
+
+
+
+
+
+
+    }
+
 }
