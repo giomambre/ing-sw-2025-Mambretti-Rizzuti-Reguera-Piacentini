@@ -107,8 +107,8 @@ public class Board {
             if (entry.getValue().equals(p)) {
                 startingPosition = entry.getKey();
             }
-
         }
+        player_position.remove(startingPosition);
         int not_occupied_spaces = 0;
         //it represents the effective position on the board, assumptions: every cell corresponds to a number(1...24)
         if (pos > 0) {
@@ -123,17 +123,18 @@ public class Board {
                 }
             }
             i--;
-            if (i < BOARD_SIZE) {
+            if (i < BOARD_SIZE && i>0) {
                 player_position.put(i, p);
-                player_position.remove(startingPosition);
-                changeBoard_leader();
+                //changeBoard_leader();
                 return;
             } else {
+                if(i==0){
+                    player_position.put(1, p);
+                }
                 i = i - BOARD_SIZE+1;
                 player_position.put(i, p);
-                player_position.remove(startingPosition);
-                p.addLap();
-                changeBoard_leader();
+                //p.addLap();
+                //changeBoard_leader();
                 return;
             }
         }
@@ -151,23 +152,22 @@ public class Board {
             i++;
             if (i>0) {
                 player_position.put(i, p);
-                player_position.remove(startingPosition);
-                changeBoard_leader();
+                //changeBoard_leader();
                 return;
             }
             if(i==0){
                 player_position.put(1, p);
-                player_position.remove(startingPosition);
-                changeBoard_leader();
+                //changeBoard_leader();
                 return;
             }
             if (i < 0) {
                 i = i + BOARD_SIZE+1;
-                p.subLap();
+                //p.subLap();
                 player_position.put(i, p);
-                player_position.remove(startingPosition);
-                changeBoard_leader();
+                //player_position.remove(startingPosition);
+                //changeBoard_leader();
                 return;
+
             }
 
         }

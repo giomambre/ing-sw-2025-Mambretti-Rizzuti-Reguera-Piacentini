@@ -24,7 +24,7 @@ public class BoardTest {
         player3 = new Player("isabel", Color.Red);
         player4 = new Player("Raffa", Color.Green);
 
-        List<Player> players = Arrays.asList(player1, player2, player3, player4);
+        List<Player> players = Arrays.asList(player1,player2,player3,player4);
         board = new Board(players);
     }
 
@@ -65,9 +65,9 @@ public class BoardTest {
 
     @Test
     public void testMovePlayerWrappingAroundBoard() {
-        board.MovePlayer(player1, 20); // Se la board ha 24 spazi, dovrebbe fare un giro e finire a (7+20) % 24 = 3
+        board.MovePlayer(player1, 20); // Se la board ha 24 spazi, dovrebbe fare un giro e finire a (7+20) % 24+3=6
         Map<Integer, Player> playerPositions = board.GetBoard();
-        assertEquals(player1, playerPositions.get(3));
+        assertEquals(player1, playerPositions.get(6));
     }
 
     @Test
