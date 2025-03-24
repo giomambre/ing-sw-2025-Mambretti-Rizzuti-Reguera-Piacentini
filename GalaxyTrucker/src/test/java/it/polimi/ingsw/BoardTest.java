@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-public class BoardTest {
 
+public class BoardTest {
 
 
     private Board board;
@@ -24,7 +24,7 @@ public class BoardTest {
         player3 = new Player("isabel", Color.Red);
         player4 = new Player("Raffa", Color.Green);
 
-        List<Player> players = Arrays.asList(player1,player2,player3,player4);
+        List<Player> players = Arrays.asList(player1, player2, player3, player4);
         board = new Board(players);
     }
 
@@ -80,29 +80,33 @@ public class BoardTest {
     @Test
     public void testmovePlayerForwardWrappingAroundBoardExtremeCase() {
 
-        //iniziali
+        //iniziali 7 4 2 1
         board.movePlayer(player2, -5); // 4-5-2+24 = 21
         board.movePlayer(player1, -10); // 7-10-3+24 = 18
         Map<Integer, Player> playerPositions = board.getBoard();
+        System.out.println(playerPositions);
         assertEquals(player2, playerPositions.get(21));
         assertEquals(player1, playerPositions.get(18));
     }
 
     @Test
     public void testRankingOrder() {
-        board.movePlayer(player1, 5); // Alice va avanti
+        board.movePlayer(player1, 5); // Alice va avanti arriva a 12
         board.movePlayer(player2, 10); // Mambre va ancora più avanti
         List<Player> ranking = board.getRanking();
 
-        assertEquals(player2, ranking.get(3)); // Mambre è in testa
-        assertEquals(player1, ranking.get(2)); // Alice segue
-        assertEquals(player3, ranking.get(1)); // isabel
-        assertEquals(player4, ranking.get(0)); // Raffa è ultimo
+
+        // 7 4 2 1
+        System.out.println(ranking);
+        assertEquals(player2, ranking.get(0)); // Mambre è in testa
+        assertEquals(player1, ranking.get(1)); // Alice segue
+        assertEquals(player3, ranking.get(2)); // isabel
+        assertEquals(player4, ranking.get(3)); // Raffa ultimo
     }
 
 
     @Test
-    public void checkLeaderTest(){
+    public void checkLeaderTest() {
 
         Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player1, playerPositions.get(7));
@@ -118,9 +122,14 @@ public class BoardTest {
         assertEquals(player2, board.getBoard_leader());
 
 
-        board.movePlayer(player2, 23);
-
+        //board.movePlayer(player4, 34); // non ha senso testarlo non succederà mai
+        board.movePlayer(player4, 21);
         System.out.println(board.getBoard());
+
+        assertEquals(player4, board.getBoard_leader());
+
+
+
 
 
     }

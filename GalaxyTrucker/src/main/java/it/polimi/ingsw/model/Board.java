@@ -38,9 +38,8 @@ public class Board {
      * @see Board checkleader method used at the beginning to check who's the leader
      */
     public void changeBoard_leader() {
-        Player new_leader = checkLeader(player_position);
-        this.board_leader = new_leader;
-        return;
+        this.board_leader = checkLeader(player_position);
+
     }
 
     /**
@@ -49,48 +48,47 @@ public class Board {
      * @return returns the current leader
      */
     public Player checkLeader(Map<Integer, Player> player_position) {
+
+
         List<Player> players = new ArrayList<>(player_position.values());
 
-        //a player is the board_leader based on #laps if he is the maybe_leader and is the only possible candidate (possible_leaders.size()==1)
-        Player maybe_leader = players.get(0);
-        List<Player> possible_leaders = new ArrayList<>();
-        possible_leaders.add(maybe_leader);
-
-        // first of all find the player who did the most number of laps
-        for (int i = 1; i < players.size(); i++) {
-            if (players.get(i).getNum_laps() > maybe_leader.getNum_laps()) {
-                possible_leaders.clear();
-                possible_leaders.add(players.get(i));
-                maybe_leader = players.get(i);
-            }
-            if (players.get(i).getNum_laps() == maybe_leader.getNum_laps()) {
-                possible_leaders.add(players.get(i));
+        //  trova i giocatori con il maggior numero di giri
+        int maxLaps = -1;
+        List<Player> leading_players = new ArrayList<>();
+        for (Player player : players) {
+            System.out.println(player + " " + player.getNum_laps());
+            int laps = player.getNum_laps();
+            if (laps > maxLaps) {
+                maxLaps = laps;
+                leading_players.clear();
+                leading_players.add(player);
+            } else if (laps == maxLaps) {
+                leading_players.add(player);
             }
         }
-        if (possible_leaders.size() == 1) {
-            return maybe_leader;
 
-        } else {
-            //the keys of the HM are the positions of the players
-            List<Integer> positions = new ArrayList<>(player_position.keySet());
-            while (positions.size() > 0) {
-                //let's find out the max position
-                int max = positions.get(0);
-                for (int i = 0; i < positions.size(); i++) {
-                    if (positions.get(i) > max) {
-                        max = positions.get(i);
-                    }
-                }
-                if (possible_leaders.contains(player_position.get(max))) {
-                    return player_position.get(max);
-                } else {
-                    positions.remove(max);
-                }
-            }
-
+        // Se c'è un solo leader per numero di giri, restituiscilo
+        if (leading_players.size() == 1) {
+            return leading_players.get(0);
         }
-        //non dovrebbe mai succedere...
-        return null;
+
+        // Altrimenti, tra i giocatori con lo stesso numero di giri,
+        // trova quello nella posizione più avanzata
+        int maxPosition = Integer.MIN_VALUE;
+        Player leader = null;
+
+        for (Map.Entry<Integer, Player> entry : player_position.entrySet()) {
+            int position = entry.getKey();
+            Player player = entry.getValue();
+
+            // Considera solo i giocatori che sono tra i potenziali leader
+            if (leading_players.contains(player) && position > maxPosition) {
+                maxPosition = position;
+                leader = player;
+            }
+        }
+
+        return leader;
     }
 
 
@@ -100,70 +98,72 @@ public class Board {
      * @param p the player that needs to move his rocket
      * @param pos the number of position gained (if pos>0) or lost (if pos<0)
      */
-    public void movePlayer(Player p, int pos) { //pos è il numero di pos in aggiunta
-        int startingPosition = 0;
+    public void movePlayer(Player p, int pos) {
+        int starting_position = -1;
+
+        if(pos == 0) return;
+
         for (var entry : player_position.entrySet()) {
-
             if (entry.getValue().equals(p)) {
-                startingPosition = entry.getKey();
+                starting_position = entry.getKey();
+                break;
             }
         }
-        player_position.remove(startingPosition);
-        int not_occupied_spaces = 0;
-        //it represents the effective position on the board, assumptions: every cell corresponds to a number(1...24)
-        if (pos > 0) {
-            int i = startingPosition + 1;
 
-            while (not_occupied_spaces < pos) {
-                if (player_position.containsKey(i%BOARD_SIZE)) {
-                    i++;
-                } else {
-                    not_occupied_spaces++;
-                    i++;
+        if (starting_position == -1) {
+            System.out.println("Player not found on the board");
+            return;
+        }
+
+        player_position.remove(starting_position);
+
+        int newPosition;
+
+        if (pos >= 0) {
+            int i = starting_position;
+            int spaces_traversed = 0;
+
+            while (spaces_traversed < pos) {
+                i = i + 1;
+                if (i > BOARD_SIZE) {
+                    i = 1; // Reset to position 1 when exceeding BOARD_SIZE (24)
+                }
+                if (!player_position.containsKey(i)) {
+                    spaces_traversed++;
                 }
             }
-            i--;
-            if(i < BOARD_SIZE) {
-                player_position.put(i, p);
-                //changeBoard_leader();
-                return;
-            } else {
-                i=i%BOARD_SIZE;
-                System.out.println("int i:"+i);
-                player_position.put(i, p);
-                //p.addLap();
-                //changeBoard_leader();
-                return;
+
+            newPosition = i;
+            System.out.println(p + " : " + "old : " +starting_position + "new :" + newPosition);
+            if (newPosition <= starting_position) {
+                p.addLap();
             }
-        }
-        if (pos < 0) {
-            int i = startingPosition - 1;
-            pos = pos * (-1);
-            while (not_occupied_spaces < pos) {
-                if (player_position.containsKey(i%BOARD_SIZE)){
-                    i--;
-                } else {
-                    not_occupied_spaces++;
-                    i--;
+
+        } else {
+            int i = starting_position;
+            int spacesToMove = -pos;
+            int spaces_traversed = 0;
+
+            while (spaces_traversed < spacesToMove) {
+                i = i - 1;
+                if (i < 1) {
+                    i = BOARD_SIZE; 
+                }
+                if (!player_position.containsKey(i)) {
+                    spaces_traversed++;
                 }
             }
-            i++;
-            if (i>0) {
-                player_position.put(i, p);
-                //changeBoard_leader();
-                return;
-            }
-            if (i < 0) {
-                i = i + BOARD_SIZE;
-                //p.subLap();
-                player_position.put(i, p);
-                //player_position.remove(startingPosition);
-                //changeBoard_leader();
-                return;
 
-            }
+            newPosition = i;
 
+            if (newPosition > starting_position) {
+                p.subLap();
+            }
         }
+
+        player_position.put(newPosition, p);
+
+        changeBoard_leader();
     }
 
 

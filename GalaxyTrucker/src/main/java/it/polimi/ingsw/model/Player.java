@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Player {
@@ -91,4 +92,7 @@ public class Player {
 
     public void subLap(){ this.num_laps--; }
 
+    public String toString(){
+        return this.nickname;
+    }
 }
