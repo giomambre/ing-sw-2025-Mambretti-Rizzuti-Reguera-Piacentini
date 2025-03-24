@@ -38,7 +38,7 @@ public class Board {
      * @see Board checkleader method used at the beginning to check who's the leader
      */
     public void changeBoard_leader() {
-        this.board_leader = checkLeader(player_position);
+        this.board_leader = getRanking().get(0);
 
     }
 
@@ -181,20 +181,20 @@ public class Board {
      * </ul>
      */
     public List<Player> getRanking() {
-        List<Player> ranking = new ArrayList<>();
-        HashMap<Integer, Player> tmp_player_position = new HashMap<>();
-        tmp_player_position.putAll(player_position);
-        Player tmp_player;
-        while (tmp_player_position.size() > 0) {
-            tmp_player=checkLeader(tmp_player_position);
-            ranking.add(tmp_player);
-            for (var entry : tmp_player_position.entrySet()) {
-                if (entry.getValue().equals(tmp_player)) {
-                    tmp_player_position.remove(entry.getKey());
-                }
-            }
-        }
-        return ranking;
+        return player_position.entrySet().stream()
+                .sorted((a, b) -> {
+                    Player p1 = a.getValue();
+                    Player p2 = b.getValue();
+
+                    int giri_compare = Integer.compare(p2.getNum_laps(), p1.getNum_laps());
+                    if (giri_compare != 0) {
+                        return giri_compare;
+                    }
+
+                    return Integer.compare(b.getKey(), a.getKey());
+                })
+                .map(Map.Entry::getValue)
+                .toList();
     }
 
 

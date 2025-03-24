@@ -122,9 +122,7 @@ public class BoardTest {
         assertEquals(player2, board.getBoard_leader());
 
 
-        //board.movePlayer(player4, 34); // non ha senso testarlo non succederà mai
         board.movePlayer(player4, 21);
-        System.out.println(board.getBoard());
 
         assertEquals(player4, board.getBoard_leader());
 

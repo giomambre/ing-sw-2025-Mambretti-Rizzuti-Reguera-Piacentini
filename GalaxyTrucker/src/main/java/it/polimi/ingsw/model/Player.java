@@ -86,7 +86,9 @@ public class Player {
         return game;
     }
 
-    public int getNum_laps() {return num_laps;}
+    public int getNum_laps() {
+        return num_laps;
+    }
 
     public void addLap(){ this.num_laps++; }
 
