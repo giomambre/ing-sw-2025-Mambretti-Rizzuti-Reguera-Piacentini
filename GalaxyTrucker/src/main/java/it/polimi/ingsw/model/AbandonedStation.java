@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class AbandonedStation extends  CardAdventure{
 
-    int needed_crewmates ;
-    List<Cargo> cargo_reward; //da capire come implementare quali l utente accetta e quali rifiuta
+    private int needed_crewmates ;
+    private List<Cargo> cargo_reward; //da capire come implementare quali l utente accetta e quali rifiuta
 
 
 

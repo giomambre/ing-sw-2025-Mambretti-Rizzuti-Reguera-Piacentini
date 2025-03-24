@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class MeteorSwarm extends CardAdventure {
 
-    List<Pair<MeteorType, Direction>> meteors;
+    private List<Pair<MeteorType, Direction>> meteors;
 
     public MeteorSwarm(int level, int cost_of_days, CardAdventureType type, Board board, List<Pair<MeteorType, Direction>> meteors) {
         super(level, cost_of_days, type, board);

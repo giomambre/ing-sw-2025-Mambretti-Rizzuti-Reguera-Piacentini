@@ -6,8 +6,6 @@
 
     public class OpenSpace extends CardAdventure{ //every player in the lobby will move
 
-
-
         public OpenSpace(int level, int cost_of_days, CardAdventureType type , Board board) {
             super(level, cost_of_days,type ,board);
         }

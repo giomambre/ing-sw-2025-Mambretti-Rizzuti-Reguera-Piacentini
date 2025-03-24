@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Planets extends CardAdventure {
-    List<List<Cargo>> cargo_reward;
+    private List<List<Cargo>> cargo_reward;
 
     public Planets(int level, int cost_of_days, CardAdventureType type, Board board, List<List<Cargo>> cargo_reward) {
         super(level, cost_of_days, type, board);
