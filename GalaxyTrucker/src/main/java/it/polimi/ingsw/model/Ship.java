@@ -498,6 +498,17 @@ public class Ship {
 
     }
 
+    public Pair<Integer,Integer> getCoords(CardComponent component) {
+        for(int i = 0; i < ROWS; i++) {
+            for(int j = 0; j < COLS; j++) {
+                if(this.getComponent(i, j) == component) {
+                    return new Pair(i, j);
+                }
+            }
+        }
+        return new Pair(0,0);
+    }
+
 
     public void removeComponent(int x, int y) {
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -505,6 +516,8 @@ public class Ship {
         connectors.put(South, EmptyConnector);
         connectors.put(East, EmptyConnector);
         connectors.put(West, EmptyConnector);
+
+
 
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
@@ -535,7 +548,7 @@ public class Ship {
 
     public CardComponent getFirstComponent(Direction dir , int pos ) {
 
-
+// ritorna un component NOT ACCESSIBLE se non ce nessun componente colpito
 
         switch (dir) {
             case North:
