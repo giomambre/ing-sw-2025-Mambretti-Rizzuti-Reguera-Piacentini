@@ -29,9 +29,6 @@ public class Board {
 
     }
 
-    public int getPlayerPosition(Player player) {
-
-    }
 
     public Player getBoard_leader() {
         return board_leader;
@@ -93,6 +90,16 @@ public class Board {
         }
 
         return leader;
+    }
+
+    public int getPlayerPosition(Player p) {
+
+        for (var entry : player_position.entrySet()) {
+            if (entry.getValue().equals(p)) {
+                return entry.getKey();
+            }
+        }
+        return 0;
     }
 
 
@@ -165,6 +172,7 @@ public class Board {
             }
         }
 
+        lappedPlayers();
         player_position.put(newPosition, p);
 
         changeBoard_leader();
@@ -203,22 +211,29 @@ public class Board {
 
 
 
-
-
-    }
-
-
-
     public void lappedPlayers() {
         List<Player> players = new ArrayList<>(getRanking());
+        Game game = new Game();
         Player leader = players.get(0);
+        List<Player> active_players = game.getActivePlayers();
+
         for (int i = 1; i < players.size(); i++) {
             Player player = players.get(i);
-            if(leader.getNum_laps() > player.getNum_laps() && ) {}
+
+            if(leader.getNum_laps() > player.getNum_laps() && getPlayerPosition(leader)>getPlayerPosition(player)) {
+                active_players.remove(player);
+            }
         }
+
+        game.setActivePlayers(active_players);
+    }
 
     }
 
 
 
-}
+
+
+
+
+
