@@ -7,6 +7,8 @@ import java.util.*;
 import static it.polimi.ingsw.model.ComponentType.*;
 import static it.polimi.ingsw.model.ConnectorType.*;
 
+import static it.polimi.ingsw.model.CrewmateType.BrownAlien;
+import static it.polimi.ingsw.model.CrewmateType.PinkAlien;
 import static it.polimi.ingsw.model.Direction.*;
 
 public class Ship {
@@ -131,8 +133,40 @@ public class Ship {
 
             }
         }
+        if(power > 0 && findPinkAlien())   {power +=2;}
+
         return power;
 
+    }
+
+    public boolean findPinkAlien(){
+        boolean pink_alien = false;
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                CardComponent component = this.getComponent(row, col);
+
+                if (component.getComponentType() == PinkAlienUnit && ((LivingUnit)component).getCrewmateType() == PinkAlien ){
+                    pink_alien=true;
+                }
+
+            }
+        }
+        return pink_alien;
+    }
+
+    public boolean findBrownAlien(){
+        boolean brown_alien = false;
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                CardComponent component = this.getComponent(row, col);
+
+                if (component.getComponentType() == BrownAlienUnit && ((LivingUnit)component).getCrewmateType() == BrownAlien ){
+                    brown_alien=true;
+                }
+
+            }
+        }
+        return brown_alien;
     }
 
     private List<CardComponent> getAvailableBatteries() {
@@ -182,6 +216,7 @@ public class Ship {
 
             }
         }
+        if(power > 0 && findBrownAlien())   {power +=2;}
         return power;
 
     }
