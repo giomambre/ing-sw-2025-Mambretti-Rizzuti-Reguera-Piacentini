@@ -100,7 +100,7 @@ public class Board {
      * @param p the player that needs to move his rocket
      * @param pos the number of position gained (if pos>0) or lost (if pos<0)
      */
-    public void MovePlayer(Player p, int pos) { //pos è il numero di pos in aggiunta
+    public void movePlayer(Player p, int pos) { //pos è il numero di pos in aggiunta
         int startingPosition = 0;
         for (var entry : player_position.entrySet()) {
 
@@ -167,7 +167,7 @@ public class Board {
     }
 
 
-    public Map<Integer, Player> GetBoard() {
+    public Map<Integer, Player> getBoard() {
         return player_position;
     }
 
@@ -180,7 +180,7 @@ public class Board {
      *     <li>and so on...
      * </ul>
      */
-    public List<Player> GetRanking() {
+    public List<Player> getRanking() {
         List<Player> ranking = new ArrayList<>();
         HashMap<Integer, Player> tmp_player_position = new HashMap<>();
         tmp_player_position.putAll(player_position);

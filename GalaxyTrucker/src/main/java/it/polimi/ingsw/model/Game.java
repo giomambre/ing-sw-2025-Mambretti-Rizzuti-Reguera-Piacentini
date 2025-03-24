@@ -50,7 +50,7 @@ public class Game {
     /**
      * this method adds every Card Component existent to the deck of card components and then shuffles it
      */
-    public void InitializeDeckComponents() {
+    public void initializeDeckComponents() {
 
 
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -1369,10 +1369,10 @@ public class Game {
      * @return return a random card component from the deck that is faced up
      * @see CardComponent as 'random card component' we mean a card component whose face_down==true
      */
-    public CardComponent GetRandomCardComponent(Player player) {
+    public CardComponent getRandomCardComponent(Player player) {
         CardComponent card_drawn= deck_components.removeFirst();
         while(card_drawn.getFace()==false){
-            player.DismissComponent(card_drawn);
+            player.dismissComponent(card_drawn);
             card_drawn=deck_components.removeFirst();
         }
         card_drawn.changeFaceShowed();
@@ -1387,7 +1387,7 @@ public class Game {
      * @see CardComponent as 'Not Random Card' we mean a card that is already face up (face_down==false)
      * @return it returns the list of Card Components that are already known
      */
-    public List<CardComponent> GetNotRandomComponents() {
+    public List<CardComponent> getNotRandomComponents() {
         List<CardComponent> choosable=new ArrayList<>();
         for(int i=0; i<deck_components.size(); i++){
             if(deck_components.get(i).getFace()==false){
@@ -1398,8 +1398,8 @@ public class Game {
     }
 
 
-    public CardComponent GetCardComponentAtIndex(int index) {
-        List<CardComponent> choosable  = GetNotRandomComponents();
+    public CardComponent getCardComponentAtIndex(int index) {
+        List<CardComponent> choosable  = getNotRandomComponents();
         return choosable.remove(index);
     }
 
@@ -1408,7 +1408,7 @@ public class Game {
      * @return it returns the first card adventure of the deck, if we already solved all the adventures it returns null
      */
     //secondo me potrebbe avere senso una exception
-    public CardAdventure GetRandomCardAdventure() {
+    public CardAdventure getRandomCardAdventure() {
         CardAdventure adventure = deck_adventure.removeFirst();
         if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO"); //manca da fare la gestione della fine del gioco
         return adventure;

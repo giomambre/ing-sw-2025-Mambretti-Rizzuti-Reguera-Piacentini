@@ -17,13 +17,13 @@ public class Player {
         this.num_laps = 0;
     }
 
-    public void EndBuild(){
+    public void endBuild(){
         List<Player> active_players = game.getActivePlayers();
         active_players.add(this);
         game.setActivePlayers(active_players);
     }
 
-    public void SecureComponent(CardComponent component) {
+    public void secureComponent(CardComponent component) {
         List<CardComponent> extra_components = ship.getExtra_components();
         if(extra_components.size() < 2) {
             extra_components.add(component);
@@ -32,30 +32,30 @@ public class Player {
 
     }
 
-    public void AddToShip(CardComponent component, int row, int col) {
+    public void addToShip(CardComponent component, int row, int col) {
         ship.AddComponent(component, row, col);
     }
 
-    public void DismissComponent(CardComponent component) {
+    public void dismissComponent(CardComponent component) {
         List<CardComponent> deck_components = game.getDeck_components();
         deck_components.add(component);
         game.setDeck_components(deck_components);
     }
 
-    public void UseExtraComponent(CardComponent component) {
+    public void useExtraComponent(CardComponent component) {
         List<CardComponent> extra_components = ship.getExtra_components();
         extra_components.remove(component);
         ship.setExtra_components(extra_components);
     }
 
-    public int ThrowDice(){
+    public int throwDice(){
         Random dice1 = new Random();
         Random dice2 = new Random();
 
         return (dice1.nextInt(6)+1)+(dice2.nextInt(6)+1);
     }
 
-    public void reciveCredits(int credits) {
+    public void receiveCredits(int credits) {
         this.credits += credits ;
     }
 
