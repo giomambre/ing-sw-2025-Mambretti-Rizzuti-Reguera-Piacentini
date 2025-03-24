@@ -57,7 +57,7 @@ public class AbandonedStationTest {
         ship_1.AddComponent(new Storage(RedStorage,connectors,2),3,1);
         ship_1.AddComponent(new Storage(BlueStorage,connectors,3),4,1);
 
-        assertEquals(board.GetBoard().get(7),player1);
+        assertEquals(board.getBoard().get(7),player1);
 
         Map<CardComponent , Map<Cargo,Integer>> new_cargo_positions = new HashMap<>();
 

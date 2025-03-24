@@ -33,14 +33,14 @@ public class PlayerTest {
 
     @Test
     public void testsecureComponent() {
-        player.SecureComponent(component);
+        player.secureComponent(component);
         assertEquals(1, player.getShip().getExtra_components().size());
     }
 
     @Test
     public void testuseExtraComponent() {
-        player.SecureComponent(component);
-        player.UseExtraComponent(component);
+        player.secureComponent(component);
+        player.useExtraComponent(component);
         assertEquals(0, player.getShip().getExtra_components().size());
 
     }

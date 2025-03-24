@@ -24,7 +24,7 @@ public class AbandonedStation extends  CardAdventure{
     public void execute(Player player,Map<CardComponent , Map<Cargo,Integer>> new_cargo_positions) {
 
         Ship ship_player = player.getShip();
-        board.MovePlayer(player, -getCost_of_days());
+        board.movePlayer(player, -getCost_of_days());
         for (int i = 0; i < ship_player.getROWS(); i++) {
             for (int j = 0; j < ship_player.getCOLS(); j++) {
 

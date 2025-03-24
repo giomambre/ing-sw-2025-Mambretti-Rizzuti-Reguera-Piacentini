@@ -21,8 +21,8 @@ public class AbandonedShip extends CardAdventure {
     public void execute(Player player, Map<CardComponent,Integer> astronaut_losses) {
 
         Ship ship_player = player.getShip();
-        player.reciveCredits(given_credits);
-        board.MovePlayer(player,- getCost_of_days());
+        player.receiveCredits(given_credits);
+        board.movePlayer(player,- getCost_of_days());
 
         for (int i = 0; i < ship_player.getROWS(); i++) {
             for (int j = 0; j < ship_player.getCOLS(); j++) {

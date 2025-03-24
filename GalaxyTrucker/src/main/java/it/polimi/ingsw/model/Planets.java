@@ -17,7 +17,7 @@ public class Planets extends CardAdventure {
 
         for (Player player : players.keySet()) {
 
-            board.MovePlayer(player,-getCost_of_days());// fa perdere i giorni
+            board.movePlayer(player,-getCost_of_days());// fa perdere i giorni
             Ship ship_player = player.getShip();
 
 

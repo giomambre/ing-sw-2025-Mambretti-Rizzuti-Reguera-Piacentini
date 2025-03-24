@@ -30,7 +30,7 @@ public class BoardTest {
 
     @Test
     public void testInitialPositions() {
-        Map<Integer, Player> playerPositions = board.GetBoard();
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player1, playerPositions.get(7));
         assertEquals(player2, playerPositions.get(4));
         assertEquals(player3, playerPositions.get(2));
@@ -41,56 +41,58 @@ public class BoardTest {
     //runnarli dovete runnare questo file, non  App.java
 
     @Test
-    public void testMovePlayerForward() {
-        board.MovePlayer(player1, 3);
-        Map<Integer, Player> playerPositions = board.GetBoard();
+    public void testmovePlayerForward() {
+        board.movePlayer(player1, 3);
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertNull(playerPositions.get(7));  // Vecchia posizione vuota
         assertEquals(player1, playerPositions.get(10)); // Nuova posizione corretta
     }
 
     @Test
-    public void testMovePlayerBackward() {
-        board.MovePlayer(player1, -2);
-        Map<Integer, Player> playerPositions = board.GetBoard();
+    public void testmovePlayerBackward() {
+        board.movePlayer(player1, -2);
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertNull(playerPositions.get(7)); // Vecchia posizione vuota
         assertEquals(player1, playerPositions.get(5)); // Nuova posizione corretta
     }
 
     @Test
-    public void testMovePlayerSkippingOccupiedSpaces() {
-        board.MovePlayer(player2, 3); // Mambre dovrebbe andare a 8 (salta 7 perché occupata)
-        Map<Integer, Player> playerPositions = board.GetBoard();
+    public void testmovePlayerSkippingOccupiedSpaces() {
+        board.movePlayer(player2, 3); // Mambre dovrebbe andare a 8 (salta 7 perché occupata)
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player2, playerPositions.get(8));
     }
 
     @Test
-    public void testMovePlayerWrappingAroundBoard() {
-        board.MovePlayer(player1, 20); // Se la board ha 24 spazi, dovrebbe fare un giro e finire a (7+20) % 24+3=6
-        Map<Integer, Player> playerPositions = board.GetBoard();
+    public void testmovePlayerWrappingAroundBoard() {
+        board.movePlayer(player1, 20); // Se la board ha 24 spazi, dovrebbe fare un giro e finire a (7+20) % 24+3=6
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player1, playerPositions.get(6));
     }
 
     @Test
-    public void testMovePlayerBackwardWrappingAroundBoard() {
-        board.MovePlayer(player1, -8); // (7-8) + 24 = 20 perchè 3 caselle sono occupate dagli altri 3 player
-        Map<Integer, Player> playerPositions = board.GetBoard();
+    public void testmovePlayerBackwardWrappingAroundBoard() {
+        board.movePlayer(player1, -8); // (7-8) + 24 = 20 perchè 3 caselle sono occupate dagli altri 3 player
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player1, playerPositions.get(20));
     }
 
     @Test
-    public void testMovePlayerForwardWrappingAroundBoardExtremeCase() {
-        board.MovePlayer(player2, -5); // 4-5-2+24 = 21
-        board.MovePlayer(player1, -10); // 7-10-3+24 = 18
-        Map<Integer, Player> playerPositions = board.GetBoard();
+    public void testmovePlayerForwardWrappingAroundBoardExtremeCase() {
+
+        //iniziali
+        board.movePlayer(player2, -5); // 4-5-2+24 = 21
+        board.movePlayer(player1, -10); // 7-10-3+24 = 18
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player2, playerPositions.get(21));
         assertEquals(player1, playerPositions.get(18));
     }
 
     @Test
     public void testRankingOrder() {
-        board.MovePlayer(player1, 5); // Alice va avanti
-        board.MovePlayer(player2, 10); // Mambre va ancora più avanti
-        List<Player> ranking = board.GetRanking();
+        board.movePlayer(player1, 5); // Alice va avanti
+        board.movePlayer(player2, 10); // Mambre va ancora più avanti
+        List<Player> ranking = board.getRanking();
 
         assertEquals(player2, ranking.get(3)); // Mambre è in testa
         assertEquals(player1, ranking.get(2)); // Alice segue
@@ -102,7 +104,7 @@ public class BoardTest {
     @Test
     public void checkLeaderTest(){
 
-        Map<Integer, Player> playerPositions = board.GetBoard();
+        Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player1, playerPositions.get(7));
         assertEquals(player2, playerPositions.get(4));
         assertEquals(player3, playerPositions.get(2));
@@ -110,15 +112,15 @@ public class BoardTest {
         board.changeBoard_leader();
         assertEquals(player1, board.getBoard_leader());
 
-        board.MovePlayer(player2, 3);
+        board.movePlayer(player2, 3);
 
         board.changeBoard_leader();
         assertEquals(player2, board.getBoard_leader());
 
 
-        board.MovePlayer(player2, 23);
+        board.movePlayer(player2, 23);
 
-        System.out.println(board.GetBoard());
+        System.out.println(board.getBoard());
 
 
     }

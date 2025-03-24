@@ -85,7 +85,7 @@ public class OpenSpaceTest {
 
         ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
-        Map<Integer, Player> playerPositions = board.GetBoard();
+        Map<Integer, Player> playerPositions = board.getBoard();
 
         //partenza 2,4,7
         assertEquals(playerPositions.get(10), player1);
@@ -112,7 +112,7 @@ public class OpenSpaceTest {
         List<Player> players = Arrays.asList(player1, player2, player3);
         ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
-        Map<Integer, Player> playerPositions = board.GetBoard();
+        Map<Integer, Player> playerPositions = board.getBoard();
 
         //partenza 2,4,7
 
@@ -157,7 +157,7 @@ public class OpenSpaceTest {
 
         ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
-        Map<Integer, Player> playerPositions = board.GetBoard();
+        Map<Integer, Player> playerPositions = board.getBoard();
 
         //partenza 2,4,7
         //player 1 si muove prima di player 2 che arrivano entrambi a 10, ma il player 2 lo sorpassa

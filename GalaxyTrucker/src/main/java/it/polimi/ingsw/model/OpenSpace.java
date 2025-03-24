@@ -21,7 +21,7 @@
                 Map<CardComponent, Boolean> playerBatteryUsage = batteryUsageMap.getOrDefault(player, new HashMap<>());
 
                 int power = (int) player.getShip().calculateEnginePower(playerBatteryUsage); // Passiamo la mappa con l'uso delle batterie
-                board.MovePlayer(player,power);
+                board.movePlayer(player,power);
 
             }
 
