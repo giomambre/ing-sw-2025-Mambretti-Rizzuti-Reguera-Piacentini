@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import javafx.util.Pair;
 
+import javax.smartcardio.Card;
 import java.util.*;
 
 import static it.polimi.ingsw.model.ComponentType.*;
@@ -12,6 +13,9 @@ import static it.polimi.ingsw.model.CrewmateType.PinkAlien;
 import static it.polimi.ingsw.model.Direction.*;
 
 public class Ship {
+
+
+
 
     private int ROWS = 5, COLS = 7;
     private CardComponent[][] ship_plance = new CardComponent[ROWS][COLS];
@@ -63,11 +67,10 @@ public class Ship {
 
         }
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-        connectors.put(North,EmptyConnector);
-        connectors.put(South,EmptyConnector);
-        connectors.put(East,EmptyConnector);
-        connectors.put(West,EmptyConnector);
-
+        connectors.put(North, EmptyConnector);
+        connectors.put(South, EmptyConnector);
+        connectors.put(East, EmptyConnector);
+        connectors.put(West, EmptyConnector);
 
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
@@ -133,20 +136,22 @@ public class Ship {
 
             }
         }
-        if(power > 0 && findPinkAlien())   {power +=2;}
+        if (power > 0 && findPinkAlien()) {
+            power += 2;
+        }
 
         return power;
 
     }
 
-    public boolean findPinkAlien(){
+    public boolean findPinkAlien() {
         boolean pink_alien = false;
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 CardComponent component = this.getComponent(row, col);
 
-                if (component.getComponentType() == PinkAlienUnit && ((LivingUnit)component).getCrewmateType() == PinkAlien ){
-                    pink_alien=true;
+                if (component.getComponentType() == PinkAlienUnit && ((LivingUnit) component).getCrewmateType() == PinkAlien) {
+                    pink_alien = true;
                 }
 
             }
@@ -154,14 +159,14 @@ public class Ship {
         return pink_alien;
     }
 
-    public boolean findBrownAlien(){
+    public boolean findBrownAlien() {
         boolean brown_alien = false;
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 CardComponent component = this.getComponent(row, col);
 
-                if (component.getComponentType() == BrownAlienUnit && ((LivingUnit)component).getCrewmateType() == BrownAlien ){
-                    brown_alien=true;
+                if (component.getComponentType() == BrownAlienUnit && ((LivingUnit) component).getCrewmateType() == BrownAlien) {
+                    brown_alien = true;
                 }
 
             }
@@ -216,58 +221,59 @@ public class Ship {
 
             }
         }
-        if(power > 0 && findBrownAlien())   {power +=2;}
+        if (power > 0 && findBrownAlien()) {
+            power += 2;
+        }
         return power;
 
     }
 
 
-
-
-    public Boolean checkCorrectConnections( int x, int y) {
+    public Boolean checkCorrectConnections(int x, int y) {
         CardComponent card = getComponent(x, y);
-        if(card.getComponentType() == Empty || card.getComponentType() == NotAccessible) {
+        if (card.getComponentType() == Empty || card.getComponentType() == NotAccessible) {
             return true;
         }
         for (Direction direction : Direction.values()) {
 
-            if(card.getConnector(direction) == Engine_Connector ) {
+            if (card.getConnector(direction) == Engine_Connector) {
 
-                if(direction!=South) return false;
+                if (direction != South) return false;
 
             }
 
-             {
+            {
                 switch (direction) {
 
                     case North:
 
 
-                        if(x != 0 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x - 1, y).getConnector(South))
-                                ) return false;
+                        if (x != 0 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x - 1, y).getConnector(South))
+                        ) return false;
 
                         break;
 
-                    case East: if (y != COLS-1 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x , y + 1).getConnector(West))
-                    ) return false;
+                    case East:
+                        if (y != COLS - 1 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x, y + 1).getConnector(West))
+                        ) return false;
                         break;
 
                     case South:
                         if (x != ROWS - 1 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x + 1, y).getConnector(North))
-                                ) return false;
+                        ) return false;
                         break;
 
-                        case West: if (y != 0 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x , y - 1).getConnector(East))
-                               ) return false;
-                            break;
-
+                    case West:
+                        if (y != 0 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x, y - 1).getConnector(East))
+                        ) return false;
+                        break;
 
 
                 }
             }
 
         }
-        return  true;
+        return true;
     }
 
     public List<Pair<Integer, Integer>> checkShipConnections() {
@@ -277,11 +283,9 @@ public class Ship {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
-               if (!checkCorrectConnections(row, col)) {
-                   invalids.add(new Pair<>(row, col));
-               }
-
-
+                if (!checkCorrectConnections(row, col)) {
+                    invalids.add(new Pair<>(row, col));
+                }
 
 
             }
@@ -324,8 +328,6 @@ public class Ship {
     }
 
 
-
-
     public List<List<Pair<Integer, Integer>>> findShipPieces() {
         List<List<Pair<Integer, Integer>>> pieces = new ArrayList<>(); // lista di Tronconi
         Set<Pair<Integer, Integer>> visited = new HashSet<>();
@@ -341,7 +343,8 @@ public class Ship {
                     List<Pair<Integer, Integer>> piece = new ArrayList<>();
                     explorePiece(row, col, visited, piece);
 
-                    pieces.add(piece);
+                    if(validatePiece(piece) ) pieces.add(piece); // se non è valido
+                    else deletePiece(piece);
                 }
             }
         }
@@ -398,7 +401,7 @@ public class Ship {
         }
     }
 
-    public int calculateExposedConnectors(){
+    public int calculateExposedConnectors() {
         int exposed_connectors = 0;
         CardComponent component;
 
@@ -408,30 +411,30 @@ public class Ship {
 
                 component = this.getComponent(row, col);
 
-                for (Direction direction : Direction.values()){
+                for (Direction direction : Direction.values()) {
                     switch (direction) {
 
                         case North:
-                            if((component.getConnector(North)==Universal || component.getConnector(North)==Double || component.getConnector(North)==Single)
-                            && this.getComponent(row-1 , col).getConnector(South) == EmptyConnector)
+                            if ((component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
+                                    && this.getComponent(row - 1, col).getConnector(South) == EmptyConnector)
                                 exposed_connectors++;
                             break;
 
                         case South:
-                            if((component.getConnector(South)==Universal || component.getConnector(South)==Double || component.getConnector(South)==Single)
-                                    && this.getComponent(row+1 , col).getConnector(North) == EmptyConnector)
+                            if ((component.getConnector(South) == Universal || component.getConnector(South) == Double || component.getConnector(South) == Single)
+                                    && this.getComponent(row + 1, col).getConnector(North) == EmptyConnector)
                                 exposed_connectors++;
                             break;
 
                         case East:
-                            if((component.getConnector(East)==Universal || component.getConnector(East)==Double || component.getConnector(East)==Single)
-                                    && this.getComponent(row , col+1).getConnector(West) == EmptyConnector)
+                            if ((component.getConnector(East) == Universal || component.getConnector(East) == Double || component.getConnector(East) == Single)
+                                    && this.getComponent(row, col + 1).getConnector(West) == EmptyConnector)
                                 exposed_connectors++;
                             break;
 
                         case West:
-                            if((component.getConnector(West)==Universal || component.getConnector(West)==Double || component.getConnector(West)==Single)
-                                    && this.getComponent(row , col-1).getConnector(East) == EmptyConnector)
+                            if ((component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
+                                    && this.getComponent(row, col - 1).getConnector(East) == EmptyConnector)
                                 exposed_connectors++;
                             break;
 
@@ -439,8 +442,7 @@ public class Ship {
                 }
 
 
-
-                switch(col){
+                switch (col) {
                     case 0:
                         if (component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
                             exposed_connectors++;
@@ -452,7 +454,7 @@ public class Ship {
                         break;
                 }
 
-                switch(row){
+                switch (row) {
                     case 0:
                         if (component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
                             exposed_connectors++;
@@ -475,41 +477,39 @@ public class Ship {
         return ship_plance[x][y];
     }
 
-    public Boolean validatePiece(List<Pair<Integer,Integer>> piece) {
+    public Boolean validatePiece(List<Pair<Integer, Integer>> piece) {
         int valide = 0;
         for (Pair<Integer, Integer> pos : piece) {
             int x = pos.getKey();
             int y = pos.getValue();
 
             CardComponent component = ship_plance[x][y];
-            if(component.getComponentType() == Engine || component.getComponentType() == DoubleEngine ) {
-            valide++;
-        }else if(component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_astronaut()>=1 ){
+            if (component.getComponentType() == Engine || component.getComponentType() == DoubleEngine) {
+                valide++;
+            } else if (component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_astronaut() >= 1) {
 
                 valide++;
 
             }
         }
 
-        return  valide == 2 ;
-
+        return valide == 2;
 
 
     }
 
 
-   public void removeComponent(int x, int y) {
-       Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-       connectors.put(North,EmptyConnector);
-       connectors.put(South,EmptyConnector);
-       connectors.put(East,EmptyConnector);
-       connectors.put(West,EmptyConnector);
+    public void removeComponent(int x, int y) {
+        Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
+        connectors.put(North, EmptyConnector);
+        connectors.put(South, EmptyConnector);
+        connectors.put(East, EmptyConnector);
+        connectors.put(West, EmptyConnector);
 
 
-
-       CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
         ship_plance[x][y] = EMPTY_CELL;
-   }
+    }
 
     public void setExtra_components(List<CardComponent> extraComponents) {
         this.extra_components = extraComponents;
@@ -519,13 +519,89 @@ public class Ship {
         return extra_components;
     }
 
-        public Direction getOpposite(Direction dir){
-            switch (dir){
-                case North: return South;
-                case East: return West;
-                case South: return North;
-                default: return East;
+    public Direction getOpposite(Direction dir) {
+        switch (dir) {
+            case North:
+                return South;
+            case East:
+                return West;
+            case South:
+                return North;
+            default:
+                return East;
 
-            }
         }
+    }
+
+    public CardComponent getFirstComponent(Direction dir , int pos ) {
+
+
+
+        switch (dir) {
+            case North:
+                for (int i = 0; i < ROWS; i++) {
+                    if (ship_plance[i][pos - 4].getComponentType() != ComponentType.Empty && ship_plance[i][pos - 4].getComponentType() != NotAccessible)
+                        return ship_plance[i][pos - 4];
+                }
+                return ship_plance[0][0];
+            case South:
+                for (int i = ROWS - 1; i >= 0; i--) {
+                    if (ship_plance[i][pos - 4].getComponentType() != ComponentType.Empty && ship_plance[i][pos - 4].getComponentType() != NotAccessible)
+                        return ship_plance[i][pos - 4];
+                }
+                return ship_plance[0][0];
+
+            case West:
+                for (int i = 0; i < COLS; i++) {
+                    if (ship_plance[pos - 5][i].getComponentType() != ComponentType.Empty && ship_plance[pos - 5][i].getComponentType() != NotAccessible)
+                        return ship_plance[pos - 5][i];
+                }
+                return ship_plance[0][0];
+
+            case East:
+                for (int i = COLS - 1; i >= 0; i--) {
+                    if (ship_plance[pos - 5][i].getComponentType() != ComponentType.Empty && ship_plance[pos - 5][i].getComponentType() != NotAccessible)
+                        return ship_plance[pos - 5][i];
+                }
+                return ship_plance[0][0];
+
+
+        }
+
+        return ship_plance[0][0];
+    }
+
+    public void choosePiece(int choose){
+        List<List<Pair<Integer, Integer>>> pieces = new ArrayList<>(findShipPieces());
+        for (int i = 0; i < pieces.size() ; i++) {
+            if (i != choose) {
+                deletePiece(pieces.get(i));
+            }
+
+    }
+    }
+
+    public void deletePiece(List<Pair<Integer, Integer>> piece){
+
+                       for(Pair<Integer, Integer> pos : piece){
+                           removeComponent(pos.getKey(),pos.getValue());
+                       }
+
+        }
+
+
+    public void RemoveComponent(int row, int col) {
+
+        Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
+        connectors.put(North,EmptyConnector);
+        connectors.put(South,EmptyConnector);
+        connectors.put(East,EmptyConnector);
+        connectors.put(West,EmptyConnector);
+
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+
+        ship_plance[row][col] = EMPTY_CELL;
+
+    }
+
 }

@@ -343,6 +343,18 @@ public class ShipTest {
 
 
 
+        //TEST getFirst Component
+
+        assertEquals(ship.getComponent(3,1),ship.getFirstComponent(North,5));
+        assertEquals(ship.getComponent(4,1),ship.getFirstComponent(South,5));
+        assertEquals(ship.getComponent(0,0),ship.getFirstComponent(East,5));
+        assertEquals(ship.getComponent(1,3),ship.getFirstComponent(East,6));
+        assertEquals(ship.getComponent(0,0),ship.getFirstComponent(West,5));
+        assertEquals(ship.getComponent(0,0),ship.getFirstComponent(West,5));
+
+
+
+
 
 
 
@@ -389,5 +401,8 @@ public class ShipTest {
         assertEquals(5,ship.calculateExposedConnectors());
 
     }
+
+
+
 
 }

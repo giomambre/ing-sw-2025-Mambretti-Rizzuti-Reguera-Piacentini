@@ -38,9 +38,9 @@ public class Board {
      * this method is called to eventually change the board leader.
      * @see Board checkleader method used at the beginning to check who's the leader
      */
+
     public void changeBoard_leader() {
         this.board_leader = getRanking().get(0);
-
     }
 
     /**
