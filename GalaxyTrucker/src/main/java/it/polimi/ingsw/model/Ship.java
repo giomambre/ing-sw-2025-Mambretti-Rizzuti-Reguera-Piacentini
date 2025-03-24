@@ -37,7 +37,7 @@ public class Ship {
         return COLS;
     }
 
-    public void AddComponent(CardComponent component, int row, int col) {
+    public void addComponent(CardComponent component, int row, int col) {
 
         //Controllo se è gia presente un elemento in quella pos, da capire se farlo nel controller o qui
 

@@ -33,12 +33,6 @@ public class CardComponent {
         return connectors.get(direction);
     }
 
-    public List<ConnectorType> getvalidsconnectors(ConnectorType connector){
-        List<ConnectorType> valids = new ArrayList<ConnectorType>();
-        return  valids;
-        //da fare
-    }
-
     public List<ConnectorType> getValidsConnectors(ConnectorType connector){
         List<ConnectorType> valids= new ArrayList<>();
         switch (connector){
