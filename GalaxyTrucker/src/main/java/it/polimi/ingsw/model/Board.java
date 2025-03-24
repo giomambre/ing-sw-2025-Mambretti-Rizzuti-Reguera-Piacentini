@@ -115,7 +115,7 @@ public class Board {
             int i = startingPosition + 1;
 
             while (not_occupied_spaces < pos) {
-                if (player_position.containsKey(i)) {
+                if (player_position.containsKey(i%BOARD_SIZE)) {
                     i++;
                 } else {
                     not_occupied_spaces++;
@@ -123,12 +123,13 @@ public class Board {
                 }
             }
             i--;
-            if (i < BOARD_SIZE) {
+            if(i < BOARD_SIZE) {
                 player_position.put(i, p);
                 //changeBoard_leader();
                 return;
             } else {
-                i=i-BOARD_SIZE+1;
+                i=i%BOARD_SIZE;
+                System.out.println("int i:"+i);
                 player_position.put(i, p);
                 //p.addLap();
                 //changeBoard_leader();
@@ -139,7 +140,7 @@ public class Board {
             int i = startingPosition - 1;
             pos = pos * (-1);
             while (not_occupied_spaces < pos) {
-                if (player_position.containsKey(i)) {
+                if (player_position.containsKey(i)){
                     i--;
                 } else {
                     not_occupied_spaces++;
