@@ -140,7 +140,7 @@ public class Board {
             int i = startingPosition - 1;
             pos = pos * (-1);
             while (not_occupied_spaces < pos) {
-                if (player_position.containsKey(i)){
+                if (player_position.containsKey(i%BOARD_SIZE)){
                     i--;
                 } else {
                     not_occupied_spaces++;
@@ -154,7 +154,7 @@ public class Board {
                 return;
             }
             if (i < 0) {
-                i = i + BOARD_SIZE+1;
+                i = i + BOARD_SIZE;
                 //p.subLap();
                 player_position.put(i, p);
                 //player_position.remove(startingPosition);
