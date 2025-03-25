@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Storage extends CardComponent {
-    private final int size;
+    private int size;
     private List<Cargo> carried_cargos = new ArrayList<>();
 
     public Storage(ComponentType component_type, Map<Direction, ConnectorType> connectors,int size) {
@@ -36,6 +36,15 @@ public class Storage extends CardComponent {
         }
         return cargo_count;
 
+    }
+
+    public void removeCargo(Map<Cargo, Integer> cargoMap){
+        for (Map.Entry<Cargo, Integer> entry : cargoMap.entrySet()) {
+            int index = entry.getValue();
+
+            carried_cargos.set(index, Cargo.Empty);
+
+        }
     }
 
 }
