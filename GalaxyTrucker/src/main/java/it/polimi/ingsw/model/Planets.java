@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class implements the
+ */
 public class Planets extends CardAdventure {
     private List<List<Cargo>> cargo_reward;
 
@@ -12,12 +15,17 @@ public class Planets extends CardAdventure {
         this.cargo_reward = cargo_reward;
     }
 
+    //la parte di gestione delle posizioni dei cargo view??
+    /**
+     * This function gives the rewards to the player who landed on each planet.
+     * @param players a map containing the players as keys and a map of the carried cargos as value.
+     */
     public void execute(Map<Player, Map<CardComponent, Map<Cargo, Integer>>> players) {
         List<Cargo> totalRewards = new ArrayList<>();
 
         for (Player player : players.keySet()) {
 
-            board.movePlayer(player,-getCost_of_days());// fa perdere i giorni
+            board.movePlayer(player,-getCost_of_days());
             Ship ship_player = player.getShip();
 
 
