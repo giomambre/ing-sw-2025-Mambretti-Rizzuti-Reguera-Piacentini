@@ -121,10 +121,7 @@ public class Board {
             }
         }
 
-        if (starting_position == -1) {
-            System.out.println("Player not found on the board");
-            return;
-        }
+
 
         player_position.remove(starting_position);
 
@@ -145,7 +142,6 @@ public class Board {
             }
 
             newPosition = i;
-            System.out.println(p + " : " + "old : " +starting_position + "new :" + newPosition);
             if (newPosition <= starting_position) {
                 p.addLap();
             }
@@ -172,8 +168,8 @@ public class Board {
             }
         }
 
-        lappedPlayers();
         player_position.put(newPosition, p);
+        lappedPlayers();
 
         changeBoard_leader();
     }
@@ -209,7 +205,10 @@ public class Board {
                 .toList();
     }
 
-
+    /**
+     * This function removes the players that got lapped by the group leader.
+     * They are removed to the list of active players.
+     */
 
     public void lappedPlayers() {
         List<Player> players = new ArrayList<>(getRanking());

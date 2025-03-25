@@ -34,7 +34,7 @@ public class Player {
     }
 
     public void addToShip(CardComponent component, int row, int col) {
-        ship.AddComponent(component, row, col);
+        ship.addComponent(component, row, col);
     }
 
     public void dismissComponent(CardComponent component) {

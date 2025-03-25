@@ -54,8 +54,8 @@ public class AbandonedStationTest {
     void testAbandonedStation() {
         Ship ship_1 = player1.getShip();
 
-        ship_1.AddComponent(new Storage(RedStorage,connectors,2),3,1);
-        ship_1.AddComponent(new Storage(BlueStorage,connectors,3),4,1);
+        ship_1.addComponent(new Storage(RedStorage,connectors,2),3,1);
+        ship_1.addComponent(new Storage(BlueStorage,connectors,3),4,1);
 
         assertEquals(board.getBoard().get(7),player1);
 

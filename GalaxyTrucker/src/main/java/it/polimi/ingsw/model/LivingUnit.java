@@ -6,13 +6,15 @@ public class LivingUnit extends CardComponent{
 
     private int num_astronaut;
     private CrewmateType crewmate_type;
+    private CardComponent alien_support;
 
     public LivingUnit(ComponentType component_type, Map<Direction, ConnectorType> connectors) {
         super(component_type, connectors);
         this.num_astronaut = 0;
+        this.alien_support = null;
     }
 
-    public void addCrewmate(CrewmateType crewmate_type) {
+    public void addCrewmate(CrewmateType crewmate_type, CardComponent alien_support) {
     switch (crewmate_type) {
         case Astronaut:
             this.num_astronaut=2;
@@ -21,14 +23,19 @@ public class LivingUnit extends CardComponent{
         case PinkAlien:
             this.num_astronaut=1;
             this.crewmate_type=crewmate_type;
+            this.alien_support=alien_support;
             break;
 
         case BrownAlien:
             this.num_astronaut=1;
             this.crewmate_type=crewmate_type;
+            this.alien_support=alien_support;
             break;
     }
     }
+
+    public void addAlienSupport(CardComponent alien_support) {this.alien_support=alien_support;}
+
 
     public int getNum_astronaut() {
         return num_astronaut;
@@ -47,4 +54,5 @@ public class LivingUnit extends CardComponent{
 
     }
 
+    public CardComponent getAlien_support() {return alien_support;}
 }

@@ -40,13 +40,13 @@ public class OpenSpaceTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        player1.getShip().AddComponent(new CardComponent(DoubleEngine,connectors),3,2);
-        player1.getShip().AddComponent(new CardComponent(Engine,connectors),4,1);
+        player1.getShip().addComponent(new CardComponent(DoubleEngine,connectors),3,2);
+        player1.getShip().addComponent(new CardComponent(Engine,connectors),4,1);
 
-        player2.getShip().AddComponent(new CardComponent(DoubleEngine,connectors),3,2);
-        player2.getShip().AddComponent(new CardComponent(Engine,connectors),4,5);
+        player2.getShip().addComponent(new CardComponent(DoubleEngine,connectors),3,2);
+        player2.getShip().addComponent(new CardComponent(Engine,connectors),4,5);
 
-        player3.getShip().AddComponent(new CardComponent(DoubleEngine,connectors),3,2);
+        player3.getShip().addComponent(new CardComponent(DoubleEngine,connectors),3,2);
 
 
 
@@ -130,10 +130,10 @@ public class OpenSpaceTest {
     @Test
 
     public void testExecuteAdventureEffects_CorrectOrder() {
-        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,3);
-        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,4);
-        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,5);
-        player2.getShip().AddComponent(new CardComponent(Engine,connectors),3,6);
+        player2.getShip().addComponent(new CardComponent(Engine,connectors),3,3);
+        player2.getShip().addComponent(new CardComponent(Engine,connectors),3,4);
+        player2.getShip().addComponent(new CardComponent(Engine,connectors),3,5);
+        player2.getShip().addComponent(new CardComponent(Engine,connectors),3,6);
 
         batteryUsageMap = new HashMap<>();
 

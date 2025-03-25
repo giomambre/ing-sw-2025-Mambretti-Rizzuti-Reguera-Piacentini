@@ -521,6 +521,20 @@ public class Ship {
 
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+
+        if(this.getComponent(x, y).getComponentType() ==BrownAlienUnit || this.getComponent(x, y).getComponentType() ==BrownAlienUnit ) {
+             for(int i=0;i<ROWS;i++) {
+                 for(int j=0;j<COLS;j++) {
+                     if(ship_plance[i][j].getComponentType() ==LivingUnit) {
+                         if(((LivingUnit) ship_plance[i][j]).getAlien_support()==ship_plance[x][y]) {
+                             ((LivingUnit)ship_plance[x][y]).RemoveCrewmates(1);
+                         }
+                     }
+                 }
+             }
+        }
+
+
         ship_plance[x][y] = EMPTY_CELL;
     }
 
