@@ -63,9 +63,9 @@ public class AbandonedShipTest {
         assertEquals(5,player.getCredits());
 
         assertEquals(1,ship.getNumOfCrewmates());
-        assertEquals(0,((LivingUnit)ship.getComponent(3,1)).getNum_astronaut());
-        assertEquals(0,((LivingUnit)ship.getComponent(3,2)).getNum_astronaut());
-        assertEquals(1,((LivingUnit)ship.getComponent(3,3)).getNum_astronaut());
+        assertEquals(0,((LivingUnit)ship.getComponent(3,1)).getNum_crewmates());
+        assertEquals(0,((LivingUnit)ship.getComponent(3,2)).getNum_crewmates());
+        assertEquals(1,((LivingUnit)ship.getComponent(3,3)).getNum_crewmates());
 
          Map<Integer, Player> playerPositions = board.getBoard();
          assertNull(playerPositions.get(7));

@@ -33,7 +33,7 @@ public class Player {
     //exposed connectors lo sposterei in ship (isa)
 
     /**
-     * This function is called when the player finish to build his ship. The player is added to the participant in the game.
+     * This function is called when the player finish to build his ship. The player is added to the active participant of the game.
      */
     public void endBuild(){
         List<Player> active_players = game.getActivePlayers();
@@ -41,6 +41,11 @@ public class Player {
         game.setActivePlayers(active_players);
     }
 
+    /**
+     * This method is called by the controller when the player during the building phase wants to secure a component so he could use it later (or not, penalty at the end of the game).
+     * Each player can have maximum 2 secured component at the same time.
+     * @param component the component that the player wants to secure
+     */
     public void secureComponent(CardComponent component) {
         List<CardComponent> extra_components = ship.getExtra_components();
         if(extra_components.size() < 2) {
@@ -50,22 +55,40 @@ public class Player {
 
     }
 
+    /**
+     * This method adds a CardComponent to the ship
+     * @param component the Card to add
+     * @param row to identify in witch row on the plance the card will be added
+     * @param col to identify in witch col on the plance the card will be added
+     */
     public void addToShip(CardComponent component, int row, int col) {
         ship.addComponent(component, row, col);
     }
 
+    /**
+     * This method is used to re-add a drawn but not used CardComponent to the deck.
+     * @param component the card that needs to be re-added
+     */
     public void dismissComponent(CardComponent component) {
         List<CardComponent> deck_components = game.getDeck_components();
         deck_components.add(component);
         game.setDeck_components(deck_components);
     }
 
+    /**
+     * This method is called by the controller when the player wants to add to his ship a CardComponent that has been secured in the past.
+     * @param component
+     */
     public void useExtraComponent(CardComponent component) {
         List<CardComponent> extra_components = ship.getExtra_components();
         extra_components.remove(component);
         ship.setExtra_components(extra_components);
     }
 
+    /**
+     *
+     * @return the result of the dices
+     */
     public int throwDice(){
         Random dice1 = new Random();
         Random dice2 = new Random();
@@ -73,6 +96,10 @@ public class Player {
         return (dice1.nextInt(6)+1)+(dice2.nextInt(6)+1);
     }
 
+    /**
+     * This method is used when the player has to receive credits at the end of the game
+     * @param credits
+     */
     public void receiveCredits(int credits) {
         this.credits += credits ;
     }
@@ -107,8 +134,14 @@ public class Player {
         return num_laps;
     }
 
+    /**
+     * This method is called when a player does a complete lap on the board.
+     */
     public void addLap(){ this.num_laps++; }
 
+    /**
+     * This method is called when a player lose days of flight and the new position is before of the 1 cell.
+     */
     public void subLap(){ this.num_laps--; }
 
     public String toString(){

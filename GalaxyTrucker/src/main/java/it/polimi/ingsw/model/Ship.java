@@ -301,7 +301,7 @@ public class Ship {
             for (int col = 0; col < COLS; col++) {
                 tmp = this.getComponent(row, col);
                 if (tmp instanceof LivingUnit) {
-                    total += ((LivingUnit) tmp).getNum_astronaut();
+                    total += ((LivingUnit) tmp).getNum_crewmates();
                 }
             }
 
@@ -486,7 +486,7 @@ public class Ship {
             CardComponent component = ship_plance[x][y];
             if (component.getComponentType() == Engine || component.getComponentType() == DoubleEngine) {
                 valide++;
-            } else if (component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_astronaut() >= 1) {
+            } else if (component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_crewmates() >= 1) {
 
                 valide++;
 

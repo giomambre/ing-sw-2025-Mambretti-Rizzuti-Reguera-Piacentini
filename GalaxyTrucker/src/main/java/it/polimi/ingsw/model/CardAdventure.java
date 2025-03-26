@@ -50,11 +50,6 @@ public abstract class CardAdventure {
 
     }
 
-    /**
-     * This method is called when a card needs to be passed to another player. The order is decreasing, starting to the group leader,
-     * based on the position of the rockets on the board.
-     */
-
 
     public CardAdventureType getType() {
         return type;
