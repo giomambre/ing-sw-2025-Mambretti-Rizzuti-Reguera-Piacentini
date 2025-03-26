@@ -10,6 +10,14 @@ import static it.polimi.ingsw.model.CardAdventureType.*;
 
 /**
  * This class represents the game in general during the various phases.
+ * <ul>
+ *     <li>players: the list of players who joined the game</li>
+ *     <li>numPlayers: how many people are playing</li>
+ *     <li>clock_time: the time measured twisting the hourglass once</li>
+ *     <li>active_players: the list of players that are still playing (means that they didn't lose or retire)</li>
+ *     <li>deck_adventure: a set of 8 AdventureCard that needs to be solved by the players</li>
+ *     <li>board: where the players move their rockets</li>
+ * </ul>
  */
 public class Game {
 
@@ -20,8 +28,6 @@ public class Game {
     private List<Player> active_players = new ArrayList<>();
     private List<CardComponent> deck_components = new ArrayList<>();
     private Board board;
-    private Ship ship;
-
 
 
 //manca metodo costruttore? GIOVANNI
@@ -32,15 +38,13 @@ public class Game {
      * @param deck_components the entire list of CardComponent used to build the ships
      */
 
-
-
     public void setDeck_components(List<CardComponent> deck_components) {
         this.deck_components = deck_components;
     }
 
     /**
      *
-     * @return return a list containing the deck of CardCardComponents
+     * @return a list containing the deck of CardCardComponents
      */
     public List<CardComponent> getDeck_components() {
         return deck_components;
@@ -1371,7 +1375,7 @@ public class Game {
      */
     public CardComponent getRandomCardComponent(Player player) {
         CardComponent card_drawn= deck_components.removeFirst();
-        while(card_drawn.getFace()==false){
+        while(!card_drawn.getFaceDown()){
             player.dismissComponent(card_drawn);
             card_drawn=deck_components.removeFirst();
         }
@@ -1390,7 +1394,7 @@ public class Game {
     public List<CardComponent> getNotRandomComponents() {
         List<CardComponent> choosable=new ArrayList<>();
         for(int i=0; i<deck_components.size(); i++){
-            if(deck_components.get(i).getFace()==false){
+            if(deck_components.get(i).getFaceDown()==false){
                 choosable.add(deck_components.get(i));
             }
         }

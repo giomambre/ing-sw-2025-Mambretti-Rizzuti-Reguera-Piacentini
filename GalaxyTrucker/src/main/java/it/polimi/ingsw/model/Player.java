@@ -3,6 +3,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * The Player class rapresent a player that joined the game.
+ * When the player send a request to the server to join the game, an instance of the class is created.
+ * <ul>
+ *     <li> nickname: the nickname is how the player wants to be called during the game. Must be unique for each player</li>
+ *     <li> color: Red,Green,Blue,Yellow</li>
+ *     <li> ship: every player build a ship</li>
+ *     <li>exposed_connectors: indicates how many connectors are exposed in the player's ship</li>
+ *     <li>game: a reference to the current game</li>
+ *     <li>num_laps: how many lap did the player do on the board</li>
+ *
+ * </ul>
+ */
 public class Player {
     private String nickname;
     private Color color;
@@ -17,7 +30,11 @@ public class Player {
         this.credits = 0;
         this.num_laps = 0;
     }
+    //exposed connectors lo sposterei in ship (isa)
 
+    /**
+     * This function is called when the player finish to build his ship. The player is added to the participant in the game.
+     */
     public void endBuild(){
         List<Player> active_players = game.getActivePlayers();
         active_players.add(this);

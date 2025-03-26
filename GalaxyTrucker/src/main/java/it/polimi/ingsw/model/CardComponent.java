@@ -101,10 +101,22 @@ public class CardComponent {
     public ComponentType getComponentType() {
         return component_type;
     }
+
+    /**
+     * This method, given a Direction, tells witch type of connector is present in that direction.
+     * @param direction North, East, South, West
+     * @return  one of the followings: Universal,Double,Single,Smooth,Cannon_Connector,Engine_Connector,EmptyConnector
+     */
     public ConnectorType getConnector(Direction direction) {
         return connectors.get(direction);
     }
 
+    /**
+     * This method rotate the card of 90 degrees in a counterclockwise direction.
+     * It's called by the controller when the player is building his ship and wants to rotate a certain card component.
+     */
+
+    //non bisogna magari eliminare il vecchio riferimento non ruotato??
     public void rotate() {
         Map<Direction, ConnectorType> rotated = new EnumMap<>(Direction.class);
 
