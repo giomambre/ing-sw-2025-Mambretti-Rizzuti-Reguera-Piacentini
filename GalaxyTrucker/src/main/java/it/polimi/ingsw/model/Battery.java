@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 
 import java.util.Map;
-//se anche voi ritenete che queste cose abbiano senso bisogna MODIFICARE UML (aggiunta stored, togliere add battery)
 public class Battery extends CardComponent  {
     //capacity
     private int size;
