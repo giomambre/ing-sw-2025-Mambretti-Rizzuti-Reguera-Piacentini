@@ -11,12 +11,27 @@ import it.polimi.ingsw.model.enumerates.Cargo;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * <ul>
+ *     <li>needed_crewmates: how many crewmates are required to use this adventure card</li>
+ *     <li>cargo_reward: the list of cargo that the player can load onto the ship</li>
+ * </ul>
+ */
 public class AbandonedStation extends  CardAdventure{
 
     private int needed_crewmates ;
     private List<Cargo> cargo_reward; //da capire come implementare quali l utente accetta e quali rifiuta
 
-
+    /**
+     *
+     * @param level must be level 1 or 2
+     * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be =0
+     * @param type
+     * @param board
+     * @param needed_crewmates
+     * @param cargo_reward
+     */
 
     public AbandonedStation(int level, int cost_of_days, CardAdventureType type , int needed_crewmates, Board board, List<Cargo> cargo_reward) {
         super(level, cost_of_days,type ,board);
@@ -26,8 +41,14 @@ public class AbandonedStation extends  CardAdventure{
 
     }
 
-
-
+    /**
+     * This method is called when a player has enought crewmates to use this card and decides to use it.
+     * It moves the player back by cost_of_days positions through the 'movePlayer' function of board.
+     * It allows the player to receive cargo_reward cargo, calling the 'addCargo' function of storage.
+     *
+     * @param player
+     * @param new_cargo_positions
+     */
 //eventuale controllo se nessuno accetta la carte, da fare nel controller, tutto rimane invariato nel model
     public void execute(Player player, Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions) {
 
