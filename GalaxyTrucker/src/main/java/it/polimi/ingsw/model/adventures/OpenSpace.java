@@ -9,14 +9,33 @@
     import java.util.HashMap;
     import java.util.Map;
 
+    /**
+     * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+     */
     public class OpenSpace extends CardAdventure{ //every player in the lobby will move
 
+        /**
+         *
+         * @param level must be level 1 or 2
+         * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be =0
+         * @param type
+         * @param board
+         */
         public OpenSpace(int level, int cost_of_days, CardAdventureType type , Board board) {
             super(level, cost_of_days,type ,board);
         }
         public void execute(){
             System.out.println("metodo cuscinetto");
         }
+
+        /**
+         * This method allows the player to decide whether to use batteries to incrise his engigne power.
+         * Then it calculates the power using the 'calculateEngignePower' function of ship.
+         * At the end it moves the player forward by power positions through the 'movePlayer' function of board.
+         *
+         * @param players
+         * @param batteryUsageMap
+         */
         public void execute(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap) {
 
 

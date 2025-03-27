@@ -32,7 +32,6 @@ public class AbandonedStation extends  CardAdventure{
      * @param needed_crewmates
      * @param cargo_reward
      */
-
     public AbandonedStation(int level, int cost_of_days, CardAdventureType type , int needed_crewmates, Board board, List<Cargo> cargo_reward) {
         super(level, cost_of_days,type ,board);
     this.needed_crewmates = needed_crewmates;

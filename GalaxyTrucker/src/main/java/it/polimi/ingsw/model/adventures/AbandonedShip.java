@@ -36,7 +36,6 @@ public class AbandonedShip extends CardAdventure {
         this.board = board;
     }
 
-
     /**
      * This method is called when a player has enought crewmates to use this card and decides to use it.
      * It allows the player to receive given_credits credits, calling the 'given_credits' function of player.
@@ -47,8 +46,6 @@ public class AbandonedShip extends CardAdventure {
      * @param player
      * @param astronaut_losses
      */
-
-
     public void execute(Player player, Map<CardComponent,Integer> astronaut_losses) {
 
         Ship ship_player = player.getShip();
