@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

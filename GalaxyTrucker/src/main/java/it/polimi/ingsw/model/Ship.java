@@ -1,16 +1,21 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
+import it.polimi.ingsw.model.components.Shield;
+import it.polimi.ingsw.model.enumerates.ComponentType;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.Direction;
 import javafx.util.Pair;
 
-import javax.smartcardio.Card;
 import java.util.*;
 
-import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 
-import static it.polimi.ingsw.model.CrewmateType.BrownAlien;
-import static it.polimi.ingsw.model.CrewmateType.PinkAlien;
-import static it.polimi.ingsw.model.Direction.*;
+import static it.polimi.ingsw.model.enumerates.CrewmateType.BrownAlien;
+import static it.polimi.ingsw.model.enumerates.CrewmateType.PinkAlien;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 public class Ship {
 
@@ -67,10 +72,10 @@ public class Ship {
 
         }
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-        connectors.put(North, EmptyConnector);
-        connectors.put(South, EmptyConnector);
-        connectors.put(East, EmptyConnector);
-        connectors.put(West, EmptyConnector);
+        connectors.put(North, Empty_Connector);
+        connectors.put(South, Empty_Connector);
+        connectors.put(East, Empty_Connector);
+        connectors.put(West, Empty_Connector);
 
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
@@ -416,25 +421,25 @@ public class Ship {
 
                         case North:
                             if ((component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
-                                    && this.getComponent(row - 1, col).getConnector(South) == EmptyConnector)
+                                    && this.getComponent(row - 1, col).getConnector(South) == Empty_Connector)
                                 exposed_connectors++;
                             break;
 
                         case South:
                             if ((component.getConnector(South) == Universal || component.getConnector(South) == Double || component.getConnector(South) == Single)
-                                    && this.getComponent(row + 1, col).getConnector(North) == EmptyConnector)
+                                    && this.getComponent(row + 1, col).getConnector(North) == Empty_Connector)
                                 exposed_connectors++;
                             break;
 
                         case East:
                             if ((component.getConnector(East) == Universal || component.getConnector(East) == Double || component.getConnector(East) == Single)
-                                    && this.getComponent(row, col + 1).getConnector(West) == EmptyConnector)
+                                    && this.getComponent(row, col + 1).getConnector(West) == Empty_Connector)
                                 exposed_connectors++;
                             break;
 
                         case West:
                             if ((component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
-                                    && this.getComponent(row, col - 1).getConnector(East) == EmptyConnector)
+                                    && this.getComponent(row, col - 1).getConnector(East) == Empty_Connector)
                                 exposed_connectors++;
                             break;
 
@@ -512,10 +517,10 @@ public class Ship {
 
     public void removeComponent(int x, int y) {
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-        connectors.put(North, EmptyConnector);
-        connectors.put(South, EmptyConnector);
-        connectors.put(East, EmptyConnector);
-        connectors.put(West, EmptyConnector);
+        connectors.put(North, Empty_Connector);
+        connectors.put(South, Empty_Connector);
+        connectors.put(East, Empty_Connector);
+        connectors.put(West, Empty_Connector);
 
 
 
@@ -620,10 +625,10 @@ public class Ship {
     public void RemoveComponent(int row, int col) {
 
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-        connectors.put(North,EmptyConnector);
-        connectors.put(South,EmptyConnector);
-        connectors.put(East,EmptyConnector);
-        connectors.put(West,EmptyConnector);
+        connectors.put(North, Empty_Connector);
+        connectors.put(South, Empty_Connector);
+        connectors.put(East, Empty_Connector);
+        connectors.put(West, Empty_Connector);
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
 

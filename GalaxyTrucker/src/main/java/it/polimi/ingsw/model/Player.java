@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.Color;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 /**

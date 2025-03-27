@@ -1,12 +1,17 @@
 package it.polimi.ingsw.model;
 
-import javax.smartcardio.Card;
+import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.components.Battery;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.Storage;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.Direction;
+
 import java.util.*;
 
-import static it.polimi.ingsw.model.Direction.*;
-import static it.polimi.ingsw.model.ConnectorType.*;
-import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.CardAdventureType.*;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
 /**
  * This class represents the game in general during the various phases.
@@ -54,7 +59,10 @@ public class Game {
     /**
      * this method adds every Card Component existent to the deck of card components and then shuffles it
      */
-    public void initializeDeckComponents() {
+
+
+
+    public List<CardComponent> initializeDeckComponents() {
 
 
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -1309,7 +1317,7 @@ public class Game {
 
         Collections.shuffle(deck_components);
 
-
+return deck_components;
     }
 
     /**

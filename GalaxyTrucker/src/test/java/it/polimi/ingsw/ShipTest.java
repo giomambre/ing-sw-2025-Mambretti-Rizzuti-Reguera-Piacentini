@@ -1,14 +1,21 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.components.Battery;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
+import it.polimi.ingsw.model.components.Storage;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
+import it.polimi.ingsw.model.enumerates.Direction;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static it.polimi.ingsw.model.Direction.*;
-import static it.polimi.ingsw.model.ConnectorType.*;
-import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.Color.*;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
+import static it.polimi.ingsw.model.enumerates.Color.*;
 
 import java.util.*;
 

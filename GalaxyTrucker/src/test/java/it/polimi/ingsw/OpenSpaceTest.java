@@ -1,12 +1,17 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.OpenSpace;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.Direction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static it.polimi.ingsw.model.Direction.*;
-import static it.polimi.ingsw.model.ConnectorType.*;
-import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.CardAdventureType.*;
-import static it.polimi.ingsw.model.Color.*;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
+import static it.polimi.ingsw.model.enumerates.CardAdventureType.*;
+import static it.polimi.ingsw.model.enumerates.Color.*;
 import java.util.*;
 
 

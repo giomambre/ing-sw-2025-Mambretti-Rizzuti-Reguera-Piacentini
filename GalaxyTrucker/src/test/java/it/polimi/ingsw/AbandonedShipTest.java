@@ -1,6 +1,12 @@
 package it.polimi.ingsw;
 import it.polimi.ingsw.model.*;
-import org.junit.jupiter.api.Assertions;
+import it.polimi.ingsw.model.adventures.AbandonedShip;
+import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
+import it.polimi.ingsw.model.enumerates.Direction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +14,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static it.polimi.ingsw.model.Direction.*;
-import static it.polimi.ingsw.model.ConnectorType.*;
-import static it.polimi.ingsw.model.ComponentType.*;
-import static it.polimi.ingsw.model.CardAdventureType.*;
-import static it.polimi.ingsw.model.Color.*;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
+import static it.polimi.ingsw.model.enumerates.CardAdventureType.*;
+import static it.polimi.ingsw.model.enumerates.Color.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AbandonedShipTest {

@@ -1,14 +1,19 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.ComponentType;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.Direction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 
-import static it.polimi.ingsw.model.ConnectorType.*;
-import static it.polimi.ingsw.model.ConnectorType.Smooth;
-import static it.polimi.ingsw.model.Direction.*;
-import static it.polimi.ingsw.model.Direction.West;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.Smooth;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.Direction.West;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
