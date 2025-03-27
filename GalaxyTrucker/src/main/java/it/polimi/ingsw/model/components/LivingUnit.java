@@ -57,6 +57,8 @@ public class LivingUnit extends CardComponent{
     }
     }
 
+
+
     public void addAlienSupport(CardComponent alien_support) {this.alien_support=alien_support;}
 
 

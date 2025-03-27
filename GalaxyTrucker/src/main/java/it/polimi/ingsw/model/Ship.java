@@ -636,4 +636,16 @@ public class Ship {
 
     }
 
+//funzione che ritorni da 0 a 2 tipi di support per alieni
+    public List<ComponentType> checkAlienSupport(CardComponent living_unit) {
+
+        if (living_unit.getComponentType() != LivingUnit)
+
+            System.out.println("cannot check alien support, this is not a living unit!");
+
+        Pair<Integer, Integer> x_y = getCoords(living_unit);
+
+    }
+
+
 }
