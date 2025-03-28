@@ -4,23 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="test ship and minor changes">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/examples/example_ship.jpg" afterDir="false" />
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="big test on ship and some changes">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/client/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/server/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/adventures/AbandonedShip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/adventures/AbandonedShip.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/adventures/Epidemic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/adventures/Epidemic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/components/LivingUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/components/LivingUnit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedShipTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedShipTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/ShipTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/ShipTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/ShipTest2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/ShipTest2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedShipTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedShipTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +81,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.App.executor": "Run",
+    "Application.Client.executor": "Run",
     "Application.JsonLoader.executor": "Run",
     "JUnit.AbandonedShipTest.testAbandonedShip.executor": "Run",
     "JUnit.AbandonedStationTest.testAbandonedStation.executor": "Run",
@@ -145,7 +135,7 @@
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\examples" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ShipTest2.testRemoveComponentKillingAlien">
+  <component name="RunManager">
     <configuration name="CardComponentLoader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CardComponentLoader" />
       <module name="PSP17" />
@@ -295,15 +285,9 @@
       <workItem from="1743091056989" duration="354000" />
       <workItem from="1743091433594" duration="1678000" />
       <workItem from="1743155695062" duration="5684000" />
-      <workItem from="1743166716830" duration="4393000" />
-    </task>
-    <task id="LOCAL-00001" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1741173655140</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1741173655140</updated>
+      <workItem from="1743166716830" duration="5209000" />
+      <workItem from="1743193464905" duration="9000" />
+      <workItem from="1743196054539" duration="301000" />
     </task>
     <task id="LOCAL-00002" summary="First Commit">
       <option name="closed" value="true" />
@@ -681,7 +665,23 @@
       <option name="project" value="LOCAL" />
       <updated>1743166749114</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="big test on ship and some changes">
+      <option name="closed" value="true" />
+      <created>1743173318204</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1743173318204</updated>
+    </task>
+    <task id="LOCAL-00050" summary="big test on ship and some changes">
+      <option name="closed" value="true" />
+      <created>1743193185256</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1743193185256</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -715,7 +715,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Aggiunte metodo per le battery in ship e Completato la classe OpenSpace" />
     <MESSAGE value="Aggiunto Enum Adventure Type e iniziato startAdventure in Game" />
     <MESSAGE value="Creato scheletro test per la classe BoardTest, fare cosi per tutte le classi" />
     <MESSAGE value="Iniziato Test Ship e OpenSpace , finito Open Space e ritoccato classe CardAdventure" />
@@ -740,7 +739,8 @@
     <MESSAGE value="da fare funzione checkAlienSupport" />
     <MESSAGE value="Iniziato controller per modo di dire" />
     <MESSAGE value="test ship and minor changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="test ship and minor changes" />
+    <MESSAGE value="big test on ship and some changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="big test on ship and some changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
