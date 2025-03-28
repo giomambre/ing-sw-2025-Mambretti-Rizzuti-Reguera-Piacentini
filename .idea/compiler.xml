@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="PSP17" options="--add-modules java.smartcardio" />
+      <module name="PSP17" options="" />
     </option>
   </component>
 </project>
