@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
@@ -13,12 +13,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static it.polimi.ingsw.model.enumerates.CrewmateType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.Color.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class ShipTest2 {
@@ -106,6 +109,7 @@ public class ShipTest2 {
 
         ship1.addComponent(new LivingUnit(LivingUnit, connectors), 2, 1);
 
+        ((LivingUnit) ship1.getComponent(2,1)).addAlien(PinkAlien);
 
         connectors.put(North, Single);
         connectors.put(East, Double);
@@ -155,6 +159,7 @@ public class ShipTest2 {
         connectors.put(West, Smooth);
 
         ship1.addComponent(new LivingUnit(LivingUnit, connectors), 3, 2);
+        ((LivingUnit) ship1.getComponent(3,2)).addAstronauts();
 
         connectors.put(North, Universal);
         connectors.put(East, Double);
@@ -217,8 +222,8 @@ public class ShipTest2 {
 
 @Test
     public void testExposedConnectors(){
-    System.out.println( ship1.calculateExposedConnectors());
-    Assert.assertEquals(0, ship1.checkShipConnections().size());
+
+    assertEquals(8, ship1.calculateExposedConnectors());
 
 }
 
@@ -226,13 +231,34 @@ public class ShipTest2 {
     public  void  testFindPieces(){
         ship1.removeComponent(3,4);
         ship1.removeComponent(2,4);
-    System.out.println(ship1.findShipPieces()); //ritorna solo i tronconi validi (con motori e astronauti)
+
+    //it creates 3 pieces, but only one of them is valid
+    //which is [[0=2, 1=2, 1=3, 1=4, 2=3, 3=3, 3=2, 4=2, 4=1, 3=1, 2=1, 2=2, 2=0, 3=0, 1=1]]
+    List<Pair<Integer, Integer>> pairs = List.of(
+            new Pair<>(0, 2), new Pair<>(1, 2), new Pair<>(1, 3), new Pair<>(1, 4),
+            new Pair<>(2, 3), new Pair<>(3, 3), new Pair<>(3, 2), new Pair<>(4, 2),
+            new Pair<>(4, 1), new Pair<>(3, 1), new Pair<>(2, 1), new Pair<>(2, 2),
+            new Pair<>(2, 0), new Pair<>(3, 0), new Pair<>(1, 1)
+    );
+        assertEquals(pairs, ship1.findShipPieces().getFirst());
 
 
 
 }
+@Test
+    public  void  testRemoveComponentKillingAlien() { //
+
+        //the living unit containing the alin is the (2,1) and the alien support is (2,0)
+
+        assertEquals(PinkAlien, ((LivingUnit) ship1.getComponent(2,1)).getCrewmateType());
+    assertEquals(1, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
+    ship1.removeComponent(2,0);
+//manca da fare la checkALienSupport con tutti i casi e le connessioni
+    assertEquals(0, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
 
 
 
+
+}
 
 }

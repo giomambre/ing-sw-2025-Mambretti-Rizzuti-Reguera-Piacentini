@@ -41,13 +41,13 @@ public class AbandonedShipTest {
         connectors.put(West, Smooth);
 
         ship.addComponent(new LivingUnit(LivingUnit, connectors),3,1);
-        ((LivingUnit)ship.getComponent(3,1)).addCrewmate(CrewmateType.Astronaut);
+        ((LivingUnit)ship.getComponent(3,1)).addAlien(CrewmateType.Astronaut);
 
         ship.addComponent(new LivingUnit(LivingUnit, connectors),3,2);
-        ((LivingUnit)ship.getComponent(3,2)).addCrewmate(CrewmateType.BrownAlien);
+        ((LivingUnit)ship.getComponent(3,2)).addAlien(CrewmateType.BrownAlien);
 
         ship.addComponent(new LivingUnit(LivingUnit, connectors),3,3);
-        ((LivingUnit)ship.getComponent(3,3)).addCrewmate(CrewmateType.PinkAlien);
+        ((LivingUnit)ship.getComponent(3,3)).addAlien(CrewmateType.PinkAlien);
 
     }
 

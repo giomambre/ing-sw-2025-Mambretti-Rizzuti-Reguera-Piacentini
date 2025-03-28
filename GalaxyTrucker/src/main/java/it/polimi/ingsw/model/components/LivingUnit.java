@@ -21,7 +21,7 @@ public class LivingUnit extends CardComponent{
     //secondo me va rivista questa logica perchè se ci sono due moduli per il supporto alieno collegati alla living unit e di quel colore, l'alieno può viverci anche se uno dei due moduli viene eliminato
     private int num_crewmates;
     private CrewmateType crewmate_type;
-    private CardComponent alien_support;
+
 
     @JsonCreator
     public LivingUnit(
@@ -29,18 +29,16 @@ public class LivingUnit extends CardComponent{
             @JsonProperty("connectors") Map<Direction, ConnectorType> connectors) {
         super(component_type, connectors);
         this.num_crewmates = 0;
-        this.alien_support = null;
+
+
     }
 
     /**
-     * This method allows to add a crewmate to this living unit
-     * @param crewmate_type Astronaut, BrownAlien, PinkAlien
+     * This method allows to add 2 astronauts to this living unit
      */
-    public void addCrewmate(CrewmateType crewmate_type) {
+    public void addAstronauts() {
 
-        if(crewmate_type != CrewmateType.Astronaut ){
-            throw new IllegalArgumentException("Trying to add a an Alien without a Alien support");
-        }
+
         this.crewmate_type = CrewmateType.Astronaut;
         this.num_crewmates=2;
 
@@ -50,7 +48,7 @@ public class LivingUnit extends CardComponent{
 
     public void addAlien(CrewmateType crewmate_type) {
 
-
+      //controllare che ci sia una cabina
         this.crewmate_type = crewmate_type;
         this.num_crewmates=1;
 
@@ -58,7 +56,6 @@ public class LivingUnit extends CardComponent{
 
 
 
-    public void addAlienSupport(CardComponent alien_support) {this.alien_support=alien_support;}
 
 
     public int getNum_crewmates() {
@@ -73,7 +70,7 @@ public class LivingUnit extends CardComponent{
      * This method is used to remove one or more crewmates to this living unit
      * @param num_to_remove how many crewmates must be removed
      */
-    public void RemoveCrewmates(int num_to_remove){
+    public void removeCrewmates(int num_to_remove){
 
         if(num_to_remove>this.num_crewmates){
             throw new IllegalArgumentException("Trying to remove a Crewmate that does not exist");
@@ -86,5 +83,4 @@ public class LivingUnit extends CardComponent{
 
     }
 
-    public CardComponent getAlien_support() {return alien_support;}
 }

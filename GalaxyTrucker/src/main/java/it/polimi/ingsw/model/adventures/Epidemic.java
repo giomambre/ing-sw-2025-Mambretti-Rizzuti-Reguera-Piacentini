@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.adventures;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
@@ -27,29 +26,29 @@ public class Epidemic extends CardAdventure {
 
                     if (ship.getComponent(row+1, col).getComponentType() == ComponentType.LivingUnit
                             && ((LivingUnit)ship.getComponent(row+1, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row, col)).RemoveCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row+1, col)).RemoveCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row+1, col)).removeCrewmates(1);
                     }
 
                     if (ship.getComponent(row, col).getComponentType() == ComponentType.LivingUnit
                             && ((LivingUnit)ship.getComponent(row, col+1)).getNum_crewmates() != 0
                             && ((LivingUnit)ship.getComponent(row, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row, col)).RemoveCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row, col+1)).RemoveCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row, col+1)).removeCrewmates(1);
                     }
 
                     if (ship.getComponent(row, col).getComponentType() == ComponentType.LivingUnit
                             && ((LivingUnit)ship.getComponent(row, col-1)).getNum_crewmates() != 0
                             && ((LivingUnit)ship.getComponent(row, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row, col)).RemoveCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row, col-1)).RemoveCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row, col-1)).removeCrewmates(1);
                     }
 
                     if (ship.getComponent(row, col).getComponentType() == ComponentType.LivingUnit
                             && ((LivingUnit)ship.getComponent(row-1, col)).getNum_crewmates() != 0
                             && ((LivingUnit)ship.getComponent(row, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row-1, col)).RemoveCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row, col)).RemoveCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row-1, col)).removeCrewmates(1);
+                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
                     }
 
 

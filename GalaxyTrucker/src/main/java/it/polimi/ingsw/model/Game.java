@@ -1437,6 +1437,19 @@ return deck_components;
         active_players.remove(player);
     }
 
+    public Player getPlayer(String nickname){
+
+
+        for (Player p : players) {
+
+            if (p.getNickname().equals(nickname)) {
+                return p;
+            }
+
+        }
+throw new IllegalArgumentException("Nickname not found");
+
+    }
 
     public Board getBoard() {
         return board;

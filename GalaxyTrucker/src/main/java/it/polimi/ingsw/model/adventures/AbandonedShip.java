@@ -62,7 +62,7 @@ public class AbandonedShip extends CardAdventure {
                     for (CardComponent unit : astronaut_losses.keySet()) {
                         if (component.equals(unit)){
 
-                            ((LivingUnit) component).RemoveCrewmates(astronaut_losses.get(unit)); // occhio al cast Exception
+                            ((LivingUnit) component).removeCrewmates(astronaut_losses.get(unit)); // occhio al cast Exception
 
                         }
                     }
