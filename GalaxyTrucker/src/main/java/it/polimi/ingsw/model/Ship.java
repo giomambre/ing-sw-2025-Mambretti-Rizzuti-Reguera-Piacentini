@@ -17,21 +17,25 @@ import static it.polimi.ingsw.model.enumerates.CrewmateType.BrownAlien;
 import static it.polimi.ingsw.model.enumerates.CrewmateType.PinkAlien;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
+/**
+ * This class implements the ship of the player.
+ * <ul>
+ *     <li>ship_board: the place where the ship is built </li>
+ *     <li>extra_components: contains the secured but not used components and the parts of the ship that were eliminated</li>
+ *     <li>player: the owner of the ship</li>
+ * </ul>
+ */
 public class Ship {
 
 
-
-
     private int ROWS = 5, COLS = 7;
-    private CardComponent[][] ship_plance = new CardComponent[ROWS][COLS];
+    private CardComponent[][] ship_board = new CardComponent[ROWS][COLS];
     private List<CardComponent> extra_components = new ArrayList<>();
-    private int batteries = 0;
     private Player player;
 
 
     public Ship(Player player) {
         this.player = player;
-
     }
 
     public int getROWS() {
@@ -42,11 +46,19 @@ public class Ship {
         return COLS;
     }
 
+    /**
+     * Add a CardComponent to the ship.
+     * @param component the one to add
+     * @param row to identify in witch row of the ship board the component will be added
+     * @param col to identify in witch col of the ship board the component will be added
+     */
     public void addComponent(CardComponent component, int row, int col) {
 
         //Controllo se è gia presente un elemento in quella pos, da capire se farlo nel controller o qui
+        //(isa) secondo me: view permette al player di selezionare la posizione e la invia al controller, il controller verifica se è occupata
+        //se si: aggiorna view e richiede al player di inserire, se no: invoca questa funzione qui
 
-        ship_plance[row][col] = component;
+        ship_board[row][col] = component;
 
 
     }
@@ -91,14 +103,14 @@ public class Ship {
                     connectors.put(East, Universal);
                     connectors.put(West, Universal);
 
-                    ship_plance[row][col] = new CardComponent(main_unit, connectors); //da mettere main unit in base al colore
+                    ship_board[row][col] = new CardComponent(main_unit, connectors); //da mettere main unit in base al colore
                 } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
-                    ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
+                    ship_board[row][col] = NOT_ACCESSIBLE_CELL;
                 } else if ((row == 1 && (col == 0 || col == 6)) || (row == 4 && col == 3)) {
-                    ship_plance[row][col] = NOT_ACCESSIBLE_CELL;
+                    ship_board[row][col] = NOT_ACCESSIBLE_CELL;
 
                 } else {
-                    ship_plance[row][col] = EMPTY_CELL;
+                    ship_board[row][col] = EMPTY_CELL;
                 }
 
             }
@@ -110,7 +122,7 @@ public class Ship {
         CardComponent tmp;
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                tmp = ship_plance[row][col];
+                tmp = ship_board[row][col];
 
                 switch (tmp.getComponentType()) {
 
@@ -190,7 +202,7 @@ public class Ship {
 
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                CardComponent component = ship_plance[row][col];
+                CardComponent component = ship_board[row][col];
 
                 if (component != null && component.getComponentType() == ComponentType.Battery) {
                     batteries.add(component);
@@ -327,8 +339,8 @@ public class Ship {
     public boolean isProtected(Direction direction) {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                if (ship_plance[row][col].getComponentType() == Shield) {
-                    Shield shieldObject = (Shield) ship_plance[row][col];
+                if (ship_board[row][col].getComponentType() == Shield) {
+                    Shield shieldObject = (Shield) ship_board[row][col];
                     if (shieldObject.getCoveredSides().get(direction) == Boolean.TRUE) {
                         return true;
                     }
@@ -364,7 +376,7 @@ public class Ship {
 
     private boolean isValidComponent(int row, int col) {
         if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return false;
-        CardComponent component = ship_plance[row][col];
+        CardComponent component = ship_board[row][col];
         return component != null && component.getComponentType() != Empty && component.getComponentType() != NotAccessible;
     }
 
@@ -398,12 +410,12 @@ public class Ship {
             }
 
             if (newX >= 0 && newX < ROWS && newY >= 0 && newY < COLS) {
-                CardComponent neighbor = ship_plance[newX][newY];
+                CardComponent neighbor = ship_board[newX][newY];
 
                 if (neighbor.getComponentType() != Empty && neighbor.getComponentType() != NotAccessible
-                        && ship_plance[x][y].getConnector(dir) != Smooth) {
+                        && ship_board[x][y].getConnector(dir) != Smooth) {
 
-                    if (ship_plance[x][y].getValidsConnectors(ship_plance[x][y].getConnector(dir))
+                    if (ship_board[x][y].getValidsConnectors(ship_board[x][y].getConnector(dir))
                             .contains(neighbor.getConnector(getOpposite(dir)))) {
                         explorePiece(newX, newY, visited, piece);
                     }
@@ -485,7 +497,7 @@ public class Ship {
     }
 
     public CardComponent getComponent(int x, int y) {
-        return ship_plance[x][y];
+        return ship_board[x][y];
     }
 
     public Boolean validatePiece(List<Pair<Integer, Integer>> piece) {
@@ -494,7 +506,7 @@ public class Ship {
             int x = pos.getKey();
             int y = pos.getValue();
 
-            CardComponent component = ship_plance[x][y];
+            CardComponent component = ship_board[x][y];
             if (component.getComponentType() == Engine || component.getComponentType() == DoubleEngine) {
                 valide++;
             } else if (component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_crewmates() >= 1) {
@@ -536,9 +548,9 @@ public class Ship {
         if(this.getComponent(x, y).getComponentType() ==BrownAlienUnit || this.getComponent(x, y).getComponentType() ==BrownAlienUnit ) {
              for(int i=0;i<ROWS;i++) {
                  for(int j=0;j<COLS;j++) {
-                     if(ship_plance[i][j].getComponentType() ==LivingUnit) {
-                         if(((LivingUnit) ship_plance[i][j]).getAlien_support()==ship_plance[x][y]) {
-                             ((LivingUnit)ship_plance[x][y]).RemoveCrewmates(1);
+                     if(ship_board[i][j].getComponentType() ==LivingUnit) {
+                         if(((LivingUnit) ship_board[i][j]).getAlien_support()==ship_board[x][y]) {
+                             ((LivingUnit)ship_board[x][y]).RemoveCrewmates(1);
                          }
                      }
                  }
@@ -546,7 +558,7 @@ public class Ship {
         }
 
 
-        ship_plance[x][y] = EMPTY_CELL;
+        ship_board[x][y] = EMPTY_CELL;
     }
 
     public void setExtra_components(List<CardComponent> extraComponents) {
@@ -578,35 +590,35 @@ public class Ship {
         switch (dir) {
             case North:
                 for (int i = 0; i < ROWS; i++) {
-                    if (ship_plance[i][pos - 4].getComponentType() != ComponentType.Empty && ship_plance[i][pos - 4].getComponentType() != NotAccessible)
-                        return ship_plance[i][pos - 4];
+                    if (ship_board[i][pos - 4].getComponentType() != ComponentType.Empty && ship_board[i][pos - 4].getComponentType() != NotAccessible)
+                        return ship_board[i][pos - 4];
                 }
-                return ship_plance[0][0];
+                return ship_board[0][0];
             case South:
                 for (int i = ROWS - 1; i >= 0; i--) {
-                    if (ship_plance[i][pos - 4].getComponentType() != ComponentType.Empty && ship_plance[i][pos - 4].getComponentType() != NotAccessible)
-                        return ship_plance[i][pos - 4];
+                    if (ship_board[i][pos - 4].getComponentType() != ComponentType.Empty && ship_board[i][pos - 4].getComponentType() != NotAccessible)
+                        return ship_board[i][pos - 4];
                 }
-                return ship_plance[0][0];
+                return ship_board[0][0];
 
             case West:
                 for (int i = 0; i < COLS; i++) {
-                    if (ship_plance[pos - 5][i].getComponentType() != ComponentType.Empty && ship_plance[pos - 5][i].getComponentType() != NotAccessible)
-                        return ship_plance[pos - 5][i];
+                    if (ship_board[pos - 5][i].getComponentType() != ComponentType.Empty && ship_board[pos - 5][i].getComponentType() != NotAccessible)
+                        return ship_board[pos - 5][i];
                 }
-                return ship_plance[0][0];
+                return ship_board[0][0];
 
             case East:
                 for (int i = COLS - 1; i >= 0; i--) {
-                    if (ship_plance[pos - 5][i].getComponentType() != ComponentType.Empty && ship_plance[pos - 5][i].getComponentType() != NotAccessible)
-                        return ship_plance[pos - 5][i];
+                    if (ship_board[pos - 5][i].getComponentType() != ComponentType.Empty && ship_board[pos - 5][i].getComponentType() != NotAccessible)
+                        return ship_board[pos - 5][i];
                 }
-                return ship_plance[0][0];
+                return ship_board[0][0];
 
 
         }
 
-        return ship_plance[0][0];
+        return ship_board[0][0];
     }
 
     public void choosePiece(int choose){
@@ -638,7 +650,7 @@ public class Ship {
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
 
-        ship_plance[row][col] = EMPTY_CELL;
+        ship_board[row][col] = EMPTY_CELL;
 
     }
 
