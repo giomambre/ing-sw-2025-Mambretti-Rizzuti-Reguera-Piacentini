@@ -501,22 +501,23 @@ public class Ship {
     }
 
     public Boolean validatePiece(List<Pair<Integer, Integer>> piece) {
-        int valide = 0;
+        int valid_cannon = 0;
+        int valid_unit = 0;
         for (Pair<Integer, Integer> pos : piece) {
             int x = pos.getKey();
             int y = pos.getValue();
 
             CardComponent component = ship_board[x][y];
             if (component.getComponentType() == Engine || component.getComponentType() == DoubleEngine) {
-                valide++;
+                valid_cannon= 1;
             } else if (component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_crewmates() >= 1) {
 
-                valide++;
+                valid_unit = 1;
 
             }
         }
 
-        return valide == 2;
+        return valid_cannon == 1 && valid_unit == 1;
 
 
     }

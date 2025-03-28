@@ -35,26 +35,25 @@ public class LivingUnit extends CardComponent{
     /**
      * This method allows to add a crewmate to this living unit
      * @param crewmate_type Astronaut, BrownAlien, PinkAlien
-     * @param alien_support if the type is a BrownAlien or a PinkAlien specify witch alien support allows them to stay on this living unit
      */
-    public void addCrewmate(CrewmateType crewmate_type, CardComponent alien_support) {
-    switch (crewmate_type) {
-        case Astronaut:
-            this.num_crewmates=2;
-            this.crewmate_type=crewmate_type;
-            break;
-        case PinkAlien:
-            this.num_crewmates=1;
-            this.crewmate_type=crewmate_type;
-            this.alien_support=alien_support;
-            break;
+    public void addCrewmate(CrewmateType crewmate_type) {
 
-        case BrownAlien:
-            this.num_crewmates=1;
-            this.crewmate_type=crewmate_type;
-            this.alien_support=alien_support;
-            break;
+        if(crewmate_type != CrewmateType.Astronaut ){
+            throw new IllegalArgumentException("Trying to add a an Alien without a Alien support");
+        }
+        this.crewmate_type = CrewmateType.Astronaut;
+        this.num_crewmates=2;
+
     }
+
+
+
+    public void addAlien(CrewmateType crewmate_type) {
+
+
+        this.crewmate_type = crewmate_type;
+        this.num_crewmates=1;
+
     }
 
 
@@ -75,6 +74,10 @@ public class LivingUnit extends CardComponent{
      * @param num_to_remove how many crewmates must be removed
      */
     public void RemoveCrewmates(int num_to_remove){
+
+        if(num_to_remove>this.num_crewmates){
+            throw new IllegalArgumentException("Trying to remove a Crewmate that does not exist");
+        }
 
         num_crewmates -= num_to_remove;
 

@@ -38,6 +38,8 @@ public class Game {
 //manca metodo costruttore? GIOVANNI
 
 
+
+
     /**
      *this method is used to initialise the deck of CardComponents before building the ship
      * @param deck_components the entire list of CardComponent used to build the ships
@@ -1440,5 +1442,27 @@ return deck_components;
         return board;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
 
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public List<CardAdventure> getDeck_adventure() {
+        return deck_adventure;
+    }
+
+    public List<Player> getActive_players() {
+        return active_players;
+    }
+
+    public List<String> getNicknames() {
+        List<String> nicknames = new ArrayList<>();
+        for (Player player : players) {
+            nicknames.add(player.getNickname());
+        }
+        return nicknames;
+    }
 }

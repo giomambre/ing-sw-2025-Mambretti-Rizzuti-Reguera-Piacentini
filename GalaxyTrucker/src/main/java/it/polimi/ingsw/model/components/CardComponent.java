@@ -60,6 +60,10 @@ public class CardComponent {
      */
     public List<ConnectorType> getValidsConnectors(ConnectorType connector){
         List<ConnectorType> valids= new ArrayList<>();
+        if(connector == Empty_Connector){
+            throw new IllegalArgumentException("You cant use an empty connector");
+        }
+
         switch (connector){
 
             case Double:
@@ -86,7 +90,7 @@ public class CardComponent {
             case Smooth:
                 valids.add(Smooth);
                 valids.add(Empty_Connector);
-
+                break;
 
 
             case Engine_Connector,Cannon_Connector:
@@ -138,7 +142,7 @@ public class CardComponent {
         return "CardComponent{" +
                 "component_type=" + component_type +
                 ", connectors=" + connectors +
-                ", face_down=" + face_down +
+
                 '}';
     }
 

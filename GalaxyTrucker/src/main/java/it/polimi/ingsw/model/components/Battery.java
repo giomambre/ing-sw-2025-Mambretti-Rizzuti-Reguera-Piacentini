@@ -27,16 +27,20 @@ public class Battery extends CardComponent {
 
     //altra cosa: non so se imporre direttamente che num batteries sia uguale alla size (ha più senso perchè penso tutti i giocatori riempiano al massimo lo spazio) però per attenermi all'uml ho messo così
     //se così fosse ha senso farlo direttamente nel costruttore ed eliminare questa funzione
-    public void addBattery(int num_batteries){
-       if(num_batteries>size ){
-           System.out.println("Battery overflow non so se sia un errore o una exception");
+    public void addBattery(int num_batteries) throws IllegalArgumentException{
+       if(num_batteries> size ){
+           throw new IllegalArgumentException("More batteries than the size of this component");
        }
        stored += num_batteries;
     }
 
      public void removeBattery(){
         if(stored==0){
-            System.out.println("anche qui non so se sia un errore o una exception");
+
+            throw new IllegalStateException("Cannot remove batteries from this component, is already empty");
+
+
+
         }
         if(stored>0){
             stored--;
