@@ -438,27 +438,30 @@ public class Ship {
                     switch (direction) {
 
                         case North:
-                            if ((component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
-                                    && this.getComponent(row - 1, col).getConnector(South) == Empty_Connector)
+                            if (row != 0 && (component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
+                                    && this.getComponent(row - 1, col).getConnector(South) == Empty_Connector )
                                 exposed_connectors++;
                             break;
 
                         case South:
-                            if ((component.getConnector(South) == Universal || component.getConnector(South) == Double || component.getConnector(South) == Single)
-                                    && this.getComponent(row + 1, col).getConnector(North) == Empty_Connector)
+                            if (row != 4 && (component.getConnector(South) == Universal || component.getConnector(South) == Double || component.getConnector(South) == Single)
+                                    && this.getComponent(row + 1, col).getConnector(North) == Empty_Connector )
                                 exposed_connectors++;
+
                             break;
 
                         case East:
-                            if ((component.getConnector(East) == Universal || component.getConnector(East) == Double || component.getConnector(East) == Single)
-                                    && this.getComponent(row, col + 1).getConnector(West) == Empty_Connector)
+                            if (col != 6 && (component.getConnector(East) == Universal || component.getConnector(East) == Double || component.getConnector(East) == Single)
+                                    && this.getComponent(row, col + 1).getConnector(West) == Empty_Connector )
                                 exposed_connectors++;
+
                             break;
 
                         case West:
-                            if ((component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
-                                    && this.getComponent(row, col - 1).getConnector(East) == Empty_Connector)
+                            if (col != 0 && (component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
+                                    && this.getComponent(row, col - 1).getConnector(East) == Empty_Connector )
                                 exposed_connectors++;
+
                             break;
 
                     }
@@ -469,11 +472,13 @@ public class Ship {
                     case 0:
                         if (component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
                             exposed_connectors++;
+
                         break;
 
                     case 6:
                         if (component.getConnector(East) == Universal || component.getConnector(East) == Double || component.getConnector(East) == Single)
                             exposed_connectors++;
+
                         break;
                 }
 
@@ -481,11 +486,13 @@ public class Ship {
                     case 0:
                         if (component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
                             exposed_connectors++;
+
                         break;
 
                     case 4:
                         if (component.getConnector(South) == Universal || component.getConnector(South) == Double || component.getConnector(South) == Single)
                             exposed_connectors++;
+
                         break;
 
                 }

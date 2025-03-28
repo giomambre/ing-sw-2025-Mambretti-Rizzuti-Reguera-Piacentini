@@ -94,7 +94,7 @@ public class ShipTest2 {
         connectors.put(North, Smooth);
         connectors.put(East, Universal);
         connectors.put(South, Smooth);
-        connectors.put(West, Smooth);
+        connectors.put(West, Single);
 
         ship1.addComponent(new CardComponent(PinkAlienUnit, connectors), 2, 0);
 
