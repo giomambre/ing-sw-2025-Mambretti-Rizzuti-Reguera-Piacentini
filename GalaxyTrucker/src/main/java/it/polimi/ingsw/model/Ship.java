@@ -155,7 +155,10 @@ public class Ship {
             for (int col = 0; col < COLS; col++) {
                 CardComponent component = this.getComponent(row, col);
 
-                if (component.getComponentType() == PinkAlienUnit && ((LivingUnit) component).getCrewmateType() == PinkAlien) {
+                if (component.getComponentType() == PinkAlienUnit
+                        && (this.getComponent(row+1, col).getComponentType() == PinkAlienUnit || this.getComponent(row, col+1).getComponentType() == PinkAlienUnit
+                        || this.getComponent(row, col-1).getComponentType() == PinkAlienUnit || this.getComponent(row-1, col).getComponentType() == PinkAlienUnit)
+                        && ((LivingUnit) component).getCrewmateType() == PinkAlien) {
                     pink_alien = true;
                 }
 
@@ -170,7 +173,10 @@ public class Ship {
             for (int col = 0; col < COLS; col++) {
                 CardComponent component = this.getComponent(row, col);
 
-                if (component.getComponentType() == BrownAlienUnit && ((LivingUnit) component).getCrewmateType() == BrownAlien) {
+                if (component.getComponentType() == LivingUnit
+                        && (this.getComponent(row+1, col).getComponentType() == BrownAlienUnit || this.getComponent(row, col+1).getComponentType() == BrownAlienUnit
+                            || this.getComponent(row, col-1).getComponentType() == BrownAlienUnit || this.getComponent(row-1, col).getComponentType() == BrownAlienUnit)
+                        && ((LivingUnit) component).getCrewmateType() == BrownAlien) {
                     brown_alien = true;
                 }
 
@@ -638,13 +644,42 @@ public class Ship {
 
 //funzione che ritorni da 0 a 2 tipi di support per alieni
     public List<ComponentType> checkAlienSupport(CardComponent living_unit) {
+        List<ComponentType> components = new ArrayList<>();
 
         if (living_unit.getComponentType() != LivingUnit)
 
             System.out.println("cannot check alien support, this is not a living unit!");
 
         Pair<Integer, Integer> x_y = getCoords(living_unit);
+        int x = x_y.getKey();
+        int y = x_y.getValue();
 
+        if (this.getComponent(x+1,y).getComponentType() == PinkAlienUnit)
+            components.add(PinkAlienUnit);
+        else if (this.getComponent(x+1,y).getComponentType() == BrownAlienUnit) {
+            components.add(BrownAlienUnit);
+        }
+
+        if (this.getComponent(x-1,y).getComponentType() == PinkAlienUnit)
+            components.add(PinkAlienUnit);
+        else if (this.getComponent(x-1,y).getComponentType() == BrownAlienUnit) {
+            components.add(BrownAlienUnit);
+        }
+
+        if (this.getComponent(x,y+1).getComponentType() == PinkAlienUnit)
+            components.add(PinkAlienUnit);
+        else if (this.getComponent(x,y+1).getComponentType() == BrownAlienUnit) {
+            components.add(BrownAlienUnit);
+        }
+
+        if (this.getComponent(x,y-1).getComponentType() == PinkAlienUnit)
+            components.add(PinkAlienUnit);
+        else if (this.getComponent(x,y-1).getComponentType() == BrownAlienUnit) {
+            components.add(BrownAlienUnit);
+        }
+
+
+        return components;
     }
 
 
