@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Shield;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import javafx.util.Pair;
 
@@ -13,8 +14,7 @@ import java.util.*;
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 
-import static it.polimi.ingsw.model.enumerates.CrewmateType.BrownAlien;
-import static it.polimi.ingsw.model.enumerates.CrewmateType.PinkAlien;
+import static it.polimi.ingsw.model.enumerates.CrewmateType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 /**
@@ -57,6 +57,15 @@ public class Ship {
         //Controllo se è gia presente un elemento in quella pos, da capire se farlo nel controller o qui
         //(isa) secondo me: view permette al player di selezionare la posizione e la invia al controller, il controller verifica se è occupata
         //se si: aggiorna view e richiede al player di inserire, se no: invoca questa funzione qui
+
+
+        if(ship_board[row][col].getComponentType() == NotAccessible )
+            throw new IllegalArgumentException("Position not Accessible");
+
+        if(ship_board[row][col].getComponentType() != Empty )
+            throw new IllegalArgumentException("Position already in use");
+
+
 
         ship_board[row][col] = component;
 
@@ -366,7 +375,8 @@ public class Ship {
                     List<Pair<Integer, Integer>> piece = new ArrayList<>();
                     explorePiece(row, col, visited, piece);
 
-                    if(validatePiece(piece) ) pieces.add(piece); // se non è valido
+                    if(validatePiece(piece) ) pieces.add(piece);
+
                     else deletePiece(piece);
                 }
             }
@@ -553,14 +563,25 @@ public class Ship {
 
         CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
 
-        if(this.getComponent(x, y).getComponentType() ==BrownAlienUnit || this.getComponent(x, y).getComponentType() ==BrownAlienUnit ) {
-             for(int i=0;i<ROWS;i++) {
-                 for(int j=0;j<COLS;j++) {
-                     if(ship_board[i][j].getComponentType() ==LivingUnit) {
-                         if(((LivingUnit) ship_board[i][j]).getAlien_support()==ship_board[x][y]) {
-                             ((LivingUnit)ship_board[x][y]).RemoveCrewmates(1);
+        if(this.getComponent(x, y).getComponentType() ==PinkAlienUnit || this.getComponent(x, y).getComponentType() ==BrownAlienUnit ) {
+             for(int row=0; row<ROWS; row++) {
+                 for(int col=0 ;col<COLS; col++) {
+                     CardComponent card = getComponent(row, col);
+
+                     if(ship_board[row][col].getComponentType() == LivingUnit
+                             && ((LivingUnit)card).getCrewmateType() != Astronaut
+                             && ((LivingUnit)card).getNum_crewmates()>0 ) {
+                         System.out.println(checkAlienSupport(card));
+
+                         if(!checkAlienSupport(card).contains(((LivingUnit)card).getCrewmateType())){
+                             //kill the alien
+                             ((LivingUnit)card).removeCrewmates(1);
+
                          }
+
                      }
+
+
                  }
              }
         }
@@ -663,8 +684,8 @@ public class Ship {
     }
 
 //funzione che ritorni da 0 a 2 tipi di support per alieni
-    public List<ComponentType> checkAlienSupport(CardComponent living_unit) {
-        List<ComponentType> components = new ArrayList<>();
+    public List<CrewmateType> checkAlienSupport(CardComponent living_unit) {
+        List<CrewmateType> crew = new ArrayList<>();
 
         if (living_unit.getComponentType() != LivingUnit)
 
@@ -674,32 +695,33 @@ public class Ship {
         int x = x_y.getKey();
         int y = x_y.getValue();
 
+
         if (this.getComponent(x+1,y).getComponentType() == PinkAlienUnit)
-            components.add(PinkAlienUnit);
+            crew.add(PinkAlien);
         else if (this.getComponent(x+1,y).getComponentType() == BrownAlienUnit) {
-            components.add(BrownAlienUnit);
+            crew.add(BrownAlien);
         }
 
         if (this.getComponent(x-1,y).getComponentType() == PinkAlienUnit)
-            components.add(PinkAlienUnit);
+            crew.add(PinkAlien);
         else if (this.getComponent(x-1,y).getComponentType() == BrownAlienUnit) {
-            components.add(BrownAlienUnit);
+            crew.add(BrownAlien);
         }
 
         if (this.getComponent(x,y+1).getComponentType() == PinkAlienUnit)
-            components.add(PinkAlienUnit);
+            crew.add(PinkAlien);
         else if (this.getComponent(x,y+1).getComponentType() == BrownAlienUnit) {
-            components.add(BrownAlienUnit);
+            crew.add(BrownAlien);
         }
 
         if (this.getComponent(x,y-1).getComponentType() == PinkAlienUnit)
-            components.add(PinkAlienUnit);
+            crew.add(PinkAlien);
         else if (this.getComponent(x,y-1).getComponentType() == BrownAlienUnit) {
-            components.add(BrownAlienUnit);
+            crew.add(BrownAlien);
         }
 
 
-        return components;
+        return crew;
     }
 
 
