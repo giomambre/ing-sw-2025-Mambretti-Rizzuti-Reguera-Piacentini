@@ -695,28 +695,37 @@ public class Ship {
         int x = x_y.getKey();
         int y = x_y.getValue();
 
+        living_unit = this.getComponent(x, y);
 
-        if (this.getComponent(x+1,y).getComponentType() == PinkAlienUnit)
+        if (x!=4 && this.getComponent(x+1,y).getComponentType() == PinkAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South)))
             crew.add(PinkAlien);
-        else if (this.getComponent(x+1,y).getComponentType() == BrownAlienUnit) {
+        else if (x!=4 && this.getComponent(x+1,y).getComponentType() == BrownAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South))) {
             crew.add(BrownAlien);
         }
 
-        if (this.getComponent(x-1,y).getComponentType() == PinkAlienUnit)
+        if (x!=0 && this.getComponent(x-1,y).getComponentType() == PinkAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North)))
             crew.add(PinkAlien);
-        else if (this.getComponent(x-1,y).getComponentType() == BrownAlienUnit) {
+        else if (x!=0 && this.getComponent(x-1,y).getComponentType() == BrownAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North))) {
             crew.add(BrownAlien);
         }
 
-        if (this.getComponent(x,y+1).getComponentType() == PinkAlienUnit)
+        if (y!=6 && this.getComponent(x,y+1).getComponentType() == PinkAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West)))
             crew.add(PinkAlien);
-        else if (this.getComponent(x,y+1).getComponentType() == BrownAlienUnit) {
+        else if (y!=6 && this.getComponent(x,y+1).getComponentType() == BrownAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West))) {
             crew.add(BrownAlien);
         }
 
-        if (this.getComponent(x,y-1).getComponentType() == PinkAlienUnit)
+        if (y!=0 && this.getComponent(x,y-1).getComponentType() == PinkAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East)))
             crew.add(PinkAlien);
-        else if (this.getComponent(x,y-1).getComponentType() == BrownAlienUnit) {
+        else if (y!=0 &&this.getComponent(x,y-1).getComponentType() == BrownAlienUnit
+                && living_unit.getValidsConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East))) {
             crew.add(BrownAlien);
         }
 
