@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Messi package e aggiunto json">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/components/LivingUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/components/LivingUnit.java" afterDir="false" />
-    </list>
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="controller" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,7 +75,9 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
     &quot;Application.JsonLoader.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.AbandonedShipTest.testAbandonedShip.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.AbandonedStationTest.testAbandonedStation.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.BatteryTest.testAddBattery.executor&quot;: &quot;Run&quot;,
@@ -105,6 +103,10 @@
     &quot;JUnit.ShipTest.testaddComponentCannon.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ShipTest.testcalculateCannonPower.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ShipTest.testcalculateEnginePower.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testExposedConnectors.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testFindPieces.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testRemoveComponentKillingAlien.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.StorageTest.testStorage.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.StorageTest.testaddCargo.executor&quot;: &quot;Run&quot;,
     &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
@@ -113,7 +115,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/gioma/Downloads/ing-sw-2023-saccani-spangaro-sanvito-pedersoli-main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/gioma/Downloads/2024_12_10_code&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -123,7 +125,13 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.CardComponentLoader">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\network\server" />
+      <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\examples" />
+    </key>
+  </component>
+  <component name="RunManager">
     <configuration name="CardComponentLoader" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.model.CardComponentLoader" />
       <module name="PSP17" />
@@ -137,7 +145,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BatteryTest.testAddBattery" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShipTest2.testExposedConnectors" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PSP17" />
       <extension name="coverage">
         <pattern>
@@ -146,14 +154,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.BatteryTest" />
-      <option name="METHOD_NAME" value="testAddBattery" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.ShipTest2" />
+      <option name="METHOD_NAME" value="testExposedConnectors" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BatteryTest.testRemoveBattery" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShipTest2.testFindPieces" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PSP17" />
       <extension name="coverage">
         <pattern>
@@ -162,14 +170,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.BatteryTest" />
-      <option name="METHOD_NAME" value="testRemoveBattery" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.ShipTest2" />
+      <option name="METHOD_NAME" value="testFindPieces" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.checkLeaderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShipTest2.testRemoveComponentKillingAlien" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PSP17" />
       <extension name="coverage">
         <pattern>
@@ -178,8 +186,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="it.polimi.ingsw" />
-      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.BoardTest" />
-      <option name="METHOD_NAME" value="checkLeaderTest" />
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.ShipTest2" />
+      <option name="METHOD_NAME" value="testRemoveComponentKillingAlien" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -203,11 +211,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ShipTest2.testRemoveComponentKillingAlien" />
+        <item itemvalue="JUnit.ShipTest2.testFindPieces" />
+        <item itemvalue="JUnit.ShipTest2.testExposedConnectors" />
         <item itemvalue="Application.CardComponentLoader" />
         <item itemvalue="JUnit.ShipTest.findShipPieces" />
-        <item itemvalue="JUnit.BoardTest.checkLeaderTest" />
-        <item itemvalue="JUnit.BatteryTest.testRemoveBattery" />
-        <item itemvalue="JUnit.BatteryTest.testAddBattery" />
       </list>
     </recent_temporary>
   </component>
@@ -267,39 +275,21 @@
       <workItem from="1742941571084" duration="608000" />
       <workItem from="1742984487995" duration="2564000" />
       <workItem from="1743000063403" duration="2459000" />
-      <workItem from="1743075528069" duration="1566000" />
-    </task>
-    <task id="LOCAL-00001" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1741173655140</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1741173655140</updated>
-    </task>
-    <task id="LOCAL-00002" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1741626095432</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1741626095432</updated>
-    </task>
-    <task id="LOCAL-00003" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1741626157656</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1741626157656</updated>
-    </task>
-    <task id="LOCAL-00004" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1741805101224</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1741805101224</updated>
+      <workItem from="1743075528069" duration="2777000" />
+      <workItem from="1743084861611" duration="1932000" />
+      <workItem from="1743090730415" duration="61000" />
+      <workItem from="1743091056989" duration="354000" />
+      <workItem from="1743091433594" duration="1678000" />
+      <workItem from="1743155695062" duration="5684000" />
+      <workItem from="1743166716830" duration="5209000" />
+      <workItem from="1743193464905" duration="9000" />
+      <workItem from="1743196054539" duration="768000" />
+      <workItem from="1743262962115" duration="9000" />
+      <workItem from="1743263008409" duration="3644000" />
+      <workItem from="1743338199746" duration="4000" />
+      <workItem from="1743338416880" duration="3097000" />
+      <workItem from="1743341729346" duration="1203000" />
+      <workItem from="1743344606396" duration="399000" />
     </task>
     <task id="LOCAL-00005" summary="First Commit">
       <option name="closed" value="true" />
@@ -637,7 +627,63 @@
       <option name="project" value="LOCAL" />
       <updated>1743075930777</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="da fare funzione checkAlienSupport">
+      <option name="closed" value="true" />
+      <created>1743077122962</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1743077122962</updated>
+    </task>
+    <task id="LOCAL-00048" summary="test ship and minor changes">
+      <option name="closed" value="true" />
+      <created>1743166749114</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1743166749114</updated>
+    </task>
+    <task id="LOCAL-00049" summary="big test on ship and some changes">
+      <option name="closed" value="true" />
+      <created>1743173318204</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1743173318204</updated>
+    </task>
+    <task id="LOCAL-00050" summary="big test on ship and some changes">
+      <option name="closed" value="true" />
+      <created>1743193185256</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1743193185256</updated>
+    </task>
+    <task id="LOCAL-00051" summary="messo un esempio banale di socket da avere da riferimento">
+      <option name="closed" value="true" />
+      <created>1743196509031</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1743196509032</updated>
+    </task>
+    <task id="LOCAL-00052" summary="tolto il network">
+      <option name="closed" value="true" />
+      <created>1743263990075</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1743263990075</updated>
+    </task>
+    <task id="LOCAL-00053" summary="controller">
+      <option name="closed" value="true" />
+      <created>1743344999469</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1743344999469</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -671,13 +717,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Commit di test" />
-    <MESSAGE value="Aggiunto composizione ship player, aggiunto getColor e fixato errore mainunit" />
-    <MESSAGE value="Aggiunto metodo isProtected" />
-    <MESSAGE value="Aggiunte metodo per le battery in ship e Completato la classe OpenSpace" />
-    <MESSAGE value="Aggiunto Enum Adventure Type e iniziato startAdventure in Game" />
-    <MESSAGE value="Creato scheletro test per la classe BoardTest, fare cosi per tutte le classi" />
-    <MESSAGE value="Iniziato Test Ship e OpenSpace , finito Open Space e ritoccato classe CardAdventure" />
     <MESSAGE value="Aggiunto Test Calculate Enigne power e add component" />
     <MESSAGE value="Altro test in OpenSpaceTest (per verificare che si spostino in ordine di partenza)" />
     <MESSAGE value="Implementato il Pattern Visitor per le CardAdventure" />
@@ -696,7 +735,14 @@
     <MESSAGE value="rimozione tronoconi non validi" />
     <MESSAGE value="Fatta Metor Swarm Con raffa" />
     <MESSAGE value="Messi package e aggiunto json" />
-    <option name="LAST_COMMIT_MESSAGE" value="Messi package e aggiunto json" />
+    <MESSAGE value="da fare funzione checkAlienSupport" />
+    <MESSAGE value="Iniziato controller per modo di dire" />
+    <MESSAGE value="test ship and minor changes" />
+    <MESSAGE value="big test on ship and some changes" />
+    <MESSAGE value="messo un esempio banale di socket da avere da riferimento" />
+    <MESSAGE value="tolto il network" />
+    <MESSAGE value="controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="controller" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

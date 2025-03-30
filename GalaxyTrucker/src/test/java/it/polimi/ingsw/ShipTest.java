@@ -286,7 +286,7 @@ public class ShipTest {
         connectors.put(East, Double);
         connectors.put(West, Double);
         ship.addComponent(new LivingUnit(LivingUnit, connectors), 1, 3);
-        ((LivingUnit) ship.getComponent(1,3)).addCrewmate(CrewmateType.Astronaut);
+        ((LivingUnit) ship.getComponent(1,3)).addAstronauts();
 
         connectors.put(North, Smooth);
         connectors.put(South, Single);
@@ -384,7 +384,7 @@ public class ShipTest {
         connectors.put(East, Double);
         connectors.put(West, Double);
         ship.addComponent(new LivingUnit(LivingUnit, connectors), 1, 3);
-        ((LivingUnit) ship.getComponent(1,3)).addCrewmate(CrewmateType.Astronaut);
+        ((LivingUnit) ship.getComponent(1,3)).addAstronauts();;
 
 
         connectors.put(North, Smooth);

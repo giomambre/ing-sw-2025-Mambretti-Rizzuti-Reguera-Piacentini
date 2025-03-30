@@ -28,6 +28,11 @@ public class Storage extends CardComponent {
     }
 
     public void addCargo(Map<Cargo, Integer> cargoMap){
+
+        if(cargoMap.size()>this.size){
+            throw new IllegalArgumentException("Trying to add more cargo than the size of the storage");
+        }
+
         for (Map.Entry<Cargo, Integer> entry : cargoMap.entrySet()) {
             Cargo cargo = entry.getKey();
             int index = entry.getValue();
@@ -51,7 +56,10 @@ public class Storage extends CardComponent {
     }
 
     public void removeCargo(Map<Cargo, Integer> cargoMap){
-        for (Map.Entry<Cargo, Integer> entry : cargoMap.entrySet()) {
+        if(cargoMap.size()>this.size){
+            throw new IllegalArgumentException("Trying to remove more cargo than the size of the storage");
+        }
+    for (Map.Entry<Cargo, Integer> entry : cargoMap.entrySet()) {
             int index = entry.getValue();
 
             carried_cargos.set(index, Cargo.Empty);

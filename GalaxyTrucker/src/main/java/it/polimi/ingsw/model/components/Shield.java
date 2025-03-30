@@ -46,4 +46,9 @@ public class Shield extends CardComponent {
 
         }
 
+        public void setCovered_sides(Map<Direction, Boolean> covered_sides) {
+
+        this.covered_sides = covered_sides;
+        }
+
 }
