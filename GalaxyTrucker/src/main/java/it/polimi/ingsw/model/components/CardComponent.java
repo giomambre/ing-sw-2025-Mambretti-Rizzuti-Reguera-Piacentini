@@ -20,29 +20,17 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 public class CardComponent {
     private final ComponentType component_type;
     private Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-    private boolean face_down;
+
 
     public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors){
 
         this.component_type = component_type;
         this.connectors = new EnumMap<>(connectors);
-        this.face_down = true;
+
     }
 
-    /**
-     * This method twist the card.
-     */
-    public void changeFaceShowed(){
-        face_down = !face_down;
-    }
 
-    /**
-     * This method tells us witch face of the card is shown
-     * @return False means the card is face down. True means the card is face up
-     */
-    public boolean getFaceDown(){
-        return face_down;
-    }
+
 
     /**
      * This method tells us, giving a direction, witch type of connector is present on the card in that direction.

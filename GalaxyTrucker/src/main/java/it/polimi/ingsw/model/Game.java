@@ -21,6 +21,8 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  *     <li>clock_time: the time measured twisting the hourglass once</li>
  *     <li>active_players: the list of players that are still playing (means that they didn't lose or retire)</li>
  *     <li>deck_adventure: a set of 8 AdventureCard that needs to be solved by the players</li>
+ *     <li>cards_faced_up: the deck of the cards that are face up</li>
+ *     <li>deck_components: the deck of the card component that are face down (all of them at first)</li>
  *     <li>board: where the players move their rockets</li>
  * </ul>
  */
@@ -32,6 +34,7 @@ public class Game {
     private static final int clock_time = 30; //30 sec messi a caso
     private List<Player> active_players = new ArrayList<>();
     private List<CardComponent> deck_components = new ArrayList<>();
+    private List<CardComponent> cards_faced_up = new ArrayList<>();
     private Board board;
 
 
@@ -1369,27 +1372,17 @@ return deck_components;
 
     }
 
-    /**
-     * this method is used at the end of the assembly phase in order to check the validity of a ship
-     */
-    public void checkShipsValidity() {
-
-
-
-    }
 
     /**
-     * @param player the one who wants to draw a random card from the deck
+
      * @return return a random card component from the deck that is faced up
      * @see CardComponent as 'random card component' we mean a card component whose face_down==true
      */
-    public CardComponent getRandomCardComponent(Player player) {
-        CardComponent card_drawn= deck_components.removeFirst();
-        while(!card_drawn.getFaceDown()){
-            player.dismissComponent(card_drawn);
-            card_drawn=deck_components.removeFirst();
-        }
-        card_drawn.changeFaceShowed();
+    public CardComponent getRandomCardComponent() {
+
+        CardComponent card_drawn= deck_components.removeFirst(); //picks the first card of the list (shuffled )
+
+
         return card_drawn;
     }
 
@@ -1397,24 +1390,13 @@ return deck_components;
 
 
     /**
-     * This method is called when the player wants to pick a card that is face up
-     * @see CardComponent as 'Not Random Card' we mean a card that is already face up (face_down==false)
-     * @return it returns the list of Card Components that are already known
+     * This method is called when the player wants to pick a card from the faced up cards
+
+     * @return it the card of Card selected
      */
-    public List<CardComponent> getNotRandomComponents() {
-        List<CardComponent> choosable=new ArrayList<>();
-        for(int i=0; i<deck_components.size(); i++){
-            if(deck_components.get(i).getFaceDown()==false){
-                choosable.add(deck_components.get(i));
-            }
-        }
-        return choosable;
-    }
+    public CardComponent getFacedUpCard(int index) {
+        return cards_faced_up.remove(index);
 
-
-    public CardComponent getCardComponentAtIndex(int index) {
-        List<CardComponent> choosable  = getNotRandomComponents();
-        return choosable.remove(index);
     }
 
     /**
@@ -1477,5 +1459,33 @@ throw new IllegalArgumentException("Nickname not found");
             nicknames.add(player.getNickname());
         }
         return nicknames;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
+    }
+
+    public void setDeck_adventure(List<CardAdventure> deck_adventure) {
+        this.deck_adventure = deck_adventure;
+    }
+
+    public void setActive_players(List<Player> active_players) {
+        this.active_players = active_players;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public List<CardComponent> getCards_faced_up() {
+        return cards_faced_up;
+    }
+
+    public void setCards_faced_up(List<CardComponent> cards_faced_up) {
+        this.cards_faced_up = cards_faced_up;
     }
 }

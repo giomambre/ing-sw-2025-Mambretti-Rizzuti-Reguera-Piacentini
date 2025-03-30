@@ -19,7 +19,7 @@ public class Battery extends CardComponent {
             @JsonProperty("connectors") Map<Direction, ConnectorType> connectors, @JsonProperty("size") int size) {
         super(component_type, connectors);
         this.size = size;
-        this.stored = 0;
+        this.stored = size;
     }
 
     //hp: le batterie si aggiungono solo quando si fanno i rifornimenti iniziali (mi sembra di ricordare dal regolamento)

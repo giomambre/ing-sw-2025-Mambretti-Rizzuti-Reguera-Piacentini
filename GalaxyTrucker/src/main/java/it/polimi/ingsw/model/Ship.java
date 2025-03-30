@@ -112,7 +112,9 @@ public class Ship {
                     connectors.put(East, Universal);
                     connectors.put(West, Universal);
 
-                    ship_board[row][col] = new CardComponent(main_unit, connectors); //da mettere main unit in base al colore
+                    ship_board[row][col] = new LivingUnit(main_unit, connectors);
+                    ((LivingUnit)getComponent(row,col)).addAstronauts(); //already filled the main unit with 2 astounauts, no choices here
+
                 } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
                     ship_board[row][col] = NOT_ACCESSIBLE_CELL;
                 } else if ((row == 1 && (col == 0 || col == 6)) || (row == 4 && col == 3)) {
@@ -312,6 +314,7 @@ public class Ship {
 
 
         List<Pair<Integer, Integer>> invalids = new ArrayList<>();
+
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 

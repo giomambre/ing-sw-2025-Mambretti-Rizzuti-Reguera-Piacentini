@@ -40,7 +40,7 @@ public class Player {
     public void endBuild(){
         List<Player> active_players = game.getActivePlayers();
         active_players.add(this);
-        game.setActivePlayers(active_players);
+
     }
 
     /**
@@ -52,8 +52,8 @@ public class Player {
         List<CardComponent> extra_components = ship.getExtra_components();
         if(extra_components.size() < 2) {
             extra_components.add(component);
-        }
-        ship.setExtra_components(extra_components);
+        }else throw new IllegalArgumentException("Already has more than 2 components");
+
 
     }
 
@@ -72,9 +72,9 @@ public class Player {
      * @param component the card that needs to be re-added
      */
     public void dismissComponent(CardComponent component) {
-        List<CardComponent> deck_components = game.getDeck_components();
-        deck_components.add(component);
-        game.setDeck_components(deck_components);
+        List<CardComponent> deck = game.getCards_faced_up();
+        deck.add(component);
+      
     }
 
     /**
@@ -83,6 +83,11 @@ public class Player {
      */
     public void useExtraComponent(CardComponent component) {
         List<CardComponent> extra_components = ship.getExtra_components();
+        if(!extra_components.contains(component)) {
+
+            throw new IllegalArgumentException("Extra card component not found");
+
+        }
         extra_components.remove(component);
         ship.setExtra_components(extra_components);
     }
@@ -115,6 +120,11 @@ public class Player {
         return credits;
     }
 
+    public void leaveGame(){
+        game.removePlayer(this);
+
+
+    }
 
     public Ship getShip() {
         return ship;
