@@ -29,9 +29,9 @@ public class OpenSpaceTest {
 
 //manca da testare con alieni
 
-        player1 = new Player("Alice", Yellow);
-        player2 = new Player("Mambre", Blue);
-        player3 = new Player("isabel", Red);
+        player1 = new Player("Alice", YELLOW);
+        player2 = new Player("Mambre", BLUE);
+        player3 = new Player("isabel", RED);
 
         player1.getShip().initializeShipPlance();
         player2.getShip().initializeShipPlance();

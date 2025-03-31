@@ -5,10 +5,8 @@ import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import javafx.util.Pair;
-import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +32,8 @@ public class ShipTest2 {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Reff", Green);
-        player2 = new Player("Mambre", Yellow);
+        player1 = new Player("Reff", GREEN);
+        player2 = new Player("Mambre", YELLOW);
         ship1 = new Ship(player1);
         ship2 = new Ship(player2);
         ship1.initializeShipPlance();

@@ -25,7 +25,7 @@ public class PlayerTest {
 
     @BeforeEach
     public void setUp() {
-        player = new Player("raffa", Color.Yellow);
+        player = new Player("raffa", Color.YELLOW);
 
         connectors = new HashMap<>();
         connectors.put(North, Universal);

@@ -21,7 +21,7 @@ public class StorageTest {
     @BeforeEach
     public void setUp() {
 
-        player = new Player("jonny",Blue);
+        player = new Player("jonny", BLUE);
         player.getShip().initializeShipPlance();
 
         connectors.put(North, Universal);

@@ -17,22 +17,31 @@ public class GameController {
     public GameController() {
 
         game = new Game();
-        avaible_colors.add(Color.Red);
-        avaible_colors.add(Color.Green);
-        avaible_colors.add(Color.Yellow);
-        avaible_colors.add(Color.Blue);
+        avaible_colors.add(Color.RED);
+        avaible_colors.add(Color.GREEN);
+        avaible_colors.add(Color.YELLOW);
+        avaible_colors.add(Color.BLUE);
 
 
     }
 
-        public synchronized void addPlayer(String nickname, Color color) {
-        if(game.getNicknames().contains(nickname)) throw new IllegalArgumentException("Nickname already in use.");
+        public synchronized Player addPlayer(String nickname, Color color) {
+        if(game.getNicknames().contains(nickname)) throw new IllegalArgumentException(" Nickname already in use.");
 
-        if(!avaible_colors.contains(color)) throw new IllegalArgumentException("Color already in use.");
-
-        game.addPlayer(new Player(nickname, color));
+        if(!avaible_colors.contains(color)) throw new IllegalArgumentException("Color invalid or  already in use .\nthese are the available colors : " + avaible_colors);
+        Player  p= new Player(nickname, color);
+        avaible_colors.remove(p.getColor());
+        game.addPlayer(p);
+        return p;
 
     }
+
+    public synchronized CardComponent getRandomCard() {
+
+        return game.getRandomCardComponent();
+
+    }
+
 
 
     public synchronized int endPlayerBuildPhase(String nickname) {
@@ -62,11 +71,6 @@ public class GameController {
 
     }
 
-    public synchronized CardComponent getRandomCard() {
-
-        return game.getRandomCardComponent();
-
-    }
 
 
     public void addComponent(String nickname, CardComponent card,int x, int y) {
@@ -109,7 +113,9 @@ public void dismissComponent(String nickname, CardComponent card) {
     }
 
 
-    public synchronized CardComponent pickComponentFacedUp(String nickname, int index ) {
+    public synchronized CardComponent pickComponentFacedUp( int index ) {
+
+        if(index<0 || index > game.getPlayers().size()) throw new IllegalArgumentException("Index out of bounds");
 
         return  game.getFacedUpCard(index);
 

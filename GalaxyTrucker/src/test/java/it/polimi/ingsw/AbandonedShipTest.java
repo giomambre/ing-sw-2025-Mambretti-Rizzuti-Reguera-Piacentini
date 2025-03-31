@@ -30,7 +30,7 @@ public class AbandonedShipTest {
     @BeforeEach
     void setUp() {
 
-        player = new Player("Cice", Yellow);
+        player = new Player("Cice", YELLOW);
         ship = player.getShip();
         ship.initializeShipPlance();
         board = new Board(Arrays.asList(player));

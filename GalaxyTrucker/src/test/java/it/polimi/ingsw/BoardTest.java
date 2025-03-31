@@ -19,10 +19,10 @@ public class BoardTest {
     @BeforeEach //serve per fare il setup solo una volta per tutte prima di ogni test
     //prima di ogni test si ha questa situazione non altre modificate dagli altri test!!!!!
     public void setUp() {
-        player1 = new Player("Alice", Color.Yellow);
-        player2 = new Player("Mambre", Color.Blue);
-        player3 = new Player("isabel", Color.Red);
-        player4 = new Player("Raffa", Color.Green);
+        player1 = new Player("Alice", Color.YELLOW);
+        player2 = new Player("Mambre", Color.BLUE);
+        player3 = new Player("isabel", Color.RED);
+        player4 = new Player("Raffa", Color.GREEN);
 
         List<Player> players = Arrays.asList(player1, player2, player3, player4);
         board = new Board(players);

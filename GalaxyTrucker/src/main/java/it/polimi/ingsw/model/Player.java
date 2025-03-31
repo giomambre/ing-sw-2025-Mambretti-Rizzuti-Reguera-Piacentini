@@ -157,6 +157,8 @@ public class Player {
     public void subLap(){ this.num_laps--; }
 
     public String toString(){
-        return this.nickname;
+
+
+        return "Player with Nickname : " + this.nickname + "and color : " + this.getColor().toString();
     }
 }

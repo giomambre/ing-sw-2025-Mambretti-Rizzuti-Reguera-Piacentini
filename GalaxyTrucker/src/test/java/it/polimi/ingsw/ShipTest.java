@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +28,8 @@ public class ShipTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Reff", Green);
-        player2 = new Player("Mambre", Yellow);
+        player1 = new Player("Reff", GREEN);
+        player2 = new Player("Mambre", YELLOW);
         ship1 = new Ship(player1);
         ship2 = new Ship(player2);
 

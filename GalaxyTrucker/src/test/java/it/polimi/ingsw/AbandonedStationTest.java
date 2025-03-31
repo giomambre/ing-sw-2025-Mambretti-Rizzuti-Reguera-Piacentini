@@ -29,9 +29,9 @@ public class AbandonedStationTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Alice", Yellow);
-        player2 = new Player("Mambre", Blue);
-        player3 = new Player("isabel", Red);
+        player1 = new Player("Alice", YELLOW);
+        player2 = new Player("Mambre", BLUE);
+        player3 = new Player("isabel", RED);
         board = new Board(Arrays.asList (player1,player2,player3));
         player1.getShip().initializeShipPlance();
         player2.getShip().initializeShipPlance();

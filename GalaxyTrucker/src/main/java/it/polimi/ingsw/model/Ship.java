@@ -78,13 +78,13 @@ public class Ship {
 
         ComponentType main_unit;
         switch (player.getColor()) {
-            case Red:
+            case RED:
                 main_unit = MainUnitRed;
                 break;
-            case Yellow:
+            case YELLOW:
                 main_unit = MainUnitYellow;
                 break;
-            case Green:
+            case GREEN:
                 main_unit = MainUnitGreen;
                 break;
             default:
