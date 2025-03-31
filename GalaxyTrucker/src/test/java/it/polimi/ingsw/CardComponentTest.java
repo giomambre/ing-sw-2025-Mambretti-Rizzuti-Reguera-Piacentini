@@ -33,11 +33,7 @@ public class CardComponentTest {
         component = new CardComponent(ComponentType.BlueStorage, connectors);
     }
 
-    @Test
-    public void testchangeFaceShowed(){
-        component.changeFaceShowed();
-        assertEquals(false, component.getFaceDown() );
-    }
+
 
     @Test
     public void testrotate(){

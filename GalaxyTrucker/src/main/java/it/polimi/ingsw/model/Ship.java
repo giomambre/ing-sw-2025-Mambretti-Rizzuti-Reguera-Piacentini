@@ -173,21 +173,50 @@ public class Ship {
     }
 
     public boolean findPinkAlien() {
-        boolean pink_alien = false;
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
+
                 CardComponent component = this.getComponent(row, col);
 
-                if (component.getComponentType() == PinkAlienUnit
-                        && (this.getComponent(row+1, col).getComponentType() == PinkAlienUnit || this.getComponent(row, col+1).getComponentType() == PinkAlienUnit
-                        || this.getComponent(row, col-1).getComponentType() == PinkAlienUnit || this.getComponent(row-1, col).getComponentType() == PinkAlienUnit)
-                        && ((LivingUnit) component).getCrewmateType() == PinkAlien) {
-                    pink_alien = true;
+                // Verifica che il componente sia un'unità alieno rosa
+                if (component.getComponentType() != LivingUnit ||
+                        ((LivingUnit) component).getCrewmateType() != PinkAlien) {
+                    continue;
                 }
 
+                // Controlla se ha un vicino dello stesso tipo (PinkAlienUnit)
+                if (hasAdjacentPinkAlien(row, col)) {
+                    return true;
+                }
             }
         }
-        return pink_alien;
+        return false;
+    }
+
+    private boolean hasAdjacentPinkAlien(int row, int col) {
+        // Direzioni: sopra, destra, sotto, sinistra
+        int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        CardComponent component = this.getComponent(row, col);
+
+        for (int[] dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+
+            // Verifica che la posizione sia valida
+            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+                CardComponent neighbor = this.getComponent(newRow, newCol);
+                if (neighbor.getComponentType() == PinkAlienUnit &&
+                        (dir[0]==-1 && component.getValidsConnectors(component.getConnector(West)).contains(neighbor.getConnector(East))||
+                                dir[1]==1 && component.getValidsConnectors(component.getConnector(South)).contains(neighbor.getConnector(North))||
+                                dir[0]==1 && component.getValidsConnectors(component.getConnector(East)).contains(neighbor.getConnector(West))||
+                                dir[1]==-1 && component.getValidsConnectors(component.getConnector(North)).contains(neighbor.getConnector(South))
+                                )) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean findBrownAlien() {
