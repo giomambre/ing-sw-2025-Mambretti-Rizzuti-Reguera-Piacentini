@@ -254,15 +254,26 @@ public class ShipTest2 {
 
 
 @Test
-    public  void  testCalculatePower() {
+    public  void  testCalculateCannonPower() {
 
     Map<CardComponent, Boolean> playerBatteryUsage = new HashMap<>();
 
     assertEquals(5,ship1.calculateCannonPower(playerBatteryUsage));
-    playerBatteryUsage.put(ship1.getComponent(1, 1), true);
-    assertEquals(6,ship1.calculateCannonPower(playerBatteryUsage));
 
-    //assertEquals(3,ship1.calculateEnginePower(playerBatteryUsage));
+    playerBatteryUsage.put(ship1.getComponent(1, 1), true);
+    playerBatteryUsage.put(ship1.getComponent(2, 6), true);
+    assertEquals(6.5 ,ship1.calculateCannonPower(playerBatteryUsage));
+
+    ship1.removeComponent(2,0);
+    assertEquals(4.5,ship1.calculateCannonPower(playerBatteryUsage));
+
+}
+
+@Test
+    public  void  testCalculateEnginePower() {
+
+        Map<CardComponent, Boolean> playerBatteryUsage = new HashMap<>();
+        assertEquals(3,ship1.calculateEnginePower(playerBatteryUsage));
 
 }
 
