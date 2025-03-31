@@ -14,7 +14,7 @@ public interface VirtualServerRmi extends Remote, VirtualServer {
     CardComponent pickRandomCard() throws RemoteException;
 
     @Override
-    void insertPlayer(String nickname, String color)  throws RemoteException;
+    void insertPlayer(String nickname, String color) throws RemoteException;
 
     @Override
     void useEngines() throws RemoteException;
@@ -27,6 +27,9 @@ public interface VirtualServerRmi extends Remote, VirtualServer {
 
     @Override
     void endBuild() throws RemoteException;
+
+    @Override
+    void setMaxPlayers(int maxPlayers) throws RemoteException;
 
     @Override
     void selectPiece(int index) throws RemoteException;
@@ -42,7 +45,6 @@ public interface VirtualServerRmi extends Remote, VirtualServer {
 
     @Override
     void pickCardFacedUp(int index) throws RemoteException;
-
 
 
     @Override

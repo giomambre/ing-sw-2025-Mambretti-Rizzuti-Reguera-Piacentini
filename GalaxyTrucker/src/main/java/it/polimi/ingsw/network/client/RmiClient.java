@@ -25,6 +25,8 @@ public class RmiClient {
             System.out.println("Tentativo di connessione al server...");
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             VirtualServerRmi server = (VirtualServerRmi) registry.lookup("GameServer");
+            RemoteClient client_view = new RemoteClient(server);
+
 
 
 

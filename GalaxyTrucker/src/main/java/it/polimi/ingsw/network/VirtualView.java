@@ -20,4 +20,13 @@ public interface VirtualView {
     void showInsertedCard(CardComponent card) throws RemoteException;
 
     void showRemovedCard(CardComponent card) throws RemoteException;
+
+    void showCreateLobby() throws RemoteException;
+
+    void showJoinLobby() throws RemoteException;
+
+    void showMessage(String msg) throws RemoteException;
+
+    void showRemovedFromLobby() throws RemoteException;
+
 }

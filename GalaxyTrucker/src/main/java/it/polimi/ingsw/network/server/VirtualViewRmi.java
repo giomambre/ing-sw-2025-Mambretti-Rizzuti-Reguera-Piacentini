@@ -29,5 +29,15 @@ public interface VirtualViewRmi extends Remote, VirtualView {
     @Override
     void showRotatedCard(CardComponent card) throws RemoteException;
 
-   void showMessage(String msg) throws RemoteException;
+    @Override
+    void showCreateLobby() throws RemoteException;
+
+    @Override
+    void showRemovedFromLobby() throws RemoteException;
+
+    @Override
+    void showJoinLobby() throws RemoteException;
+
+    @Override
+    void showMessage(String msg) throws RemoteException;
 }
