@@ -36,13 +36,33 @@ public class MeteorSwarm extends CardAdventure {
 
     /**
      * This method first checks that a valid position value comes out of the dice roll,
-     * then it checks for each meteor type if there is a component card in the resulting position.
-     * The method foresees three different cases based on a specific meteor type
+     * then it calls the 'getFirstComponent' function of ship to obtain the first card at the given position and direction;
+     * and it checks, for each meteor type, if there is a component card in the resulting position
+     * by using 'getComponentType' function of CardComponent to see whether the ComponentType is 'NotAccesible' (in which case there is no card) or not.
+     *
+     * The method foresees four different cases based on a specific meteor type, through a switch:
+     * case SmallMeteor-> the method checks the shield_usage boolean to determine whether the player is using the shield.
+     * If true, it calls the 'removeBattery' function to subtract the used batteries and exits the check with a break.
+     * Otherwise, it checks the component type through the 'getComponentType' function:
+     * if the type is 'Smooth', the method exits the check with a break;
+     * otherwise, it removes the component using the 'removeComponent' function.
+     *
+     * case LargeMeteor-> the method checks the component type through the 'getComponentType' function:
+     * if the type is 'Cannon', the method also checks the connector type using the 'connectorType' function.
+     * If the connector is 'Cannon_Connector', it exits the check with a break.
+     * If the component type is DoubleCannon, it removes the batteries and then breaks as well.
+     * Otherwise, it removes the component using the 'removeComponent' function.
+     *
+     * case LightCannonFire-> the method checks the shield_usage boolean to determine whether the player is using the shield.
+     * If true, it calls the 'removeBattery' function to subtract the used batteries and exits the check with a break.
+     * Otherwise, it removes the component using the 'removeComponent' function.
+     *
+     * case HeavyCannonFire-> the method removes the component using the 'removeComponent' function and exits with a break.
      *
      * @param player
-     * @param direction
+     * @param direction from which the meteor arrives.
      * @param meteor_type
-     * @param shield_usage
+     * @param shield_usage a boolean
      * @param battery
      * @param position
      * @param double_cannon_usage a boolean
@@ -59,7 +79,6 @@ public class MeteorSwarm extends CardAdventure {
         if (hitted_card.getComponentType() == ComponentType.NotAccessible) return; // non ci sono pezzi colpiti
 
         switch (meteor_type) {
-
 
             case SmallMeteor:
                 if (shield_usage) {
@@ -80,8 +99,6 @@ public class MeteorSwarm extends CardAdventure {
                 }
                 ship.removeComponent(ship.getCoords(hitted_card).getKey(), ship.getCoords(hitted_card).getValue());
                 break;
-
-
 
                 case LightCannonFire:
 
