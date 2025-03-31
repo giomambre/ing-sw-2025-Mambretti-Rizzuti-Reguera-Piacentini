@@ -3,7 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.ComponentType;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 
 import java.util.*;
 public class GameController {
@@ -117,18 +120,47 @@ public void dismissComponent(String nickname, CardComponent card) {
 
         if(index<0 || index > game.getPlayers().size()) throw new IllegalArgumentException("Index out of bounds");
 
-        return  game.getFacedUpCard(index);
+        return game.getFacedUpCard(index);
 
     }
 
-    public void startSupply(String nickname) {
+    public void crewmatesSupply(String nickname, int x, int y, CrewmateType type) {
 
+
+        try {
+            Player p = game.getPlayer(nickname);
+            Ship ship = p.getShip();
+            CardComponent card = ship.getComponent(x, y);
+            if (card.getComponentType() != ComponentType.LivingUnit)
+                throw new IllegalArgumentException("The component isn't a LivingUnit");
+
+            if (type == CrewmateType.Astronaut) ((LivingUnit) card).addAstronauts();
+            else if (ship.checkAlienSupport(card).contains(type)) {
+                ((LivingUnit) card).addAlien(type);
+
+
+            } else {
+                System.out.println("Alien Support not found.");
+            }
+
+        }catch (Exception e){
+            System.err.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    public void rotateCard(CardComponent card) {
+        card.rotate();
+    }
+
+    public int getExposedConnector(String nickname) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
-
-
+        return ship.calculateExposedConnectors();
     }
+
+
 
 
 

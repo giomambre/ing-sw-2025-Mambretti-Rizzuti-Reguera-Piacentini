@@ -517,6 +517,8 @@ public class Ship {
     }
 
     public CardComponent getComponent(int x, int y) {
+
+        if(x<0 || y<0 || x>=ROWS || y>=COLS) throw new IndexOutOfBoundsException("x or y out of bounds");
         return ship_board[x][y];
     }
 
