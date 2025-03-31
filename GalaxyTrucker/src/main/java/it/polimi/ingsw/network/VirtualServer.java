@@ -25,7 +25,7 @@ public interface VirtualServer {
     void selectPiece(int index) throws RemoteException;
     void endBuild() throws RemoteException;
 
-
+    void setMaxPlayers(int maxPlayers) throws RemoteException;
     //card Adventure methods
     void pickPlanet(int index)  throws RemoteException;
 

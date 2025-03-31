@@ -30,13 +30,15 @@ public class RemoteGameServer extends UnicastRemoteObject implements VirtualServ
 
         synchronized (this.clients) {
             if(clients.isEmpty() ){
-                client.showMessage("Scegli il numero di player da 2 a 4  :");
+                client.showCreateLobby();
+
 
             }else if (clients.size() >= maxPlayers) {
                 // Se il numero massimo di giocatori è stato raggiunto, rifiuta la connessione
                 client.showMessage("Impossibile connettersi: il numero massimo di giocatori è stato raggiunto.");
                 return; // non aggiungere il client
             }
+            client.showJoinLobby();
             this.clients.add(client);
         }
     }
