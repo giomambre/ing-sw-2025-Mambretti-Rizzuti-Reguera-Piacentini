@@ -77,7 +77,7 @@ public class Smugglers extends CardAdventure {
      * This method is called when the player's cannon strenght is lower than the enemy's.
      * The method first calls the 'getShip' function of the player in order to get the player's ship.
      * It moves the player back by 'getCost_of_days' positions using the 'movePlayer' function,
-     * and finally removes cargo through the 'removeCargo' function from the 'new_cargo_position' position.
+     * and finally removes cargo through the 'removeCargo' function from the 'cargo_position' position.
      *
      * @param player
      * @param cargo_position
