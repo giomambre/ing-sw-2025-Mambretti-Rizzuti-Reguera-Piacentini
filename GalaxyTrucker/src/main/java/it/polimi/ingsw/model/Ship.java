@@ -173,39 +173,81 @@ public class Ship {
     }
 
     public boolean findPinkAlien() {
-        boolean pink_alien = false;
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
-                CardComponent component = this.getComponent(row, col);
-
-                if (component.getComponentType() == PinkAlienUnit
-                        && (this.getComponent(row+1, col).getComponentType() == PinkAlienUnit || this.getComponent(row, col+1).getComponentType() == PinkAlienUnit
-                        || this.getComponent(row, col-1).getComponentType() == PinkAlienUnit || this.getComponent(row-1, col).getComponentType() == PinkAlienUnit)
-                        && ((LivingUnit) component).getCrewmateType() == PinkAlien) {
-                    pink_alien = true;
-                }
-
-            }
-        }
-        return pink_alien;
+        return findAlien(PinkAlien, PinkAlienUnit);
     }
 
-    public boolean findBrownAlien() {
-        boolean brown_alien = false;
+    public boolean findBrownAlien(){
+        return findAlien(BrownAlien, BrownAlienUnit);
+    }
+
+
+    public boolean findAlien(CrewmateType alienType, ComponentType alienUnitType) {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
-                CardComponent component = this.getComponent(row, col);
-
-                if (component.getComponentType() == LivingUnit
-                        && (this.getComponent(row+1, col).getComponentType() == BrownAlienUnit || this.getComponent(row, col+1).getComponentType() == BrownAlienUnit
-                            || this.getComponent(row, col-1).getComponentType() == BrownAlienUnit || this.getComponent(row-1, col).getComponentType() == BrownAlienUnit)
-                        && ((LivingUnit) component).getCrewmateType() == BrownAlien) {
-                    brown_alien = true;
+                // Salta le colonne agli estremi (0 e 6)
+                if (col == 0 || col == 6) {
+                    continue;
                 }
 
+                CardComponent component = this.getComponent(row, col);
+
+                // Verifica che il componente sia un'unità alieno del tipo specificato
+                if (component.getComponentType() != LivingUnit ||
+                        ((LivingUnit) component).getCrewmateType() != alienType) {
+                    continue;
+                }
+
+                // Controlla se ha un vicino dello stesso tipo con connettori compatibili
+                if (hasAdjacentAlien(row, col, alienUnitType)) {
+                    return true;
+                }
             }
         }
-        return brown_alien;
+        return false;
+    }
+
+
+    private boolean hasAdjacentAlien(int row, int col, ComponentType alienUnitType) {
+        // Direzioni: sopra, destra, sotto, sinistra
+        int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        CardComponent component = this.getComponent(row, col);
+
+        for (int[] dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+            // Verifica che la posizione sia valida
+            if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS) {
+                CardComponent neighbor = this.getComponent(newRow, newCol);
+
+                // Verifica se è un'unità alieno del tipo specificato
+                if (neighbor.getComponentType() == alienUnitType) {
+                    // Determina i bordi da controllare in base alla direzione
+                    ConnectorType currentConnector;
+                    ConnectorType neighborConnector;
+
+                    if (dir[0] == -1) {  // Sopra
+                        currentConnector = component.getConnector(North);
+                        neighborConnector = neighbor.getConnector(South);
+                    } else if (dir[0] == 1) {  // Sotto
+                        currentConnector = component.getConnector(South);
+                        neighborConnector = neighbor.getConnector(North);
+                    } else if (dir[1] == -1) {  // Sinistra
+                        currentConnector = component.getConnector(West);
+                        neighborConnector = neighbor.getConnector(East);
+                    } else {  // Destra
+                        currentConnector = component.getConnector(East);
+                        neighborConnector = neighbor.getConnector(West);
+                    }
+
+                    // Verifica la compatibilità dei connettori
+                    if (component.getValidsConnectors(currentConnector).contains(neighborConnector)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private List<CardComponent> getAvailableBatteries() {

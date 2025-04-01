@@ -76,7 +76,7 @@ public class ShipTest2 {
         connectors.put(South, Single);
         connectors.put(West, Universal);
 
-        ship1.addComponent(new CardComponent(DoubleEngine, connectors), 1, 4);
+        ship1.addComponent(new CardComponent(DoubleCannon, connectors), 1, 4);
 
         connectors.put(North, Single);
         connectors.put(East, Universal);
@@ -244,19 +244,38 @@ public class ShipTest2 {
 
 }
 @Test
-    public  void  testRemoveComponentKillingAlien() { //
+    public  void  testRemoveComponentKillingAlien() {
 
-        //the living unit containing the alin is the (2,1) and the alien support is (2,0)
-
-        assertEquals(PinkAlien, ((LivingUnit) ship1.getComponent(2,1)).getCrewmateType());
+    assertEquals(PinkAlien, ((LivingUnit) ship1.getComponent(2,1)).getCrewmateType());
     assertEquals(1, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
     ship1.removeComponent(2,0);
-//manca da fare la checkALienSupport con tutti i casi e le connessioni
     assertEquals(0, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
+    }
 
 
+@Test
+    public  void  testCalculateCannonPower() {
 
+    Map<CardComponent, Boolean> playerBatteryUsage = new HashMap<>();
+
+    assertEquals(5,ship1.calculateCannonPower(playerBatteryUsage));
+
+    playerBatteryUsage.put(ship1.getComponent(1, 1), true);
+    playerBatteryUsage.put(ship1.getComponent(2, 6), true);
+    assertEquals(6.5 ,ship1.calculateCannonPower(playerBatteryUsage));
+
+    ship1.removeComponent(2,0);
+    assertEquals(4.5,ship1.calculateCannonPower(playerBatteryUsage));
 
 }
+
+@Test
+    public  void  testCalculateEnginePower() {
+
+        Map<CardComponent, Boolean> playerBatteryUsage = new HashMap<>();
+        assertEquals(3,ship1.calculateEnginePower(playerBatteryUsage));
+
+}
+
 
 }
