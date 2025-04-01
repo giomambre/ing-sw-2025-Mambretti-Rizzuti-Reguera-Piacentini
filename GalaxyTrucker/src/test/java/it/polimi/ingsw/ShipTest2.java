@@ -275,6 +275,20 @@ public class ShipTest2 {
         Map<CardComponent, Boolean> playerBatteryUsage = new HashMap<>();
         assertEquals(3,ship1.calculateEnginePower(playerBatteryUsage));
 
+        ship1.removeComponent(2,0);
+
+
+    Map<Direction, ConnectorType> connectors = new HashMap<>();
+    connectors.put(North, Smooth);
+    connectors.put(East, Universal);
+    connectors.put(South, Smooth);
+    connectors.put(West, Single);
+
+    ship1.addComponent(new CardComponent(BrownAlienUnit, connectors), 2, 0);
+    ((LivingUnit) ship1.getComponent(2,1)).addAlien(BrownAlien);
+
+    assertEquals(5,ship1.calculateEnginePower(playerBatteryUsage));
+
 }
 
 

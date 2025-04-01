@@ -618,7 +618,6 @@ public class Ship {
                      if(ship_board[row][col].getComponentType() == LivingUnit
                              && ((LivingUnit)card).getCrewmateType() != Astronaut
                              && ((LivingUnit)card).getNum_crewmates()>0 ) {
-                         System.out.println(checkAlienSupport(card));
 
                          if(!checkAlienSupport(card).contains(((LivingUnit)card).getCrewmateType())){
                              //kill the alien
