@@ -1,4 +1,6 @@
-import it.polimi.ingsw.network.VirtualView;
+package it.polimi.ingsw.network;
+
+
 
 import java.io.*;
 import java.net.*;
@@ -8,77 +10,49 @@ import java.rmi.server.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class Server {
-    private static final int SOCKET_PORT = 12345;
-    private static final String RMI_SERVICE_NAME = "GameService";
-    private static final String SERVER_IP = "127.0.0.1";  // Indirizzo IP del server
+public class Server implements VirtualServerRmi {
+    final List<VirtualView> clients = new ArrayList<>();
 
-    private Map<UUID, VirtualView> clients = new ConcurrentHashMap<>();
-
-    public static void main(String[] args) {
-        Server server = new Server();
-        server.start();
+    public Server() throws RemoteException {
+        super();
     }
 
-    public void start() {
-        try {
-            // Avvio del servizio RMI
-            startRMIService();
+    public static void main(String[] args) throws RemoteException {
+        final String serverName = "AdderServer";
 
-            // Avvio del server Socket in un thread separato
-            startSocketServer();
+        VirtualServerRmi server = new Server();
 
-            System.out.println("Server in esecuzione. In attesa di connessioni...");
-        } catch (Exception e) {
-            e.printStackTrace();
+        Registry registry = LocateRegistry.createRegistry(1234);
+
+        registry.rebind(serverName, server);
+
+        System.out.println("Server RMI READY...");
+    }
+
+
+
+    @Override
+    public void connect(VirtualView client) throws RemoteException {
+        synchronized (this.clients) {
+            this.clients.add(client);
         }
     }
 
-    private void startRMIService() throws RemoteException {
-        try {
-            // Crea e avvia il server RMI
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind(RMI_SERVICE_NAME, new GameRMIImpl(this));
-            System.out.println("RMI service started on port 1099.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void startSocketServer() {
-        new Thread(() -> {
-            try (ServerSocket serverSocket = new ServerSocket(SOCKET_PORT)) {
-                while (true) {
-                    Socket clientSocket = serverSocket.accept();
-                    handleNewSocketClient(clientSocket);
+    @Override
+    public void sendMessage(String message) {
+        synchronized (this.clients){
+            for(VirtualView client: clients){
+                try {
+                    client.showMessage("è arrivato il Messaggio : " + message);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }).start();
-    }
-
-    private void handleNewSocketClient(Socket clientSocket) {
-        try {
-            UUID clientId = UUID.randomUUID();  // Genera un UUID per il nuovo client
-            VirtualView clientView = new TUI(clientSocket);  // Usa la TUI per la gestione del client
-            clients.put(clientId, clientView);
-
-            // Invia il messaggio di benvenuto
-            clientView.showMessage("Benvenuto! Scrivi il tuo nickname.");
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    // Metodo chiamato per inviare messaggi a tutti i client
-    public void sendMessageToAllClients(String message) {
-        for (VirtualView clientView : clients.values()) {
-            try {
-                clientView.showMessage(message);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    @Override
+    public void addPlayer(String nickname, VirtualView virtualView) {
+
     }
 }

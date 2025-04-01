@@ -5,20 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Controller updated">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/ClientHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/MainClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/TUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/VirtualServerRmi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/MainClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/MainClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/VirtualServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/VirtualServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/VirtualView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/VirtualView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/client/RemoteClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/client/RmiClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/client/VirtualServerRmi.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/server/RemoteGameServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/server/RmiServer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/server/VirtualViewRmi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/VirtualServerRmi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/VirtualServerRmi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/VirtualServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/VirtualServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/VirtualView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/VirtualView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/client/RemoteClient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/client/RmiClient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/client/VirtualServerRmi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/server/RemoteGameServer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/server/RmiServer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/server/VirtualViewRmi.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -355,15 +355,8 @@
       <workItem from="1743426190217" duration="2743000" />
       <workItem from="1743433253111" duration="17000" />
       <workItem from="1743433412235" duration="1815000" />
-      <workItem from="1743519231535" duration="5852000" />
-    </task>
-    <task id="LOCAL-00010" summary="First Commit">
-      <option name="closed" value="true" />
-      <created>1741867474707</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1741867474707</updated>
+      <workItem from="1743519231535" duration="6214000" />
+      <workItem from="1743527193150" duration="780000" />
     </task>
     <task id="LOCAL-00011" summary="First Commit">
       <option name="closed" value="true" />
@@ -749,7 +742,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743523898502</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Controller updated">
+      <option name="closed" value="true" />
+      <created>1743526465952</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1743526465952</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

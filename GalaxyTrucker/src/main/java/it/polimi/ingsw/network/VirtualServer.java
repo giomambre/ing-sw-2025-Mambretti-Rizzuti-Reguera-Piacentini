@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
  */
 public interface VirtualServer {
 
+    void sendMessage(String message) ;
     void addPlayer(String nickname, VirtualView virtualView);
 
 
