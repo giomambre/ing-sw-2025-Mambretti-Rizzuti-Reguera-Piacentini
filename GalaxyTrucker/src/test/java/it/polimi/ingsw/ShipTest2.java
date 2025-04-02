@@ -185,7 +185,7 @@ public class ShipTest2 {
         connectors.put(South, Engine_Connector);
         connectors.put(West, Single);
 
-        ship1.addComponent(new CardComponent(Engine, connectors), 3, 6);
+        ship1.addComponent(new CardComponent(DoubleEngine, connectors), 3, 6);
 
         connectors.put(North, Double);
         connectors.put(East, Universal);
@@ -223,6 +223,26 @@ public class ShipTest2 {
 
     assertEquals(8, ship1.calculateExposedConnectors());
 
+}
+
+@Test public void testCheckShipConnections(){
+    List<Pair<Integer, Integer>> pairs = List.of();
+    assertEquals(pairs,ship1.checkShipConnections());
+
+
+    Map<Direction, ConnectorType> connectors = new HashMap<>();
+    connectors.put(North, Double);
+    connectors.put(East, Smooth);
+    connectors.put(South, Engine_Connector);
+    connectors.put(West, Smooth);
+
+    ship1.addComponent(new CardComponent(Engine, connectors), 0, 4);
+    pairs = List.of(new Pair<>(0, 4), new Pair<>(1, 4));
+    assertEquals(pairs,ship1.checkShipConnections());
+
+    pairs = List.of();
+    ship1.removeComponent(0,4);
+    assertEquals(pairs,ship1.checkShipConnections());
 }
 
 @Test
@@ -270,12 +290,12 @@ public class ShipTest2 {
 }
 
 @Test
-    public  void  testCalculateEnginePower() {
+public void testCalculateEnginePower() {
 
-        Map<CardComponent, Boolean> playerBatteryUsage = new HashMap<>();
-        assertEquals(3,ship1.calculateEnginePower(playerBatteryUsage));
+    Map<CardComponent, Boolean> playerBatteryUsage = new HashMap<>();
+    assertEquals(3, ship1.calculateEnginePower(playerBatteryUsage));
 
-        ship1.removeComponent(2,0);
+    ship1.removeComponent(2, 0);
 
 
     Map<Direction, ConnectorType> connectors = new HashMap<>();
@@ -285,11 +305,36 @@ public class ShipTest2 {
     connectors.put(West, Single);
 
     ship1.addComponent(new CardComponent(BrownAlienUnit, connectors), 2, 0);
-    ((LivingUnit) ship1.getComponent(2,1)).addAlien(BrownAlien);
+    ((LivingUnit) ship1.getComponent(2, 1)).addAlien(BrownAlien);
 
-    assertEquals(5,ship1.calculateEnginePower(playerBatteryUsage));
+    assertEquals(5, ship1.calculateEnginePower(playerBatteryUsage));
+
+    playerBatteryUsage.put(ship1.getComponent(3, 6), true);
+    assertEquals(6, ship1.calculateEnginePower(playerBatteryUsage));
+
 
 }
+
+@Test
+public void testChoosePiece() {
+
+    ship1.removeComponent(2, 4);
+    ship1.removeComponent(2, 3);
+    ship1.removeComponent(4, 2);
+
+    ship1.choosePiece(1);
+    List<Pair<Integer, Integer>> pairs = List.of(
+            new Pair<>(1, 5), new Pair<>(2, 5), new Pair<>(2, 6),
+            new Pair<>(3, 2), new Pair<>(3, 3), new Pair<>(3, 4),
+            new Pair<>(3, 5), new Pair<>(3,6),new Pair<>(4, 4), new Pair<>(4, 5)
+    );
+
+    assertEquals(pairs, ship1.printShipPlance());
+
+
+}
+
+
 
 
 }

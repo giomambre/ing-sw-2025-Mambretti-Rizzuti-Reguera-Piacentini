@@ -128,6 +128,20 @@ public class Ship {
         }
     }
 
+    public List<Pair<Integer, Integer>> printShipPlance() {
+        List<Pair<Integer, Integer>> piece = new ArrayList<>();
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (this.getComponent(row, col).getComponentType() != Empty &&
+                this.getComponent(row, col).getComponentType() != NotAccessible) {
+                    piece.add(new Pair<>(row, col));
+                }
+            }
+        }
+        return piece;
+
+    }
+
     public double calculateCannonPower(Map<CardComponent, Boolean> battery_usage) { //after the validity check , get battery_usage from controller i think
         double power = 0;
         CardComponent tmp;
@@ -250,6 +264,7 @@ public class Ship {
         return false;
     }
 
+    //??????????????????????????????????????????
     private List<CardComponent> getAvailableBatteries() {
         List<CardComponent> batteries = new ArrayList<>();
 
@@ -385,11 +400,8 @@ public class Ship {
         }
         return total;
     }
-    //  public List<Pair<Integer, Integer>> checkShipValidity(){
 
-
-    //}
-
+    //??????????????????
     public boolean isProtected(Direction direction) {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -715,19 +727,6 @@ public class Ship {
         }
 
 
-    public void RemoveComponent(int row, int col) {
-
-        Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-        connectors.put(North, Empty_Connector);
-        connectors.put(South, Empty_Connector);
-        connectors.put(East, Empty_Connector);
-        connectors.put(West, Empty_Connector);
-
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
-
-        ship_board[row][col] = EMPTY_CELL;
-
-    }
 
 //funzione che ritorni da 0 a 2 tipi di support per alieni
     public List<CrewmateType> checkAlienSupport(CardComponent living_unit) {
