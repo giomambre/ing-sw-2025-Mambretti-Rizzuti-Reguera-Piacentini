@@ -265,7 +265,7 @@ public class Ship {
                     }
 
                     // Verifica la compatibilità dei connettori
-                    if (component.getValidsConnectors(currentConnector).contains(neighborConnector)) {
+                    if (component.getValidConnectors(currentConnector).contains(neighborConnector)) {
                         return true;
                     }
                 }
@@ -365,23 +365,23 @@ public class Ship {
                     case North:
 
 
-                        if (x != 0 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x - 1, y).getConnector(South))
+                        if (x != 0 && !card.getValidConnectors(card.getConnector(direction)).contains(getComponent(x - 1, y).getConnector(South))
                         ) return false;
 
                         break;
 
                     case East:
-                        if (y != COLS - 1 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x, y + 1).getConnector(West))
+                        if (y != COLS - 1 && !card.getValidConnectors(card.getConnector(direction)).contains(getComponent(x, y + 1).getConnector(West))
                         ) return false;
                         break;
 
                     case South:
-                        if (x != ROWS - 1 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x + 1, y).getConnector(North))
+                        if (x != ROWS - 1 && !card.getValidConnectors(card.getConnector(direction)).contains(getComponent(x + 1, y).getConnector(North))
                         ) return false;
                         break;
 
                     case West:
-                        if (y != 0 && !card.getValidsConnectors(card.getConnector(direction)).contains(getComponent(x, y - 1).getConnector(East))
+                        if (y != 0 && !card.getValidConnectors(card.getConnector(direction)).contains(getComponent(x, y - 1).getConnector(East))
                         ) return false;
                         break;
 
@@ -532,7 +532,7 @@ public class Ship {
                 if (neighbor.getComponentType() != Empty && neighbor.getComponentType() != NotAccessible
                         && ship_board[x][y].getConnector(dir) != Smooth) {
 
-                    if (ship_board[x][y].getValidsConnectors(ship_board[x][y].getConnector(dir))
+                    if (ship_board[x][y].getValidConnectors(ship_board[x][y].getConnector(dir))
                             .contains(neighbor.getConnector(getOpposite(dir)))) {
                         explorePiece(newX, newY, visited, piece);
                     }
@@ -844,34 +844,34 @@ public class Ship {
         living_unit = this.getComponent(x, y);
 
         if (x!=4 && this.getComponent(x+1,y).getComponentType() == PinkAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South)))
+                && living_unit.getValidConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South)))
             crew.add(PinkAlien);
         else if (x!=4 && this.getComponent(x+1,y).getComponentType() == BrownAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South))) {
+                && living_unit.getValidConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South))) {
             crew.add(BrownAlien);
         }
 
         if (x!=0 && this.getComponent(x-1,y).getComponentType() == PinkAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North)))
+                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North)))
             crew.add(PinkAlien);
         else if (x!=0 && this.getComponent(x-1,y).getComponentType() == BrownAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North))) {
+                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North))) {
             crew.add(BrownAlien);
         }
 
         if (y!=6 && this.getComponent(x,y+1).getComponentType() == PinkAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West)))
+                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West)))
             crew.add(PinkAlien);
         else if (y!=6 && this.getComponent(x,y+1).getComponentType() == BrownAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West))) {
+                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West))) {
             crew.add(BrownAlien);
         }
 
         if (y!=0 && this.getComponent(x,y-1).getComponentType() == PinkAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East)))
+                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East)))
             crew.add(PinkAlien);
         else if (y!=0 &&this.getComponent(x,y-1).getComponentType() == BrownAlienUnit
-                && living_unit.getValidsConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East))) {
+                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East))) {
             crew.add(BrownAlien);
         }
 
