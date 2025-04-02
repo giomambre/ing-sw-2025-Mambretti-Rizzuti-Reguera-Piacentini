@@ -824,6 +824,11 @@ public class Ship {
 
     }
 
+    /**
+     * This method allows adding aliens to the 'LivingUnit' component card only if it is properly connected to a support
+     * @param living_unit
+     * @return list of alien added in the ship
+     */
 //funzione che ritorni da 0 a 2 tipi di support per alieni
     public List<CrewmateType> checkAlienSupport(CardComponent living_unit) {
         List<CrewmateType> crew = new ArrayList<>();
