@@ -14,6 +14,16 @@ public class GameController {
 
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> avaible_colors = new ArrayList<>();
+    /** Map that contains all connected players, the nickname is the key. */
+    public static Map<String, Player> allPlayers = new HashMap<>();
+    /** Map that contains all started games, the id is the key*/
+    public static Map<Integer, Game> allGames = new HashMap<>();
+    /** List that contains all the created lobbies.*/
+    public static List<Lobby> allLobbies = new ArrayList<>();
+    /** List that contains all pending commands.*/
+    public static List<command> queue = new ArrayList<>();
+
+
 
     Game game;
 
