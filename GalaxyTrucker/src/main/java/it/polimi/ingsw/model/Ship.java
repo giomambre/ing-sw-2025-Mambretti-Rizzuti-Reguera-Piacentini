@@ -224,7 +224,13 @@ public class Ship {
         return false;
     }
 
-
+    /**
+     * this method checks whether the component card is adjacent to an alien unit.
+     * @param row
+     * @param col
+     * @param alienUnitType
+     * @return boolean
+     */
     private boolean hasAdjacentAlien(int row, int col, ComponentType alienUnitType) {
         // Direzioni: sopra, destra, sotto, sinistra
         int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
@@ -387,6 +393,10 @@ public class Ship {
         return true;
     }
 
+    /**
+     * This method checks if the entire ship is properly connected.
+     * @return the list of card positions with invalid connections
+     */
     public List<Pair<Integer, Integer>> checkShipConnections() {
 
 
@@ -405,7 +415,10 @@ public class Ship {
         return invalids;
     }
 
-
+    /**
+     * This method
+     * @return the number of crewmates
+     */
     public int getNumOfCrewmates() {
         CardComponent tmp;
         int total = 0;
@@ -425,6 +438,11 @@ public class Ship {
 
     //}
 
+    /**
+     * This method checks whether the ship is protected in the specified direction.
+     * @param direction
+     * @return boolean
+     */
     public boolean isProtected(Direction direction) {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -439,7 +457,10 @@ public class Ship {
         return false;
     }
 
-
+    /**
+     * This method is used to find ship parts.
+     * @return list of multiple lists of pairs
+     */
     public List<List<Pair<Integer, Integer>>> findShipPieces() {
         List<List<Pair<Integer, Integer>>> pieces = new ArrayList<>(); // lista di Tronconi
         Set<Pair<Integer, Integer>> visited = new HashSet<>();
@@ -464,6 +485,12 @@ public class Ship {
         return pieces;
     }
 
+    /**
+     * This method verifies the validity of a component (it must not be null, empty or inaccessible)
+     * @param row
+     * @param col
+     * @return boolean
+     */
     private boolean isValidComponent(int row, int col) {
         if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return false;
         CardComponent component = ship_board[row][col];
@@ -514,6 +541,12 @@ public class Ship {
         }
     }
 
+    /**
+     * This method counts the number of exposed connectors on the ship.
+     * This method uses a switch statement to check each of the four directions: North, South, East and West.
+     * It also examines the first and last rows and columns to determine which connectors are exposed.
+     * @return the total number of exposed connectors
+     */
     public int calculateExposedConnectors() {
         int exposed_connectors = 0;
         CardComponent component;
@@ -593,12 +626,24 @@ public class Ship {
         return exposed_connectors;
     }
 
+    /**
+     *This method retrieves the component card located at a specific position on the ship.
+     * @param x row
+     * @param y col
+     * @return the card component at the given position
+     */
     public CardComponent getComponent(int x, int y) {
 
         if(x<0 || y<0 || x>=ROWS || y>=COLS) throw new IndexOutOfBoundsException("x or y out of bounds");
         return ship_board[x][y];
     }
 
+    /**
+     * This method validates a ship piece by checking if it contains exactly one valid engine or DoubleEngine
+     * and exactly one valid living unit.
+     * @param piece a list of coordinate pairs representing the positions of the component cards to validate
+     * @return true if the piece contains exactly one engine and one living unit with at least one crewmate; false otherwise
+     */
     public Boolean validatePiece(List<Pair<Integer, Integer>> piece) {
         int valid_cannon = 0;
         int valid_unit = 0;
@@ -618,9 +663,13 @@ public class Ship {
 
         return valid_cannon == 1 && valid_unit == 1;
 
-
     }
 
+    /**
+     * This method finds the coordinates of the given component card on the ship.
+     * @param component
+     * @return a pair of integers representing the (row, column) coordinates of the component
+     */
     public Pair<Integer,Integer> getCoords(CardComponent component) {
         for(int i = 0; i < ROWS; i++) {
             for(int j = 0; j < COLS; j++) {
@@ -632,7 +681,11 @@ public class Ship {
         return new Pair(0,0);
     }
 
-
+    /**
+     * This method is used when a component card is destroyed or has invalid connections.
+     * @param x row
+     * @param y col
+     */
     public void removeComponent(int x, int y) {
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
         connectors.put(North, Empty_Connector);
@@ -694,6 +747,12 @@ public class Ship {
         }
     }
 
+    /**
+     * This method is called by the adventure card 'MeteorSwarm' to determine which card is hit.
+     * @param dir direction
+     * @param pos row or column to search along
+     * @return the first component found in the given direction and position
+     */
     public CardComponent getFirstComponent(Direction dir , int pos ) {
 
 // ritorna un component NOT ACCESSIBLE se non ce nessun componente colpito
