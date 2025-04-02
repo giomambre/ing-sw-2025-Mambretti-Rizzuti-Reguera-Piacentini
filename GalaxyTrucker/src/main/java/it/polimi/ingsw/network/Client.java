@@ -1,32 +1,44 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.model.view.TUI;
+import it.polimi.ingsw.model.view.View;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.text.ParseException;
+
+import java.io.*;
+
+import java.util.Scanner;
 
 public class Client {
-    private Socket clientSocket;
-    private static PrintWriter out;
-    private static BufferedReader in;
+    public static void main(String[] args) {
+        try (Socket socket = new Socket("localhost", 12345);
+             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+             Scanner scanner = new Scanner(System.in)) {
 
-    /** It starts the socket connection on the given ip and port.
-     * @param ip address of the connection.
-     * @param port chosen port for the connection. */
-    public void connection(String ip, int port) throws IOException {
-        clientSocket = new Socket(ip, port);
-        //Directed communication between client and server
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-    }
+            while (true) {
+                Message serverMessage = (Message) in.readObject();
+                if (serverMessage.getType() == MessageType.REQUEST_NAME) {
+                    System.out.println(serverMessage.getContent());
+                    String name = scanner.nextLine();
 
-    /** It listens to the messages received by via socket, and it calls the elaborate method. */
-    public static void listenSocket() throws IOException, ParseException, InterruptedException {
-        while(true) {
-            String message = in.readLine();
-            System.out.println(message);
+                    out.writeObject(new Message(MessageType.REQUEST_NAME, name));
+                    out.flush();
+                } else if (serverMessage.getType() == MessageType.NAME_ACCEPTED) {
+                    System.out.println("✅ " + serverMessage.getContent());
+                    break;
+                } else if (serverMessage.getType() == MessageType.NAME_REJECTED) {
+                    System.out.println("❌ " + serverMessage.getContent());
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

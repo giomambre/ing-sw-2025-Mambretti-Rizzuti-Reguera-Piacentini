@@ -20,8 +20,7 @@ public class GameController {
     public static Map<Integer, Game> allGames = new HashMap<>();
     /** List that contains all the created lobbies.*/
     public static List<Lobby> allLobbies = new ArrayList<>();
-    /** List that contains all pending commands.*/
-    public static List<command> queue = new ArrayList<>();
+
 
 
 

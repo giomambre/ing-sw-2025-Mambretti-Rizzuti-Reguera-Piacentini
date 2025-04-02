@@ -6,8 +6,9 @@ import java.util.Scanner;
 public class TUI implements View {
     private final PrintStream out;
 
-    public TUI(PrintStream out) {
-        this.out = out;
+    public TUI() {
+        this.out = System.out;
+
     }
 
     @Override
@@ -34,13 +35,13 @@ public class TUI implements View {
 
     @Override
     public void showMessage(String message) {
-        out.println("ecco il ");
+        out.println("ecco il : ");
     }
 
     @Override
     public String askNickname() {
         Scanner input = new Scanner(System.in);
-        out.print("Enter your nickname: ");
+        out.println("Enter your nickname: ");
         return input.nextLine();
 
     }
