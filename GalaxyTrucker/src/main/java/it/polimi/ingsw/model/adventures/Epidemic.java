@@ -13,13 +13,33 @@ import it.polimi.ingsw.model.enumerates.Direction;
 
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
+/**
+ * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * <ul>
+ *     <li>ROWS: number of rows of the ship's plance</li>
+ *     <li>COLS: number of rows of the ship's plance</li>
+ * </ul>
+ */
 public class Epidemic extends CardAdventure {
     int ROWS=5 , COLS=7;
 
+    /**
+     *
+     * @param level
+     * @param cost_of_days
+     * @param type
+     * @param board
+     */
     public Epidemic(int level, int cost_of_days, CardAdventureType type, Board board) {
         super(level, cost_of_days, type, board);
     }
 
+    /**
+     * This method is called to remove one crewmate from each occupied 'LivingUnit' component card
+     * that is connected with another occupied cabin.
+     * It checks all adjacent card.
+     * @param player
+     */
     public void execute(Player player) {
         Ship ship = player.getShip();
         ComponentType mainUnit = ship.getComponent(2, 3).getComponentType();

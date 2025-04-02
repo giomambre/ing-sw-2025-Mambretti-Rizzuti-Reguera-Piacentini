@@ -13,11 +13,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class implements the
+ * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * <ul>
+ *     <li>cargo_reward: list of rewards the player receives when landing on each planet</li>
+ * </ul>
  */
 public class Planets extends CardAdventure {
     private List<List<Cargo>> cargo_reward;
 
+    /**
+     *
+     * @param level
+     * @param cost_of_days
+     * @param type
+     * @param board
+     * @param cargo_reward
+     */
     public Planets(int level, int cost_of_days, CardAdventureType type, Board board, List<List<Cargo>> cargo_reward) {
         super(level, cost_of_days, type, board);
         this.cargo_reward = cargo_reward;

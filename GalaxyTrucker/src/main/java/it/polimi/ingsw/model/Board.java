@@ -29,7 +29,10 @@ public class Board {
 
     }
 
-
+    /**
+     * This method
+     * @return leader
+     */
     public Player getBoard_leader() {
         return board_leader;
     }
@@ -92,6 +95,11 @@ public class Board {
         return leader;
     }
 
+    /**
+     * This method
+     * @param p
+     * @return position of player p
+     */
     public int getPlayerPosition(Player p) {
 
         for (var entry : player_position.entrySet()) {
@@ -101,7 +109,6 @@ public class Board {
         }
         return 0;
     }
-
 
     /**
      * This method moves the player p on the board of n=pos positions.

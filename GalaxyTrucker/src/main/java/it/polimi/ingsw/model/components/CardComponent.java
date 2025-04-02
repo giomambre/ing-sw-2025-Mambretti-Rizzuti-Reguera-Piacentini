@@ -12,7 +12,6 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  * <ul>
  *     <li>component_type: indicates the type of the component card
  *     <li>connectors: Indicates for each direction (N,S,O,W) witch type of connectors it's present
- *     <li>face_down: to indicate witch side of the card is shown. If it's face up then face_down==false ,otherwise face_down==true
  *     @see ComponentType ComponentType: to see the different types of card that compose the deck
  * </ul>
  */
@@ -29,9 +28,6 @@ public class CardComponent {
 
     }
 
-
-
-
     /**
      * This method tells us, giving a direction, witch type of connector is present on the card in that direction.
      * @param direction   North, East, South, West
@@ -46,7 +42,7 @@ public class CardComponent {
      * @param connector
      * @return : a list containing all the possible connector that matches with the given one
      */
-    public List<ConnectorType> getValidsConnectors(ConnectorType connector){
+    public List<ConnectorType> getValidConnectors(ConnectorType connector){
         List<ConnectorType> valids= new ArrayList<>();
         if(connector == Empty_Connector){
             throw new IllegalArgumentException("You cant use an empty connector");
