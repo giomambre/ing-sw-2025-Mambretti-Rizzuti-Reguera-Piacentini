@@ -41,8 +41,6 @@ public class AbandonedShip extends CardAdventure {
      * It allows the player to receive given_credits credits, calling the 'given_credits' function of player.
      * Then it moves the player back by cost_of_days positions through the 'movePlayer' function of board.
      * At the end this method removes crewmates_loss crewmates from the ship.
-     *
-     *
      * @param player
      * @param astronaut_losses
      */

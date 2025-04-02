@@ -93,7 +93,7 @@ public class Player {
     }
 
     /**
-     *
+     *This method
      * @return the result of the dices
      */
     public int throwDice(){
@@ -111,15 +111,27 @@ public class Player {
         this.credits += credits ;
     }
 
-
+    /**
+     * This method is used to find out how many exposed connectors a ship has.
+     * @return the number of exposed connectors
+     */
     public int getExposed_connectors() {
         return exposed_connectors;
     }
 
+    /**
+     * This method is used to find out how many credits a player has.
+     * @return the number of credits
+     */
     public int getCredits() {
         return credits;
     }
 
+    /**
+     * This method is called by the controller when a player chooses to leave the game,
+     * or is forced to leave because he has lost all humans, have no engine strength in open space, or have been lapped by the leader.
+     * It calls the 'removePlayer' function from the Game class.
+     */
     public void leaveGame(){
         game.removePlayer(this);
 
