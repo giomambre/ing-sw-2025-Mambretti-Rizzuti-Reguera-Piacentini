@@ -81,6 +81,8 @@ public class AbandonedStationTest {
         assertEquals(((Storage) ship_1.getComponent(3,1)).getCargo(0),Cargo.Green);
         assertEquals(((Storage) ship_1.getComponent(3,1)).getCargo(1),Cargo.Yellow);
 
+        assertEquals(board.getBoard().get(6),player1);
+        assertNull(board.getBoard().get(7));
 
 
     }

@@ -41,7 +41,7 @@ public class AbandonedShipTest {
         connectors.put(West, Smooth);
 
         ship.addComponent(new LivingUnit(LivingUnit, connectors),3,1);
-        ((LivingUnit)ship.getComponent(3,1)).addAlien(CrewmateType.Astronaut);
+        ((LivingUnit)ship.getComponent(3,1)).addAstronauts();
 
         ship.addComponent(new LivingUnit(LivingUnit, connectors),3,2);
         ((LivingUnit)ship.getComponent(3,2)).addAlien(CrewmateType.BrownAlien);
@@ -62,16 +62,17 @@ public class AbandonedShipTest {
         astronaut_losses.put(ship.getComponent(3,3),0);
 
         assertEquals(0,player.getCredits());
-        assertEquals(4,ship.getNumOfCrewmates());
+        assertEquals(6,ship.getNumOfCrewmates());
 
         ((AbandonedShip)abandonedShip).execute(player,astronaut_losses);
 
         assertEquals(5,player.getCredits());
 
-        assertEquals(1,ship.getNumOfCrewmates());
+        assertEquals(3,ship.getNumOfCrewmates());
         assertEquals(0,((LivingUnit)ship.getComponent(3,1)).getNum_crewmates());
         assertEquals(0,((LivingUnit)ship.getComponent(3,2)).getNum_crewmates());
         assertEquals(1,((LivingUnit)ship.getComponent(3,3)).getNum_crewmates());
+        assertEquals(2,((LivingUnit)ship.getComponent(2,3)).getNum_crewmates());
 
          Map<Integer, Player> playerPositions = board.getBoard();
          assertNull(playerPositions.get(7));

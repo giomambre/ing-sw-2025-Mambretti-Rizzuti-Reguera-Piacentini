@@ -1,11 +1,17 @@
 package it.polimi.ingsw.model.adventures;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.CardComponentLoader;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.ComponentType;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.Direction;
+
+import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 public class Epidemic extends CardAdventure {
     int ROWS=5 , COLS=7;
@@ -16,47 +22,48 @@ public class Epidemic extends CardAdventure {
 
     public void execute(Player player) {
         Ship ship = player.getShip();
+        ComponentType mainUnit = ship.getComponent(2, 3).getComponentType();
 
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
+                CardComponent component = ship.getComponent(row, col);
 
-
-                if (ship.getComponent(row, col).getComponentType() == ComponentType.LivingUnit
-                        && ((LivingUnit)ship.getComponent(row, col)).getNum_crewmates() != 0)  {
-
-                    if (ship.getComponent(row+1, col).getComponentType() == ComponentType.LivingUnit
-                            && ((LivingUnit)ship.getComponent(row+1, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row+1, col)).removeCrewmates(1);
-                    }
-
-                    if (ship.getComponent(row, col).getComponentType() == ComponentType.LivingUnit
-                            && ((LivingUnit)ship.getComponent(row, col+1)).getNum_crewmates() != 0
-                            && ((LivingUnit)ship.getComponent(row, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row, col+1)).removeCrewmates(1);
-                    }
-
-                    if (ship.getComponent(row, col).getComponentType() == ComponentType.LivingUnit
-                            && ((LivingUnit)ship.getComponent(row, col-1)).getNum_crewmates() != 0
-                            && ((LivingUnit)ship.getComponent(row, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row, col-1)).removeCrewmates(1);
-                    }
-
-                    if (ship.getComponent(row, col).getComponentType() == ComponentType.LivingUnit
-                            && ((LivingUnit)ship.getComponent(row-1, col)).getNum_crewmates() != 0
-                            && ((LivingUnit)ship.getComponent(row, col)).getNum_crewmates() != 0){
-                        ((LivingUnit)ship.getComponent(row-1, col)).removeCrewmates(1);
-                        ((LivingUnit)ship.getComponent(row, col)).removeCrewmates(1);
-                    }
-
-
+                if (isValidLivingUnit(component, mainUnit)) {
+                    removeCrewmatesIfConnected(ship, row, col, row + 1, col, North, South);
+                    removeCrewmatesIfConnected(ship, row, col, row, col + 1, East, West);
+                    removeCrewmatesIfConnected(ship, row, col, row, col - 1, West, East);
+                    removeCrewmatesIfConnected(ship, row, col, row - 1, col, South, North);
                 }
-
             }
         }
+    }
 
+    private boolean isValidLivingUnit(CardComponent component, ComponentType mainUnit) {
+        return component.getComponentType() == ComponentType.LivingUnit || component.getComponentType() == mainUnit;
+    }
+
+    private void removeCrewmatesIfConnected(Ship ship, int row1, int col1, int row2, int col2, Direction conn1, Direction conn2) {
+        if (isWithinBounds(row2, col2) && areComponentsConnected(ship, row1, col1, row2, col2, conn1, conn2)) {
+            LivingUnit unit1 = (LivingUnit) ship.getComponent(row1, col1);
+            LivingUnit unit2 = (LivingUnit) ship.getComponent(row2, col2);
+
+            if (unit1.getNum_crewmates() > 0 && unit2.getNum_crewmates() > 0) {
+                unit1.removeCrewmates(1);
+                unit2.removeCrewmates(1);
+            }
+        }
+    }
+
+    private boolean isWithinBounds(int row, int col) {
+        return row >= 0 && row < ROWS && col >= 0 && col < COLS;
+    }
+
+    private boolean areComponentsConnected(Ship ship, int row1, int col1, int row2, int col2, Direction conn1, Direction conn2) {
+        CardComponent comp1 = ship.getComponent(row1, col1);
+        CardComponent comp2 = ship.getComponent(row2, col2);
+
+        return isValidLivingUnit(comp2, comp1.getComponentType()) &&
+                comp1.getValidsConnectors(comp1.getConnector(conn1)).contains(comp2.getConnector(conn2));
     }
 
 }
