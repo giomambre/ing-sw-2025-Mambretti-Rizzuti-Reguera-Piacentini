@@ -1419,6 +1419,11 @@ return deck_components;
         active_players.remove(player);
     }
 
+    /**
+     * This method is used to find a player
+     * @param nickname
+     * @return player called 'nickname'
+     */
     public Player getPlayer(String nickname){
 
 
@@ -1437,22 +1442,42 @@ throw new IllegalArgumentException("Nickname not found");
         return board;
     }
 
+    /**
+     * This method
+     * @return list of all players
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * This method
+     * @return number of players
+     */
     public int getNumPlayers() {
         return numPlayers;
     }
 
+    /**
+     * This method
+     * @return list of adventure cards
+     */
     public List<CardAdventure> getDeck_adventure() {
         return deck_adventure;
     }
 
+    /**
+     * This method
+     * @return list of active players, that is, those who have not left the game
+     */
     public List<Player> getActive_players() {
         return active_players;
     }
 
+    /**
+     * This method
+     * @return list of player's nicknames
+     */
     public List<String> getNicknames() {
         List<String> nicknames = new ArrayList<>();
         for (Player player : players) {

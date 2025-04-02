@@ -72,7 +72,9 @@ public class Ship {
 
     }
 
-
+    /**
+     * This method is used to initialize the plance
+     */
     public void initializeShipPlance() {
 
 
@@ -128,6 +130,11 @@ public class Ship {
         }
     }
 
+    /**
+     * This method calculates the cannon's power based on its type (Cannon or DoubleCannon).
+     * @param battery_usage the batteries used by the player in case he decides to activate the double cannon
+     * @return power
+     */
     public double calculateCannonPower(Map<CardComponent, Boolean> battery_usage) { //after the validity check , get battery_usage from controller i think
         double power = 0;
         CardComponent tmp;
@@ -172,15 +179,26 @@ public class Ship {
 
     }
 
+    /**
+     * This method checks for the presence of pink alien
+     * @return boolean
+     */
     public boolean findPinkAlien() {
         return findAlien(PinkAlien, PinkAlienUnit);
     }
 
+    /**
+     * This method checks for the presence of pink alien
+     * @return boolean
+     */
     public boolean findBrownAlien(){
         return findAlien(BrownAlien, BrownAlienUnit);
     }
 
-
+    /**
+     * This method checks for the presence of alien
+     * @return boolean
+     */
     public boolean findAlien(CrewmateType alienType, ComponentType alienUnitType) {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
@@ -250,6 +268,10 @@ public class Ship {
         return false;
     }
 
+    /**
+     * This method allows getting the available batteries on the ship
+     * @return list of available batteries
+     */
     private List<CardComponent> getAvailableBatteries() {
         List<CardComponent> batteries = new ArrayList<>();
 
@@ -265,6 +287,11 @@ public class Ship {
         return batteries;
     }
 
+    /**
+     * This method calculates the engine's power based on its type (Engine or DoubleEngine).
+     * @param battery_usage the batteries used by the player in case he decides to activate the double engine
+     * @return power
+     */
     public double calculateEnginePower(Map<CardComponent, Boolean> battery_usage) { //after the validity check
         double power = 0;
         CardComponent tmp;
@@ -304,7 +331,15 @@ public class Ship {
 
     }
 
-
+    /**
+     * This method checks if the connection between component cards is valid.
+     * It always returns true if the component type is 'Empty' or 'NotAccessible'.
+     * If the connector is an 'Engine_Connector' and the direction is 'South', the method returns false.
+     * otherwise, it checks whether the connections are valid in the four directions.
+     * @param x
+     * @param y
+     * @return boolean
+     */
     public Boolean checkCorrectConnections(int x, int y) {
         CardComponent card = getComponent(x, y);
         if (card.getComponentType() == Empty || card.getComponentType() == NotAccessible) {
