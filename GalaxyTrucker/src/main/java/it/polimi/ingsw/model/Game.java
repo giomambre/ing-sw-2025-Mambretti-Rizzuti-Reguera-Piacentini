@@ -36,7 +36,7 @@ public class Game {
     private List<CardComponent> deck_components = new ArrayList<>();
     private List<CardComponent> cards_faced_up = new ArrayList<>();
     private Board board;
-
+    private int limit;
 
 //manca metodo costruttore? GIOVANNI
 

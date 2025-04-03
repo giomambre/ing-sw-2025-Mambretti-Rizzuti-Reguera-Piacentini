@@ -1,9 +1,15 @@
 package it.polimi.ingsw.network.messages;
 
 public enum MessageType {
+    SENDED_NAME,
+    STANDARD,
+    REQUEST_NAME,
+    NAME_ACCEPTED,
+    NAME_REJECTED,
 
-        REQUEST_NAME,  // Il server chiede il nome
-        NAME_ACCEPTED, // Il server accetta il nome
-        NAME_REJECTED  // Il server rifiuta il nome
-    }
+    CREATE_LOBBY,
+    SEE_LOBBIES,
+    ASSIGN_UUID
+
+}
 
