@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.Cargo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,33 +35,28 @@ public class Planets extends CardAdventure {
         this.cargo_reward = cargo_reward;
     }
 
-    //la parte di gestione delle posizioni dei cargo view??
     /**
      * This function gives the rewards to the player who landed on each planet.
-     * @param players a map containing the players as keys and a map of the carried cargos as value.
+     * @param planets a map of the carried cargos as value and the card component where he wants to put it.
      */
-    public void execute(Map<Player, Map<CardComponent, Map<Cargo, Integer>>> players) {
-        List<Cargo> totalRewards = new ArrayList<>();
-
-        for (Player player : players.keySet()) {
+    public void execute(Player player, Map<CardComponent, Map<Cargo, Integer>> planets) {
+        Map<Cargo, Integer> rewards = new HashMap<>();
 
             board.movePlayer(player,-getCost_of_days());
             Ship ship_player = player.getShip();
-
 
             for (int i = 0; i < ship_player.getROWS(); i++) {
                 for (int j = 0; j < ship_player.getCOLS(); j++) {
 
                     CardComponent card = ship_player.getComponent(i, j);
 
-                    if (players.get(player).containsKey(card)) {
-                        Map<Cargo, Integer> rewards = players.get(player).get(card);
-
-                        ((Storage) card).addCargo(rewards);
+                    if (planets.containsKey(card)) {
+                            rewards = planets.get(card);
+                            ((Storage) card).addCargo(rewards);
                     }
                 }
             }
-        }
+
 
     }
 

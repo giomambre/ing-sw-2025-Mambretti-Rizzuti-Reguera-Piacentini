@@ -84,7 +84,6 @@ public class Smugglers extends CardAdventure {
      */
     public void executeLoss(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
         Ship ship_player = player.getShip();
-        board.movePlayer(player, -getCost_of_days());
         for (int i = 0; i < ship_player.getROWS(); i++) {
             for (int j = 0; j < ship_player.getCOLS(); j++) {
 

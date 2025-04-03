@@ -139,7 +139,7 @@ public class Player {
     }
 
     public Ship getShip() {
-        return ship;
+        return this.ship;
     }
 
     public Color getColor() {

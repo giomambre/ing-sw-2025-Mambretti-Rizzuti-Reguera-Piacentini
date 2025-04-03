@@ -760,35 +760,37 @@ public class Ship {
         switch (dir) {
             case North:
                 for (int i = 0; i < ROWS; i++) {
-                    if (ship_board[i][pos - 4].getComponentType() != ComponentType.Empty && ship_board[i][pos - 4].getComponentType() != NotAccessible)
-                        return ship_board[i][pos - 4];
+                    if (this.getComponent(i,pos-4).getComponentType() != ComponentType.Empty && this.getComponent(i,pos-4).getComponentType() != NotAccessible)
+                        return this.getComponent(i,pos-4);
                 }
-                return ship_board[0][0];
+                return this.getComponent(0,0);
+
             case South:
                 for (int i = ROWS - 1; i >= 0; i--) {
-                    if (ship_board[i][pos - 4].getComponentType() != ComponentType.Empty && ship_board[i][pos - 4].getComponentType() != NotAccessible)
-                        return ship_board[i][pos - 4];
+                    if (this.getComponent(i,pos-4).getComponentType() != ComponentType.Empty && this.getComponent(i,pos-4).getComponentType() != NotAccessible)
+                        return this.getComponent(i,pos-4);
                 }
-                return ship_board[0][0];
+                return this.getComponent(0,0);
 
             case West:
                 for (int i = 0; i < COLS; i++) {
-                    if (ship_board[pos - 5][i].getComponentType() != ComponentType.Empty && ship_board[pos - 5][i].getComponentType() != NotAccessible)
-                        return ship_board[pos - 5][i];
+                    if (this.getComponent(pos-5,i).getComponentType() != ComponentType.Empty && this.getComponent(pos-5,i).getComponentType() != NotAccessible)
+                        return this.getComponent(pos-5,i);
                 }
-                return ship_board[0][0];
+                return this.getComponent(0,0);
 
             case East:
                 for (int i = COLS - 1; i >= 0; i--) {
-                    if (ship_board[pos - 5][i].getComponentType() != ComponentType.Empty && ship_board[pos - 5][i].getComponentType() != NotAccessible)
-                        return ship_board[pos - 5][i];
+                    if (this.getComponent(pos-5,i).getComponentType() != ComponentType.Empty && this.getComponent(pos-5,i).getComponentType() != NotAccessible)
+                        return this.getComponent(pos-5,i);
+
                 }
-                return ship_board[0][0];
+                return this.getComponent(0,0);
 
 
         }
 
-        return ship_board[0][0];
+        return this.getComponent(0,0);
     }
 
     public void choosePiece(int choose){
@@ -880,4 +882,17 @@ public class Ship {
     }
 
 
+    public List<Pair<Integer, Integer>> printShipPlance() {
+        List<Pair<Integer, Integer>> ships = new ArrayList<>();
+
+        for(int i = 0; i < ROWS; i++) {
+            for(int j = 0; j < COLS; j++) {
+                if(this.getComponent(i, j).getComponentType() != Empty
+                && this.getComponent(i, j).getComponentType() != NotAccessible) {
+                    ships.add(new Pair<>(i, j));
+                }
+            }
+        }
+        return ships;
+    }
 }

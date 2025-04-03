@@ -83,7 +83,7 @@ public class Epidemic extends CardAdventure {
         CardComponent comp2 = ship.getComponent(row2, col2);
 
         return isValidLivingUnit(comp2, comp1.getComponentType()) &&
-                comp1.getValidsConnectors(comp1.getConnector(conn1)).contains(comp2.getConnector(conn2));
+                comp1.getValidConnectors(comp1.getConnector(conn1)).contains(comp2.getConnector(conn2));
     }
 
 }

@@ -37,7 +37,7 @@ public class Storage extends CardComponent {
             Cargo cargo = entry.getKey();
             int index = entry.getValue();
 
-                carried_cargos.set(index, cargo);
+            carried_cargos.set(index, cargo);
 
         }
     }

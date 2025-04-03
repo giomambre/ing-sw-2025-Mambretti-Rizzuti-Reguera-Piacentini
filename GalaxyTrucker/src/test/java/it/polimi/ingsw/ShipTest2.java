@@ -329,9 +329,13 @@ public void testChoosePiece() {
             new Pair<>(3, 5), new Pair<>(3,6),new Pair<>(4, 4), new Pair<>(4, 5)
     );
 
-   // assertEquals(pairs, ship1.printShipPlance());
+   assertEquals(pairs, ship1.printShipPlance());
 
 
+}
+@Test
+public void testGetFirstComponent() {
+    System.out.println(ship1.getFirstComponent(East,9));
 }
 
 
