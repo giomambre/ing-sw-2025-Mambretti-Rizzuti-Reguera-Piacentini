@@ -73,6 +73,10 @@ public class CombatZone extends CardAdventure{
         }
     }
 
+    public List<Pair<MeteorType, Direction>> getMeteors() {
+        return meteors;
+    }
+
     public void executeLessCannonPower2(Player player) {
         board.movePlayer(player, -getCost_of_days());
     }

@@ -37,8 +37,6 @@ public class StorageTest {
     }
 
     @Test
-    //verifico costruttore e Emptyness
-
     public void testStorage() {
 
         Storage storage = (Storage) player.getShip().getComponent(3,1);
@@ -51,8 +49,6 @@ public class StorageTest {
 
 
     @Test
-
-
     public void testaddCargo() {
 
         Map<Cargo, Integer> cargoMap = new HashMap<>();
@@ -66,6 +62,24 @@ public class StorageTest {
         assertEquals(Cargo.Empty,storage.getCargo(2));
 
 
+    }
+
+    @Test
+    public void testRemoveCargo() {
+        Map<Cargo, Integer> cargoMap = new HashMap<>();
+        cargoMap.put(Cargo.Green,0);
+        cargoMap.put(Cargo.Red,1);
+        ((Storage) player.getShip().getComponent(3,1)).addCargo(cargoMap);
+
+        Storage storage = (Storage) player.getShip().getComponent(3,1);
+
+        cargoMap = new HashMap<>();
+        cargoMap.put(Cargo.Green,0);
+        ((Storage) player.getShip().getComponent(3,1)).removeCargo(cargoMap);
+
+        assertEquals(Cargo.Empty,storage.getCargo(0));
+        assertEquals(Cargo.Red,storage.getCargo(1));
+        assertEquals(Cargo.Empty,storage.getCargo(2));
     }
 
 

@@ -38,6 +38,9 @@ public class LivingUnit extends CardComponent{
      */
     public void addAstronauts() {
 
+        if(num_crewmates>0){
+            throw new IllegalArgumentException("Trying to remove a Crewmate, you can't add two crewmates");
+        }
 
         this.crewmate_type = CrewmateType.Astronaut;
         this.num_crewmates=2;

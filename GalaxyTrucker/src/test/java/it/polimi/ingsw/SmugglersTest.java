@@ -82,15 +82,15 @@ public class SmugglersTest {
     }
 
     @Test
-    public void testExecuteLose() {
+    public void testExecuteLoss() {
 
-        Map<CardComponent, Map<Cargo, Integer>> choosen_planets = new HashMap<>();
+        Map<CardComponent, Map<Cargo, Integer>> cargo_loss = new HashMap<>();
 
         Map<Cargo, Integer> cargoMap= new HashMap<>();
         cargoMap.put(Blue, 2);
 
-        choosen_planets.put(ship.getComponent(3,1), cargoMap);
-        ((Smugglers)smugglers).executeLoss(player, choosen_planets);
+        cargo_loss.put(ship.getComponent(3,1), cargoMap);
+        ((Smugglers)smugglers).executeLoss(player, cargo_loss);
 
         assertEquals(0, ((Storage)ship.getComponent(3,1)).getCargoCount());
         Assertions.assertEquals(board.getBoard().get(7),player);
