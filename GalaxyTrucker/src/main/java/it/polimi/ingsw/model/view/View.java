@@ -6,5 +6,7 @@ public interface View {
     public String askNickname();
     public String chooseConnection();
     public String getInput();
+    public int askCreateOrJoin();
+    public int askNumPlayers();
 
 }

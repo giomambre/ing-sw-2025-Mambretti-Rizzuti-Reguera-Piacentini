@@ -1,71 +1,64 @@
 package it.polimi.ingsw.network;
-import it.polimi.ingsw.network.messages.*;
-import it.polimi.ingsw.model.Lobby;
-import it.polimi.ingsw.model.Player;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import it.polimi.ingsw.network.messages.Message;
+import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.StandardMessageClient;
 
-
-import static java.lang.System.out;
-import it.polimi.ingsw.network.Server;
-
-//It manages multiple client connections via socket.
 import java.io.*;
 import java.net.Socket;
+import java.util.Queue;
 import java.util.Set;
+import java.util.UUID;
 
 public class ClientHandler implements Runnable {
-    private final Socket socket;
+    private final Socket clientSocket;
+    private final UUID clientId;  // Identificativo univoco
     private final Set<String> connectedNames;
+    private final Queue<Message> messageQueue;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    private String nickname;
 
-    public ClientHandler(Socket socket, Set<String> connectedNames) {
-        this.socket = socket;
+    public ClientHandler(Socket clientSocket, Set<String> connectedNames, Queue<Message> messageQueue) {
+        this.clientSocket = clientSocket;
         this.connectedNames = connectedNames;
+        this.messageQueue = messageQueue;
+        this.clientId = UUID.randomUUID();  // Genera un UUID per il client
     }
 
     @Override
     public void run() {
         try {
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            in = new ObjectInputStream(clientSocket.getInputStream());
+
+
+
+            sendMessage(new StandardMessageClient(MessageType.ASSIGN_UUID, "",clientId));
+            sendMessage(new Message(MessageType.REQUEST_NAME, ""));
 
             while (true) {
-                // Manda richiesta di nome al client
-                sendMessage(new Message(MessageType.REQUEST_NAME, "Inserisci il tuo nome:"));
+                Message message = (Message) in.readObject();
 
-                // Riceve risposta
-                Message response = (Message) in.readObject();
-                if (response.getType() == MessageType.REQUEST_NAME) {
-                    String name = response.getContent();
-
-                    synchronized (connectedNames) {
-                        if (!connectedNames.contains(name)) {
-                            connectedNames.add(name);
-                            sendMessage(new Message(MessageType.NAME_ACCEPTED, "Nome accettato!"));
-                            break;
-                        } else {
-                            sendMessage(new Message(MessageType.NAME_REJECTED, "Nome già in uso, scegline un altro."));
-                        }
-                    }
+                synchronized (messageQueue) {
+                    messageQueue.add(message);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("❌ Connessione persa con " +  clientId);
+        }
+    }
+
+    public void sendMessage(Message msg) throws IOException {
+        try {
+            out.writeObject(msg);
+            out.flush();
+        }catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendMessage(Message message) throws IOException {
-        out.writeObject(message);
-        out.flush();
+    public UUID getClientId() {
+        return clientId;
     }
 }
-
-
