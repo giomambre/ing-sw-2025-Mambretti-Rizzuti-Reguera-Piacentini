@@ -33,16 +33,14 @@ public class BatteryTest {
         battery = new Battery(ComponentType.Battery, connectors, 2);
     }
 
-    @Test
-    public void testAddBattery() {
-        battery.addBattery(1);
-        assertEquals(1, battery.getStored());
-    }
 
     @Test
-    public void testRemoveBattery() {
-        battery.addBattery(2);
+    public void testBattery() {
+
         battery.removeBattery();
         assertEquals(1, battery.getStored());
+
+        battery.addBattery(1);
+        assertEquals(2, battery.getStored());
     }
 }
