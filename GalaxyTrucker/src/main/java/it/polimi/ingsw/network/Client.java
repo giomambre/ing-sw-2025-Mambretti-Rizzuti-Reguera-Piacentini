@@ -80,7 +80,12 @@ public class Client {
 
                 }else{
                     to_send = new StandardMessageClient(MessageType.SEE_LOBBIES, "",clientId);
-
+                    try {
+                        out.writeObject(to_send);
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
 

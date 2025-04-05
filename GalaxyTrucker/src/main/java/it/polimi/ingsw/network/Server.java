@@ -78,10 +78,10 @@ public class Server {
                 System.out.println("🔹 Il client " + msg_cast.getId_client() + " vuole creare una lobby con " + msg_cast.getLimit());
 
 
-
-
                 break;
 
+            case SEE_LOBBIES:
+                System.out.println("il player vuole vedere le lobby :");
 
 
             default:
