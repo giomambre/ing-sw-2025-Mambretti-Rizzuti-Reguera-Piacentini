@@ -17,7 +17,7 @@ public class GameManager {
     }
 
 
-    public void createLobby(String nickname, int limit) {
+    public int createLobby(String nickname, int limit) {
 
         for (Lobby lobby : all_lobbies) {
             if (lobby.isPlayerInLobby(nickname)) {
@@ -27,8 +27,11 @@ public class GameManager {
 
         Lobby l = new Lobby(nickname, limit);
         all_lobbies.add(l);
+        return l.getLobbyId();
 
     }
+
+
 
     public void joinLobby(String nickname, int id) {
 

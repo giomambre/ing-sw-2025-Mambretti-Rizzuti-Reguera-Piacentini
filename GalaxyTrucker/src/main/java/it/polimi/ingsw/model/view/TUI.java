@@ -1,11 +1,42 @@
 package it.polimi.ingsw.model.view;
 
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Scanner;
 
 public class TUI implements View {
     private final PrintStream out;
     Scanner input = new Scanner(System.in);
+    // Codici ANSI
+    final String RESET = "\u001B[0m";
+    final String RED = "\u001B[31m";
+    final String GREEN = "\u001B[32m";
+    final String YELLOW = "\u001B[33m";
+    final String BLUE = "\u001B[34m";
+    final String PURPLE = "\u001B[35m";
+    String banner = """
+                ✦   ✷       ⋆      ✧     .    ✨       ⋆       ✶     ✦    ✧
+             .       .     ⋆   ✦        ✨       ✦    ✧  .    ✧    ✶    ⋆    .
+                ✧     ✨   ✶     ⋆       ✷        ⋆       ✧      ✦        ✷    
+  ✧     ✨   ✶     ⋆       ✷     ✦    ⋆       ✧       ✦      ✧          ✦
+              _______      ___       __          ___      ___   ___ ____    ____        \s
+     ✷       /  _____|    /   \\  .  |  |     .  /   \\     \\  \\ /  / \\   \\  /   /        \s
+            |  |  __     /  ^  \\    |  |   .   /  ^  \\     \\  V  /   \\   \\/   /         \s
+      ✧     |  | |_ |   /  /_\\  \\   |  |      /  /_\\  \\     >   <     \\_    _/          \s
+            |  |__| |  /  _____  \\  |  `----./  _____  \\   /  .  \\      |  |            \s
+   ✷         \\______| /__/     \\__\\ |_______/__/     \\__\\ /__/ \\__\\     |__|            \s
+            ✧     ✨   ✶     ⋆       ✷    .    ⋆       ✧    .     .   .      ✧                                                               \s
+       ✧    .___________..______       __    __    ______  __  ___  _______ .______     \s
+            |           ||   _  \\  .   |  |  |  |  /      ||  |/  / |   ____||   _  \\  .  \s 
+    .       `---|  |----`|  |_)  |    |  |  |  | |  ,----'|  '  /  |  |__   |  |_)  |   \s
+          ✦     |  |     |      /     |  |  |  | |  |     |    <   |   __|  |      /    \s
+     .          |  |  ✦  |  |\\  \\----.|  `--'  | |  `----.|  .  \\  |  |____ |  |\\  \\----.
+   ✦   .  .     |__|     | _| `._____| \\______/   \\______||__|\\__\\ |_______|| _| `._____|
+                  ✧     ✨   ✶     ⋆    .   ✷        ⋆       ✧       ✷         ✧     ✨                                                           \s
+    .           ✦   ⋆      ✷    ✧     .     ⋆     ✶       ✧     ✷       ⋆        ✷
+             .     ✶     ⋆     .       ✧       ⋆      ✨        ✶      ⋆         ✧ 
+        """;
+
 
     public TUI() {
         this.out = System.out;
@@ -14,7 +45,7 @@ public class TUI implements View {
 
     @Override
     public String chooseConnection() {
-        out.println("\u001b[34mWelcome to MyShelfie!\u001b");
+        out.println(PURPLE + banner + RESET);
         String reply;
         do {
             System.out.println("""
@@ -36,7 +67,7 @@ public class TUI implements View {
 
     @Override
     public void showMessage(String message) {
-        out.println("ecco il : ");
+        out.println("");
     }
 
     @Override
@@ -73,5 +104,33 @@ public class TUI implements View {
            return this.askNumPlayers();
         }
         return resp;
+    }
+
+    @Override
+    public void showGenericError(String error) {
+        System.out.println();
+        out.println(RED + error + RESET);
+    }
+
+    @Override
+    public int showLobbies(List<Integer> lobbies) {
+        System.out.println("Inserisci il numero della lobby , -1 altrimenti:");
+        for (Integer lobby : lobbies) {
+
+            System.out.println("Lobby n:" + lobby);
+
+        }
+        int resp = input.nextInt();
+
+        while(resp!=-1 && !lobbies.contains(resp)){
+            System.out.println("Risposta non valilda,riprova : ");
+            resp = input.nextInt();
+
+        }
+
+        return resp;
+
+
+
     }
 }

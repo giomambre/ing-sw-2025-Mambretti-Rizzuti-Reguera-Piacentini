@@ -2,10 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
-import it.polimi.ingsw.network.messages.CreateLobbyMessage;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.StandardMessageClient;
+import it.polimi.ingsw.network.messages.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +25,7 @@ public class Client {
     private static List<Message> messages = new ArrayList<>();
     public static void main(String[] args) {
         try {
+
             Socket socket = new Socket("localhost", 12345);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -39,6 +37,7 @@ public class Client {
             }
 
             virtualView = new TUI();
+
             while (true) {
                 Message serverMessage = (Message) in.readObject();
                 eleborate(serverMessage);
@@ -88,6 +87,32 @@ public class Client {
                     }
                 }
 
+
+            case CREATE_LOBBY:
+                if(msg.getContent().equals("")) {
+                   virtualView.showGenericError("Errore nella creazione della lobby, riprovare");
+                    eleborate(new Message(MessageType.NAME_ACCEPTED,""));
+                    break;
+                }else{
+
+
+
+                }
+            break;
+
+            case SEE_LOBBIES:
+                AvaiableLobbiesMessage l_msg = (AvaiableLobbiesMessage) msg;
+                if(l_msg.getLobbies().size() == 0) {
+
+                    virtualView.showMessage("Non ci sono Lobby disponibili!");
+                    eleborate(new Message(MessageType.NAME_ACCEPTED,""));
+                    break;
+                }else {
+
+                        int lobby_index = virtualView.showLobbies(l_msg.getLobbies());
+
+                }
+                break;
 
 
 

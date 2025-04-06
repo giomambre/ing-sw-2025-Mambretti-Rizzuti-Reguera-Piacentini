@@ -61,4 +61,12 @@ public class ClientHandler implements Runnable {
     public UUID getClientId() {
         return clientId;
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

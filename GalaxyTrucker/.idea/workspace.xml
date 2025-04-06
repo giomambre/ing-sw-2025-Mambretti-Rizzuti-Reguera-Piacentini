@@ -4,14 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="INIZIATO NETWORK SOCKET">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManager.java" afterDir="false" />
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="inziata gesione partite multiple con lobby">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/AvaiableLobbiesMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GamesManagerController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Lobby.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/TUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/View.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameInstance.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Lobby.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Lobby.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/view/TUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/view/TUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/view/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/view/View.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/ClientHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,15 +251,8 @@
       <workItem from="1743608196983" duration="3652000" />
       <workItem from="1743613704993" duration="1853000" />
       <workItem from="1743683597143" duration="11803000" />
-      <workItem from="1743852932147" duration="3562000" />
-    </task>
-    <task id="LOCAL-00015" summary="Mi si era buggato ora risolto">
-      <option name="closed" value="true" />
-      <created>1741904312408</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1741904312408</updated>
+      <workItem from="1743852932147" duration="3608000" />
+      <workItem from="1743938101305" duration="3105000" />
     </task>
     <task id="LOCAL-00016" summary="Aggiunti qualche metodo in Board, aggiunto il Costruttore fatto un po di test nel main per la move player">
       <option name="closed" value="true" />
@@ -633,7 +638,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743613242459</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="inziata gesione partite multiple con lobby">
+      <option name="closed" value="true" />
+      <created>1743862837055</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1743862837055</updated>
+    </task>
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -667,7 +680,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed all" />
     <MESSAGE value="A ton of Changes : Removed Vistior Patter, used Overloading instead, Storage class ended and tested, started AbandonedStation" />
     <MESSAGE value="Aggiunti quelche metodo get in molte classi e finita e testata la carta AbandonedShip" />
     <MESSAGE value="Started check ShipValidity" />
@@ -692,7 +704,8 @@
     <MESSAGE value="started RMI" />
     <MESSAGE value="Controller updated" />
     <MESSAGE value="network capendo come fare" />
-    <option name="LAST_COMMIT_MESSAGE" value="network capendo come fare" />
+    <MESSAGE value="inziata gesione partite multiple con lobby" />
+    <option name="LAST_COMMIT_MESSAGE" value="inziata gesione partite multiple con lobby" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

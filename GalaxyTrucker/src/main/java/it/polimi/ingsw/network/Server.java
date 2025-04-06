@@ -1,9 +1,7 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.network.messages.CreateLobbyMessage;
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.StandardMessageClient;
+import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.network.messages.*;
 
 
 import java.io.IOException;
@@ -18,7 +16,7 @@ public class Server {
     private static Set<String> connectedNames = new HashSet<>();
     private static Queue<Message> messageQueue = new ConcurrentLinkedQueue<>();
     private final Map<UUID, ClientHandler> clients = new HashMap<>();
-
+    private GameManager manager =  new GameManager();
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server in ascolto sulla porta " + PORT + "...");
@@ -66,7 +64,8 @@ public class Server {
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Nome già in uso. Inserisci un altro nickname.", msgClient.getId_client()));
                 } else {
                     connectedNames.add(requestedName);
-
+                    ClientHandler handler = clients.get(msgClient.getId_client());
+                    handler.setNickname(requestedName);
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_ACCEPTED, "✅ Nickname accettato: " + requestedName, msgClient.getId_client()));
 
                 }
@@ -75,19 +74,33 @@ public class Server {
             case CREATE_LOBBY:
                 CreateLobbyMessage msg_cast = (CreateLobbyMessage) msg;
 
-                System.out.println("🔹 Il client " + msg_cast.getId_client() + " vuole creare una lobby con " + msg_cast.getLimit());
-
+                try {
+                    int lobby_id = manager.createLobby(getNickname(msg_cast.getId_client()),msg_cast.getLimit());
+                    System.out.println("🔹 Il client " + getNickname(msg_cast.getId_client()) + " ha creato una lobby con " + msg_cast.getLimit() + " id : " + lobby_id);
+                    sendToClient(msg_cast.getId_client(), new Message(MessageType.CREATE_LOBBY, "" +lobby_id));
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 break;
 
             case SEE_LOBBIES:
+                msgClient = (StandardMessageClient) msg;
+
+                sendToClient(msgClient.getId_client(),new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES,"",manager.getAvaibleLobbies()));
                 System.out.println("il player vuole vedere le lobby :");
+                break;
 
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
                 break;
         }
+    }
+
+    public String getNickname(UUID id) {
+        ClientHandler client = clients.get(id);
+        return client.getNickname();
     }
 
     private void sendToClient(UUID id, Message msg) {
