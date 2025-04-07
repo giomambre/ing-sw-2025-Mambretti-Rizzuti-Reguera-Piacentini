@@ -9,6 +9,7 @@ public enum MessageType {
 
     CREATE_LOBBY,
     SEE_LOBBIES,
+    SELECT_LOBBY,
     ASSIGN_UUID
 
 }

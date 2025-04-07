@@ -91,10 +91,25 @@ public class Server {
                 System.out.println("il player vuole vedere le lobby :");
                 break;
 
+            case SELECT_LOBBY:
+                SelectedLobbyMessage msg_sel = (SelectedLobbyMessage) msg;
+
+                try {
+                    System.out.println("🔹 Il client " + getNickname(msg_sel.getId_client()) + " è entrato nella lobby id: " + msg_sel.getLobbyId());
+                    sendToClient(msg_sel.getId_client(), new Message(MessageType.SELECT_LOBBY, "" +msg_sel.getLobbyId()));
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
                 break;
+
+
         }
     }
 

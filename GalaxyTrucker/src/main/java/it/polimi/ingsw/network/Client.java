@@ -23,6 +23,7 @@ public class Client {
     private static View virtualView;
     private static UUID clientId;
     private static List<Message> messages = new ArrayList<>();
+
     public static void main(String[] args) {
         try {
 
@@ -56,7 +57,7 @@ public class Client {
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
                 String nick = virtualView.askNickname();
                 try {
-                    out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nick,clientId));
+                    out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nick, clientId));
                     out.flush();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -66,10 +67,10 @@ public class Client {
             case NAME_ACCEPTED:
                 int join_or_create = virtualView.askCreateOrJoin();
                 Message to_send;
-                if(join_or_create == 1) {
+                if (join_or_create == 1) {
 
                     int num = virtualView.askNumPlayers();
-                    to_send = new CreateLobbyMessage(MessageType.CREATE_LOBBY, "", clientId,num);
+                    to_send = new CreateLobbyMessage(MessageType.CREATE_LOBBY, "", clientId, num);
                     try {
                         out.writeObject(to_send);
                         out.flush();
@@ -77,8 +78,8 @@ public class Client {
                         throw new RuntimeException(e);
                     }
 
-                }else{
-                    to_send = new StandardMessageClient(MessageType.SEE_LOBBIES, "",clientId);
+                } else {
+                    to_send = new StandardMessageClient(MessageType.SEE_LOBBIES, "", clientId);
                     try {
                         out.writeObject(to_send);
                         out.flush();
@@ -89,38 +90,43 @@ public class Client {
 
 
             case CREATE_LOBBY:
-                if(msg.getContent().equals("")) {
-                   virtualView.showGenericError("Errore nella creazione della lobby, riprovare");
-                    eleborate(new Message(MessageType.NAME_ACCEPTED,""));
+                if (msg.getContent().equals("")) {
+                    virtualView.showGenericError("Errore nella creazione della lobby, riprovare");
+                    eleborate(new Message(MessageType.NAME_ACCEPTED, ""));
                     break;
-                }else{
+                } else {
 
-
-
-                }
-            break;
-
-            case SEE_LOBBIES:
-                AvaiableLobbiesMessage l_msg = (AvaiableLobbiesMessage) msg;
-                if(l_msg.getLobbies().size() == 0) {
-
-                    virtualView.showMessage("Non ci sono Lobby disponibili!");
-                    eleborate(new Message(MessageType.NAME_ACCEPTED,""));
-                    break;
-                }else {
-
-                        int lobby_index = virtualView.showLobbies(l_msg.getLobbies());
 
                 }
                 break;
 
+            case SEE_LOBBIES:
+                AvaiableLobbiesMessage l_msg = (AvaiableLobbiesMessage) msg;
+                if (l_msg.getLobbies().size() == 0) {
+
+                    virtualView.showMessage("Non ci sono Lobby disponibili!");
+                    eleborate(new Message(MessageType.NAME_ACCEPTED, ""));
+                    break;
+                } else {
+
+                    int lobby_index = virtualView.showLobbies(l_msg.getLobbies());
+
+                }
+                break;
+
+            case SELECT_LOBBY:
+                if (msg.getContent().equals("")) {
+                    virtualView.showGenericError("Lobby selezionata non disponinbile, riprovare");
+                    eleborate(new Message(MessageType.SEE_LOBBIES, ""));
+                    break;
+                } else {
+                }
+                break;
 
 
         }
 
     }
-
-
 
 
 }

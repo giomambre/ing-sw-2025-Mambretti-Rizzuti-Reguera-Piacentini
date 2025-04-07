@@ -33,6 +33,7 @@ public class GameManager {
 
 
 
+
     public void joinLobby(String nickname, int id) {
 
         for (Lobby lobby : all_lobbies) {
@@ -46,6 +47,8 @@ public class GameManager {
 
         }
     }
+
+
 
 
 
