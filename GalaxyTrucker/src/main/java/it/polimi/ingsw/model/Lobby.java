@@ -8,11 +8,11 @@ public class Lobby {
     private static int count = 0;
     private final int lobbyId;
     private final int limit;
-    public List<String> Players = new ArrayList<>();
+    public List<String> players = new ArrayList<>();
 
     /** Creates a new lobby given a player "creator" and a unique number automatically generated. */
     public Lobby(String Creator, int limit){
-        Players.add(Creator);
+        players.add(Creator);
 
         count++;
         this.lobbyId = count;
@@ -20,25 +20,25 @@ public class Lobby {
     }
 
 
-    public void join(String Joiner){
+    public void join(String joiner){
         if(isLobbyFull()) throw new InputMismatchException("The lobby " + lobbyId + " is full!");
-        else if (this.Players.contains(Joiner)){
-            throw new InputMismatchException("The player " + Joiner + " is already in!");
-        } else Players.add(Joiner);
+        else if (this.players.contains(joiner)){
+            throw new InputMismatchException("The player " + joiner + " is already in!");
+        } else players.add(joiner);
     }
 
 
     public boolean isLobbyFull(){
-        return Players.size() == limit;
+        return players.size() == limit;
     }
 
 
     public void removePlayer(String player){
-        Players.remove(player);
+        players.remove(player);
     }
 
     public boolean isPlayerInLobby(String p){
-        for (String player: this.Players) {
+        for (String player: this.players) {
             if(p.equals(player)){
                 return true;
             }
@@ -59,7 +59,7 @@ public class Lobby {
     }
 
     public List<String> getPlayers() {
-        return Players;
+        return players;
     }
 
     public static void setCount(int count) {

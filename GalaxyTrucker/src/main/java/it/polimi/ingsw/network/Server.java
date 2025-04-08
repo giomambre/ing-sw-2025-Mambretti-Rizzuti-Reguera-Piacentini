@@ -1,6 +1,9 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.model.Lobby;
+import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.network.messages.*;
 
 
@@ -16,7 +19,9 @@ public class Server {
     private static Set<String> connectedNames = new HashSet<>();
     private static Queue<Message> messageQueue = new ConcurrentLinkedQueue<>();
     private final Map<UUID, ClientHandler> clients = new HashMap<>();
-    private GameManager manager =  new GameManager();
+    private GameManager manager = new GameManager();
+    private Map<Integer, GameController> all_games = new HashMap<>();
+
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server in ascolto sulla porta " + PORT + "...");
@@ -75,10 +80,10 @@ public class Server {
                 CreateLobbyMessage msg_cast = (CreateLobbyMessage) msg;
 
                 try {
-                    int lobby_id = manager.createLobby(getNickname(msg_cast.getId_client()),msg_cast.getLimit());
+                    int lobby_id = manager.createLobby(getNickname(msg_cast.getId_client()), msg_cast.getLimit());
                     System.out.println("🔹 Il client " + getNickname(msg_cast.getId_client()) + " ha creato una lobby con " + msg_cast.getLimit() + " id : " + lobby_id);
-                    sendToClient(msg_cast.getId_client(), new Message(MessageType.CREATE_LOBBY, "" +lobby_id));
-                }catch (Exception e) {
+                    sendToClient(msg_cast.getId_client(), new Message(MessageType.CREATE_LOBBY, "" + lobby_id));
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -87,24 +92,72 @@ public class Server {
             case SEE_LOBBIES:
                 msgClient = (StandardMessageClient) msg;
 
-                sendToClient(msgClient.getId_client(),new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES,"",manager.getAvaibleLobbies()));
+                sendToClient(msgClient.getId_client(), new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES, "", manager.getAvaibleLobbies()));
                 System.out.println("il player vuole vedere le lobby :");
                 break;
 
             case SELECT_LOBBY:
-                SelectedLobbyMessage msg_sel = (SelectedLobbyMessage) msg;
+                msgClient = (StandardMessageClient) msg;
 
-                try {
-                    System.out.println("🔹 Il client " + getNickname(msg_sel.getId_client()) + " è entrato nella lobby id: " + msg_sel.getLobbyId());
-                    sendToClient(msg_sel.getId_client(), new Message(MessageType.SELECT_LOBBY, "" +msg_sel.getLobbyId()));
-                }catch (Exception e) {
-                    e.printStackTrace();
+                int lobby_id = Integer.parseInt(msg.getContent());
+                System.out.println("il player vuole entrare nella lobby :" + lobby_id);
+
+                synchronized (manager) {
+
+                    if (manager.getAvaibleLobbies().contains(lobby_id)) {
+                        System.out.println("Successso player joined lobby :" + lobby_id);
+                        manager.joinLobby(getNickname(msgClient.getId_client()), lobby_id);
+                        Lobby lobby = manager.getLobby(lobby_id);
+                        sendToClient(msgClient.getId_client(), new Message(MessageType.SELECT_LOBBY, "" + lobby_id));
+                        if (lobby.isLobbyFull()) {
+
+                            for (String player : lobby.getPlayers()) {
+                                all_games.put(lobby_id, new GameController(lobby));
+
+                                sendToClient(getId_client(player), new GameStartedMessage(MessageType.GAME_STARTED, "", all_games.get(lobby_id).getAvaiable_colors()));
+
+                            }
+
+                        }
+
+                    } else {
+                        System.out.println("Fail player joined lobby :" + lobby_id);
+                        sendToClient(msgClient.getId_client(), new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES, "Lobby full o partita iniziata \n", manager.getAvaibleLobbies()));
+
+                    }
                 }
 
+                break;
+
+            case COLOR_SELECTED:
+                msgClient = (StandardMessageClient) msg;
+
+                GameController controller = all_games.get(getLobbyId(msgClient.getId_client()));
+
+                synchronized (controller) {
+
+                    Color c = Color.valueOf(msg.getContent().toUpperCase());
+                    if (controller.getAvaiable_colors().contains(c)) {
+                        System.out.println("COLORE " + c  + "PRESO ");
+                        controller.addPlayer(getNickname(msgClient.getId_client()),c);
+                        Lobby l = controller.getLobby();
+
+                        for(String player : l.getPlayers()) {
+                            if(player.equals(getNickname(msgClient.getId_client()))) {
+
+                                sendToClient(getId_client(player),new Message(MessageType.COLOR_SELECTED, player + " " + c ));
+
+                            }
+                        }
 
 
+                    }else {
 
+                        sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvaiable_colors()));
 
+                    }
+                }
+                break;
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
                 break;
@@ -118,6 +171,17 @@ public class Server {
         return client.getNickname();
     }
 
+    public UUID getId_client(String nickname) {
+
+        UUID id = UUID.randomUUID();
+        for (ClientHandler client : clients.values()) {
+            if (client.getNickname().equals(nickname)) {
+                id = client.getClientId();
+            }
+        }
+        return id;
+    }
+
     private void sendToClient(UUID id, Message msg) {
         ClientHandler client = clients.get(id);
         if (client != null) {
@@ -129,6 +193,21 @@ public class Server {
         }
     }
 
+
+    private int getLobbyId(UUID id) {
+
+String nick = getNickname(id);
+
+List <Lobby> ls = manager.getAllLobbies();
+for (Lobby lobby : ls) {
+    if (lobby.getPlayers().contains(nick)){
+        return lobby.getLobbyId();
+    }
+}
+
+return -1;
+
+    }
 
     public static void main(String[] args) {
         new Server().start();

@@ -10,7 +10,7 @@ import java.util.SimpleTimeZone;
 public class GameManager {
 
     List<Lobby> all_lobbies = new ArrayList<>();
-    List<Game> all_games = new ArrayList<>();
+
 
 
     public GameManager() {
@@ -32,8 +32,6 @@ public class GameManager {
     }
 
 
-
-
     public void joinLobby(String nickname, int id) {
 
         for (Lobby lobby : all_lobbies) {
@@ -49,31 +47,41 @@ public class GameManager {
     }
 
 
+    public List<Integer> getAvaibleLobbies() {
+        List<Integer> avaibleLobbies = new ArrayList<>();
+        for (Lobby lobby : all_lobbies)
+
+            if (!lobby.isLobbyFull()) {
+                avaibleLobbies.add(lobby.getLobbyId());
+            }
+        return avaibleLobbies;
+    }
 
 
+    public void startGame(int id_lobby) {
 
 
-public List<Integer> getAvaibleLobbies() {
-    List<Integer> avaibleLobbies = new ArrayList<>();
-    for (Lobby lobby : all_lobbies)
+    }
 
-        if (!lobby.isLobbyFull()) {
-            avaibleLobbies.add(lobby.getLobbyId());
-        }
-    return avaibleLobbies;
-}
-
-
-public void startGame(int id_lobby) {
-
-
-}
-
-public void disconnectPlayer(String nickname) {
-    for (Lobby lobby : all_lobbies) {
-        if (lobby.isPlayerInLobby(nickname)) {
-            lobby.removePlayer(nickname);
+    public void disconnectPlayer(String nickname) {
+        for (Lobby lobby : all_lobbies) {
+            if (lobby.isPlayerInLobby(nickname)) {
+                lobby.removePlayer(nickname);
+            }
         }
     }
+
+public List<Lobby> getAllLobbies() {
+        return all_lobbies;
 }
+
+    public Lobby getLobby(int id) {
+        for (Lobby lobby : all_lobbies) {
+            if (lobby.getLobbyId() == id) {
+                return lobby;
+            }
+        }
+        return null;
+    }
+
 }

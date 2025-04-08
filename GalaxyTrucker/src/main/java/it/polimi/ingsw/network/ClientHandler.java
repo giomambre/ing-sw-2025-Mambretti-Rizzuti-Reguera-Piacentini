@@ -53,6 +53,9 @@ public class ClientHandler implements Runnable {
         try {
             out.writeObject(msg);
             out.flush();
+
+
+
         }catch (IOException e) {
             e.printStackTrace();
         }

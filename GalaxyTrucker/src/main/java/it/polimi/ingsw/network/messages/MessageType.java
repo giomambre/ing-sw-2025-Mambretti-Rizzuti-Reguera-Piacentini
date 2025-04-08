@@ -10,7 +10,9 @@ public enum MessageType {
     CREATE_LOBBY,
     SEE_LOBBIES,
     SELECT_LOBBY,
-    ASSIGN_UUID
+    ASSIGN_UUID,
+    GAME_STARTED,
+    COLOR_SELECTED
 
 }
 

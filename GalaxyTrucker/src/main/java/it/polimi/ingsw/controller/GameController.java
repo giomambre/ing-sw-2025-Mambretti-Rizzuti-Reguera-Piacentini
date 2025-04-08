@@ -14,20 +14,17 @@ public class GameController {
 
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> avaible_colors = new ArrayList<>();
-    /** Map that contains all connected players, the nickname is the key. */
-    public static Map<String, Player> allPlayers = new HashMap<>();
-    /** Map that contains all started games, the id is the key*/
-    public static Map<Integer, Game> allGames = new HashMap<>();
-    /** List that contains all the created lobbies.*/
-    public static List<Lobby> allLobbies = new ArrayList<>();
+
+    Lobby lobby;
+
 
 
 
 
     Game game;
 
-    public GameController() {
-
+    public GameController(Lobby lobby) {
+        this.lobby = lobby;
         game = new Game();
         avaible_colors.add(Color.RED);
         avaible_colors.add(Color.GREEN);
@@ -35,6 +32,14 @@ public class GameController {
         avaible_colors.add(Color.BLUE);
 
 
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public List<Color> getAvaiable_colors() {
+        return avaible_colors;
     }
 
         public synchronized Player addPlayer(String nickname, Color color) {
