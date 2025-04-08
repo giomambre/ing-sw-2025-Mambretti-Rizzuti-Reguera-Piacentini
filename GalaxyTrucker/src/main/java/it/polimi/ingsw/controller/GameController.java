@@ -17,10 +17,6 @@ public class GameController {
 
     Lobby lobby;
 
-
-
-
-
     Game game;
 
     public GameController(Lobby lobby) {
