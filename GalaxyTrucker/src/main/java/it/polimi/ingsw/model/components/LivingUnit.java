@@ -17,8 +17,6 @@ import java.util.Map;
  * </ul>
  */
 public class LivingUnit extends CardComponent{
- //rivedere la cosa che l'attributo supporto alieno è null se non c'è
-    //secondo me va rivista questa logica perchè se ci sono due moduli per il supporto alieno collegati alla living unit e di quel colore, l'alieno può viverci anche se uno dei due moduli viene eliminato
     private int num_crewmates;
     private CrewmateType crewmate_type;
 

@@ -17,6 +17,7 @@ public class Server {
     private static Queue<Message> messageQueue = new ConcurrentLinkedQueue<>();
     private final Map<UUID, ClientHandler> clients = new HashMap<>();
     private GameManager manager =  new GameManager();
+
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server in ascolto sulla porta " + PORT + "...");
@@ -87,7 +88,7 @@ public class Server {
             case SEE_LOBBIES:
                 msgClient = (StandardMessageClient) msg;
 
-                sendToClient(msgClient.getId_client(),new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES,"",manager.getAvaibleLobbies()));
+                sendToClient(msgClient.getId_client(),new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES,"",manager.getAvailableLobbies()));
                 System.out.println("il player vuole vedere le lobby :");
                 break;
 

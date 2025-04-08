@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Lobby;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SimpleTimeZone;
 
 public class GameManager {
 
@@ -53,14 +52,14 @@ public class GameManager {
 
 
 
-public List<Integer> getAvaibleLobbies() {
-    List<Integer> avaibleLobbies = new ArrayList<>();
+public List<Integer> getAvailableLobbies() {
+    List<Integer> availableLobbies = new ArrayList<>();
     for (Lobby lobby : all_lobbies)
 
         if (!lobby.isLobbyFull()) {
-            avaibleLobbies.add(lobby.getLobbyId());
+            availableLobbies.add(lobby.getLobbyId());
         }
-    return avaibleLobbies;
+    return availableLobbies;
 }
 
 

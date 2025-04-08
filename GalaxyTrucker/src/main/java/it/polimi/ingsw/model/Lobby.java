@@ -7,10 +7,11 @@ import java.util.List;
 public class Lobby {
     private static int count = 0;
     private final int lobbyId;
+    //io metterei direttamente 4 come limit fissato (isa), se approvi il cambiamento faccio le modifiche
     private final int limit;
     public List<String> Players = new ArrayList<>();
 
-    /** Creates a new lobby given a player "creator" and a unique number automatically generated. */
+    /** Creates a new lobby given a player "creator" and a limit of people that can eventually join. */
     public Lobby(String Creator, int limit){
         Players.add(Creator);
 

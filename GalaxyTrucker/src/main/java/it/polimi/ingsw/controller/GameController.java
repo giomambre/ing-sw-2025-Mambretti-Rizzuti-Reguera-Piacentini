@@ -13,7 +13,7 @@ public class GameController {
 
 
     List<Player> disconnected_players = new ArrayList<>();
-    List<Color> avaible_colors = new ArrayList<>();
+    List<Color> available_colors = new ArrayList<>();
     /** Map that contains all connected players, the nickname is the key. */
     public static Map<String, Player> allPlayers = new HashMap<>();
     /** Map that contains all started games, the id is the key*/
@@ -29,10 +29,10 @@ public class GameController {
     public GameController() {
 
         game = new Game();
-        avaible_colors.add(Color.RED);
-        avaible_colors.add(Color.GREEN);
-        avaible_colors.add(Color.YELLOW);
-        avaible_colors.add(Color.BLUE);
+        available_colors.add(Color.RED);
+        available_colors.add(Color.GREEN);
+        available_colors.add(Color.YELLOW);
+        available_colors.add(Color.BLUE);
 
 
     }
@@ -40,9 +40,9 @@ public class GameController {
         public synchronized Player addPlayer(String nickname, Color color) {
         if(game.getNicknames().contains(nickname)) throw new IllegalArgumentException(" Nickname already in use.");
 
-        if(!avaible_colors.contains(color)) throw new IllegalArgumentException("Color invalid or  already in use .\nthese are the available colors : " + avaible_colors);
+        if(!available_colors.contains(color)) throw new IllegalArgumentException("Color invalid or  already in use .\nthese are the available colors : " + available_colors);
         Player  p= new Player(nickname, color);
-        avaible_colors.remove(p.getColor());
+        available_colors.remove(p.getColor());
         game.addPlayer(p);
         return p;
 
