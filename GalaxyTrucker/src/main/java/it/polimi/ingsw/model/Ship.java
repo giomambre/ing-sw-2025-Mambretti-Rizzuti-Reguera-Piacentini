@@ -46,6 +46,8 @@ public class Ship {
         return COLS;
     }
 
+    public CardComponent[][] getShipBoard() { return ship_board; }
+
     /**
      * Add a CardComponent to the ship.
      * @param component the one to add

@@ -1,6 +1,11 @@
 package it.polimi.ingsw.model.view;
 
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.Lobby;
+import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.Direction;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -166,4 +171,50 @@ public class TUI implements View {
         }
     }
 
+
+    @Override
+    public void showShip(String nickname){
+        GameController game= new GameController(new Lobby("giustoperfarelaprova", 3));
+        CardComponent[][] ship_board = game.getShipPlance(nickname);
+
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 7; col++) {
+
+
+
+
+            }
+        }
+
+    }
+
+    private String printConnector(ConnectorType connector, Direction direction) {
+        switch (connector) {
+            case Smooth: {
+                return "";
+            }
+
+            case Single: {
+                switch (direction) {
+                    case South,North: return "|";
+                    case East, West: return "-";
+                }
+            }
+
+            case Double: {
+                switch (direction) {
+                    case South, North: return "||";
+                    case East, West: return "=";
+                }
+            }
+
+            case Universal:{
+                switch (direction) {
+                    case South, North: return "|||";
+                    case East, West: return "≡";
+                }
+            }
+
+        }
+    }
 }

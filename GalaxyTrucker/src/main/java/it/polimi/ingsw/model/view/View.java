@@ -15,4 +15,6 @@ public interface View {
     public int askNumPlayers();
     public int showLobbies(List<Integer> lobbies);
     public Color askColor(List<Color> colors);
+
+    void showShip(String nickname);
 }
