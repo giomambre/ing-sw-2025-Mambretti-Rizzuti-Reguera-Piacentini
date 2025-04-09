@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
@@ -215,6 +216,30 @@ public class TUI implements View {
                 }
             }
 
+            default: return "";
+
+        }
+    }
+
+    private String printCard(ComponentType card) {
+        switch (card) {
+            case Engine: return "E";
+            case DoubleEngine: return "DE";
+            case Battery: return "B";
+            case BlueStorage: return "BS";
+            case RedStorage: return "RS";
+            case Cannon: return "C";
+            case DoubleCannon: return "DC";
+            case BrownAlienUnit: return "BAU";
+            case PinkAlienUnit: return "PAU";
+            case LivingUnit: return "LU";
+            case MainUnitRed: return "MUR";
+            case MainUnitBlue: return "MUB";
+            case MainUnitGreen: return "MUG";
+            case MainUnitYellow: return "MUY";
+            case Tubes: return "T";
+            case Shield: return "S";
+            case Empty, NotAccessible: return "";
         }
     }
 }
