@@ -26,7 +26,7 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  *     <li>cards_faced_up: the deck of the cards that are face up</li>
  *     <li>deck_components: the deck of the card component that are face down (all of them at first)</li>
  *     <li>board: where the players move their rockets</li>
- *     <li>ranking: the ranking of the players at the end of the game</li>
+ *     <li>ranking: the ranking of the players at the end of the game starting with the winner</li>
  * </ul>
  */
 public class Game {
@@ -41,7 +41,13 @@ public class Game {
     private List<Player> ranking = new ArrayList<>();
     private Board board;
 
-
+    /**
+     * This method is called at the end of the game to give to each player its rewards.Based on:
+     * <li>Order of arrival(bonus)</li>
+     * <li>delivered cargos(bonus)</li>
+     * <li>best ship(bonus)</li>
+     * <li>extra_components(malus)</li>
+     */
     public void setRewards() {
         //gives credits based on arrival order and carried cargos (only for players that ended the game)
         for (Player p : active_players) {
@@ -157,6 +163,15 @@ public class Game {
                     p.receiveCredits((reward_cargo+1)/2);
                 }
             }
+    }
+
+    /**
+     * Gives the final ranking of the players based on the criteria of SetRewards method.
+     * @param players
+     */
+    public void setRanking(List<Player> players) {
+        players.sort(Comparator.comparingInt(Player::getCredits).reversed());
+        this.ranking=players;
     }
 
     /**
