@@ -110,6 +110,14 @@ public class Player {
     public void receiveCredits(int credits) {
         this.credits += credits ;
     }
+    /**
+     * This method is used when the player loose credits due to extra components on his plance(secured but not used or destroyed)
+     * @param credits
+     */
+    public void LostCredits(int credits) {
+        this.credits -= credits ;
+    }
+
 
     /**
      * This method is used to find out how many exposed connectors a ship has.
@@ -117,6 +125,9 @@ public class Player {
      */
     public int getExposed_connectors() {
         return exposed_connectors;
+    }
+    public void setExposed_connectors() {
+        this.exposed_connectors = ship.calculateExposedConnectors();
     }
 
     /**

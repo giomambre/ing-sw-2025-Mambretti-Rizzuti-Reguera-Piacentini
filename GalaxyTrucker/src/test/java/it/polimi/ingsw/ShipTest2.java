@@ -335,7 +335,12 @@ public void testChoosePiece() {
 
 
 }
+ @Test
+    public  void  testPrintShipPlance() {
+        View v= new TUI();
 
+        v.printShip(ship1.getShipBoard());
+ }
 
 
 
