@@ -263,7 +263,7 @@ public class TUI implements View {
             case RedStorage -> "RS ";
             case Cannon -> " C ";
             case DoubleCannon -> "DC ";
-            case BrownAlienUnit -> "PAU";
+            case BrownAlienUnit -> "BAU";
             case PinkAlienUnit -> "PAU";
             case LivingUnit -> "LU ";
             case MainUnitRed -> "MUR";
