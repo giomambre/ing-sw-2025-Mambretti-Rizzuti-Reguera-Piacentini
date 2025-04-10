@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.view;
 
+import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public interface View {
     public Color askColor(List<Color> colors);
 
     void showShip(String nickname);
+
 }
