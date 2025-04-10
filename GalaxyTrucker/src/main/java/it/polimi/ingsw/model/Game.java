@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.Storage;
+import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
@@ -24,6 +25,7 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  *     <li>cards_faced_up: the deck of the cards that are face up</li>
  *     <li>deck_components: the deck of the card component that are face down (all of them at first)</li>
  *     <li>board: where the players move their rockets</li>
+ *     <li>ranking: the ranking of the players at the end of the game</li>
  * </ul>
  */
 public class Game {
@@ -35,9 +37,50 @@ public class Game {
     private List<Player> active_players = new ArrayList<>();
     private List<CardComponent> deck_components = new ArrayList<>();
     private List<CardComponent> cards_faced_up = new ArrayList<>();
+    private List<Player> ranking = new ArrayList<>();
     private Board board;
 
 
+    public void setRewards() {
+        for (Player p : active_players) {
+            if (p.equals(board.getRanking().get(0))) {
+                p.receiveCredits(4);
+            }
+            if (p.equals(board.getRanking().get(1))) {
+                p.receiveCredits(3);
+            }
+            if (p.equals(board.getRanking().get(2))) {
+                p.receiveCredits(2);
+            }
+            if (p.equals(board.getRanking().get(3))) {
+                p.receiveCredits(1);
+            }
+            //parte in cui si danno i reward per la merce la sto facendo ora qui
+            for (int row = 0; row < 5; row++) {
+                for (int col = 0; col < 7; col++) {
+                    if (p.getShip().getComponent(row, col).getComponentType().equals(BlueStorage))
+                }
+
+            }
+        }
+            List<Player> best_ships = new ArrayList<>();
+            best_ships.add(active_players.get(0));
+            for (Player p : active_players) {
+                if (p.getExposed_connectors() < best_ships.get(0).getExposed_connectors()) {
+                    best_ships.clear();
+                    best_ships.add(p);
+                }
+                if (p.getExposed_connectors() == best_ships.get(0).getExposed_connectors()) {
+                    best_ships.add(p);
+                }
+            }
+            for (Player p : best_ships) {
+                p.receiveCredits(2);
+            }
+            for (Player p : players) {
+                p.LostCredits(p.getShip().getExtra_components().size());
+            }
+        }
 
     /**
      *this method is used to initialise the deck of CardComponents before building the ship
@@ -1509,4 +1552,5 @@ throw new IllegalArgumentException("Nickname not found");
     public void setCards_faced_up(List<CardComponent> cards_faced_up) {
         this.cards_faced_up = cards_faced_up;
     }
+
 }
