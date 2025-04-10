@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
@@ -42,6 +43,7 @@ public class Game {
 
 
     public void setRewards() {
+        //gives credits based on arrival order and carried cargos (only for players that ended the game)
         for (Player p : active_players) {
             if (p.equals(board.getRanking().get(0))) {
                 p.receiveCredits(4);
@@ -55,14 +57,43 @@ public class Game {
             if (p.equals(board.getRanking().get(3))) {
                 p.receiveCredits(1);
             }
-            //parte in cui si danno i reward per la merce la sto facendo ora qui
+
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 7; col++) {
-                    if (p.getShip().getComponent(row, col).getComponentType().equals(BlueStorage))
+                    if (p.getShip().getComponent(row, col).getComponentType().equals(BlueStorage)||p.getShip().getComponent(row, col).getComponentType().equals(RedStorage)){
+                        Storage storage=(Storage) p.getShip().getComponent(row, col);
+                        List<Cargo> cargos= storage.getCarried_cargos();
+                        for (Cargo c : cargos){
+                            switch (c){
+                                case Red:
+
+                                    p.receiveCredits(4);
+                                    break;
+
+                                case Yellow:
+
+                                    p.receiveCredits(3);
+                                    break;
+
+                                case Green:
+                                    p.receiveCredits(2);
+                                    break;
+
+                                case Blue:
+                                    p.receiveCredits(1);
+                                    break;
+
+                                default:
+                                    break;
+
+                            }
+                        }
+                    }
                 }
 
             }
         }
+        //gives credits to the players who have the best ship (only for players that ended the game)
             List<Player> best_ships = new ArrayList<>();
             best_ships.add(active_players.get(0));
             for (Player p : active_players) {
@@ -77,10 +108,56 @@ public class Game {
             for (Player p : best_ships) {
                 p.receiveCredits(2);
             }
+
+            //remove credits due to extra components on the plance (secured but not used and/or eliminated)
             for (Player p : players) {
                 p.LostCredits(p.getShip().getExtra_components().size());
             }
-        }
+
+
+            //gives the reward for the cargo delivered by the players who gave up
+            for (Player p : players) {
+                if(!active_players.contains(p)){
+                    int reward_cargo=0;
+                    for (int row = 0; row < 5; row++) {
+                        for (int col = 0; col < 7; col++) {
+                            if (p.getShip().getComponent(row, col).getComponentType().equals(BlueStorage)||p.getShip().getComponent(row, col).getComponentType().equals(RedStorage)){
+                                Storage storage=(Storage) p.getShip().getComponent(row, col);
+                                List<Cargo> cargos= storage.getCarried_cargos();
+                                for (Cargo c : cargos){
+                                    switch (c){
+                                        case Red:
+
+                                            reward_cargo+=4;
+                                            break;
+
+                                        case Yellow:
+
+                                            reward_cargo+=3;
+                                            break;
+
+                                        case Green:
+                                            reward_cargo+=2;
+                                            break;
+
+                                        case Blue:
+
+                                            reward_cargo+=1;
+                                            break;
+
+                                        default:
+                                            break;
+
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    p.receiveCredits((reward_cargo+1)/2);
+                }
+            }
+    }
 
     /**
      *this method is used to initialise the deck of CardComponents before building the ship

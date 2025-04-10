@@ -42,6 +42,8 @@ public class Storage extends CardComponent {
         }
     }
 
+    public List<Cargo> getCarried_cargos() {return carried_cargos;}
+
     public Cargo getCargo(int index){
         return carried_cargos.get(index);
     }
