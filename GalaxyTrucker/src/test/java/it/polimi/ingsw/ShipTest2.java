@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.view.TUI;
+import it.polimi.ingsw.model.view.View;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -333,10 +335,8 @@ public void testChoosePiece() {
 
 
 }
-@Test
-public void testGetFirstComponent() {
-    System.out.println(ship1.getFirstComponent(East,9));
-}
+
+
 
 
 

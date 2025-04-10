@@ -170,6 +170,13 @@ public void dismissComponent(String nickname, CardComponent card) {
         return ship.calculateExposedConnectors();
     }
 
+    public CardComponent[][] getShipPlance(String nickname) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+
+        return ship.getShipBoard();
+    }
+
 
 
 

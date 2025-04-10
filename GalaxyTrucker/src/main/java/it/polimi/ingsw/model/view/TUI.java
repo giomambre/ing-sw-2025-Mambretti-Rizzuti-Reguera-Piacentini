@@ -1,10 +1,20 @@
 package it.polimi.ingsw.model.view;
 
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.Lobby;
+import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.ComponentType;
+import it.polimi.ingsw.model.enumerates.ConnectorType;
+import it.polimi.ingsw.model.enumerates.Direction;
 
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
+
+import static it.polimi.ingsw.model.enumerates.ComponentType.Empty;
+import static it.polimi.ingsw.model.enumerates.ComponentType.NotAccessible;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 public class TUI implements View {
     private final PrintStream out;
@@ -166,4 +176,113 @@ public class TUI implements View {
         }
     }
 
+
+    @Override
+    public void showShip(String nickname) {
+        GameController game = new GameController(new Lobby("giustoperfarelaprova", 3));
+        CardComponent[][] ship_board = game.getShipPlance(nickname);
+        printShip(ship_board);
+    }
+
+
+    private void printShip(CardComponent[][] ship) {
+        int CELL_WIDTH = 9;
+        int rows = ship.length;
+        int cols = ship[0].length;
+
+        for (int r = 0; r < rows; r++) {
+            StringBuilder top = new StringBuilder();
+            StringBuilder mid = new StringBuilder();
+            StringBuilder bot = new StringBuilder();
+
+            for (int c = 0; c < cols; c++) {
+                CardComponent card = ship[r][c];
+
+                if (card.getComponentType() == Empty || card.getComponentType() == NotAccessible) {
+                    top.append(" ".repeat(CELL_WIDTH));
+                    mid.append(" ".repeat(CELL_WIDTH));
+                    bot.append(" ".repeat(CELL_WIDTH));
+                } else {
+                    String topStr = printConnector(card.getConnector_type(North), North);
+                    String midStr = printConnector(card.getConnector_type(West), West)
+                            + printCard(card.getComponentType())
+                            + printConnector(card.getConnector_type(East), East);
+                    String botStr = printConnector(card.getConnector_type(South), South);
+
+                    top.append(center(topStr, CELL_WIDTH));
+                    mid.append(center(midStr, CELL_WIDTH));
+                    bot.append(center(botStr, CELL_WIDTH));
+                }
+            }
+
+            System.out.println(top);
+            System.out.println(mid);
+            System.out.println(bot);
+            System.out.println("-".repeat(cols * CELL_WIDTH));
+        }
+    }
+
+    private static String printConnector(ConnectorType connector, Direction direction) {
+        switch (connector) {
+            case Smooth: {
+                return direction == North || direction == South ? "   " : "  ";
+            }
+
+            case Single: {
+                switch (direction) {
+                    case South, North: return " | ";
+                    case East, West: return "--";
+                }
+            }
+
+            case Double: {
+                switch (direction) {
+                    case South, North: return " ||";
+                    case East, West: return "==";
+                }
+            }
+
+            case Universal:{
+                switch (direction) {
+                    case South, North: return "|||";
+                    case East, West: return "≡≡";
+                }
+            }
+
+            default: return "   ";
+        }
+    }
+
+
+    private static String printCard(ComponentType card) {
+        return switch (card) {
+            case Engine -> " E ";
+            case DoubleEngine -> "DE ";
+            case Battery -> " B ";
+            case BlueStorage -> "BS ";
+            case RedStorage -> "RS ";
+            case Cannon -> " C ";
+            case DoubleCannon -> "DC ";
+            case BrownAlienUnit -> "BAU";
+            case PinkAlienUnit -> "PAU";
+            case LivingUnit -> "LU ";
+            case MainUnitRed -> "MUR";
+            case MainUnitBlue -> "MUB";
+            case MainUnitGreen -> "MUG";
+            case MainUnitYellow -> "MUY";
+            case Tubes -> " T ";
+            case Shield -> " S ";
+            case Empty, NotAccessible -> "   ";
+            default -> "   ";
+        };
+    }
+
+
+    // Centra una stringa su una larghezza fissa
+    private static String center(String str, int width) {
+        int padding = width - str.length();
+        int padLeft = padding / 2;
+        int padRight = padding - padLeft;
+        return " ".repeat(padLeft) + str + " ".repeat(padRight);
+    }
 }
