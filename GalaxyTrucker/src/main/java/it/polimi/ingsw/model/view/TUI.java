@@ -25,7 +25,7 @@ public class TUI implements View {
     final String GREEN = "\u001B[32m";
     final String YELLOW = "\u001B[33m";
     final String BLUE = "\u001B[34m";
-    final String PURPLE = "\u001B[35m";
+    static final String PURPLE = "\u001B[35m";
     String banner = """
                           ✦   ✷       ⋆      ✧     .    ✨       ⋆       ✶     ✦    ✧
                        .       .     ⋆   ✦        ✨       ✦    ✧  .    ✧    ✶    ⋆    .
@@ -184,9 +184,9 @@ public class TUI implements View {
         printShip(ship_board);
     }
 
-
-    private void printShip(CardComponent[][] ship) {
-        int CELL_WIDTH = 9;
+@Override
+public void printShip(CardComponent[][] ship) {
+        int CELL_WIDTH = 11;
         int rows = ship.length;
         int cols = ship[0].length;
 
@@ -231,25 +231,25 @@ public class TUI implements View {
             case Single: {
                 switch (direction) {
                     case South, North: return " | ";
-                    case East, West: return "--";
+                    case East, West: return " -- ";
                 }
             }
 
             case Double: {
                 switch (direction) {
                     case South, North: return " ||";
-                    case East, West: return "==";
+                    case East, West: return " == ";
                 }
             }
 
             case Universal:{
                 switch (direction) {
                     case South, North: return "|||";
-                    case East, West: return "≡≡";
+                    case East, West: return " ≡≡ ";
                 }
             }
 
-            default: return "   ";
+            default: return "    ";
         }
     }
 
@@ -280,6 +280,9 @@ public class TUI implements View {
 
     // Centra una stringa su una larghezza fissa
     private static String center(String str, int width) {
+        if (str.length() >= width) {
+            return str; // se è troppo lunga, non la tocco
+        }
         int padding = width - str.length();
         int padLeft = padding / 2;
         int padRight = padding - padLeft;

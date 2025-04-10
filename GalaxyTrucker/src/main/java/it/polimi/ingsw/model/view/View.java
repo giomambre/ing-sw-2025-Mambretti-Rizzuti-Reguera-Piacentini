@@ -19,4 +19,5 @@ public interface View {
 
     void showShip(String nickname);
 
+    void printShip(CardComponent[][] ship);
 }
