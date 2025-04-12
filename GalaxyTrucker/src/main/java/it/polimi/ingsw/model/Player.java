@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.view.InvalidGameActionException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,16 +25,21 @@ public class Player {
     private Color color;
     private Ship ship = new Ship(this);
     private int exposed_connectors = 0;
-    private Game game = new Game();
+    private BaseGame game;
     private int credits;
     private int num_laps;
-    public Player(String nickname, Color color) {
+
+    /*
+    The type of match (quick or standard) is set at run time
+     */
+    public Player(String nickname, Color color, BaseGame game) {
         this.nickname = nickname;
         this.color = color;
         this.credits = 0;
         this.num_laps = 0;
+        this.game = game;
     }
-    //exposed connectors lo sposterei in ship (isa)
+
 
     /**
      * This function is called when the player finish to build his ship. The player is added to the active participant of the game.
@@ -45,15 +52,17 @@ public class Player {
 
     /**
      * This method is called by the controller when the player during the building phase wants to secure a component so he could use it later (or not, penalty at the end of the game).
+     * This method is available only for the standard game. (not in quick game)
      * Each player can have maximum 2 secured component at the same time.
      * @param component the component that the player wants to secure
      */
     public void secureComponent(CardComponent component) {
-        List<CardComponent> extra_components = ship.getExtra_components();
-        if(extra_components.size() < 2) {
-            extra_components.add(component);
-        }else throw new IllegalArgumentException("Already has more than 2 components");
-
+        if(game instanceof Game) {
+            List<CardComponent> extra_components = ship.getExtra_components();
+            if (extra_components.size() < 2) {
+                extra_components.add(component);
+            } else throw new IllegalArgumentException("Already has more than 2 components");
+        }else throw new InvalidGameActionException("This action is forbidden in quick game");
 
     }
 
@@ -79,17 +88,20 @@ public class Player {
 
     /**
      * This method is called by the controller when the player wants to add to his ship a CardComponent that has been secured in the past.
+     * That is possible only in the standard game, not in the quick version.
      * @param component
      */
     public void useExtraComponent(CardComponent component) {
-        List<CardComponent> extra_components = ship.getExtra_components();
-        if(!extra_components.contains(component)) {
+        if(game instanceof Game) {
+            List<CardComponent> extra_components = ship.getExtra_components();
+            if (!extra_components.contains(component)) {
 
-            throw new IllegalArgumentException("Extra card component not found");
+                throw new IllegalArgumentException("Extra card component not found");
 
-        }
-        extra_components.remove(component);
-        ship.setExtra_components(extra_components);
+            }
+            extra_components.remove(component);
+            ship.setExtra_components(extra_components);
+        }else throw new InvalidGameActionException("This action is forbidden in quick game");
     }
 
     /**
@@ -161,7 +173,7 @@ public class Player {
         return nickname;
     }
 
-    public Game getGame() {
+    public BaseGame getGame() {
         return game;
     }
 
