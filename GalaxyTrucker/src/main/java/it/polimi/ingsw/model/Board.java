@@ -5,20 +5,20 @@ import java.util.*;
 /**
  * this class represents the game board and all the logic regarding the movement of the rockets on it
  * <ul>
- *      <li>BOARD_SIZE= 24
+ *      <li>board_size could be 24 (Game) or 18 (QuickGame)
  *      <li>player_position: for each cell on the map return the player who's on it, null if it's empty
  *      <li>board_leader: the current player who's the first on the ranking based on the positions on the map
  * </ul>
  */
 
 public class Board {
-    private final int BOARD_SIZE = 24;
+    private int board_size;
     private Map<Integer, Player> player_position = new HashMap<>();
     private Player board_leader;
 
-    public Board(List<Player> players) { //mette i player nelle posizioni di partenza,
+    public Board(List<Player> players,int board_size) { //mette i player nelle posizioni di partenza,
         //in caso di nave che non puo partite, tipo non ha motori, viene rimossa e il player dopo scala avanti???
-
+        this.board_size = board_size;
         int[] starting_positions = {7, 4, 2, 1}; // the first player that end the build is the first in the active player list
         int i = 0;
         for (Player player : players) {
@@ -140,8 +140,8 @@ public class Board {
 
             while (spaces_traversed < pos) {
                 i = i + 1;
-                if (i > BOARD_SIZE) {
-                    i = 1; // Reset to position 1 when exceeding BOARD_SIZE (24)
+                if (i > board_size) {
+                    i = 1; // Reset to position 1 when exceeding board_size (24)
                 }
                 if (!player_position.containsKey(i)) {
                     spaces_traversed++;
@@ -161,7 +161,7 @@ public class Board {
             while (spaces_traversed < spacesToMove) {
                 i = i - 1;
                 if (i < 1) {
-                    i = BOARD_SIZE; 
+                    i = board_size;
                 }
                 if (!player_position.containsKey(i)) {
                     spaces_traversed++;
