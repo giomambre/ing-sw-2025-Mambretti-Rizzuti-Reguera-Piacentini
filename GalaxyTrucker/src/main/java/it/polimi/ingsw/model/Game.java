@@ -1550,12 +1550,11 @@ throw new IllegalArgumentException("Nickname not found");
     }*/
 
     /**
-     * This method
      * @return list of adventure cards
      */
-    public List<CardAdventure> getDeck_adventure() {
+   /* public List<CardAdventure> getDeck_adventure() {
         return deck_adventure;
-    }
+    }*/
 
     /**
      * This method
@@ -1585,9 +1584,9 @@ throw new IllegalArgumentException("Nickname not found");
         this.numPlayers = numPlayers;
     }*/
 
-    public void setDeck_adventure(List<CardAdventure> deck_adventure) {
+    /*public void setDeck_adventure(List<CardAdventure> deck_adventure) {
         this.deck_adventure = deck_adventure;
-    }
+    }*/
 
     /*public void setActive_players(List<Player> active_players) {
         this.active_players = active_players;
