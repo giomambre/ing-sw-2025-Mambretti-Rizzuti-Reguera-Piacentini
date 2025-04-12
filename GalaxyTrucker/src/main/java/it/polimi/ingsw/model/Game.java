@@ -19,7 +19,6 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  * This class represents the STANDARD GAME  during the various phases.
  * <ul>
  *     <li>clock_time: the time measured twisting the hourglass once</li>
- *     <li>deck_adventure: a set of 8 AdventureCard that needs to be solved by the players</li>
  * </ul>
  */
 public class Game extends BaseGame{
@@ -181,7 +180,7 @@ public class Game extends BaseGame{
      * this method adds every Card Component existent to the deck of card components and then shuffles it
      */
 
-    /*public List<CardComponent> initializeDeckComponents() {
+    public List<CardComponent> initializeDeckComponents() {
 
 
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -1437,7 +1436,7 @@ public class Game extends BaseGame{
         Collections.shuffle(deck_components);
 
 return deck_components;
-    }*/
+    }
 
     /**
      * this method is called to start the assembly phase
