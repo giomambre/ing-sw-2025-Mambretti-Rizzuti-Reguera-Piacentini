@@ -31,6 +31,7 @@ public class Game extends BaseGame{
     public Game(Gametype type) {
         super(type);
         initializeDeckComponents();
+        createDeckAdventure();
     }
 
     @Override

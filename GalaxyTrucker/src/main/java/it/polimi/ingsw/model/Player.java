@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.Gametype;
@@ -191,6 +192,12 @@ public class Player {
      * This method is called when a player lose days of flight and the new position is before of the 1 cell.
      */
     public void subLap(){ this.num_laps--; }
+
+    public CardAdventure PickAdventure(){
+        CardAdventure card= game.getDeck_adventure().removeFirst();
+        card.changeFace();
+        return card;
+    }
 
     public String toString(){
 

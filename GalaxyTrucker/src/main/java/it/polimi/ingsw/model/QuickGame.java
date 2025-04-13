@@ -20,6 +20,7 @@ public class QuickGame extends BaseGame {
     public QuickGame(Gametype type) {
         super(type);
         initializeDeckComponents();
+        createDeckAdventure();
     }
 
     public void createDeckAdventure() {
