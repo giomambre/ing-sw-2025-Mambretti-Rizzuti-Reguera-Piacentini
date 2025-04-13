@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 
 import java.util.*;
 
@@ -24,6 +25,11 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 public class Game extends BaseGame{
 
     private static final int clock_time = 30; //30 sec messi a caso
+
+    public Game(Gametype type) {
+        super(type);
+    }
+
 
     /**
      * This method is called at the end of the game to give to each player its rewards.Based on:

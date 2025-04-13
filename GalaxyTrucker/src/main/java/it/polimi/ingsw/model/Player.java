@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import it.polimi.ingsw.model.view.InvalidGameActionException;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class Player {
      * @param component the component that the player wants to secure
      */
     public void secureComponent(CardComponent component) {
-        if(game instanceof Game) {
+        if(game.getType() == Gametype.StandardGame) {
             List<CardComponent> extra_components = ship.getExtra_components();
             if (extra_components.size() < 2) {
                 extra_components.add(component);
@@ -92,7 +93,7 @@ public class Player {
      * @param component
      */
     public void useExtraComponent(CardComponent component) {
-        if(game instanceof Game) {
+        if(game.getType()==Gametype.StandardGame) {
             List<CardComponent> extra_components = ship.getExtra_components();
             if (!extra_components.contains(component)) {
 

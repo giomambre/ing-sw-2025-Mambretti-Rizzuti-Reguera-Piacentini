@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.Storage;
-import it.polimi.ingsw.model.enumerates.Cargo;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.*;
 
 import java.util.*;
 
@@ -27,6 +24,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.West;
  *     <li>deck_components: the deck of the card component that are face down (all of them at first)</li>
  *     <li>board: where the players move their rockets</li>
  *     <li>ranking: the ranking of the players at the end of the game starting with the winner</li>
+ *     <li>type: standard or quick</li>
  *
  * </ul>
  */
@@ -39,6 +37,15 @@ public abstract class BaseGame {
     protected List<Player> ranking = new ArrayList<>();
     protected Board board;
     protected List<CardAdventure> deck_adventure = new ArrayList<>();
+    protected Gametype type;
+
+    public BaseGame(Gametype type) {
+        this.type = type;
+    }
+
+    public Gametype getType() {
+        return type;
+    }
 
     /**
      * Gives the final ranking of the players based on the criteria of SetRewards method.

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 
 import java.util.*;
 
@@ -17,6 +18,10 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.Direction.West;
 
 public class QuickGame extends BaseGame {
+
+    public QuickGame(Gametype type) {
+        super(type);
+    }
 
     /**
      * this method is called to start the flight phase putting al the rockets on the board
