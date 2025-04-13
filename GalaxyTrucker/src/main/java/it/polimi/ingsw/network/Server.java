@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.Lobby;
+import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.network.messages.*;
 
@@ -21,6 +22,7 @@ public class Server {
     private final Map<UUID, ClientHandler> clients = new HashMap<>();
     private GameManager manager = new GameManager();
     private Map<Integer, GameController> all_games = new HashMap<>();
+    GameController controller;
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -132,32 +134,70 @@ public class Server {
             case COLOR_SELECTED:
                 msgClient = (StandardMessageClient) msg;
 
-                GameController controller = all_games.get(getLobbyId(msgClient.getId_client()));
+                controller = all_games.get(getLobbyId(msgClient.getId_client()));
 
                 synchronized (controller) {
 
                     Color c = Color.valueOf(msg.getContent().toUpperCase());
                     if (controller.getAvaiable_colors().contains(c)) {
-                        System.out.println("COLORE " + c  + "PRESO ");
-                        controller.addPlayer(getNickname(msgClient.getId_client()),c);
-                        Lobby l = controller.getLobby();
-
-                        for(String player : l.getPlayers()) {
-                            if(player.equals(getNickname(msgClient.getId_client()))) {
-
-                                sendToClient(getId_client(player),new Message(MessageType.COLOR_SELECTED, player + " " + c ));
-
-                            }
-                        }
+                        System.out.println("COLORE " + c + "PRESO ");
+                        controller.addPlayer(getNickname(msgClient.getId_client()), c);
 
 
-                    }else {
+                        sendToAllClients(controller.getLobby(), new Message(MessageType.COLOR_SELECTED, getNickname(msgClient.getId_client()) + " " + c));
+
+
+                    } else {
 
                         sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvaiable_colors()));
 
                     }
+
+
+                    if (4 - controller.getAvaiable_colors().size() == controller.getLobby().getPlayers().size()) {
+                        System.out.println("tutti i player hanno scelto i colori fase di costruzione iniziata!");
+                        sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
+
+                    }
+
+
                 }
                 break;
+
+            case ASK_CARD:
+                msgClient = (StandardMessageClient) msg;
+
+                GameController controller = all_games.get(getLobbyId(msgClient.getId_client()));
+
+                synchronized (controller) {
+
+                    if (msgClient.getContent().isEmpty()) { //ha richiesto una carta casuale
+
+                        sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.ASK_CARD, "", msgClient.getId_client(), controller.getRandomCard()));
+
+                    } else {
+
+                        int i = 0;
+                        for (CardComponent c : controller.getFacedUpCards()) {
+                            if (c.getCard_uuid().equals(UUID.fromString(msgClient.getContent()))) {
+                                controller.removeCardFacedUp(i);
+                                sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.ASK_CARD, "", msgClient.getId_client(), controller.getRandomCard()));
+                                break;
+                            }
+                            i++;
+                        }
+                        sendToClient(msgClient.getId_client(), new Message(MessageType.CARD_UNAVAILABLE,""));
+                    }
+                }
+                break;
+
+
+                case REJECTED_CARD:
+                    CardComponentMessage card_msg = (CardComponentMessage) msg;
+                    controller = all_games.get(getLobbyId(card_msg.getId_client()));
+                    controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
+                    break;
+
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
                 break;
@@ -182,6 +222,18 @@ public class Server {
         return id;
     }
 
+
+    private void sendToAllClients(Lobby l, Message msg) {
+
+        for (String player : l.getPlayers()) {
+
+            sendToClient(getId_client(player), msg);
+
+        }
+
+
+    }
+
     private void sendToClient(UUID id, Message msg) {
         ClientHandler client = clients.get(id);
         if (client != null) {
@@ -196,16 +248,16 @@ public class Server {
 
     private int getLobbyId(UUID id) {
 
-String nick = getNickname(id);
+        String nick = getNickname(id);
 
-List <Lobby> ls = manager.getAllLobbies();
-for (Lobby lobby : ls) {
-    if (lobby.getPlayers().contains(nick)){
-        return lobby.getLobbyId();
-    }
-}
+        List<Lobby> ls = manager.getAllLobbies();
+        for (Lobby lobby : ls) {
+            if (lobby.getPlayers().contains(nick)) {
+                return lobby.getLobbyId();
+            }
+        }
 
-return -1;
+        return -1;
 
     }
 

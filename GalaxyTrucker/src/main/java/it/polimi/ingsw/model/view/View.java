@@ -20,4 +20,7 @@ public interface View {
     void showShip(String nickname);
 
     void printShip(CardComponent[][] ship);
+    int selectDeck();
+    int askFacedUpCard(List<CardComponent> cards);
+    int showCard(CardComponent card);
 }

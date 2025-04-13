@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.components;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,7 @@ import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
-public class Storage extends CardComponent {
+public class Storage extends CardComponent  implements Serializable {
     private int size;
     private List<Cargo> carried_cargos = new ArrayList<>();
 @JsonCreator

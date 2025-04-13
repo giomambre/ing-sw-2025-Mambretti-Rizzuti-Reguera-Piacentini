@@ -24,6 +24,11 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  */
 public class Game extends BaseGame{
 
+
+    public Game() {
+        initializeDeckComponents();
+    }
+
     private static final int clock_time = 30; //30 sec messi a caso
 
     public Game(Gametype type) {

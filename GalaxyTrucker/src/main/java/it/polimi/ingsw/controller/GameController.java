@@ -13,19 +13,19 @@ public class GameController {
 
 
     List<Player> disconnected_players = new ArrayList<>();
-    List<Color> avaible_colors = new ArrayList<>();
+    List<Color> available_colors = new ArrayList<>();
 
     Lobby lobby;
 
-    Game game;
+    BaseGame game;
 
     public GameController(Lobby lobby) {
         this.lobby = lobby;
         game = new Game();
-        avaible_colors.add(Color.RED);
-        avaible_colors.add(Color.GREEN);
-        avaible_colors.add(Color.YELLOW);
-        avaible_colors.add(Color.BLUE);
+        available_colors.add(Color.RED);
+        available_colors.add(Color.GREEN);
+        available_colors.add(Color.YELLOW);
+        available_colors.add(Color.BLUE);
 
 
     }
@@ -35,15 +35,15 @@ public class GameController {
     }
 
     public List<Color> getAvaiable_colors() {
-        return avaible_colors;
+        return available_colors;
     }
 
         public synchronized Player addPlayer(String nickname, Color color) {
         if(game.getNicknames().contains(nickname)) throw new IllegalArgumentException(" Nickname already in use.");
 
-        if(!avaible_colors.contains(color)) throw new IllegalArgumentException("Color invalid or  already in use .\nthese are the available colors : " + avaible_colors);
-        Player  p= new Player(nickname, color);
-        avaible_colors.remove(p.getColor());
+        if(!available_colors.contains(color)) throw new IllegalArgumentException("Color invalid or  already in use .\nthese are the available colors : " + available_colors);
+        Player  p= new Player(nickname, color,game);
+        available_colors.remove(p.getColor());
         game.addPlayer(p);
         return p;
 
@@ -175,6 +175,14 @@ public void dismissComponent(String nickname, CardComponent card) {
         Ship ship = p.getShip();
 
         return ship.getShipBoard();
+    }
+
+    public void removeCardFacedUp(int index) {
+        game.getFacedUpCard(index);
+    }
+
+    public List<CardComponent> getFacedUpCards() {
+        return game.getCards_faced_up();
     }
 
 

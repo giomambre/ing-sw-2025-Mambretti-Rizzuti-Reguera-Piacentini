@@ -5,13 +5,14 @@ import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Shield extends CardComponent {
+public class Shield extends CardComponent   implements Serializable {
     private Map<Direction, Boolean> covered_sides = new EnumMap<>(Direction.class);
 
 
