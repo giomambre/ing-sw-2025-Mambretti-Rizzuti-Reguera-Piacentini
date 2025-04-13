@@ -29,9 +29,9 @@ public class QuickGame extends BaseGame {
         deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
         deck_adventure.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,board,
                 List.of(
-                new Pair<>(MeteorType.LargeMeteor, North),
-                new Pair<>(MeteorType.SmallMeteor, East),
-                new Pair<>(MeteorType.SmallMeteor, West)
+                        new Pair<>(MeteorType.LargeMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, East),
+                        new Pair<>(MeteorType.SmallMeteor, West)
                 )
         ));
         deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust,board));
