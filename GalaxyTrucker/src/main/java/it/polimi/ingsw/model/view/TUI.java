@@ -184,8 +184,8 @@ public class TUI implements View {
         printShip(ship_board);
     }
 
-@Override
-public void printShip(CardComponent[][] ship) {
+    @Override
+    public void printShip(CardComponent[][] ship) {
         int CELL_WIDTH = 11;
         int rows = ship.length;
         int cols = ship[0].length;
@@ -230,29 +230,99 @@ public void printShip(CardComponent[][] ship) {
 
             case Single: {
                 switch (direction) {
-                    case South, North: return " | ";
-                    case East, West: return " -- ";
+                    case South, North:
+                        return " | ";
+                    case East, West:
+                        return " -- ";
                 }
             }
 
             case Double: {
                 switch (direction) {
-                    case South, North: return " ||";
-                    case East, West: return " == ";
+                    case South, North:
+                        return " ||";
+                    case East, West:
+                        return " == ";
                 }
             }
 
-            case Universal:{
+            case Universal: {
                 switch (direction) {
-                    case South, North: return "|||";
-                    case East, West: return " ≡≡ ";
+                    case South, North:
+                        return "|||";
+                    case East, West:
+                        return " ≡≡ ";
                 }
             }
 
-            default: return "    ";
+            default:
+                return "    ";
         }
     }
 
+    @Override
+    public int selectDeck() {
+
+        int selected = -1;
+        do {
+            out.println("Premi : 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n");
+            selected = input.nextInt();
+        } while (selected != 1 && selected != 0);
+        return selected;
+
+
+    }
+
+
+    @Override
+    public int askFacedUpCard(List<CardComponent> cards) {
+        System.out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)");
+
+        for (int i = 0; i < cards.size(); i++) {
+            System.out.println(" " + i + " : " + cards.get(i));
+        }
+
+        while (true) {
+            System.out.print("Scelta: ");
+            int selected = input.nextInt();
+
+            if (selected == -1) {
+                return -1;
+            }
+
+            if (selected >= 0 && selected < cards.size()) {
+                return selected;
+            }
+
+            System.out.println("Indice non valido. Riprova.");
+        }
+    }
+
+
+    @Override
+    public int showCard(CardComponent card) {
+        out.println(card.toString());
+
+        out.println("Premi : 1 per ruotare la carta in senso orario\n 2 : per inserirla 3 : per scartarla ");
+
+        while (true) {
+            System.out.print("Scelta: ");
+            int selected = input.nextInt();
+
+            if (selected == 1) {
+                out.println("Carta ruotata");
+                card.rotate();
+                out.println(card.toString());
+                return -1;
+            }else if (selected == 2 || selected == 3) {
+                return selected;
+            }
+
+
+
+            System.out.println("Indice non valido. Riprova.");
+        }
+    }
 
     private static String printCard(ComponentType card) {
         return switch (card) {

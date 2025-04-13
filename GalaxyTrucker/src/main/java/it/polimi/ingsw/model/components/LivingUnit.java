@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
  *     <li>alien_support: point to the alien support of the living unit if it's present, otherwise null</li>
  * </ul>
  */
-public class LivingUnit extends CardComponent{
+public class LivingUnit extends CardComponent  implements Serializable {
     private int num_crewmates;
     private CrewmateType crewmate_type;
 

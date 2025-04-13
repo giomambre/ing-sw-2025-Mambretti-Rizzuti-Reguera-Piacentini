@@ -5,8 +5,9 @@ import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
+import java.io.Serializable;
 import java.util.Map;
-public class Battery extends CardComponent {
+public class Battery extends CardComponent  implements Serializable {
     //capacity
     private int size;
     //effectively stored

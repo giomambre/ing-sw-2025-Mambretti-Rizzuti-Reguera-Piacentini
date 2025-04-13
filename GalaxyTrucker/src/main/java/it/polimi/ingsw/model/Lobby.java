@@ -8,7 +8,7 @@ public class Lobby {
     private static int count = 0;
     private final int lobbyId;
     private final int limit;
-    public List<String> players = new ArrayList<>();
+    public static List<String> players = new ArrayList<>();
 
     /** Creates a new lobby given a player "creator" and a limit of people that can eventually join. */
     public Lobby(String Creator, int limit){
@@ -46,8 +46,8 @@ public class Lobby {
         return false;
     }
 
-    public static int getCount() {
-        return count;
+    public static int getPlayerSize() {
+        return players.size();
     }
 
     public int getLobbyId() {

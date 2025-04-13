@@ -2,7 +2,11 @@ package it.polimi.ingsw.model.components;
 
 import it.polimi.ingsw.model.enumerates.*;
 
+import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
+import java.util.List;
+
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
@@ -16,13 +20,13 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  * </ul>
  */
 
-public class CardComponent {
+public class CardComponent implements Serializable {
     private final ComponentType component_type;
     private Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-
+    private UUID card_uuid;
 
     public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors){
-
+        card_uuid = UUID.randomUUID();
         this.component_type = component_type;
         this.connectors = new EnumMap<>(connectors);
 
@@ -120,6 +124,9 @@ public class CardComponent {
         connectors = rotated;
     }
 
+    public UUID getCard_uuid() {
+        return card_uuid;
+    }
 
     @Override
     public String toString() {
