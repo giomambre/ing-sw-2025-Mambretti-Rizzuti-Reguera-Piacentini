@@ -1,13 +1,11 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.Storage;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.enumerates.Gametype;
+import it.polimi.ingsw.model.enumerates.*;
 
 import java.util.*;
 
@@ -21,6 +19,18 @@ public class QuickGame extends BaseGame {
 
     public QuickGame(Gametype type) {
         super(type);
+        initializeDeckComponents();
+    }
+
+    public void createDeckAdventure() {
+        List<CardAdventure> deck_adventure = new ArrayList<>();
+
+        deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
+        //Ali crea le altre 7
+
+        Collections.shuffle(deck_adventure);
+        this.deck_adventure = deck_adventure;
+        return;
     }
 
     /**

@@ -27,6 +27,7 @@ public abstract class CardAdventure {
     private int cost_of_days; //it can be 0
     private CardAdventureType type;
     protected Board board;
+    protected boolean face_down;
 
 
 
@@ -43,6 +44,7 @@ public abstract class CardAdventure {
         this.cost_of_days = cost_of_days;
         this.board = board;
         this.type = type;
+        this.face_down = true;
 
     }
 
@@ -64,6 +66,9 @@ public abstract class CardAdventure {
     public Board getBoard() {
         return board;
     }
+
+    //da gestire la logica che le carte avventura si girano una a una quando si risolvono, è una cazzzata ma va fatto
+    public void changeFace(){this.face_down = !this.face_down;}
 
 
 }

@@ -47,6 +47,8 @@ public abstract class BaseGame {
         return type;
     }
 
+    public abstract void createDeckAdventure();
+
     /**
      * Gives the final ranking of the players based on the criteria of SetRewards method.
      * @param players
