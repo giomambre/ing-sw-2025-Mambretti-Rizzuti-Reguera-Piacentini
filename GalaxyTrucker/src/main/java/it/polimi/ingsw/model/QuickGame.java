@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.adventures.CardAdventure;
-import it.polimi.ingsw.model.adventures.OpenSpace;
+import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -26,7 +26,16 @@ public class QuickGame extends BaseGame {
         List<CardAdventure> deck_adventure = new ArrayList<>();
 
         deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
-        //Ali crea le altre 7
+        deck_adventure.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,board,
+                List.of(
+                new Pair<>(MeteorType.LargeMeteor, North),
+                new Pair<>(MeteorType.SmallMeteor, East),
+                new Pair<>(MeteorType.SmallMeteor, West)
+                )
+        ));
+        deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust,board));
+        //deck_adventure.add(new Smugglers(1, 0,CardAdventureType.Smugglers,board,0,
+
 
         Collections.shuffle(deck_adventure);
         this.deck_adventure = deck_adventure;
