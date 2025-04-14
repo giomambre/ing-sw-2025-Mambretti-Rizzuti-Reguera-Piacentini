@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * This class is a sublass of CardAdventure, from which it inherits attributes and methods
  * <ul>
- *     <li>cannons_strenght: the cannon power of each player</li>
+ *     <li>cannons_strenght: the cannon power of card
  *     <li>cargo_rewards: the list of cargo that the player can load onto the ship</li>
  *     <li>cargo_loss: how much cargo the player loses</li>
  * </ul>

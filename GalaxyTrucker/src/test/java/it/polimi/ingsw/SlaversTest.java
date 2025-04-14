@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
-import it.polimi.ingsw.model.adventures.CombatZone;
-import it.polimi.ingsw.model.adventures.Slayers;
-import it.polimi.ingsw.model.adventures.Smugglers;
+import it.polimi.ingsw.model.adventures.Slavers;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.*;
 import org.junit.jupiter.api.Assertions;
@@ -15,10 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static it.polimi.ingsw.model.enumerates.Cargo.Blue;
-import static it.polimi.ingsw.model.enumerates.Cargo.Green;
 import static it.polimi.ingsw.model.enumerates.Color.GREEN;
-import static it.polimi.ingsw.model.enumerates.Color.YELLOW;
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Smooth;
@@ -28,7 +23,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.West;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class SlayersTest {
+public class SlaversTest {
     CardAdventure slayers;
     Player player1;
     Ship ship1;
@@ -218,13 +213,13 @@ public class SlayersTest {
 
         ship1.addComponent(new CardComponent(Engine, connectors), 4, 5);
 
-        slayers = new Slayers(2,2,CardAdventureType.Slayers, board, 3,3, 9);
+        slayers = new Slavers(2,2,CardAdventureType.Slayers, board, 3,3, 9);
 
     }
 
     @Test
     public void testExecuteWin() {
-        ((Slayers)slayers).executeWin(player1);
+        ((Slavers)slayers).executeWin(player1);
         assertEquals(9, player1.getCredits());
         Assertions.assertEquals(board.getBoard().get(5),player1);
     }
@@ -234,7 +229,7 @@ public class SlayersTest {
         Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
         astronaut_losses.put(ship1.getComponent(3,2),1);
 
-        ((Slayers)slayers).executeLoss(player1,astronaut_losses);
+        ((Slavers)slayers).executeLoss(player1,astronaut_losses);
         Assertions.assertEquals(1, ((LivingUnit)ship1.getComponent(3,2)).getNum_crewmates());
 
     }

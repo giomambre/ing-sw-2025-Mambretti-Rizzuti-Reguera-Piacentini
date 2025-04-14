@@ -35,7 +35,7 @@ public class QuickGame extends BaseGame {
         ));
         deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
         deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust,board));
-        deck_adventure.add(new Smugglers(1, 1,CardAdventureType.Smugglers,board,0,
+        deck_adventure.add(new Smugglers(1, 1,CardAdventureType.Smugglers,board,4,
                 Arrays.asList(
                         Cargo.Yellow,
                         Cargo.Green,

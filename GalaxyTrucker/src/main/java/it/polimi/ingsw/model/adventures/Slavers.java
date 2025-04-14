@@ -9,12 +9,12 @@ import it.polimi.ingsw.model.enumerates.CardAdventureType;
 
 import java.util.Map;
 
-public class Slayers extends CardAdventure {
+public class Slavers extends CardAdventure {
     private int cannons_strenght;
     private int astronaut_loss;
     private int credits;
     
-    public Slayers(int level, int cost_of_days, CardAdventureType type, Board board, int cannons_strenght, int astronaut_loss, int credits) {
+    public Slavers(int level, int cost_of_days, CardAdventureType type, Board board, int cannons_strenght, int astronaut_loss, int credits) {
         super(level, cost_of_days, type, board);
         this.cannons_strenght = cannons_strenght;
         this.astronaut_loss = astronaut_loss;

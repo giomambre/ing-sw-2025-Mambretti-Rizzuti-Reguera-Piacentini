@@ -1,14 +1,12 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
-import it.polimi.ingsw.model.enumerates.Cargo;
-import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.enumerates.Gametype;
+import it.polimi.ingsw.model.enumerates.*;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -24,7 +22,8 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  */
 public class Game extends BaseGame{
 
-
+    private List<CardAdventure> deck_adventure_liv1 = new ArrayList<>();
+    private List<CardAdventure> deck_adventure_liv2 = new ArrayList<>();
 
     private static final int clock_time = 30; //30 sec messi a caso
 
@@ -36,10 +35,203 @@ public class Game extends BaseGame{
 
     @Override
     public void createDeckAdventure() {
-        //crea lista e metti tutte le carte avventura
+        List<CardAdventure> deck_adventure_liv1 = new ArrayList<>();
+        List<CardAdventure> deck_adventure_liv2 = new ArrayList<>();
 
-        Collections.shuffle(deck_adventure);
-        this.deck_adventure = deck_adventure;
+        deck_adventure_liv1.add(new Slavers(1,1, CardAdventureType.Slavers,board,6,3,5));
+        deck_adventure_liv1.add(new Smugglers(1, 1,CardAdventureType.Smugglers,board,4,
+                Arrays.asList(
+                        Cargo.Yellow,
+                        Cargo.Green,
+                        Cargo.Blue
+                ),
+                2));
+        deck_adventure_liv1.add(new Pirates(1,1,CardAdventureType.Pirates,board,5,4,
+                List.of(
+                        new Pair<>(MeteorType.LightCannonFire, North),
+                        new Pair<>(MeteorType.HeavyCannonFire, North),
+                        new Pair<>(MeteorType.LightCannonFire, North)
+                )
+        ));
+        deck_adventure_liv1.add(new Stardust(1,0,CardAdventureType.Stardust,board));
+        deck_adventure_liv1.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
+        deck_adventure_liv1.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
+        deck_adventure_liv1.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
+        deck_adventure_liv1.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
+        deck_adventure_liv1.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,board,
+                List.of(
+                        new Pair<>(MeteorType.LargeMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, East),
+                        new Pair<>(MeteorType.SmallMeteor, West)
+                )
+        ));
+        deck_adventure_liv1.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,board,
+                List.of(
+                        new Pair<>(MeteorType.SmallMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, West),
+                        new Pair<>(MeteorType.SmallMeteor, East),
+                        new Pair<>(MeteorType.SmallMeteor, South)
+                )
+        ));
+        deck_adventure_liv1.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,board,
+                List.of(
+                        new Pair<>(MeteorType.LargeMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, North),
+                        new Pair<>(MeteorType.LargeMeteor, North)
+                )
+        ));
+        deck_adventure_liv1.add(new Planets(1,3,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                        Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
+                        Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                        Arrays.asList(Cargo.Red, Cargo.Green)
+                )
+        ));
+        deck_adventure_liv1.add(new Planets(1,2,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Red, Cargo.Red),
+                        Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue),
+                        List.of(Cargo.Yellow)
+                )
+        ));
+        deck_adventure_liv1.add(new Planets(1,3,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Yellow, Cargo.Green, Cargo.Blue, Cargo.Blue),
+                        Arrays.asList(Cargo.Yellow, Cargo.Yellow)
+                )
+        ));
+        deck_adventure_liv1.add(new Planets(1,1,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Green, Cargo.Green),
+                        List.of(Cargo.Yellow),
+                        Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue)
+                )
+        ));
+        deck_adventure_liv1.add(new CombatZone(1,3,CardAdventureType.CombatZone,board,2,0,
+                List.of(
+                        new Pair<>(MeteorType.LightCannonFire, South),
+                        new Pair<>(MeteorType.HeavyCannonFire, South)
+                )
+        ));
+        deck_adventure_liv1.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,board,3,2));
+        deck_adventure_liv1.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,board,4,3));
+        deck_adventure_liv1.add(new AbandonedStation(1,1,CardAdventureType.AbandonedStation,5,board,
+                Arrays.asList(
+                        Cargo.Yellow,
+                        Cargo.Green
+                )
+        ));
+        deck_adventure_liv1.add(new AbandonedStation(1,1,CardAdventureType.AbandonedStation,6,board,
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Red
+                )
+        ));
+
+        deck_adventure_liv2.add(new Slavers(2,2, CardAdventureType.Slavers,board,7,4,8));
+        deck_adventure_liv2.add(new Smugglers(2, 1,CardAdventureType.Smugglers,board,8,
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow
+                ),
+                3));
+        deck_adventure_liv2.add(new Pirates(2,2,CardAdventureType.Pirates,board,6,7,
+                List.of(
+                        new Pair<>(MeteorType.HeavyCannonFire, North),
+                        new Pair<>(MeteorType.LightCannonFire, North),
+                        new Pair<>(MeteorType.HeavyCannonFire, North)
+                )
+        ));
+        deck_adventure_liv2.add(new Stardust(2,0,CardAdventureType.Stardust,board));
+        deck_adventure_liv2.add(new Epidemic(2,0,CardAdventureType.Epidemic,board));
+        deck_adventure_liv2.add(new OpenSpace(2,0,CardAdventureType.OpenSpace,board));
+        deck_adventure_liv2.add(new OpenSpace(2,0,CardAdventureType.OpenSpace,board));
+        deck_adventure_liv2.add(new OpenSpace(2,0,CardAdventureType.OpenSpace,board));
+        deck_adventure_liv2.add(new MeteorSwarm(2,0,CardAdventureType.MeteorSwarm,board,
+                List.of(
+                        new Pair<>(MeteorType.SmallMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, North),
+                        new Pair<>(MeteorType.LargeMeteor, West),
+                        new Pair<>(MeteorType.SmallMeteor, West),
+                        new Pair<>(MeteorType.SmallMeteor, West)
+                )
+        ));
+        deck_adventure_liv2.add(new MeteorSwarm(2,0,CardAdventureType.MeteorSwarm,board,
+                List.of(
+                        new Pair<>(MeteorType.LargeMeteor, North),
+                        new Pair<>(MeteorType.LargeMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, South),
+                        new Pair<>(MeteorType.SmallMeteor, South)
+                )
+        ));
+        deck_adventure_liv2.add(new MeteorSwarm(2,0,CardAdventureType.MeteorSwarm,board,
+                List.of(
+                        new Pair<>(MeteorType.SmallMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, North),
+                        new Pair<>(MeteorType.LargeMeteor, East),
+                        new Pair<>(MeteorType.SmallMeteor, East),
+                        new Pair<>(MeteorType.SmallMeteor, East)
+                )
+        ));
+        deck_adventure_liv2.add(new Planets(2,4,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Red, Cargo.Red, Cargo.Red, Cargo.Yellow),
+                        Arrays.asList(Cargo.Red, Cargo.Red, Cargo.Green, Cargo.Green),
+                        Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue, Cargo.Blue)
+                )
+        ));
+        deck_adventure_liv2.add(new Planets(2,3,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Red, Cargo.Red),
+                        Arrays.asList(Cargo.Green, Cargo.Green, Cargo.Green, Cargo.Green)
+                )
+        ));
+        deck_adventure_liv2.add(new Planets(2,2,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Red, Cargo.Yellow),
+                        Arrays.asList(Cargo.Yellow, Cargo.Green, Cargo.Blue),
+                        Arrays.asList(Cargo.Green, Cargo.Green),
+                        List.of(Cargo.Yellow)
+                )
+        ));
+        deck_adventure_liv2.add(new Planets(2,3,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Green, Cargo.Green, Cargo.Green, Cargo.Green),
+                        Arrays.asList(Cargo.Yellow, Cargo.Yellow),
+                        Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue, Cargo.Blue)
+                )
+        ));
+        deck_adventure_liv2.add(new CombatZone(2,4,CardAdventureType.CombatZone,board,0,3,
+                List.of(
+                        new Pair<>(MeteorType.LightCannonFire, North),
+                        new Pair<>(MeteorType.LightCannonFire, West),
+                        new Pair<>(MeteorType.LightCannonFire, East),
+                        new Pair<>(MeteorType.HeavyCannonFire, South)
+                )
+        ));
+        deck_adventure_liv2.add(new AbandonedShip(2,1,CardAdventureType.AbandonedShip,board,6,4));
+        deck_adventure_liv2.add(new AbandonedShip(2,2,CardAdventureType.AbandonedShip,board,8,5));
+        deck_adventure_liv2.add(new AbandonedStation(2,1,CardAdventureType.AbandonedStation,7,board,
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow
+                )
+        ));
+        deck_adventure_liv2.add(new AbandonedStation(2,2,CardAdventureType.AbandonedStation,8,board,
+                Arrays.asList(
+                        Cargo.Yellow,
+                        Cargo.Yellow,
+                        Cargo.Green
+                )
+        ));
+
+        Collections.shuffle(deck_adventure_liv1);
+        Collections.shuffle(deck_adventure_liv2);
+        this.deck_adventure_liv1 = deck_adventure_liv1;
+        this.deck_adventure_liv2 = deck_adventure_liv2;
         return;
     }
 
