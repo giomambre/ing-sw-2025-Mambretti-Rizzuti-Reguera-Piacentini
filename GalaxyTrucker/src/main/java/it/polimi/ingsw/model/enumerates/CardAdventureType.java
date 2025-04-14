@@ -10,6 +10,6 @@ public enum CardAdventureType {
     Stardust,
     Smugglers,
     Pirates,
-    Slayers,
+    Slavers,
     Epidemic
 }
