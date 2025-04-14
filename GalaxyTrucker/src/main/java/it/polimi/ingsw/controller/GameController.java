@@ -7,8 +7,12 @@ import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
+import javafx.util.Pair;
 
 import java.util.*;
+
+import static it.polimi.ingsw.model.enumerates.ComponentType.Empty;
+
 public class GameController {
 
 
@@ -122,6 +126,19 @@ public void dismissComponent(String nickname, CardComponent card) {
 }catch (Exception e){
             System.err.println("Error: " + e.getMessage());
         }
+
+    }
+
+    public void addCard(String nickname, CardComponent card, Pair<Integer, Integer> pos) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+        CardComponent c = ship.getComponent(pos.getKey(), pos.getValue());
+
+        if (c.getComponentType() == Empty){
+            p.addToShip(c, pos.getKey(), pos.getValue());
+        }
+        else throw new IllegalArgumentException("La posizione è già occupata");
+
 
     }
 

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import javafx.util.Pair;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -322,6 +323,37 @@ public class TUI implements View {
 
             System.out.println("Indice non valido. Riprova.");
         }
+    }
+
+    @Override
+    public Pair<Integer,Integer> addCard(){
+        out.println("Seleziona in che riga posizionare la carta:");
+
+        while (true) {
+            int selected = input.nextInt();
+            int row = 0;
+            if (selected < 0 || selected > 5) {
+                out.println("Posizione non disponibile. Riprova.");
+            } else {
+                row = selected;
+            }
+
+            out.println("Seleziona in che colonna posizionare la carta:");
+            selected = input.nextInt();
+            int col=0;
+            if (selected < 0 || selected > 5) {
+                out.println("Posizione non disponibile. Riprova.");
+            } else {
+                col = selected;
+            }
+            Pair pos= new Pair<>(row,col);
+            return pos;
+        }
+
+
+
+
+
     }
 
     private static String printCard(ComponentType card) {

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
+import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class Client {
     private static List<Player> other_players_local = new ArrayList<>();
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
+
     public static void main(String[] args) {
         try {
 
@@ -56,7 +58,8 @@ public class Client {
 
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
-                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , ASK_CARD, REJECTED_CARD, CARD_UNAVAILABLE:
+                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START, ASK_CARD,
+                                 REJECTED_CARD, CARD_UNAVAILABLE:
                                 inputQueue.put(msg);
                                 break;
 
@@ -96,8 +99,6 @@ public class Client {
                     e.printStackTrace();
                 }
             }).start();
-
-
 
 
         } catch (IOException | ClassNotFoundException e) {
@@ -202,28 +203,27 @@ public class Client {
 
                 int deck_selected = virtualView.selectDeck();
 
-                if(deck_selected == 1){
+                if (deck_selected == 1) {
                     out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));
                     break;//if content empty random card
-                }
-                else if(deck_selected == 2){
-                        if(facedUp_deck_local.isEmpty()){
-                            virtualView.showMessage("Non ci sono carte a faccia in alto!\n");
+                } else if (deck_selected == 2) {
+                    if (facedUp_deck_local.isEmpty()) {
+                        virtualView.showMessage("Non ci sono carte a faccia in alto!\n");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        break;
+                    } else {
+
+                        int index = virtualView.askFacedUpCard(facedUp_deck_local);
+                        if (index == -1) {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                             break;
-                        }else{
-
-                            int index = virtualView.askFacedUpCard(facedUp_deck_local);
-                            if(index == -1){
-                                elaborate(new Message(MessageType.BUILD_START, ""));
-                                break;
-                            }
-                            UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
-                            out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
-
                         }
+                        UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
+                        out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
+
+                    }
                 }
-            case CARD_UNAVAILABLE :
+            case CARD_UNAVAILABLE:
                 virtualView.showMessage("La carta richiesta non è più disponibile ! ");
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
@@ -233,17 +233,29 @@ public class Client {
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("Carta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
-                if(sel == 3){
-                    out.writeObject(new CardComponentMessage(MessageType.REJECTED_CARD, "",clientId,card_msg.getCardComponent()));
+                if (sel == 3) {
+                    out.writeObject(new CardComponentMessage(MessageType.REJECTED_CARD, "", clientId, card_msg.getCardComponent()));
                 }
-                if(sel == 2) System.out.println("da capire");
+                if (sel == 2) System.out.println("da capire");
                 break;
+
+            case ADD_CARD:
+                AddCardMessage posCard_msg = (AddCardMessage) msg;
+                virtualView.showMessage("Stai scegliendo dove posizionare  " + posCard_msg.getCardComponent());
+                Pair pos = virtualView.addCard();
+                out.writeObject(new AddCardMessage(MessageType.ADD_CARD, "" + pos, clientId, posCard_msg.getCardComponent(), pos));
+                break;
+
+            case POSITION_UNAVAILABLE:
+                virtualView.showMessage("Hai posizionato la carta in una cella già occupata!");
+                elaborate(new Message(MessageType.BUILD_START, ""));
+                break;
+
         }
     }
 
 
-
-        public static void handleNotification(Message msg) {
+    public static void handleNotification(Message msg) {
 
 
         switch (msg.getType()) {
@@ -265,18 +277,10 @@ public class Client {
                 facedUp_deck_local.add(cpm.getCardComponent());
 
 
-
         }
 
 
-
-
     }
-
-
-
-
-
 
 
 }

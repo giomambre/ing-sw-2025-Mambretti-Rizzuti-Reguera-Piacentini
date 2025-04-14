@@ -116,7 +116,7 @@ public class Server {
                             for (String player : lobby.getPlayers()) {
                                 all_games.put(lobby_id, new GameController(lobby));
 
-                                sendToClient(getId_client(player), new GameStartedMessage(MessageType.GAME_STARTED, "", all_games.get(lobby_id).getAvaiable_colors()));
+                                sendToClient(getId_client(player), new GameStartedMessage(MessageType.GAME_STARTED, "", all_games.get(lobby_id).getAvailable_colors()));
 
                             }
 
@@ -139,7 +139,7 @@ public class Server {
                 synchronized (controller) {
 
                     Color c = Color.valueOf(msg.getContent().toUpperCase());
-                    if (controller.getAvaiable_colors().contains(c)) {
+                    if (controller.getAvailable_colors().contains(c)) {
                         System.out.println("COLORE " + c + "PRESO ");
                         controller.addPlayer(getNickname(msgClient.getId_client()), c);
 
@@ -149,12 +149,12 @@ public class Server {
 
                     } else {
 
-                        sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvaiable_colors()));
+                        sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
 
                     }
 
 
-                    if (4 - controller.getAvaiable_colors().size() == controller.getLobby().getPlayers().size()) {
+                    if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
                         System.out.println("tutti i player hanno scelto i colori fase di costruzione iniziata!");
                         sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
 
@@ -186,17 +186,29 @@ public class Server {
                             }
                             i++;
                         }
-                        sendToClient(msgClient.getId_client(), new Message(MessageType.CARD_UNAVAILABLE,""));
+                        sendToClient(msgClient.getId_client(), new Message(MessageType.CARD_UNAVAILABLE, ""));
                     }
                 }
                 break;
 
 
-                case REJECTED_CARD:
-                    CardComponentMessage card_msg = (CardComponentMessage) msg;
-                    controller = all_games.get(getLobbyId(card_msg.getId_client()));
-                    controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
-                    break;
+            case REJECTED_CARD:
+                CardComponentMessage card_msg = (CardComponentMessage) msg;
+                controller = all_games.get(getLobbyId(card_msg.getId_client()));
+                controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
+                break;
+
+            case ADD_CARD:
+                AddCardMessage posCard_msg = (AddCardMessage) msg;
+                controller = all_games.get(getLobbyId(posCard_msg.getId_client()));
+                try {
+                    controller.addCard(getNickname(posCard_msg.getId_client()), posCard_msg.getCardComponent(), posCard_msg.getPos());
+                }
+                catch (Exception e) {
+                    sendToClient(posCard_msg.getId_client(), new Message(MessageType.POSITION_UNAVAILABLE, ""));
+                }
+                break;
+
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.view;
 
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import javafx.util.Pair;
 
 import java.util.List;
 
@@ -23,4 +24,7 @@ public interface View {
     int selectDeck();
     int askFacedUpCard(List<CardComponent> cards);
     int showCard(CardComponent card);
+
+
+    Pair<Integer,Integer> addCard();
 }
