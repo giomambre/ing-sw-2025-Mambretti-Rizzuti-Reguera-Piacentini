@@ -22,7 +22,8 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  */
 public class Game extends BaseGame{
 
-
+    private List<CardAdventure> deck_adventure_liv1 = new ArrayList<>();
+    private List<CardAdventure> deck_adventure_liv2 = new ArrayList<>();
 
     private static final int clock_time = 30; //30 sec messi a caso
 
@@ -227,11 +228,10 @@ public class Game extends BaseGame{
                 )
         ));
 
-        List<CardAdventure> deck_adventure= new ArrayList<>();
-            deck_adventure.addAll(deck_adventure_liv1);
-            deck_adventure.addAll(deck_adventure_liv2);
-            Collections.shuffle(deck_adventure);
-        this.deck_adventure = deck_adventure;
+        Collections.shuffle(deck_adventure_liv1);
+        Collections.shuffle(deck_adventure_liv2);
+        this.deck_adventure_liv1 = deck_adventure_liv1;
+        this.deck_adventure_liv2 = deck_adventure_liv2;
         return;
     }
 
