@@ -26,7 +26,6 @@ public class QuickGame extends BaseGame {
     public void createDeckAdventure() {
         List<CardAdventure> deck_adventure = new ArrayList<>();
 
-        deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
         deck_adventure.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,board,
                 List.of(
                         new Pair<>(MeteorType.LargeMeteor, North),
@@ -34,9 +33,35 @@ public class QuickGame extends BaseGame {
                         new Pair<>(MeteorType.SmallMeteor, West)
                 )
         ));
+        deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
         deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust,board));
-        //deck_adventure.add(new Smugglers(1, 0,CardAdventureType.Smugglers,board,0,
-
+        deck_adventure.add(new Smugglers(1, 1,CardAdventureType.Smugglers,board,0,
+                Arrays.asList(
+                        Cargo.Yellow,
+                        Cargo.Green,
+                        Cargo.Blue
+                ),
+                2));
+        deck_adventure.add(new AbandonedStation(1,1,CardAdventureType.AbandonedStation,5,board,
+                Arrays.asList(
+                        Cargo.Yellow,
+                        Cargo.Green
+                )
+        ));
+        deck_adventure.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,board,4,3));
+        deck_adventure.add(new CombatZone(1,3,CardAdventureType.CombatZone,board,2,0,
+                List.of(
+                        new Pair<>(MeteorType.LightCannonFire, South),
+                        new Pair<>(MeteorType.HeavyCannonFire, South)
+                )
+        ));
+        deck_adventure.add(new Planets(1,2,CardAdventureType.Planets,board,
+                Arrays.asList(
+                        Arrays.asList(Cargo.Red, Cargo.Red),
+                        Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue),
+                        List.of(Cargo.Yellow)
+                )
+        ));
 
         Collections.shuffle(deck_adventure);
         this.deck_adventure = deck_adventure;
