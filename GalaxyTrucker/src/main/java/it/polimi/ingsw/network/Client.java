@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
+import javafx.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,6 +49,24 @@ public class Client {
 
             virtualView = new TUI();
 
+            /*new Thread(() -> {
+                Scanner scanner = new Scanner(System.in);
+                while (true) {
+                    String input = scanner.nextLine();
+                    if (input.equalsIgnoreCase("/menu")) {
+                        showMenu();
+                    }
+                    try {
+                        // Pausa di 1 secondo (1000 millisecondi)
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+                }
+            }).start();*/
 
             new Thread(() -> {
                 try {
@@ -56,11 +75,11 @@ public class Client {
 
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
-                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , ASK_CARD, REJECTED_CARD, CARD_UNAVAILABLE:
+                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , ASK_CARD, CARD_UNAVAILABLE:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED:
+                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_ADDED,UPDATED_SHIPS:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -105,6 +124,38 @@ public class Client {
         }
     }
 
+    public static void showMenu() {
+        virtualView.showMessage("\n=== MENU ===");
+
+        if (player_local != null) {
+            virtualView.showPlayer(player_local); // oppure stampa manuale
+        } else {
+            virtualView.showMessage("🟥 Dati della tua nave non ancora disponibili.");
+        }
+
+        if (!other_players_local.isEmpty()) {
+            virtualView.showMessage("\n🚀 Navi degli altri giocatori:");
+            for (Player p : other_players_local) {
+                virtualView.showPlayer(p); // oppure stampa nickname e status
+            }
+        } else {
+            virtualView.showMessage("🟥 Nessuna nave avversaria disponibile.");
+        }
+
+        if (!facedUp_deck_local.isEmpty()) {
+            virtualView.showMessage("\n🃏 Carte a faccia in su:");
+            for (CardComponent c : facedUp_deck_local) {
+                virtualView.showCard(c);
+            }
+        } else {
+            virtualView.showMessage("🃏 Nessuna carta disponibile al momento.");
+        }
+
+        virtualView.showMessage("=================\n");
+    }
+
+
+
     public static void elaborate(Message msg) throws IOException {
 
         switch (msg.getType()) {
@@ -143,7 +194,7 @@ public class Client {
                         throw new RuntimeException(e);
                     }
                 }
-
+        break;
 
             case CREATE_LOBBY:
                 if (msg.getContent().isEmpty()) {
@@ -204,9 +255,10 @@ public class Client {
 
                 if(deck_selected == 1){
                     out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));
-                    break;//if content empty random card
+                    break;//if content empty -> random card
                 }
                 else if(deck_selected == 2){
+
                         if(facedUp_deck_local.isEmpty()){
                             virtualView.showMessage("Non ci sono carte a faccia in alto!\n");
                             elaborate(new Message(MessageType.BUILD_START, ""));
@@ -234,9 +286,23 @@ public class Client {
                 virtualView.showMessage("Carta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
                 if(sel == 3){
-                    out.writeObject(new CardComponentMessage(MessageType.REJECTED_CARD, "",clientId,card_msg.getCardComponent()));
+                    out.writeObject(new CardComponentMessage(MessageType.DISMISSED_CARD, "",clientId,card_msg.getCardComponent()));
+                    elaborate(new Message(MessageType.BUILD_START, ""));
+                    break;
                 }
-                if(sel == 2) System.out.println("da capire");
+                if(sel == 2) {
+
+                    Pair<Integer,Integer> coords = virtualView.askCoords(player_local.getShip());
+                    if(coords.getKey()==-1 || coords.getValue()==-1){
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        break;
+                    }else{
+
+                        out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD,    coords.getKey() + " " + coords.getValue(),clientId,card_msg.getCardComponent()));
+                        break;
+                    }
+
+                }
                 break;
         }
     }
@@ -260,9 +326,37 @@ public class Client {
                 }
                 break;
 
+
+                case UPDATED_SHIPS:
+                    PlayersShipsMessage ps_msg = (PlayersShipsMessage) msg;
+                    List<Player> tmp = ps_msg.getPlayers();
+                    other_players_local.clear(); // rimuove vecchi dati
+
+                    for (Player p : tmp) {
+
+                        if (p.getNickname().equals(nickname)) {
+                            player_local = p;
+                        } else {
+                            other_players_local.add(p);
+                        }
+                    }
+                    for (Player p : tmp) {
+
+                        virtualView.showPlayer(p);
+                    }
+                    break;
+
+
+
             case FACED_UP_CARD_ADDED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
-                facedUp_deck_local.add(cpm.getCardComponent());
+                if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
+                    facedUp_deck_local.add(cpm.getCardComponent());
+                }
+
+                System.out.println("ARRIVATA CARTA");
+                break;
+
 
 
 

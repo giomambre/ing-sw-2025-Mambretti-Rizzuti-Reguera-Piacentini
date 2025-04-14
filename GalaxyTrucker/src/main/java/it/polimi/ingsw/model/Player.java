@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.Gametype;
 import it.polimi.ingsw.model.view.InvalidGameActionException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,12 +23,12 @@ import java.util.Random;
  *
  * </ul>
  */
-public class Player {
+public class Player implements Serializable {
     private String nickname;
     private Color color;
     private Ship ship = new Ship(this);
     private int exposed_connectors = 0;
-    private BaseGame game;
+    private transient BaseGame game;
     private int credits;
     private int num_laps;
 
@@ -130,6 +131,7 @@ public class Player {
      */
     public void LostCredits(int credits) {
         this.credits -= credits ;
+        if (credits<0) this.credits = 0;
     }
 
 

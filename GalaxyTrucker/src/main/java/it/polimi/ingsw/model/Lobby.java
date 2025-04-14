@@ -22,7 +22,7 @@ public class Lobby {
 
     public void join(String joiner){
         if(isLobbyFull()) throw new InputMismatchException("The lobby " + lobbyId + " is full!");
-        else if (this.players.contains(joiner)){
+        else if (players.contains(joiner)){
             throw new InputMismatchException("The player " + joiner + " is already in!");
         } else players.add(joiner);
     }

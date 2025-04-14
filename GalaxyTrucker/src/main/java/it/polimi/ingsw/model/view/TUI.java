@@ -2,11 +2,14 @@ package it.polimi.ingsw.model.view;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Lobby;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import javafx.util.Pair;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -80,7 +83,7 @@ public class TUI implements View {
     @Override
     public void showMessage(String message) {
 
-        out.print("\r\033[2K"); // pulisci la riga
+
         out.println(message);
     }
 
@@ -267,7 +270,7 @@ public class TUI implements View {
         do {
             out.println("Premi : 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n");
             selected = input.nextInt();
-        } while (selected != 1 && selected != 0);
+        } while (selected != 1 && selected != 2);
         return selected;
 
 
@@ -313,15 +316,82 @@ public class TUI implements View {
                 out.println("Carta ruotata");
                 card.rotate();
                 out.println(card.toString());
-                return -1;
-            }else if (selected == 2 || selected == 3) {
+
+            } else if (selected == 2 || selected == 3) {
                 return selected;
+            } else {
+    System.out.println("Indice non valido. Riprova.");
             }
-
-
-
-            System.out.println("Indice non valido. Riprova.");
         }
+    }
+
+
+    @Override
+    public Pair<Integer, Integer> askCoords(Ship ship) {
+        int x = -1, y = -1;
+        boolean validInput = false;
+
+        while (!validInput) {
+
+            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
+            x = input.nextInt();
+            if (x==-1)         return new Pair<>(x, y);
+
+
+            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
+            y = input.nextInt();
+            if (y==-1)         return new Pair<>(x, y);
+
+            if (x < 0 || x >= ship.getROWS() || y < 0 || y >= ship.getCOLS()) {
+                out.println("Errore: le coordinate sono fuori dai limiti. Riprova.");
+            } else {
+                // Verifica se la posizione nella nave contiene un componente
+                CardComponent component = ship.getComponent(x, y);
+                if (component.getComponentType() == Empty) {
+                    out.println("Coordinate valide ! " );  // Mostra il componente trovato
+                    validInput = true;  // Esci dal ciclo se la posizione è valida
+                } else {
+                    out.println("Errore: c'è già una carta in questa poszione.");
+                }
+            }
+        }
+
+        // Restituisci le coordinate valide
+        return new Pair<>(x, y);
+    }
+
+
+    @Override
+    public void showPlayer(Player player) {
+
+
+            System.out.println("\n====== 👤 INFO GIOCATORE ======");
+            System.out.println("🆔 Nickname: " + player.getNickname());
+            System.out.println("🎨 Colore: " + player.getColor());
+            System.out.println("🚀 Lap completati: " + player.getNum_laps());
+            System.out.println("💰 Crediti: " + player.getCredits());
+            System.out.println("🧩 Connettori esposti: " + player.getExposed_connectors());
+
+          /*  if (player.getGame().getType().toString().equals("StandardGame")) {
+                List<CardComponent> extra = player.getShip().getExtra_components();
+                if (extra.isEmpty()) {
+                    System.out.println("🗂️ Componenti extra: Nessuna");
+                } else {
+                    System.out.println("🗂️ Componenti extra:");
+                    for (CardComponent comp : extra) {
+                        System.out.println("   - " + comp);
+                    }
+                }
+            }*/
+
+            System.out.println("\n🛠️  Stato Nave:");
+            System.out.println(player.getShip()); // Se hai un toString dettagliato nella Ship, qui funziona
+
+            System.out.println("===============================\n");
+
+
+
+
     }
 
     private static String printCard(ComponentType card) {
@@ -348,6 +418,10 @@ public class TUI implements View {
     }
 
 
+
+
+
+
     // Centra una stringa su una larghezza fissa
     private static String center(String str, int width) {
         if (str.length() >= width) {
@@ -358,4 +432,8 @@ public class TUI implements View {
         int padRight = padding - padLeft;
         return " ".repeat(padLeft) + str + " ".repeat(padRight);
     }
+
+
+
+
 }

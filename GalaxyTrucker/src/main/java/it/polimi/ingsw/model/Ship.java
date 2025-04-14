@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
@@ -25,7 +26,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
  *     <li>player: the owner of the ship</li>
  * </ul>
  */
-public class Ship {
+public class Ship implements Serializable {
 
 
     private int ROWS = 5, COLS = 7;

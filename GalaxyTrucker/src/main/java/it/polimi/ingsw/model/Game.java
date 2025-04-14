@@ -1467,7 +1467,7 @@ return deck_components;
      * this method is called to start the flight phase putting al the rockets on the board
      */
     public void startFlight() {
-        board = new Board(active_players,24);
+        board = new Board(active_players,24,this);
     }
 
     /**

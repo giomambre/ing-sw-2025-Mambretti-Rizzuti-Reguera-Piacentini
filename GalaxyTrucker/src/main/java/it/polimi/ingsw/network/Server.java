@@ -113,8 +113,9 @@ public class Server {
                         sendToClient(msgClient.getId_client(), new Message(MessageType.SELECT_LOBBY, "" + lobby_id));
                         if (lobby.isLobbyFull()) {
 
+                            GameController game = new GameController(lobby);
+                            all_games.put(lobby_id, game);
                             for (String player : lobby.getPlayers()) {
-                                all_games.put(lobby_id, new GameController(lobby));
 
                                 sendToClient(getId_client(player), new GameStartedMessage(MessageType.GAME_STARTED, "", all_games.get(lobby_id).getAvaiable_colors()));
 
@@ -140,7 +141,7 @@ public class Server {
 
                     Color c = Color.valueOf(msg.getContent().toUpperCase());
                     if (controller.getAvaiable_colors().contains(c)) {
-                        System.out.println("COLORE " + c + "PRESO ");
+                        System.out.println("COLORE " + c + " PRESO ");
                         controller.addPlayer(getNickname(msgClient.getId_client()), c);
 
 
@@ -157,9 +158,11 @@ public class Server {
                     if (4 - controller.getAvaiable_colors().size() == controller.getLobby().getPlayers().size()) {
                         System.out.println("tutti i player hanno scelto i colori fase di costruzione iniziata!");
                         sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
+                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));
+                        controller.startGame();
+
 
                     }
-
 
                 }
                 break;
@@ -182,7 +185,7 @@ public class Server {
                             if (c.getCard_uuid().equals(UUID.fromString(msgClient.getContent()))) {
                                 controller.removeCardFacedUp(i);
                                 sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.ASK_CARD, "", msgClient.getId_client(), controller.getRandomCard()));
-                                break;
+                                return;
                             }
                             i++;
                         }
@@ -192,11 +195,30 @@ public class Server {
                 break;
 
 
-                case REJECTED_CARD:
+                case DISMISSED_CARD:
                     CardComponentMessage card_msg = (CardComponentMessage) msg;
                     controller = all_games.get(getLobbyId(card_msg.getId_client()));
+                    synchronized (controller) {
+
                     controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
+                    System.out.println(controller.getFacedUpCards().toString());
+                    sendToAllClients(controller.getLobby(),new CardComponentMessage(MessageType.FACED_UP_CARD_ADDED,"",card_msg.getId_client(),card_msg.getCardComponent()));
+
+                    }
                     break;
+
+            case PLACE_CARD:
+                CardComponentMessage place_msg = (CardComponentMessage) msg;
+                controller = all_games.get(getLobbyId(place_msg.getId_client()));
+                String[] parts = msg.getContent().split(" ");
+                int x = Integer.parseInt(parts[0]);
+                int y = Integer.parseInt(parts[1]);
+                synchronized (controller) {
+                    controller.addComponent(getNickname(place_msg.getId_client()), place_msg.getCardComponent(), x, y);
+                    sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));
+
+                }
+            break;
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
@@ -215,7 +237,7 @@ public class Server {
 
         UUID id = UUID.randomUUID();
         for (ClientHandler client : clients.values()) {
-            if (client.getNickname().equals(nickname)) {
+            if (client.getNickname() != null && client.getNickname().equals(nickname)) {
                 id = client.getClientId();
             }
         }

@@ -15,10 +15,11 @@ public class Board {
     private int board_size;
     private Map<Integer, Player> player_position = new HashMap<>();
     private Player board_leader;
-
-    public Board(List<Player> players,int board_size) { //mette i player nelle posizioni di partenza,
+    private BaseGame game;
+    public Board(List<Player> players,int board_size, BaseGame game) { //mette i player nelle posizioni di partenza,
         //in caso di nave che non puo partite, tipo non ha motori, viene rimossa e il player dopo scala avanti???
         this.board_size = board_size;
+        this.game = game;
         int[] starting_positions = {7, 4, 2, 1}; // the first player that end the build is the first in the active player list
         int i = 0;
         for (Player player : players) {
@@ -219,7 +220,7 @@ public class Board {
 
     public void lappedPlayers() {
         List<Player> players = new ArrayList<>(getRanking());
-        Game game = new Game();
+
         Player leader = players.get(0);
         List<Player> active_players = game.getActivePlayers();
 

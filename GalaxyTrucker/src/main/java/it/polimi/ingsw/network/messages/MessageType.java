@@ -17,7 +17,9 @@ public enum MessageType {
     ASK_CARD,
     FACED_UP_CARD_ADDED,
     CARD_UNAVAILABLE,
-    REJECTED_CARD
+    DISMISSED_CARD,
+    UPDATED_SHIPS,
+    PLACE_CARD,
 
 }
 

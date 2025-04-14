@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
+import it.polimi.ingsw.model.enumerates.Gametype;
 
 import java.util.*;
 public class GameController {
@@ -21,13 +22,23 @@ public class GameController {
 
     public GameController(Lobby lobby) {
         this.lobby = lobby;
-        game = new Game();
+        game = new Game(Gametype.StandardGame);
         available_colors.add(Color.RED);
         available_colors.add(Color.GREEN);
         available_colors.add(Color.YELLOW);
         available_colors.add(Color.BLUE);
 
 
+    }
+
+    public void startGame(){
+
+        game.startGame();
+
+    }
+
+    public List<Player> getPlayers(){
+        return game.getPlayers();
     }
 
     public Lobby getLobby() {

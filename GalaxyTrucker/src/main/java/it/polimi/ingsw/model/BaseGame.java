@@ -43,6 +43,22 @@ public abstract class BaseGame {
         this.type = type;
     }
 
+
+    public void startGame(){
+
+        createDeckAdventure();
+        initializeDeckComponents();
+        startAssembly();
+        for (Player player : players) {
+
+            player.getShip().initializeShipPlance();
+
+
+        }
+
+    }
+
+
     public Gametype getType() {
         return type;
     }
@@ -143,10 +159,7 @@ public abstract class BaseGame {
             p.receiveCredits(2);
         }
 
-        //remove credits due to extra components on the plance (secured but not used and/or eliminated)
-        for (Player p : players) {
-            p.LostCredits(p.getShip().getExtra_components().size());
-        }
+
 
 
         //gives the reward for the cargo delivered by the players who gave up
@@ -190,6 +203,11 @@ public abstract class BaseGame {
                 }
                 p.receiveCredits((reward_cargo+1)/2);
             }
+        }
+
+        //remove credits due to extra components on the plance (secured but not used and/or eliminated)
+        for (Player p : players) {
+            p.LostCredits(p.getShip().getExtra_components().size());
         }
     }
 

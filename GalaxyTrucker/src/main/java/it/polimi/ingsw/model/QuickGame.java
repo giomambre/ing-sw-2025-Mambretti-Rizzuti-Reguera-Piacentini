@@ -72,7 +72,7 @@ public class QuickGame extends BaseGame {
      * this method is called to start the flight phase putting al the rockets on the board
      */
     public void startFlight() {
-        board = new Board(active_players,18);
+        board = new Board(active_players,18,this);
     }
 
     /**
