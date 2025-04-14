@@ -193,6 +193,7 @@ public class Player {
      */
     public void subLap(){ this.num_laps--; }
 
+    //domanda per gio: come gestiamo la fine del gioco quando il mazzo è vuoto? lanciamo qui una exception o metti tu un controllo nel controller?
     public CardAdventure PickAdventure(){
         CardAdventure card= game.getDeck_adventure().removeFirst();
         card.changeFace();
