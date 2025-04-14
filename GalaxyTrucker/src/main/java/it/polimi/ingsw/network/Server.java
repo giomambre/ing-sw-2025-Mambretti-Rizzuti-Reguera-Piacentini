@@ -117,7 +117,7 @@ public class Server {
                             all_games.put(lobby_id, game);
                             for (String player : lobby.getPlayers()) {
 
-                                sendToClient(getId_client(player), new GameStartedMessage(MessageType.GAME_STARTED, "", all_games.get(lobby_id).getAvaiable_colors()));
+                                sendToClient(getId_client(player), new GameStartedMessage(MessageType.GAME_STARTED, "", all_games.get(lobby_id).getAvailable_colors()));
 
                             }
 
@@ -140,7 +140,7 @@ public class Server {
                 synchronized (controller) {
 
                     Color c = Color.valueOf(msg.getContent().toUpperCase());
-                    if (controller.getAvaiable_colors().contains(c)) {
+                    if (controller.getAvailable_colors().contains(c)) {
                         System.out.println("COLORE " + c + " PRESO ");
                         controller.addPlayer(getNickname(msgClient.getId_client()), c);
 
@@ -150,12 +150,12 @@ public class Server {
 
                     } else {
 
-                        sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvaiable_colors()));
+                        sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
 
                     }
 
 
-                    if (4 - controller.getAvaiable_colors().size() == controller.getLobby().getPlayers().size()) {
+                    if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
                         System.out.println("tutti i player hanno scelto i colori fase di costruzione iniziata!");
                         sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
                         sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));

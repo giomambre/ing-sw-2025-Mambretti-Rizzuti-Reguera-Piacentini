@@ -45,7 +45,7 @@ public class GameController {
         return lobby;
     }
 
-    public List<Color> getAvaiable_colors() {
+    public List<Color> getAvailable_colors() {
         return available_colors;
     }
 

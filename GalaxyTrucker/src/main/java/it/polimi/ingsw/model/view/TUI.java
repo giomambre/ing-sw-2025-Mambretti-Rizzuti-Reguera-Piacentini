@@ -320,7 +320,7 @@ public class TUI implements View {
             } else if (selected == 2 || selected == 3) {
                 return selected;
             } else {
-    System.out.println("Indice non valido. Riprova.");
+                System.out.println("Indice non valido. Riprova.");
             }
         }
     }
@@ -335,12 +335,12 @@ public class TUI implements View {
 
             out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
             x = input.nextInt();
-            if (x==-1)         return new Pair<>(x, y);
+            if (x == -1) return new Pair<>(x, y);
 
 
             out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
             y = input.nextInt();
-            if (y==-1)         return new Pair<>(x, y);
+            if (y == -1) return new Pair<>(x, y);
 
             if (x < 0 || x >= ship.getROWS() || y < 0 || y >= ship.getCOLS()) {
                 out.println("Errore: le coordinate sono fuori dai limiti. Riprova.");
@@ -348,7 +348,7 @@ public class TUI implements View {
                 // Verifica se la posizione nella nave contiene un componente
                 CardComponent component = ship.getComponent(x, y);
                 if (component.getComponentType() == Empty) {
-                    out.println("Coordinate valide ! " );  // Mostra il componente trovato
+                    out.println("Coordinate valide ! ");  // Mostra il componente trovato
                     validInput = true;  // Esci dal ciclo se la posizione è valida
                 } else {
                     out.println("Errore: c'è già una carta in questa poszione.");
@@ -365,12 +365,12 @@ public class TUI implements View {
     public void showPlayer(Player player) {
 
 
-            System.out.println("\n====== 👤 INFO GIOCATORE ======");
-            System.out.println("🆔 Nickname: " + player.getNickname());
-            System.out.println("🎨 Colore: " + player.getColor());
-            System.out.println("🚀 Lap completati: " + player.getNum_laps());
-            System.out.println("💰 Crediti: " + player.getCredits());
-            System.out.println("🧩 Connettori esposti: " + player.getExposed_connectors());
+        System.out.println("\n====== 👤 INFO GIOCATORE ======");
+        System.out.println("🆔 Nickname: " + player.getNickname());
+        System.out.println("🎨 Colore: " + player.getColor());
+        System.out.println("🚀 Lap completati: " + player.getNum_laps());
+        System.out.println("💰 Crediti: " + player.getCredits());
+        System.out.println("🧩 Connettori esposti: " + player.getExposed_connectors());
 
           /*  if (player.getGame().getType().toString().equals("StandardGame")) {
                 List<CardComponent> extra = player.getShip().getExtra_components();
@@ -384,56 +384,47 @@ public class TUI implements View {
                 }
             }*/
 
-            System.out.println("\n🛠️  Stato Nave:");
-            System.out.println(player.getShip()); // Se hai un toString dettagliato nella Ship, qui funziona
+        System.out.println("\n🛠️  Stato Nave:");
+        System.out.println(player.getShip()); // Se hai un toString dettagliato nella Ship, qui funziona
 
-            System.out.println("===============================\n");
-
-
-
+        System.out.println("===============================\n");
 
     }
 
-    private static String printCard(ComponentType card) {
-        return switch (card) {
-            case Engine -> " E ";
-            case DoubleEngine -> "DE ";
-            case Battery -> " B ";
-            case BlueStorage -> "BS ";
-            case RedStorage -> "RS ";
-            case Cannon -> " C ";
-            case DoubleCannon -> "DC ";
-            case BrownAlienUnit -> "BAU";
-            case PinkAlienUnit -> "PAU";
-            case LivingUnit -> "LU ";
-            case MainUnitRed -> "MUR";
-            case MainUnitBlue -> "MUB";
-            case MainUnitGreen -> "MUG";
-            case MainUnitYellow -> "MUY";
-            case Tubes -> " T ";
-            case Shield -> " S ";
-            case Empty, NotAccessible -> "   ";
-            default -> "   ";
-        };
-    }
-
-
-
-
-
-
-    // Centra una stringa su una larghezza fissa
-    private static String center(String str, int width) {
-        if (str.length() >= width) {
-            return str; // se è troppo lunga, non la tocco
+        private static String printCard (ComponentType card){
+            return switch (card) {
+                case Engine -> " E ";
+                case DoubleEngine -> "DE ";
+                case Battery -> " B ";
+                case BlueStorage -> "BS ";
+                case RedStorage -> "RS ";
+                case Cannon -> " C ";
+                case DoubleCannon -> "DC ";
+                case BrownAlienUnit -> "BAU";
+                case PinkAlienUnit -> "PAU";
+                case LivingUnit -> "LU ";
+                case MainUnitRed -> "MUR";
+                case MainUnitBlue -> "MUB";
+                case MainUnitGreen -> "MUG";
+                case MainUnitYellow -> "MUY";
+                case Tubes -> " T ";
+                case Shield -> " S ";
+                case Empty, NotAccessible -> "   ";
+                default -> "   ";
+            };
         }
-        int padding = width - str.length();
-        int padLeft = padding / 2;
-        int padRight = padding - padLeft;
-        return " ".repeat(padLeft) + str + " ".repeat(padRight);
+
+
+        // Centra una stringa su una larghezza fissa
+        private static String center (String str,int width){
+            if (str.length() >= width) {
+                return str; // se è troppo lunga, non la tocco
+            }
+            int padding = width - str.length();
+            int padLeft = padding / 2;
+            int padRight = padding - padLeft;
+            return " ".repeat(padLeft) + str + " ".repeat(padRight);
+        }
+
+
     }
-
-
-
-
-}
