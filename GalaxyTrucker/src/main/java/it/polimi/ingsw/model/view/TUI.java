@@ -137,9 +137,12 @@ public class TUI implements View {
 
     private int readInt() {
         while (true) {
+            String in = "";
             try {
-                return Integer.parseInt(readLine());
+               in = readLine();
+                return Integer.parseInt(in);
             } catch (NumberFormatException e) {
+                if(in.toLowerCase() == "/menu")
                 out.println("Input non valido, inserisci un numero:");
             }
         }

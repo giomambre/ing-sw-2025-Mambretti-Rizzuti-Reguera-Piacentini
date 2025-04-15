@@ -206,7 +206,7 @@ public class Client {
                 break;
 
             case BUILD_START:
-                while(gameState == GameState.BuildingPhase){
+
                 int deck_selected = virtualView.selectDeck();
 
                 if(deck_selected == 1){
@@ -229,7 +229,7 @@ public class Client {
                         UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
                         out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
 
-                    }
+
                 }
                 }
                 break;
@@ -257,6 +257,9 @@ public class Client {
                     }else{
 
                         out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD,    coords.getKey() + " " + coords.getValue(),clientId,card_msg.getCardComponent()));
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+
+
                         break;
                     }
 
