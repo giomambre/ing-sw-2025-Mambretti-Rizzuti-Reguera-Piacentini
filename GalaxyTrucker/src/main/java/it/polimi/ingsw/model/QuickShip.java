@@ -1,15 +1,17 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
+import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-import static it.polimi.ingsw.model.enumerates.ComponentType.Empty;
-import static it.polimi.ingsw.model.enumerates.ConnectorType.Cannon_Connector;
-import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.Universal;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.Direction.West;
 
@@ -22,7 +24,51 @@ public class QuickShip extends BaseShip{
     }
 
     public  void initializeShipPlance(){
-        //cice
+        ComponentType main_unit;
+        switch (player.getColor()) {
+            case RED:
+                main_unit = MainUnitRed;
+                break;
+            case YELLOW:
+                main_unit = MainUnitYellow;
+                break;
+            case GREEN:
+                main_unit = MainUnitGreen;
+                break;
+            default:
+                main_unit = MainUnitBlue;
+                break;
+        }
+        Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
+        connectors.put(North, Empty_Connector);
+        connectors.put(South, Empty_Connector);
+        connectors.put(East, Empty_Connector);
+        connectors.put(West, Empty_Connector);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+
+        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, connectors);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+
+                if (row == 2 && col == 3) {
+                    connectors = new EnumMap<>(Direction.class);
+                    connectors.put(North, Universal);
+                    connectors.put(South, Universal);
+                    connectors.put(East, Universal);
+                    connectors.put(West, Universal);
+
+                    ship_board[row][col] = new LivingUnit(main_unit, connectors);
+
+                } else if ((row == 0 && (col == 0 || col == 1 || col == 2 || col == 4 || col == 5 || col == 6)) ||
+                           (row == 1 && (col == 0 || col == 1 || col == 5 || col == 6 )) ||
+                           (row == 2 && (col == 0 || col == 6)) || (row == 3 && (col == 0 || col == 6)) || (row == 4 && (col == 0 || col == 3 || col == 6))){
+                    ship_board[row][col] = NOT_ACCESSIBLE_CELL;
+                } else {
+                    ship_board[row][col] = EMPTY_CELL;
+                }
+
+            }
+        }
     }
 
     /**
