@@ -38,7 +38,6 @@ public class QuickShip extends BaseShip{
             default:
                 main_unit = MainUnitBlue;
                 break;
-
         }
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
         connectors.put(North, Empty_Connector);
