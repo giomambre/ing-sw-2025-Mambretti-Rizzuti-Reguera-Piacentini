@@ -9,11 +9,15 @@ import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.network.Client;
 import javafx.util.Pair;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.Empty;
 import static it.polimi.ingsw.model.enumerates.ComponentType.NotAccessible;
@@ -21,6 +25,11 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 public class TUI implements View {
     private final PrintStream out;
+     static BlockingQueue<String> inputQueue = new LinkedBlockingQueue<>();
+    private  List<Player> other_players_local = new ArrayList<>();
+    private  Player player_local;
+
+
     Scanner input = new Scanner(System.in);
     // Codici ANSI
     final String RESET = "\u001B[0m";
@@ -53,11 +62,98 @@ public class TUI implements View {
             """;
 
 
+
+    public void setOther_players_local(List<Player> players) {
+        this.other_players_local = players;
+    }
+
+    public void setPlayer_local(Player player) {
+        this.player_local = player;
+    }
+
     public TUI() {
         this.out = System.out;
         out.println(PURPLE + banner + RESET);
 
+
+        new Thread(() -> {
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                try {
+                    String input = scanner.nextLine();
+                    switch (input.toLowerCase()) {
+                        case "/menu" -> showMenu();
+                        // case "/help" -> showHelp();
+                        //  case "/quit" -> quitGame();
+                        default -> inputQueue.put(input);
+                    }
+                }
+
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
     }
+
+    public  void showMenu() {
+        out.println("\n=== MENU ===");
+// Sezione comandi
+        out.println("\n🎮 SCEGLI UN'AZIONE:");
+        out.println("[1] Mostra stato nave");
+        out.println("[2] Mostra tutti i giocatori");
+        out.println("[3] Esci dal menu");
+
+        int scelta;
+        do {
+            out.print("Inserisci il numero dell'azione: ");
+            while (!input.hasNextInt()) {
+                input.next(); // scarta input errato
+                out.print("⚠️ Inserisci un numero valido: ");
+            }
+            scelta = input.nextInt();
+        } while (scelta < 1 || scelta > 5);
+
+        switch (scelta) {
+            case 1 -> showPlayer(player_local);
+
+            case 2 -> {
+                out.println("\n👥 Giocatori avversari:");
+                for (Player p : other_players_local) {
+                    showPlayer(p);
+                }
+            }
+
+            case 3 -> out.println("🔙 Uscita dal menu.");
+        }
+
+        out.println("=================\n");
+    }
+
+
+
+
+    private int readInt() {
+        while (true) {
+            try {
+                return Integer.parseInt(readLine());
+            } catch (NumberFormatException e) {
+                out.println("Input non valido, inserisci un numero:");
+            }
+        }
+    }
+
+    private String readLine() {
+        try {
+            return inputQueue.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return ""; // fallback
+        }
+    }
+
 
     @Override
     public String chooseConnection() {
@@ -90,20 +186,20 @@ public class TUI implements View {
     @Override
     public String askNickname() {
         out.println("Enter your nickname: ");
-        return input.nextLine();
+        return readLine();
 
     }
 
     @Override
     public String getInput() {
-        return input.nextLine();
+        return readLine();
     }
 
 
     @Override
     public int askCreateOrJoin() {
         out.println("PREMERE: \n 1 PER CREARE UNA LOBBY \n 2 PER ENTRARE IN UNA LOBBY ");
-        int resp = input.nextInt();
+        int resp =readInt();
         if (resp != 1 && resp != 2) {
             this.askCreateOrJoin();
         }
@@ -115,7 +211,7 @@ public class TUI implements View {
     public int askNumPlayers() {
         out.println("INSERISCI IL NUMERO DI PLAYER DELLA LOBBY (2-4): ");
 
-        int resp = input.nextInt();
+        int resp = readInt();
 
         if (resp < 2 || resp > 4) {
             return this.askNumPlayers();
@@ -137,11 +233,11 @@ public class TUI implements View {
             System.out.println("Lobby n : " + lobby);
 
         }
-        int resp = input.nextInt();
+        int resp = readInt();
 
         while (resp != -1 && !lobbies.contains(resp)) {
             System.out.println("Risposta non valilda,riprova : ");
-            resp = input.nextInt();
+            resp = readInt();
 
         }
 
@@ -163,7 +259,7 @@ public class TUI implements View {
 
             String input;
             do {
-                input = scanner.nextLine().trim();
+                input = readLine().trim();
             } while (input.isEmpty());
 
             try {
@@ -269,7 +365,7 @@ public class TUI implements View {
         int selected = -1;
         do {
             out.println("Premi : 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n");
-            selected = input.nextInt();
+            selected = readInt();
         } while (selected != 1 && selected != 2);
         return selected;
 
@@ -287,7 +383,7 @@ public class TUI implements View {
 
         while (true) {
             System.out.print("Scelta: ");
-            int selected = input.nextInt();
+            int selected = readInt();
 
             if (selected == -1) {
                 return -1;
@@ -310,7 +406,7 @@ public class TUI implements View {
 
         while (true) {
             System.out.print("Scelta: ");
-            int selected = input.nextInt();
+            int selected = readInt();
 
             if (selected == 1) {
                 out.println("Carta ruotata");
@@ -334,12 +430,12 @@ public class TUI implements View {
         while (!validInput) {
 
             out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
-            x = input.nextInt();
+            x = readInt();
             if (x == -1) return new Pair<>(x, y);
 
 
             out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
-            y = input.nextInt();
+            y = readInt();
             if (y == -1) return new Pair<>(x, y);
 
             if (x < 0 || x >= ship.getROWS() || y < 0 || y >= ship.getCOLS()) {
@@ -364,7 +460,10 @@ public class TUI implements View {
     @Override
     public void showPlayer(Player player) {
 
-
+        if(player==null) {
+            System.out.println("Nessun dato disponibile !");
+            return;
+        }
         System.out.println("\n====== 👤 INFO GIOCATORE ======");
         System.out.println("🆔 Nickname: " + player.getNickname());
         System.out.println("🎨 Colore: " + player.getColor());
@@ -385,7 +484,7 @@ public class TUI implements View {
             }*/
 
         System.out.println("\n🛠️  Stato Nave:");
-        System.out.println(player.getShip()); // Se hai un toString dettagliato nella Ship, qui funziona
+        printShip(player.getShip().getShipBoard()); // Se hai un toString dettagliato nella Ship, qui funziona
 
         System.out.println("===============================\n");
 

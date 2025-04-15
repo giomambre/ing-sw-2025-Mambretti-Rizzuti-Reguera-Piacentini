@@ -158,8 +158,9 @@ public class Server {
                     if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
                         System.out.println("tutti i player hanno scelto i colori fase di costruzione iniziata!");
                         sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
-                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));
                         controller.startGame();
+                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));
+
 
 
                     }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.enumerates;
+package it.polimi.ingsw.network;
 
 public enum GameState {
 

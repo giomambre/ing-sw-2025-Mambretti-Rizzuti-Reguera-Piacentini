@@ -32,6 +32,7 @@ public class Client {
     private static BlockingQueue<Message> inputQueue = new LinkedBlockingQueue<>();
     private static BlockingQueue<Message> notificationQueue = new LinkedBlockingQueue<>();
     private static List<Player> other_players_local = new ArrayList<>();
+    private static GameState gameState;
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     public static void main(String[] args) {
@@ -49,24 +50,7 @@ public class Client {
 
             virtualView = new TUI();
 
-            /*new Thread(() -> {
-                Scanner scanner = new Scanner(System.in);
-                while (true) {
-                    String input = scanner.nextLine();
-                    if (input.equalsIgnoreCase("/menu")) {
-                        showMenu();
-                    }
-                    try {
-                        // Pausa di 1 secondo (1000 millisecondi)
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
 
-
-
-                }
-            }).start();*/
 
             new Thread(() -> {
                 try {
@@ -124,35 +108,6 @@ public class Client {
         }
     }
 
-    public static void showMenu() {
-        virtualView.showMessage("\n=== MENU ===");
-
-        if (player_local != null) {
-            virtualView.showPlayer(player_local); // oppure stampa manuale
-        } else {
-            virtualView.showMessage("🟥 Dati della tua nave non ancora disponibili.");
-        }
-
-        if (!other_players_local.isEmpty()) {
-            virtualView.showMessage("\n🚀 Navi degli altri giocatori:");
-            for (Player p : other_players_local) {
-                virtualView.showPlayer(p); // oppure stampa nickname e status
-            }
-        } else {
-            virtualView.showMessage("🟥 Nessuna nave avversaria disponibile.");
-        }
-
-        if (!facedUp_deck_local.isEmpty()) {
-            virtualView.showMessage("\n🃏 Carte a faccia in su:");
-            for (CardComponent c : facedUp_deck_local) {
-                virtualView.showCard(c);
-            }
-        } else {
-            virtualView.showMessage("🃏 Nessuna carta disponibile al momento.");
-        }
-
-        virtualView.showMessage("=================\n");
-    }
 
 
 
@@ -241,6 +196,7 @@ public class Client {
                 break;
 
             case GAME_STARTED:
+
                 GameStartedMessage gs_msg = (GameStartedMessage) msg;
                 if (gs_msg.getContent().isEmpty()) {
                     virtualView.showMessage("Partita avviata!");
@@ -250,31 +206,33 @@ public class Client {
                 break;
 
             case BUILD_START:
-
+                while(gameState == GameState.BuildingPhase){
                 int deck_selected = virtualView.selectDeck();
 
                 if(deck_selected == 1){
                     out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));
-                    break;//if content empty -> random card
-                }
-                else if(deck_selected == 2){
 
-                        if(facedUp_deck_local.isEmpty()){
-                            virtualView.showMessage("Non ci sono carte a faccia in alto!\n");
+                }
+                else if(deck_selected == 2) {
+
+                    if (facedUp_deck_local.isEmpty()) {
+                        virtualView.showMessage("Non ci sono carte a faccia in alto!\n");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+
+                    } else {
+
+                        int index = virtualView.askFacedUpCard(facedUp_deck_local);
+                        if (index == -1) {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                             break;
-                        }else{
-
-                            int index = virtualView.askFacedUpCard(facedUp_deck_local);
-                            if(index == -1){
-                                elaborate(new Message(MessageType.BUILD_START, ""));
-                                break;
-                            }
-                            UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
-                            out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
-
                         }
+                        UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
+                        out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
+
+                    }
                 }
+                }
+                break;
             case CARD_UNAVAILABLE :
                 virtualView.showMessage("La carta richiesta non è più disponibile ! ");
                 elaborate(new Message(MessageType.BUILD_START, ""));
@@ -316,7 +274,7 @@ public class Client {
 
 
             case COLOR_SELECTED:
-
+                gameState = GameState.BuildingPhase;
                 String[] parts = msg.getContent().split(" ");
                 if (parts[0].equals(nickname)) {
                     virtualView.showMessage("Hai scelto il colore : " + parts[1]);
@@ -336,14 +294,13 @@ public class Client {
 
                         if (p.getNickname().equals(nickname)) {
                             player_local = p;
+
                         } else {
                             other_players_local.add(p);
                         }
                     }
-                    for (Player p : tmp) {
-
-                        virtualView.showPlayer(p);
-                    }
+                    ((TUI) virtualView).setPlayer_local(player_local);
+                    ((TUI) virtualView).setOther_players_local(other_players_local);
                     break;
 
 
@@ -368,9 +325,43 @@ public class Client {
     }
 
 
+    public  ObjectInputStream getIn() {
+        return in;
+    }
 
+    public  ObjectOutputStream getOut() {
+        return out;
+    }
 
+    public  String getNickname() {
+        return nickname;
+    }
 
+    public  View getVirtualView() {
+        return virtualView;
+    }
 
+    public  UUID getClientId() {
+        return clientId;
+    }
 
+    public  BlockingQueue<Message> getInputQueue() {
+        return inputQueue;
+    }
+
+    public  BlockingQueue<Message> getNotificationQueue() {
+        return notificationQueue;
+    }
+
+    public  List<Player> getOther_players_local() {
+        return other_players_local;
+    }
+
+    public  Player getPlayer_local() {
+        return player_local;
+    }
+
+    public  List<CardComponent> getFacedUp_deck_local() {
+        return facedUp_deck_local;
+    }
 }
