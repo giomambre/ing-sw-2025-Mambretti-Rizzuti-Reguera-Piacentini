@@ -70,7 +70,7 @@ public abstract class CardAdventure {
     //da gestire la logica che le carte avventura si girano una a una quando si risolvono, è una cazzzata ma va fatto
     public void changeFace(){this.face_down = !this.face_down;}
 
-
+    public int getLevel() {return level;}
 }
 
 

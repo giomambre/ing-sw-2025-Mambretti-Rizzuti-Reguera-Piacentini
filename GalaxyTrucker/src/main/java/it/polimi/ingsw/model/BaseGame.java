@@ -43,26 +43,25 @@ public abstract class BaseGame {
         this.type = type;
     }
 
+    /**
+     * This method is called at the beginning to start the game.
+     * It is abstract because the game initialization differs between {@code QuickGame} and {@code Game},
+     * and each subclass provides its own implementation.
+     */
+    public abstract void startGame();
 
-    public void startGame(){
-
-        createDeckAdventure();
-        initializeDeckComponents();
-        startAssembly();
-        for (Player player : players) {
-
-            player.getShip().initializeShipPlance();
-
-
-        }
-
-    }
-
-
+    /**
+     * @return type of Game (standard or quick)
+     */
     public Gametype getType() {
         return type;
     }
 
+    /**
+     * This method is called at the beginning to create the adventure deck.
+     * It is abstract because the deck creation logic differs between {@code QuickGame}
+     * and {@code Game}, and each subclass provides its own implementation.
+     */
     public abstract void createDeckAdventure();
 
     /**
@@ -74,6 +73,10 @@ public abstract class BaseGame {
         this.ranking=players;
     }
 
+    /**
+     * Sets the adventure deck with the given list of adventure cards.
+     * @param deck_adventure
+     */
     public void setDeck_adventure(List<CardAdventure> deck_adventure) {
         this.deck_adventure = deck_adventure;
     }
@@ -215,7 +218,6 @@ public abstract class BaseGame {
      *this method is used to initialise the deck of CardComponents before building the ship
      * @param deck_components the entire list of CardComponent used to build the ships
      */
-
     public void setDeck_components(List<CardComponent> deck_components) {
         this.deck_components = deck_components;
     }
@@ -336,31 +338,66 @@ public abstract class BaseGame {
         return nicknames;
     }
 
+    /**
+     * Sets the list of players participating in the game.
+     * @param players
+     */
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
+    /**
+     * Sets the number of players in the game.
+     * @param numPlayers
+     */
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 
+    /**@return the list of component cards currently face up.*/
     public List<CardComponent> getCards_faced_up() {
         return cards_faced_up;
     }
 
+    /**
+     * Sets the list of component cards that are face up.
+     *
+     * @param cards_faced_up
+     */
     public void setCards_faced_up(List<CardComponent> cards_faced_up) {
         this.cards_faced_up = cards_faced_up;
     }
+
+    /**
+     * Sets the list of players who are currently active in the game.
+     * @param active_players
+     */
     public void setActive_players(List<Player> active_players) {
         this.active_players = active_players;
     }
 
+    /**
+     * Sets the board for game.
+     * @param board
+     */
     public void setBoard(Board board) {
         this.board = board;
     }
 
+    /**@return the game board*/
     public Board getBoard() {
         return board;
+    }
+
+    /**
+     * this method is called by the leader to draw the next card adventure
+     * @return it returns the first card adventure of the deck, if we already solved all the adventures it returns null
+     */
+    public CardAdventure getRandomCardAdventure() {
+        CardAdventure adventure = deck_adventure.removeFirst();
+        adventure.changeFace();
+        if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO"); //manca da fare la gestione della fine del gioco
+        return adventure;
     }
 
 }

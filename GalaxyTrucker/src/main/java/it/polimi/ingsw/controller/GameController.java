@@ -74,7 +74,7 @@ public class GameController {
         Ship ship = p.getShip();
         Map<CardComponent, Boolean> battery_usage = new HashMap<>();
         if(ship.calculateEnginePower(battery_usage)==0){
-            System.out.println("Im sorry but you dont have any Eninge you cannot start the game.");
+            System.out.println("Im sorry but you dont have any Engine you cannot start the game.");
             return -1;
 
         }

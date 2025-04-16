@@ -15,7 +15,7 @@ public class GameStartedMessage extends Message implements Serializable {
 
     }
 
-public List<Color> getAvaiable_colors() {
+public List<Color> getAvaible_colors() {
         return avaible_colors;
 }
 
