@@ -21,7 +21,6 @@ public class AbandonedShip extends CardAdventure {
     private int crewmates_loss;
 
     /**
-     *
      * @param level must be level 1 or 2
      * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be =0
      * @param type
