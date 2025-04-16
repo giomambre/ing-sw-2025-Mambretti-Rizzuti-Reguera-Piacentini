@@ -2,13 +2,12 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.enumerates.Gametype;
 import it.polimi.ingsw.model.view.InvalidGameActionException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * The Player class rapresent a player that joined the game.
@@ -51,6 +50,40 @@ public class Player implements Serializable {
         List<Player> active_players = game.getActivePlayers();
         active_players.add(this);
 
+    }
+
+    /**
+     * This method is called when a player wants to look at one of the decks placed on the board during the construction phase
+     * @param direction witch of the group the player wants to look
+     *                  <ul>
+     *                  <li>North: deck on top (forbidden action)</li>
+     *                  <li>South: middle deck</li>
+     *                  <li>West:right deck</li>
+     *                  <li>East: left deck</li>
+     *                  </ul>
+     * @return the deck that the player wants to see
+     */
+    public List<CardAdventure> watchcardsonboard(Direction direction) {
+        if(game.getType()!=Gametype.StandardGame){
+            throw new InvalidGameActionException("This action is forbidden in quick game");
+        }
+        Game game=(Game)this.game;
+        switch (direction) {
+            case North:
+                throw new InvalidGameActionException("This group of card is secret until the flight start!");
+
+            case East:
+                return game.getDeck_right();
+
+            case South:
+                return game.getDeck_middle();
+
+            case West:
+                return game.getDeck_left();
+
+            default:
+                return Collections.emptyList();
+        }
     }
 
     /**
@@ -194,13 +227,6 @@ public class Player implements Serializable {
      * This method is called when a player lose days of flight and the new position is before of the 1 cell.
      */
     public void subLap(){ this.num_laps--; }
-
-    //domanda per gio: come gestiamo la fine del gioco quando il mazzo è vuoto? lanciamo qui una exception o metti tu un controllo nel controller?
-    public CardAdventure PickAdventure(){
-        CardAdventure card= game.getDeck_adventure().removeFirst();
-        card.changeFace();
-        return card;
-    }
 
     public String toString(){
 

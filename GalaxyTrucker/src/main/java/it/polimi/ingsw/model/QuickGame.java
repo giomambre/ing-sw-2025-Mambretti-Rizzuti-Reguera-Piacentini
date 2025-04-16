@@ -19,8 +19,20 @@ public class QuickGame extends BaseGame {
 
     public QuickGame(Gametype type) {
         super(type);
-        initializeDeckComponents();
+    }
+
+    public void startGame(){
+
         createDeckAdventure();
+        initializeDeckComponents();
+        startAssembly();
+        for (Player player : players) {
+
+            player.getShip().initializeShipPlance();
+
+
+        }
+
     }
 
     public void createDeckAdventure() {

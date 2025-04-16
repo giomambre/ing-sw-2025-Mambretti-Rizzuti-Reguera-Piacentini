@@ -44,19 +44,7 @@ public abstract class BaseGame {
     }
 
 
-    public void startGame(){
-
-        createDeckAdventure();
-        initializeDeckComponents();
-        startAssembly();
-        for (Player player : players) {
-
-            player.getShip().initializeShipPlance();
-
-
-        }
-
-    }
+    public abstract void startGame();
 
 
     public Gametype getType() {
@@ -361,6 +349,17 @@ public abstract class BaseGame {
 
     public Board getBoard() {
         return board;
+    }
+
+    /**
+     * this method is called by the leader to draw the next card adventure
+     * @return it returns the first card adventure of the deck, if we already solved all the adventures it returns null
+     */
+    public CardAdventure getRandomCardAdventure() {
+        CardAdventure adventure = deck_adventure.removeFirst();
+        adventure.changeFace();
+        if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO"); //manca da fare la gestione della fine del gioco
+        return adventure;
     }
 
 }
