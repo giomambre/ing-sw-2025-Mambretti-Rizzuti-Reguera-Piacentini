@@ -33,6 +33,11 @@ public class Game extends BaseGame{
         super(type);
     }
 
+    /**
+     * This method sets up the adventure deck and board, initializes all component cards,
+     * starts the assembly phase, and prepares each player's ship by initializing its board.
+     * It should be called once at the beginning of the game.
+     */
     public void startGame(){
 
         createDecksAdventureBoard();
@@ -277,7 +282,13 @@ public class Game extends BaseGame{
         } while (this.deck_adventure.removeFirst().getLevel() != 2);
     }
 
-
+    /**
+     * Initializes and returns the full deck of component cards used in the game.
+     * The deck includes various types of {@code CardComponent}, such as batteries, storage units,
+     * engines, cannons, alien units, shields, and main units, each with predefined connector configurations.
+     * After all components are created, the deck is shuffled.
+     * @return a shuffled list of {@code CardComponent} objects representing the component deck
+     */
     public List<CardComponent> initializeDeckComponents() {
 
 

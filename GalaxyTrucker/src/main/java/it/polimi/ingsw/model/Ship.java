@@ -500,8 +500,17 @@ public class Ship implements Serializable {
         return component != null && component.getComponentType() != Empty && component.getComponentType() != NotAccessible;
     }
 
-
-    // DFS per trovare un pezzo connesso della nave
+    /**
+     * Explores all connected components starting from the specified position on the ship's board.
+     * This method performs a depth-first search (DFS) to identify all adjacent components that are
+     * directly connected to the starting component at coordinates (x, y). A connection is considered valid
+     * if the neighboring component is not empty or inaccessible and if the connectors between the current
+     * and neighboring components are compatible.
+     * @param x       the row index of the starting component
+     * @param y       the column index of the starting component
+     * @param visited a set containing positions already visited during the exploration to prevent revisiting
+     * @param piece   a list to which all positions belonging to the connected component will be added
+     */
     private void explorePiece(int x, int y, Set<Pair<Integer, Integer>> visited, List<Pair<Integer, Integer>> piece) {
         Pair<Integer, Integer> pos = new Pair<>(x, y);
         if (x < 0 || x >= ROWS || y < 0 || y >= COLS || visited.contains(pos) || !isValidComponent(x, y)) {
@@ -728,14 +737,24 @@ public class Ship implements Serializable {
         ship_board[x][y] = EMPTY_CELL;
     }
 
+    /**
+     * Sets the list of extra components that are not placed on the board.
+     * @param extraComponents
+     */
     public void setExtra_components(List<CardComponent> extraComponents) {
         this.extra_components = extraComponents;
     }
 
+    /**@return list of extra components*/
     public List<CardComponent> getExtra_components() {
         return extra_components;
     }
 
+    /**
+     * Returns the opposite direction of the one provided.
+     * @param dir the direction to invert
+     * @return the opposite Direction (North <-> South, East <-> West)
+     */
     public Direction getOpposite(Direction dir) {
         switch (dir) {
             case North:
@@ -786,35 +805,43 @@ public class Ship implements Serializable {
                 for (int i = COLS - 1; i >= 0; i--) {
                     if (this.getComponent(pos-5,i).getComponentType() != ComponentType.Empty && this.getComponent(pos-5,i).getComponentType() != NotAccessible)
                         return this.getComponent(pos-5,i);
-
                 }
                 return this.getComponent(0,0);
-
-
         }
-
         return this.getComponent(0,0);
     }
 
+    /**
+     * This method identifies all connected components (pieces) on the ship's board and deletes
+     * all components except the one specified by the {@code choose} index.
+     * @param choose the index of the component to retain; all other components will be removed
+     */
     public void choosePiece(int choose){
         List<List<Pair<Integer, Integer>>> pieces = new ArrayList<>(findShipPieces());
         for (int i = 0; i < pieces.size() ; i++) {
             if (i != choose) {
                 deletePiece(pieces.get(i));
             }
-
+        }
     }
-    }
 
+    /**
+     * For each coordinate in the provided list, this method invokes {@code removeComponent(row, col)}
+     * to eliminate the corresponding component from the board.
+     * @param piece a list of coordinate pairs representing the connected component to be removed
+     */
     public void deletePiece(List<Pair<Integer, Integer>> piece){
 
                        for(Pair<Integer, Integer> pos : piece){
                            removeComponent(pos.getKey(),pos.getValue());
                        }
+    }
 
-        }
-
-
+    /**
+     * Removes the component located at the specified position on the ship's board by replacing it with an empty cell.
+     * @param row the row index of the component to remove
+     * @param col the column index of the component to remove
+     */
     public void RemoveComponent(int row, int col) {
 
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -880,11 +907,14 @@ public class Ship implements Serializable {
             crew.add(BrownAlien);
         }
 
-
         return crew;
     }
 
-
+    /**
+     * Returns a list of coordinates for all components on the ship's board.
+     * This method scans the entire board and collects the positions of all components that are neither empty nor marked as not accessible.
+     * @return a list of coordinate pairs representing the non-empty and accessible components on the ship's board
+     */
     public List<Pair<Integer, Integer>> printShipPlance() {
         List<Pair<Integer, Integer>> ships = new ArrayList<>();
 

@@ -15,12 +15,20 @@ import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.Direction.West;
 
+/**This class is a sublass of BaseGame, from which it inherits attributes and methods.
+ *It represents the QUICK GAME (it’s a learning flight)  during the various phases.
+ */
 public class QuickGame extends BaseGame {
 
     public QuickGame(Gametype type) {
         super(type);
     }
 
+    /**
+     * This method sets up the adventure deck and board, initializes all component cards,
+     * starts the assembly phase, and prepares each player's ship by initializing its board.
+     * It should be called once at the beginning of the game.
+     */
     public void startGame(){
 
         createDeckAdventure();
@@ -29,7 +37,6 @@ public class QuickGame extends BaseGame {
         for (Player player : players) {
 
             player.getShip().initializeShipPlance();
-
 
         }
 

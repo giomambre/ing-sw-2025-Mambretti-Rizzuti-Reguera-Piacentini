@@ -22,7 +22,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.East;
  *     <li>rows: how many rows the ship's board spans for component allocation</li>
  *     <li>cols: how many rows the ship's board spans for component allocation</li>
  *     <li>ship_board: a matrix of CardComponent objects. Each element corresponds to a slot where a component can be placed.</li>
- *     <li>extra_components: a list of CardComponent reserved but not yet attached to the ship</li>
+ *     <li>extra_components: a list of CardComponent reserved but not yet attached to the ship  and the parts of the ship that were eliminated</li>
  *     <li>player: the shipowner</li>
  * </ul>
  */
@@ -227,7 +227,6 @@ public abstract class BaseShip {
         return component != null && component.getComponentType() != Empty && component.getComponentType() != NotAccessible;
     }
 
-    // DFS per trovare un pezzo connesso della nave
     /**
      * Explores all connected components starting from the specified position on the ship's board.
      * This method performs a depth-first search (DFS) to identify all adjacent components that are
@@ -444,14 +443,24 @@ public abstract class BaseShip {
      */
     public abstract void removeComponent(int x, int y);
 
+    /**
+     * Sets the list of extra components that are not placed on the board.
+     * @param extraComponents
+     */
     public void setExtra_components(List<CardComponent> extraComponents) {
         this.extra_components = extraComponents;
     }
 
+    /**@return list of extra components*/
     public List<CardComponent> getExtra_components() {
         return extra_components;
     }
 
+    /**
+     * Returns the opposite direction of the one provided.
+     * @param dir the direction to invert
+     * @return the opposite Direction (North <-> South, East <-> West)
+     */
     public Direction getOpposite(Direction dir) {
         switch (dir) {
             case North:
