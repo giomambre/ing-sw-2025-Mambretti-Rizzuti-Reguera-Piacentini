@@ -16,7 +16,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.Direction.West;
 
 /**This class is a sublass of BaseGame, from which it inherits attributes and methods.
- *It represents the QUICK GAME (it’s a learning flight)  during the various phases.
+ *It represents the QUICK GAME (it’s a learning flight) during the various phases.
  */
 public class QuickGame extends BaseGame {
 
@@ -42,6 +42,11 @@ public class QuickGame extends BaseGame {
 
     }
 
+    /**
+     * The adventure deck contains various event cards such as meteor swarms, smugglers,
+     * abandoned ships or stations, stardust, combat zones, and planetary encounters.
+     * Each card is instantiated with its parameters and added to the deck, which is then shuffled.
+     */
     public void createDeckAdventure() {
         List<CardAdventure> deck_adventure = new ArrayList<>();
 
@@ -88,14 +93,14 @@ public class QuickGame extends BaseGame {
     }
 
     /**
-     * this method is called to start the flight phase putting al the rockets on the board
+     * This method is called to start the flight phase putting al the rockets on the board
      */
     public void startFlight() {
         board = new Board(active_players,18,this);
     }
 
     /**
-     * this method adds every Card Component existent (EXCEPT ALIENS LIVING UNITS) to the deck of card components and then shuffles it
+     * This method adds every Card Component existent (EXCEPT ALIENS LIVING UNITS) to the deck of card components and then shuffles it
      */
     public List<CardComponent> initializeDeckComponents() {
 

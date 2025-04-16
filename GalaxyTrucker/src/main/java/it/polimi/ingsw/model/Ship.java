@@ -28,12 +28,10 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
  */
 public class Ship implements Serializable {
 
-
     private int ROWS = 5, COLS = 7;
     private CardComponent[][] ship_board = new CardComponent[ROWS][COLS];
     private List<CardComponent> extra_components = new ArrayList<>();
     private Player player;
-
 
     public Ship(Player player) {
         this.player = player;

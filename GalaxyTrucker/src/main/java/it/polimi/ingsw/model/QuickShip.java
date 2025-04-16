@@ -15,6 +15,9 @@ import static it.polimi.ingsw.model.enumerates.ConnectorType.Universal;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.Direction.West;
 
+/**This class is a sublass of BaseShip, from which it inherits attributes and methods.
+ *It represents the QUICK SHIP (it’s a learning flight) during the various phases.
+ */
 public class QuickShip extends BaseShip{
 
     public QuickShip(Player player) {
@@ -23,6 +26,9 @@ public class QuickShip extends BaseShip{
         this.rows=5;
     }
 
+    /**
+     * This method is used to initialize the plance
+     */
     public  void initializeShipPlance(){
         ComponentType main_unit;
         switch (player.getColor()) {
@@ -154,6 +160,11 @@ public class QuickShip extends BaseShip{
 
     }
 
+    /**
+     * Removes the component located at the specified position on the ship's board by replacing it with an empty cell.
+     * @param x the row index of the component to remove
+     * @param y the column index of the component to remove
+     */
     @Override
     public void removeComponent(int x, int y) {
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
