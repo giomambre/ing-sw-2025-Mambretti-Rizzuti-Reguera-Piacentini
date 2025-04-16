@@ -175,6 +175,12 @@ public class Player implements Serializable {
     public int getExposed_connectors() {
         return exposed_connectors;
     }
+
+    /**
+     * This method updates the list of exposed connectors for the player's ship.
+     * Calls {@code calculateExposedConnectors()} on the player's ship to determine
+     * which connectors are currently not connected to other components.
+     */
     public void setExposed_connectors() {
         this.exposed_connectors = ship.calculateExposedConnectors();
     }
@@ -198,22 +204,29 @@ public class Player implements Serializable {
 
     }
 
+    /**@return player's ship*/
     public Ship getShip() {
         return this.ship;
     }
 
+    /**@return player's rocket color*/
     public Color getColor() {
         return color;
     }
 
+    /**@return player's nickname*/
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * @return the {@code BaseGame} object the player is part of
+     */
     public BaseGame getGame() {
         return game;
     }
 
+    /**@return the number of laps*/
     public int getNum_laps() {
         return num_laps;
     }
@@ -229,8 +242,6 @@ public class Player implements Serializable {
     public void subLap(){ this.num_laps--; }
 
     public String toString(){
-
-
         return "Player with Nickname : " + this.nickname + "and color : " + this.getColor().toString();
     }
 }

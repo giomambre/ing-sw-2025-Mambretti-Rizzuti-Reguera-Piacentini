@@ -42,7 +42,6 @@ public class Board {
      * this method is called to eventually change the board leader.
      * @see Board checkleader method used at the beginning to check who's the leader
      */
-
     public void changeBoard_leader() {
         this.board_leader = getRanking().get(0);
     }
@@ -129,8 +128,6 @@ public class Board {
             }
         }
 
-
-
         player_position.remove(starting_position);
 
         int newPosition;
@@ -182,7 +179,9 @@ public class Board {
         changeBoard_leader();
     }
 
-
+    /**
+     * @return a map of player positions
+     */
     public Map<Integer, Player> getBoard() {
         return player_position;
     }
@@ -217,7 +216,6 @@ public class Board {
      * This function removes the players that got lapped by the group leader.
      * They are removed to the list of active players.
      */
-
     public void lappedPlayers() {
         List<Player> players = new ArrayList<>(getRanking());
 
@@ -235,7 +233,7 @@ public class Board {
         game.setActivePlayers(active_players);
     }
 
-    }
+}
 
 
 
