@@ -3,8 +3,11 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.model.Lobby;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.view.TUI;
+import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
 
 
@@ -163,6 +166,7 @@ public class Server {
 
 
 
+
                     }
 
                 }
@@ -216,7 +220,9 @@ public class Server {
                 int y = Integer.parseInt(parts[1]);
                 synchronized (controller) {
                     controller.addComponent(getNickname(place_msg.getId_client()), place_msg.getCardComponent(), x, y);
+
                     sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));
+
 
                 }
             break;

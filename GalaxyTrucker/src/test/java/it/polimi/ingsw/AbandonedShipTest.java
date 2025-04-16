@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,11 +30,11 @@ public class AbandonedShipTest {
 
     @BeforeEach
     void setUp() {
-
-        player = new Player("Cice", YELLOW);
+        Game game = new Game(Gametype.StandardGame);
+        player = new Player("Cice", YELLOW,game);
         ship = player.getShip();
         ship.initializeShipPlance();
-        board = new Board(Arrays.asList(player));
+        board = new Board(Arrays.asList(player),24,game);
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Universal);
         connectors.put(South, Engine_Connector);

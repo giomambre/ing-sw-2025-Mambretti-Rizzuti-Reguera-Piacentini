@@ -1,11 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
 import javafx.util.Pair;
@@ -34,8 +36,9 @@ public class ShipTest2 {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Reff", GREEN);
-        player2 = new Player("Mambre", YELLOW);
+        Game game = new Game(Gametype.StandardGame);
+        player1 = new Player("Reff", GREEN,game);
+        player2 = new Player("Mambre", YELLOW,game);
         ship1 = new Ship(player1);
         ship2 = new Ship(player2);
         ship1.initializeShipPlance();

@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
@@ -33,7 +34,8 @@ public class MeteorSwarmTest {
 
 @BeforeEach
 void setUp() {
-    player1 = new Player("Reff", GREEN);
+    Game game = new Game(Gametype.StandardGame);
+    player1 = new Player("Reff", GREEN,game);
     ship1 = player1.getShip();
     ship1.initializeShipPlance();
 

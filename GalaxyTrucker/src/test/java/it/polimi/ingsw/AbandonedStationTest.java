@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,10 +30,11 @@ public class AbandonedStationTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Alice", YELLOW);
-        player2 = new Player("Mambre", BLUE);
-        player3 = new Player("isabel", RED);
-        board = new Board(Arrays.asList (player1,player2,player3));
+        Game game = new Game(Gametype.StandardGame);
+        player1 = new Player("Alice", YELLOW,game);
+        player2 = new Player("Mambre", BLUE,game);
+        player3 = new Player("isabel", RED,game);
+        board = new Board(Arrays.asList (player1,player2,player3),24,game);
         player1.getShip().initializeShipPlance();
         player2.getShip().initializeShipPlance();
         player3.getShip().initializeShipPlance();

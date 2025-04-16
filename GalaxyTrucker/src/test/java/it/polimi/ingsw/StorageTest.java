@@ -1,10 +1,12 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
@@ -20,8 +22,8 @@ public class StorageTest {
 
     @BeforeEach
     public void setUp() {
-
-        player = new Player("jonny", BLUE);
+        Game game = new Game(Gametype.StandardGame);
+        player = new Player("jonny", BLUE,game);
         player.getShip().initializeShipPlance();
 
         connectors.put(North, Universal);

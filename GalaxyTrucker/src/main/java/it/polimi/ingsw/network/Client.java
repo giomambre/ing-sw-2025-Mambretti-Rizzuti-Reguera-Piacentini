@@ -291,19 +291,26 @@ public class Client {
                 case UPDATED_SHIPS:
                     PlayersShipsMessage ps_msg = (PlayersShipsMessage) msg;
                     List<Player> tmp = ps_msg.getPlayers();
+
+
                     other_players_local.clear(); // rimuove vecchi dati
 
                     for (Player p : tmp) {
-
+                        ((TUI) virtualView).printShip(p.getShip().getShipBoard());
                         if (p.getNickname().equals(nickname)) {
+
                             player_local = p;
+
 
                         } else {
                             other_players_local.add(p);
                         }
                     }
+
+
                     ((TUI) virtualView).setPlayer_local(player_local);
                     ((TUI) virtualView).setOther_players_local(other_players_local);
+
                     break;
 
 

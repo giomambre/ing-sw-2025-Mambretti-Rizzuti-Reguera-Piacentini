@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PlayersShipsMessage extends Message {
 
-    List<Player> players = new ArrayList<Player>();
+    List<Player> players;
 
     public PlayersShipsMessage(MessageType type, String content, List<Player> players) {
 

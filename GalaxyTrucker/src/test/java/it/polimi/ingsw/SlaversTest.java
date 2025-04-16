@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
@@ -31,9 +32,10 @@ public class SlaversTest {
 
     @BeforeEach
     public void setup() {
-        player1 = new Player("Reff", GREEN);
+        Game game = new Game(Gametype.StandardGame);
+        player1 = new Player("Reff", GREEN,game);
         ship1 = player1.getShip();
-        board = new Board(Arrays.asList (player1));
+        board = new Board(Arrays.asList (player1),24,game);
         ship1.initializeShipPlance();
 
 
@@ -213,7 +215,7 @@ public class SlaversTest {
 
         ship1.addComponent(new CardComponent(Engine, connectors), 4, 5);
 
-        slayers = new Slavers(2,2,CardAdventureType.Slayers, board, 3,3, 9);
+        slayers = new Slavers(2,2,CardAdventureType.Slavers, board, 3,3, 9);
 
     }
 

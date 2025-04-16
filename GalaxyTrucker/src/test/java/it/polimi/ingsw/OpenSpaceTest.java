@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
@@ -28,15 +29,15 @@ public class OpenSpaceTest {
     public void setUp() {
 
 //manca da testare con alieni
-
-        player1 = new Player("Alice", YELLOW);
-        player2 = new Player("Mambre", BLUE);
-        player3 = new Player("isabel", RED);
+        Game game = new Game(Gametype.StandardGame);
+        player1 = new Player("Alice", YELLOW,game);
+        player2 = new Player("Mambre", BLUE,game);
+        player3 = new Player("isabel", RED,game);
 
         player1.getShip().initializeShipPlance();
         player2.getShip().initializeShipPlance();
         player3.getShip().initializeShipPlance();
-        board = new Board(Arrays.asList(player1, player2, player3));
+        board = new Board(Arrays.asList(player1, player2, player3),24,game);
 
         openSpace = new OpenSpace(2,0,OpenSpace,board);
 

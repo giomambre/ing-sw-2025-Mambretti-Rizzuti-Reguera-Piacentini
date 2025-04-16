@@ -68,7 +68,9 @@ public class TUI implements View {
     }
 
     public void setPlayer_local(Player player) {
+
         this.player_local = player;
+        System.out.println(player_local.getShip().getComponent(3,1));
     }
 
     public TUI() {
@@ -129,7 +131,7 @@ public class TUI implements View {
             case 3 -> out.println("🔙 Uscita dal menu.");
         }
 
-        out.println("=================\n");
+
     }
 
 
@@ -142,8 +144,8 @@ public class TUI implements View {
                in = readLine();
                 return Integer.parseInt(in);
             } catch (NumberFormatException e) {
-                if(in.toLowerCase() == "/menu")
-                out.println("Input non valido, inserisci un numero:");
+                if(in.toLowerCase().equals( "/menu")) out.println("Input non valido, inserisci un numero:");
+
             }
         }
     }
@@ -489,7 +491,6 @@ public class TUI implements View {
         System.out.println("\n🛠️  Stato Nave:");
         printShip(player.getShip().getShipBoard()); // Se hai un toString dettagliato nella Ship, qui funziona
 
-        System.out.println("===============================\n");
 
     }
 

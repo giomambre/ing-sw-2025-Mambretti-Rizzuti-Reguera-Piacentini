@@ -1,8 +1,10 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,13 +21,14 @@ public class BoardTest {
     @BeforeEach //serve per fare il setup solo una volta per tutte prima di ogni test
     //prima di ogni test si ha questa situazione non altre modificate dagli altri test!!!!!
     public void setUp() {
-        player1 = new Player("Alice", Color.YELLOW);
-        player2 = new Player("Mambre", Color.BLUE);
-        player3 = new Player("isabel", Color.RED);
-        player4 = new Player("Raffa", Color.GREEN);
+        Game game = new Game(Gametype.StandardGame);
+        player1 = new Player("Alice", Color.YELLOW,game);
+        player2 = new Player("Mambre", Color.BLUE,game);
+        player3 = new Player("isabel", Color.RED,game);
+        player4 = new Player("Raffa", Color.GREEN,game);
 
         List<Player> players = Arrays.asList(player1, player2, player3, player4);
-        board = new Board(players);
+        board = new Board(players,24,game);
     }
 
     @Test

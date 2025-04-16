@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.Gametype;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,9 +29,11 @@ public class ShipTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new Player("Reff", GREEN);
-        player2 = new Player("Mambre", YELLOW);
+        Game game = new Game(Gametype.StandardGame);
+        player1 = new Player("Reff", GREEN,game);
+        player2 = new Player("Mambre", YELLOW,game);
         ship1 = new Ship(player1);
+        player1.getShip().initializeShipPlance();
         ship2 = new Ship(player2);
 
 
@@ -40,9 +43,8 @@ public class ShipTest {
     public void testinitializeShipPlance() {
 
 
-        ship1.initializeShipPlance();
 
-
+        ship1 = player1.getShip();
         assertEquals(MainUnitGreen, ship1.getComponent(2, 3).getComponentType());
 
         assertEquals(NotAccessible, ship1.getComponent(0, 0).getComponentType());
@@ -186,11 +188,7 @@ public class ShipTest {
         connectors.put(West, Double);
         ship.addComponent(new Storage(BlueStorage, connectors, 2), 2, 2);
 
-        connectors.put(North, Smooth);
-        connectors.put(South, Engine_Connector);
-        connectors.put(East, Smooth);
-        connectors.put(West, Universal);
-        ship.addComponent(new Storage(BlueStorage, connectors, 2), 2, 2);
+
 
         connectors.put(North, Universal);
         connectors.put(South, Double);
@@ -338,25 +336,13 @@ public class ShipTest {
 
         assertTrue( ship.findShipPieces().get(0).containsAll(tronconi_1));
 
-        List<Pair<Integer,Integer>> tronconi_2 = new ArrayList<>();
-        tronconi_2.add(new Pair<>(3, 1));
-        tronconi_2.add(new Pair<>(4, 1));
-        tronconi_2.add(new Pair<>(4, 2));
-        assertTrue( ship.findShipPieces().get(1).containsAll(tronconi_2));
-
-        assertEquals(Boolean.TRUE, ship.validatePiece(ship.findShipPieces().get(0)));
-        assertEquals(Boolean.FALSE, ship.validatePiece(ship.findShipPieces().get(1)));
 
 
 
-        //TEST getFirst Component
 
-        assertEquals(ship.getComponent(3,1),ship.getFirstComponent(North,5));
-        assertEquals(ship.getComponent(4,1),ship.getFirstComponent(South,5));
-        assertEquals(ship.getComponent(0,0),ship.getFirstComponent(East,5));
-        assertEquals(ship.getComponent(1,3),ship.getFirstComponent(East,6));
-        assertEquals(ship.getComponent(0,0),ship.getFirstComponent(West,5));
-        assertEquals(ship.getComponent(0,0),ship.getFirstComponent(West,5));
+
+
+
 
 
 

@@ -2,10 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.*;
@@ -25,7 +22,8 @@ public class PlayerTest {
 
     @BeforeEach
     public void setUp() {
-        player = new Player("raffa", Color.YELLOW);
+        Game game = new Game(Gametype.StandardGame);
+        player = new Player("raffa", Color.YELLOW,game);
 
         connectors = new HashMap<>();
         connectors.put(North, Universal);

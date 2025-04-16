@@ -81,22 +81,12 @@ public class Ship implements Serializable {
     public void initializeShipPlance() {
 
 
-        ComponentType main_unit;
-        switch (player.getColor()) {
-            case RED:
-                main_unit = MainUnitRed;
-                break;
-            case YELLOW:
-                main_unit = MainUnitYellow;
-                break;
-            case GREEN:
-                main_unit = MainUnitGreen;
-                break;
-            default:
-                main_unit = MainUnitBlue;
-                break;
-
-        }
+        ComponentType main_unit = switch (player.getColor()) {
+            case RED -> MainUnitRed;
+            case YELLOW -> MainUnitYellow;
+            case GREEN -> MainUnitGreen;
+            default -> MainUnitBlue;
+        };
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
         connectors.put(North, Empty_Connector);
         connectors.put(South, Empty_Connector);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
@@ -33,11 +34,11 @@ public class SmugglersTest {
 
     @BeforeEach
     public void setup() {
-
-        player = new Player("Cice", YELLOW);
+        Game game = new Game(Gametype.StandardGame);
+        player = new Player("Cice", YELLOW,game);
         ship = player.getShip();
         ship.initializeShipPlance();
-        board = new Board(Arrays.asList(player));
+        board = new Board(Arrays.asList(player),24,game );
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Universal);
         connectors.put(South, Engine_Connector);
