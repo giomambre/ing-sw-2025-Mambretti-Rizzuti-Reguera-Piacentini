@@ -58,10 +58,27 @@ public class Epidemic extends CardAdventure {
         }
     }
 
+    /**
+     * This method checks if the given component is a living unit or a matches the specified main unit type.
+     * @param component
+     * @param mainUnit
+     * @return true if the component is a living unit or has the same type as the main unit.
+     */
     private boolean isValidLivingUnit(CardComponent component, ComponentType mainUnit) {
         return component.getComponentType() == ComponentType.LivingUnit || component.getComponentType() == mainUnit;
     }
 
+    /**
+     * Removes one crewmate from each of two connected living units on the ship,
+     * if both have at least one crewmate and are connected through the specified directions.
+     * @param ship
+     * @param row1 the row of the first component
+     * @param col1 the column of the first component
+     * @param row2 the row of the second component
+     * @param col2 the column of the second component
+     * @param conn1 the direction of the connector on the first component
+     * @param conn2 the direction of the connector on the second component
+     */
     private void removeCrewmatesIfConnected(Ship ship, int row1, int col1, int row2, int col2, Direction conn1, Direction conn2) {
         if (isWithinBounds(row2, col2) && areComponentsConnected(ship, row1, col1, row2, col2, conn1, conn2)) {
             LivingUnit unit1 = (LivingUnit) ship.getComponent(row1, col1);
@@ -74,10 +91,29 @@ public class Epidemic extends CardAdventure {
         }
     }
 
+    /**
+     * This method checks wether the specified row and column are within the valid bounds of the ship grid.
+     * @param row
+     * @param col
+     * @return true if the position is within the ship's grid; false otherwise
+     */
     private boolean isWithinBounds(int row, int col) {
         return row >= 0 && row < ROWS && col >= 0 && col < COLS;
     }
 
+    /**
+     * Checks whether two components on the ship are connected through the given directions.
+     * The connection is valid if the second component is a valid living unit (or matches the main unit type),
+     * and the connectors on both components are compatible in the specified directions.
+     * @param ship
+     * @param row1 the row of the first component
+     * @param col1 the column of the first component
+     * @param row2 the row of the second component
+     * @param col2 the column of the second component
+     * @param conn1 the direction of the connector on the first component
+     * @param conn2 the direction of the connector on the second component
+     * @return true if the components are valid and connected through the specified directions
+     */
     private boolean areComponentsConnected(Ship ship, int row1, int col1, int row2, int col2, Direction conn1, Direction conn2) {
         CardComponent comp1 = ship.getComponent(row1, col1);
         CardComponent comp2 = ship.getComponent(row2, col2);
