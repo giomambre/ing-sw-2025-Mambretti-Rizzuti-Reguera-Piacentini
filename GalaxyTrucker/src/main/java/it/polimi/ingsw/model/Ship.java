@@ -68,6 +68,7 @@ public class Ship implements Serializable {
 
 
 
+
         ship_board[row][col] = component;
 
 

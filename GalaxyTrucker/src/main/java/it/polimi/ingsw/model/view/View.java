@@ -25,6 +25,8 @@ public interface View {
     void printShip(CardComponent[][] ship);
     int selectDeck();
     int askFacedUpCard(List<CardComponent> cards);
+    int askSecuredCard(List<CardComponent> cards);
+
     int showCard(CardComponent card);
     Pair<Integer,Integer> askCoords(Ship ship);
 }

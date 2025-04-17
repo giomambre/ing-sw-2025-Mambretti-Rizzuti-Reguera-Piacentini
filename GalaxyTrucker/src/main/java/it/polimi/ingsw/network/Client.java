@@ -149,7 +149,7 @@ public class Client {
                         throw new RuntimeException(e);
                     }
                 }
-        break;
+                break;
 
             case CREATE_LOBBY:
                 if (msg.getContent().isEmpty()) {
@@ -166,12 +166,12 @@ public class Client {
                 AvaiableLobbiesMessage l_msg = (AvaiableLobbiesMessage) msg;
 
                 if (!msg.getContent().isEmpty()) {
-                    virtualView.showMessage(msg.getContent());
+                    virtualView.showMessage("\n" + msg.getContent());
                 }
 
                 if (l_msg.getLobbies().size() == 0) {
 
-                    virtualView.showMessage("Non ci sono Lobby disponibili!");
+                    virtualView.showMessage("\nNon ci sono Lobby disponibili!");
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
                     break;
                 } else {
@@ -190,7 +190,7 @@ public class Client {
                     break;
                 } else {
 
-                    virtualView.showMessage("Sei entrato nella lobby" + msg.getContent());
+                    virtualView.showMessage("\nSei entrato nella lobby" + msg.getContent());
 
                 }
                 break;
@@ -199,7 +199,7 @@ public class Client {
 
                 GameStartedMessage gs_msg = (GameStartedMessage) msg;
                 if (gs_msg.getContent().isEmpty()) {
-                    virtualView.showMessage("Partita avviata!");
+                    virtualView.showMessage("\nPartita avviata!");
                 }
                 Color c = virtualView.askColor(gs_msg.getAvailableColors());
                 out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
@@ -209,14 +209,13 @@ public class Client {
 
                 int deck_selected = virtualView.selectDeck();
 
-                if(deck_selected == 1){
+                if (deck_selected == 1) {
                     out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));
 
-                }
-                else if(deck_selected == 2) {
+                } else if (deck_selected == 2) {
 
                     if (facedUp_deck_local.isEmpty()) {
-                        virtualView.showMessage("Non ci sono carte a faccia in alto!\n");
+                        virtualView.showMessage("\nNon ci sono carte a faccia in alto!\n");
                         elaborate(new Message(MessageType.BUILD_START, ""));
 
                     } else {
@@ -230,44 +229,80 @@ public class Client {
                         out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
 
 
-                }
+                    }
+                } else if (deck_selected == 3) {  //carte prenotate
+
+                    if (player_local.getShip().getExtra_components().isEmpty()) {
+                        virtualView.showMessage("\nNon ci sono carte prenotate!");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        break;
+                    } else {
+
+                        int index = virtualView.askSecuredCard(player_local.getShip().getExtra_components());
+                        elaborate(new CardComponentMessage(MessageType.ASK_CARD, "", clientId, player_local.getShip().getExtra_components().get(index)));
+
+                    }
+
+
                 }
                 break;
-            case CARD_UNAVAILABLE :
-                virtualView.showMessage("La carta richiesta non è più disponibile ! ");
+            case CARD_UNAVAILABLE:
+                virtualView.showMessage("\nLa carta richiesta non è più disponibile ! ");
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
 
             case ASK_CARD:
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
-                virtualView.showMessage("Carta disponibile");
+                virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
-                if(sel == 3){
-                    out.writeObject(new CardComponentMessage(MessageType.DISMISSED_CARD, "",clientId,card_msg.getCardComponent()));
+                if (sel == 3) {
+
+                    if (player_local.getShip().getExtra_components().contains(card_msg.getCardComponent())) {
+                        virtualView.showMessage("\nCarta rimessa nelle carte prenotate");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+
+                        return;
+                    }
+
+                    out.writeObject(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
                     elaborate(new Message(MessageType.BUILD_START, ""));
                     break;
                 }
-                if(sel == 2) {
+                if (sel == 2) {
 
-                    Pair<Integer,Integer> coords = virtualView.askCoords(player_local.getShip());
-                    if(coords.getKey()==-1 || coords.getValue()==-1){
+                    Pair<Integer, Integer> coords = virtualView.askCoords(player_local.getShip());
+                    if (coords.getKey() == -1 || coords.getValue() == -1) {
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         break;
-                    }else{
+                    } else {
 
-                        out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD,    coords.getKey() + " " + coords.getValue(),clientId,card_msg.getCardComponent()));
+                        out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
                         elaborate(new Message(MessageType.BUILD_START, ""));
-
-
+                        player_local.getShip().getExtra_components().remove(card_msg.getCardComponent());
                         break;
+
                     }
 
                 }
+                if (sel == 4) {
+
+                    if(player_local.getShip().getExtra_components().size()==2) {
+                        virtualView.showMessage("\nSpazio esaurito nelle carte prenotate");
+
+                    }else{
+                        virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");
+
+                        player_local.getShip().getExtra_components().add(card_msg.getCardComponent());
+
+                    }
+
+
+                }
+                elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
         }
     }
-
 
 
         public static void handleNotification(Message msg) {
@@ -280,9 +315,9 @@ public class Client {
                 gameState = GameState.BuildingPhase;
                 String[] parts = msg.getContent().split(" ");
                 if (parts[0].equals(nickname)) {
-                    virtualView.showMessage("Hai scelto il colore : " + parts[1]);
+                    virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
                 } else {
-                    virtualView.showMessage("Il player " + parts[0] + " ha scelto il colore : " + parts[1]);
+                   // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
 
                 }
                 break;

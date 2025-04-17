@@ -25,9 +25,9 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 public class TUI implements View {
     private final PrintStream out;
-     static BlockingQueue<String> inputQueue = new LinkedBlockingQueue<>();
-    private  List<Player> other_players_local = new ArrayList<>();
-    private  Player player_local;
+    static BlockingQueue<String> inputQueue = new LinkedBlockingQueue<>();
+    private List<Player> other_players_local = new ArrayList<>();
+    private Player player_local;
 
 
     Scanner input = new Scanner(System.in);
@@ -62,7 +62,6 @@ public class TUI implements View {
             """;
 
 
-
     public void setOther_players_local(List<Player> players) {
         this.other_players_local = players;
     }
@@ -70,7 +69,6 @@ public class TUI implements View {
     public void setPlayer_local(Player player) {
 
         this.player_local = player;
-        System.out.println(player_local.getShip().getComponent(3,1));
     }
 
     public TUI() {
@@ -89,9 +87,7 @@ public class TUI implements View {
                         //  case "/quit" -> quitGame();
                         default -> inputQueue.put(input);
                     }
-                }
-
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -100,7 +96,7 @@ public class TUI implements View {
 
     }
 
-    public  void showMenu() {
+    public void showMenu() {
         out.println("\n=== MENU ===");
 // Sezione comandi
         out.println("\n🎮 SCEGLI UN'AZIONE:");
@@ -135,16 +131,14 @@ public class TUI implements View {
     }
 
 
-
-
     private int readInt() {
         while (true) {
             String in = "";
             try {
-               in = readLine();
+                in = readLine();
                 return Integer.parseInt(in);
             } catch (NumberFormatException e) {
-                if(in.toLowerCase().equals( "/menu")) out.println("Input non valido, inserisci un numero:");
+                if (in.toLowerCase().equals("/menu")) out.println("Input non valido, inserisci un numero:");
 
             }
         }
@@ -204,7 +198,7 @@ public class TUI implements View {
     @Override
     public int askCreateOrJoin() {
         out.println("PREMERE: \n 1 PER CREARE UNA LOBBY \n 2 PER ENTRARE IN UNA LOBBY ");
-        int resp =readInt();
+        int resp = readInt();
         if (resp != 1 && resp != 2) {
             this.askCreateOrJoin();
         }
@@ -256,7 +250,7 @@ public class TUI implements View {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Scegli il colore che preferisci tra i seguenti disponibili:");
+            System.out.println("\nScegli il colore che preferisci tra i seguenti disponibili:\n");
             for (Color c : colors) {
                 System.out.print("- " + c.name().toLowerCase() + "  ");
             }
@@ -369,11 +363,36 @@ public class TUI implements View {
 
         int selected = -1;
         do {
-            out.println("Premi : 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n");
+            out.println("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n");
             selected = readInt();
-        } while (selected != 1 && selected != 2);
+        } while (selected != 1 && selected != 2 && selected != 3);
         return selected;
 
+
+    }
+
+
+    public void printCard(CardComponent card) {
+
+        int CELL_WIDTH = 11;
+        StringBuilder top = new StringBuilder();
+        StringBuilder mid = new StringBuilder();
+        StringBuilder bot = new StringBuilder();
+        String topStr = printConnector(card.getConnector_type(North), North);
+        String midStr = printConnector(card.getConnector_type(West), West)
+                + printCard(card.getComponentType())
+                + printConnector(card.getConnector_type(East), East);
+        String botStr = printConnector(card.getConnector_type(South), South);
+        top.append(center(topStr, CELL_WIDTH));
+        mid.append(center(midStr, CELL_WIDTH));
+        bot.append(center(botStr, CELL_WIDTH));
+        System.out.println();
+
+        System.out.println("TIPO : " + card.getComponentType());
+
+        System.out.println(top);
+        System.out.println(mid);
+        System.out.println(bot);
 
     }
 
@@ -404,21 +423,45 @@ public class TUI implements View {
 
 
     @Override
-    public int showCard(CardComponent card) {
-        out.println(card.toString());
+    public int askSecuredCard(List<CardComponent> cards) {
+        System.out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)");
 
-        out.println("Premi : 1 per ruotare la carta in senso orario\n 2 : per inserirla 3 : per scartarla ");
+        for (int i = 0; i < cards.size(); i++) {
+            System.out.println(" " + i + " : " + cards.get(i));
+        }
+
+        while (true) {
+            System.out.print("Scelta: ");
+            int selected = readInt();
+
+            if (selected == -1) {
+                return -1;
+            }
+
+            if (selected >= 0 && selected < cards.size()) {
+                return selected;
+            }
+
+            System.out.println("Indice non valido. Riprova.");
+        }
+    }
+
+    @Override
+    public int showCard(CardComponent card) {
+
+        printCard(card);
+        out.println("Premi : 1 per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ");
 
         while (true) {
             System.out.print("Scelta: ");
             int selected = readInt();
 
             if (selected == 1) {
-                out.println("Carta ruotata");
+                out.println("\nCarta ruotata");
                 card.rotate();
-                out.println(card.toString());
+                printCard(card);
 
-            } else if (selected == 2 || selected == 3) {
+            } else if (selected == 2 || selected == 3 || selected == 4) {
                 return selected;
             } else {
                 System.out.println("Indice non valido. Riprova.");
@@ -465,7 +508,7 @@ public class TUI implements View {
     @Override
     public void showPlayer(Player player) {
 
-        if(player==null) {
+        if (player == null) {
             System.out.println("Nessun dato disponibile !");
             return;
         }
@@ -494,40 +537,40 @@ public class TUI implements View {
 
     }
 
-        private static String printCard (ComponentType card){
-            return switch (card) {
-                case Engine -> " E ";
-                case DoubleEngine -> "DE ";
-                case Battery -> " B ";
-                case BlueStorage -> "BS ";
-                case RedStorage -> "RS ";
-                case Cannon -> " C ";
-                case DoubleCannon -> "DC ";
-                case BrownAlienUnit -> "BAU";
-                case PinkAlienUnit -> "PAU";
-                case LivingUnit -> "LU ";
-                case MainUnitRed -> "MUR";
-                case MainUnitBlue -> "MUB";
-                case MainUnitGreen -> "MUG";
-                case MainUnitYellow -> "MUY";
-                case Tubes -> " T ";
-                case Shield -> " S ";
-                case Empty, NotAccessible -> "   ";
-                default -> "   ";
-            };
-        }
-
-
-        // Centra una stringa su una larghezza fissa
-        private static String center (String str,int width){
-            if (str.length() >= width) {
-                return str; // se è troppo lunga, non la tocco
-            }
-            int padding = width - str.length();
-            int padLeft = padding / 2;
-            int padRight = padding - padLeft;
-            return " ".repeat(padLeft) + str + " ".repeat(padRight);
-        }
-
-
+    private static String printCard(ComponentType card) {
+        return switch (card) {
+            case Engine -> " E ";
+            case DoubleEngine -> "DE ";
+            case Battery -> " B ";
+            case BlueStorage -> "BS ";
+            case RedStorage -> "RS ";
+            case Cannon -> " C ";
+            case DoubleCannon -> "DC ";
+            case BrownAlienUnit -> "BAU";
+            case PinkAlienUnit -> "PAU";
+            case LivingUnit -> "LU ";
+            case MainUnitRed -> "MUR";
+            case MainUnitBlue -> "MUB";
+            case MainUnitGreen -> "MUG";
+            case MainUnitYellow -> "MUY";
+            case Tubes -> " T ";
+            case Shield -> " S ";
+            case Empty, NotAccessible -> "   ";
+            default -> "   ";
+        };
     }
+
+
+    // Centra una stringa su una larghezza fissa
+    private static String center(String str, int width) {
+        if (str.length() >= width) {
+            return str; // se è troppo lunga, non la tocco
+        }
+        int padding = width - str.length();
+        int padLeft = padding / 2;
+        int padRight = padding - padLeft;
+        return " ".repeat(padLeft) + str + " ".repeat(padRight);
+    }
+
+
+}

@@ -253,7 +253,7 @@ public class Player implements Serializable {
         Ship copiedShip = new Ship(this);  // dipende dalla tua implementazione
         copiedShip.setShip_board(ship.deepCopyBoard(original.getShip().getShipBoard()));
         copy.setShip(copiedShip);
-
+        copiedShip.setExtra_components(original.getShip().getExtra_components());
         // Se servono altri campi visibili al client (es. colore, punti, ecc.)
         copy.setColor(original.getColor());
         copy.setCredits(original.getCredits());
