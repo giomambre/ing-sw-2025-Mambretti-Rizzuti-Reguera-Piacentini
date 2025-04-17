@@ -124,6 +124,11 @@ public class CardComponent implements Serializable {
         connectors = rotated;
     }
 
+
+    public void setCard_uuid(UUID card_uuid) {
+        this.card_uuid = card_uuid;
+    }
+
     public UUID getCard_uuid() {
         return card_uuid;
     }
@@ -138,6 +143,15 @@ public class CardComponent implements Serializable {
     }
 
 
+    public CardComponent copy() {
+        CardComponent copy = new CardComponent(component_type, connectors);
+        copy.setCard_uuid(card_uuid);
+        return copy;
+    }
+
+    public Map<Direction, ConnectorType> getConnectors() {
+        return connectors;
+    }
 }
 
 

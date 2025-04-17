@@ -916,4 +916,46 @@ public class Ship implements Serializable {
         }
         return ships;
     }
+
+
+    public CardComponent[][] deepCopyBoard(CardComponent[][] plance ) {
+        // Copia tutti i componenti della nave
+        CardComponent[][] copy = new CardComponent[ROWS][COLS];
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                CardComponent original = this.getComponent(r, c);
+                if (original != null) {
+                    // Crea una copia del componente
+                    copy[r][c] = original.copy();
+                }
+            }
+        }
+        // Copia eventuali altri attributi
+        return copy;
+    }
+
+
+    public CardComponent[][] getShip_board() {
+        return ship_board;
+    }
+
+    public void setShip_board(CardComponent[][] ship_board) {
+        this.ship_board = ship_board;
+    }
+
+    public void setCOLS(int COLS) {
+        this.COLS = COLS;
+    }
+
+    public void setROWS(int ROWS) {
+        this.ROWS = ROWS;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }

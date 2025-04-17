@@ -8,15 +8,14 @@ import java.util.UUID;
 
 public class GameStartedMessage extends Message implements Serializable {
 
-    List<Color> avaible_colors;
-    public GameStartedMessage(MessageType type , String content, List<Color> avaiable_colors) {
+    List<Color> availableColors;
+    public GameStartedMessage(MessageType type , String content, List<Color> availableColors) {
         super(type, content);
-        this.avaible_colors = avaiable_colors;
+        this.availableColors = availableColors;
 
     }
 
-public List<Color> getAvaible_colors() {
-        return avaible_colors;
+public List<Color> getAvailableColors() {
+    return availableColors;
 }
-
 }

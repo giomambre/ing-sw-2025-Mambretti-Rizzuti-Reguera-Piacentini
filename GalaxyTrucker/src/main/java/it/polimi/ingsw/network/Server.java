@@ -162,7 +162,11 @@ public class Server {
                         System.out.println("tutti i player hanno scelto i colori fase di costruzione iniziata!");
                         sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
                         controller.startGame();
-                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));
+                        List<Player> safePlayers = new ArrayList<>();
+                        for (Player p : controller.getPlayers()) {
+                            safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                        }
+                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",safePlayers));
 
 
 
@@ -220,8 +224,12 @@ public class Server {
                 int y = Integer.parseInt(parts[1]);
                 synchronized (controller) {
                     controller.addComponent(getNickname(place_msg.getId_client()), place_msg.getCardComponent(), x, y);
+                    List<Player> safePlayers = new ArrayList<>();
 
-                    sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",controller.getPlayers()));
+                    for (Player p : controller.getPlayers()) {
+                        safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                    }
+                    sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",safePlayers));
 
 
                 }

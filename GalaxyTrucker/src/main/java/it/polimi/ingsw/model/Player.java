@@ -244,4 +244,48 @@ public class Player implements Serializable {
     public String toString(){
         return "Player with Nickname : " + this.nickname + "and color : " + this.getColor().toString();
     }
+
+    public Player copyPlayer() {
+        Player original = this;
+        Player copy = new Player(getNickname(),getColor(),getGame());  // o costruttore adatto
+
+        // Copia la Ship e il suo stato
+        Ship copiedShip = new Ship(this);  // dipende dalla tua implementazione
+        copiedShip.setShip_board(ship.deepCopyBoard(original.getShip().getShipBoard()));
+        copy.setShip(copiedShip);
+
+        // Se servono altri campi visibili al client (es. colore, punti, ecc.)
+        copy.setColor(original.getColor());
+        copy.setCredits(original.getCredits());
+
+        return copy;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setExposed_connectors(int exposed_connectors) {
+        this.exposed_connectors = exposed_connectors;
+    }
+
+    public void setGame(BaseGame game) {
+        this.game = game;
+    }
+
+    public void setShip(Ship ship) {
+        this.ship = ship;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public void setNum_laps(int num_laps) {
+        this.num_laps = num_laps;
+    }
 }

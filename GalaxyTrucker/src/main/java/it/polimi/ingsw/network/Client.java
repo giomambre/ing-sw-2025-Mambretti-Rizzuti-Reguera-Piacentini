@@ -201,7 +201,7 @@ public class Client {
                 if (gs_msg.getContent().isEmpty()) {
                     virtualView.showMessage("Partita avviata!");
                 }
-                Color c = virtualView.askColor(gs_msg.getAvaiable_colors());
+                Color c = virtualView.askColor(gs_msg.getAvailableColors());
                 out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 break;
 
@@ -296,7 +296,6 @@ public class Client {
                     other_players_local.clear(); // rimuove vecchi dati
 
                     for (Player p : tmp) {
-                        ((TUI) virtualView).printShip(p.getShip().getShipBoard());
                         if (p.getNickname().equals(nickname)) {
 
                             player_local = p;

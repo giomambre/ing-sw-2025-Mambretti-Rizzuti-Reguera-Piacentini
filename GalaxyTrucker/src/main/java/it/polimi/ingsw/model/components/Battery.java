@@ -48,9 +48,20 @@ public class Battery extends CardComponent  implements Serializable {
         }
      }
 
-     public int getStored(){
+    public void setStored(int stored) {
+        this.stored = stored;
+    }
+
+    public int getStored(){
         return stored;
      }
 
+     public CardComponent copy(){
+        Battery copy = new Battery(getComponentType(),getConnectors(),size);
+         copy.setStored(stored);
+         copy.setCard_uuid(getCard_uuid());
+
+         return copy;
+     }
 
 }

@@ -70,4 +70,15 @@ public class Storage extends CardComponent  implements Serializable {
         }
     }
 
+    public void setCarried_cargos(List<Cargo> carried_cargos) {
+        this.carried_cargos = carried_cargos;
+    }
+
+    public CardComponent copy() {
+    Storage copy = new Storage(getComponentType(),getConnectors(),size);
+    copy.setCard_uuid(getCard_uuid());
+    copy.setCarried_cargos(carried_cargos);
+    return copy;
+    }
+
 }

@@ -85,4 +85,24 @@ public class LivingUnit extends CardComponent  implements Serializable {
 
     }
 
+    public void setNum_crewmates(int num_crewmates) {
+        this.num_crewmates = num_crewmates;
+    }
+
+    public CrewmateType getCrewmate_type() {
+        return crewmate_type;
+    }
+
+    public void setCrewmate_type(CrewmateType crewmate_type) {
+        this.crewmate_type = crewmate_type;
+    }
+
+    public CardComponent copy(){
+        LivingUnit copy = new LivingUnit(getComponentType(),getConnectors());
+        copy.setCard_uuid(getCard_uuid());
+        copy.setCrewmate_type(getCrewmate_type());
+        copy.setNum_crewmates(getNum_crewmates());
+        return copy;
+    }
+
 }

@@ -12,6 +12,8 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.smartcardio.Card;
+
 public class Shield extends CardComponent   implements Serializable {
     private Map<Direction, Boolean> covered_sides = new EnumMap<>(Direction.class);
 
@@ -50,6 +52,16 @@ public class Shield extends CardComponent   implements Serializable {
         public void setCovered_sides(Map<Direction, Boolean> covered_sides) {
 
         this.covered_sides = covered_sides;
+        }
+
+
+        public CardComponent copy() {
+
+        Shield copy = new Shield(getComponentType(),getConnectors());
+        copy.setCovered_sides(covered_sides);
+        copy.setCard_uuid(getCard_uuid());
+        return copy;
+
         }
 
 }
