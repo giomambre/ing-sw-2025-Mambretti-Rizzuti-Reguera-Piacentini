@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
 
 
+import javax.smartcardio.Card;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -192,8 +193,10 @@ public class Server {
                         int i = 0;
                         for (CardComponent c : controller.getFacedUpCards()) {
                             if (c.getCard_uuid().equals(UUID.fromString(msgClient.getContent()))) {
-                                controller.removeCardFacedUp(i);
-                                sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.ASK_CARD, "", msgClient.getId_client(), controller.getRandomCard()));
+                                CardComponent tmp = controller.removeCardFacedUp(i);
+                                sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.ASK_CARD, "", msgClient.getId_client(),tmp));
+                                sendToAllClients(controller.getLobby(),new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED,"",msgClient.getId_client(),tmp));
+
                                 return;
                             }
                             i++;
@@ -211,7 +214,7 @@ public class Server {
 
                     controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
                     System.out.println(controller.getFacedUpCards().toString());
-                    sendToAllClients(controller.getLobby(),new CardComponentMessage(MessageType.FACED_UP_CARD_ADDED,"",card_msg.getId_client(),card_msg.getCardComponent()));
+                    sendToAllClients(controller.getLobby(),new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED,"",card_msg.getId_client(),card_msg.getCardComponent()));
 
                     }
                     break;

@@ -38,7 +38,7 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("localhost", 12345);
+            Socket socket = new Socket("192.168.0.54", 12345);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
@@ -63,7 +63,7 @@ public class Client {
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_ADDED,UPDATED_SHIPS:
+                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -349,13 +349,18 @@ public class Client {
 
 
 
-            case FACED_UP_CARD_ADDED:
+            case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
+                    System.out.println("ARRIVATA CARTA");
+
+                }else{
+                    facedUp_deck_local.remove(cpm.getCardComponent());
+                    System.out.println("RIMOSSA CARTA");
+
                 }
 
-                System.out.println("ARRIVATA CARTA");
                 break;
 
 

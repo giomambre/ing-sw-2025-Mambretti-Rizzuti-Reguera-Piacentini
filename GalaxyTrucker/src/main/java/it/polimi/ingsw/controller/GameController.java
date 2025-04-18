@@ -188,8 +188,8 @@ public void dismissComponent(String nickname, CardComponent card) {
         return ship.getShipBoard();
     }
 
-    public void removeCardFacedUp(int index) {
-        game.getFacedUpCard(index);
+    public CardComponent removeCardFacedUp(int index) {
+        return  game.getFacedUpCard(index);
     }
 
     public List<CardComponent> getFacedUpCards() {

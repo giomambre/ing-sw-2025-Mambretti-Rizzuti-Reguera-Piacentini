@@ -399,10 +399,11 @@ public class TUI implements View {
 
     @Override
     public int askFacedUpCard(List<CardComponent> cards) {
-        System.out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)");
+        System.out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)\n");
 
         for (int i = 0; i < cards.size(); i++) {
-            System.out.println(" " + i + " : " + cards.get(i));
+            System.out.println("NUMERO : " + i );
+            printCard(cards.get(i));
         }
 
         while (true) {
@@ -424,11 +425,13 @@ public class TUI implements View {
 
     @Override
     public int askSecuredCard(List<CardComponent> cards) {
-        System.out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)");
+        System.out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)\n");
 
         for (int i = 0; i < cards.size(); i++) {
-            System.out.println(" " + i + " : " + cards.get(i));
+            System.out.println("NUMERO : " + i );
+            printCard(cards.get(i));
         }
+
 
         while (true) {
             System.out.print("Scelta: ");
@@ -450,7 +453,7 @@ public class TUI implements View {
     public int showCard(CardComponent card) {
 
         printCard(card);
-        out.println("Premi : 1 per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ");
+        out.println("Premi :\n 1 per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ");
 
         while (true) {
             System.out.print("Scelta: ");
