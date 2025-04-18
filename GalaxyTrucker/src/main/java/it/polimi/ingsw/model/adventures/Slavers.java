@@ -7,9 +7,10 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Slavers extends CardAdventure {
+public class Slavers extends CardAdventure implements Serializable {
     private int cannons_strenght;
     private int astronaut_loss;
     private int credits;

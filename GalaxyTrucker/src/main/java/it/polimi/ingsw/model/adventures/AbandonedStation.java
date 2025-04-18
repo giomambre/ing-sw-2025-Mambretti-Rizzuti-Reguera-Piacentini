@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.Cargo;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ import java.util.Map;
  *     <li>cargo_reward: the list of cargo that the player can load onto the ship</li>
  * </ul>
  */
-public class AbandonedStation extends  CardAdventure{
+public class AbandonedStation extends  CardAdventure implements Serializable {
 
     private int needed_crewmates ;
     private List<Cargo> cargo_reward; //da capire come implementare quali l utente accetta e quali rifiuta

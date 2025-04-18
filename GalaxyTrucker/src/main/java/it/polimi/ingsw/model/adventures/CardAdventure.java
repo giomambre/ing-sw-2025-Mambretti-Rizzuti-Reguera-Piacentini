@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  *     <li>{@link Epidemic}
  * </ul>
  */
-public abstract class CardAdventure {
+public abstract class CardAdventure implements Serializable {
     private int level;
     private int cost_of_days; //it can be 0
     private CardAdventureType type;

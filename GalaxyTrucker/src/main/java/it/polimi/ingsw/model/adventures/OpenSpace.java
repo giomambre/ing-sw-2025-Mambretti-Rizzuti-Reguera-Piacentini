@@ -5,6 +5,7 @@
     import it.polimi.ingsw.model.components.CardComponent;
     import it.polimi.ingsw.model.enumerates.CardAdventureType;
 
+    import java.io.Serializable;
     import java.util.List;
     import java.util.HashMap;
     import java.util.Map;
@@ -12,7 +13,7 @@
     /**
      * This class is a sublass of CardAdventure, from which it inherits attributes and methods
      */
-    public class OpenSpace extends CardAdventure{ //every player in the lobby will move
+    public class OpenSpace extends CardAdventure implements Serializable { //every player in the lobby will move
 
         /**
          *

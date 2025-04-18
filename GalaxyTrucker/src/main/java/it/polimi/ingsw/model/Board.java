@@ -21,7 +21,7 @@ public class Board {
         this.game = game;
     }
 
-    public void putplayersonboard(List<Player> players){
+    public void putPlayersOnBoard(List<Player> players){
         int[] starting_positions = {7, 4, 2, 1}; // the first player that end the build is the first in the active player list
         int i = 0;
         for (Player player : players) {

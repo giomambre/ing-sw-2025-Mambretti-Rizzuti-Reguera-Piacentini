@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.Cargo;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ import java.util.Map;
  *     <li>cargo_loss: how much cargo the player loses</li>
  * </ul>
  */
-public class Smugglers extends CardAdventure {
+public class Smugglers extends CardAdventure implements Serializable {
     private int cannons_strenght;
     private List<Cargo> cargo_rewards;
     private int cargo_loss;

@@ -2,12 +2,10 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.CrewmateType;
-import it.polimi.ingsw.model.enumerates.Gametype;
+import it.polimi.ingsw.model.enumerates.*;
 
 import java.util.*;
 
@@ -37,6 +35,12 @@ public class GameController {
         game.startGame();
 
     }
+
+    public Map<Direction, List<CardAdventure>> seeDecksOnBoard() {
+
+
+        return game.seeDecksOnBoard();
+}
 
     public List<Player> getPlayers() {
         return game.getPlayers();

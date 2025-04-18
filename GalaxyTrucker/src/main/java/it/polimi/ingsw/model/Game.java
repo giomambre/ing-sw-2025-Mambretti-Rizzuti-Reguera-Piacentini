@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
@@ -48,6 +47,8 @@ public class Game extends BaseGame{
             player.getShip().initializeShipPlance();
 
         }
+
+
         board = new Board(24,this);
 
     }
@@ -131,7 +132,7 @@ public class Game extends BaseGame{
                         Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue)
                 )
         ));
-        deck_adventure_liv1.add(new CombatZone(1,3,CardAdventureType.CombatZone,2,0,
+        deck_adventure_liv1.add(new CombatZone(1,3,CardAdventureType.CombatZone,2,0,0,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, South),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
@@ -226,7 +227,7 @@ public class Game extends BaseGame{
                         Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue, Cargo.Blue)
                 )
         ));
-        deck_adventure_liv2.add(new CombatZone(2,4,CardAdventureType.CombatZone,0,3,
+        deck_adventure_liv2.add(new CombatZone(2,4,CardAdventureType.CombatZone,0,3,3,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, North),
                         new Pair<>(MeteorType.LightCannonFire, West),
@@ -262,10 +263,12 @@ public class Game extends BaseGame{
             this.deck_left.add(deck_adventure_liv2.removeFirst());
             this.deck_top.add(deck_adventure_liv2.removeFirst());
             this.deck_middle.add(deck_adventure_liv2.removeFirst());
-            this.deck_top.add(deck_adventure_liv2.removeFirst());
+            this.deck_right.add(deck_adventure_liv2.removeFirst());
             i++;
         }
-        return;
+
+
+
     }
 
     /**
@@ -1572,7 +1575,7 @@ return deck_components;
      */
     public void startFlight() {
         createDeckAdventure();
-        board.putplayersonboard(active_players);
+        board.putPlayersOnBoard(active_players);
     }
 
     public List<CardAdventure> getDeck_left() {return deck_left;}

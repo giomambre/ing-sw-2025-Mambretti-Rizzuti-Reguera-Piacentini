@@ -174,17 +174,10 @@ public class Player implements Serializable {
      * @return the number of exposed connectors
      */
     public int getExposed_connectors() {
+        exposed_connectors = getShip().calculateExposedConnectors();
         return exposed_connectors;
     }
 
-    /**
-     * This method updates the list of exposed connectors for the player's ship.
-     * Calls {@code calculateExposedConnectors()} on the player's ship to determine
-     * which connectors are currently not connected to other components.
-     */
-    public void setExposed_connectors() {
-        this.exposed_connectors = ship.calculateExposedConnectors();
-    }
 
     /**
      * This method is used to find out how many credits a player has.

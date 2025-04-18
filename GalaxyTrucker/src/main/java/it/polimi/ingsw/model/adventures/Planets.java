@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.Cargo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Map;
  *     <li>cargo_reward: list of rewards the player receives when landing on each planet</li>
  * </ul>
  */
-public class Planets extends CardAdventure {
+public class Planets extends CardAdventure implements Serializable {
     private List<List<Cargo>> cargo_reward;
 
     /**
@@ -39,7 +40,7 @@ public class Planets extends CardAdventure {
      * This function gives the rewards to the player who landed on each planet.
      * @param planets a map of the carried cargos as value and the card component where he wants to put it.
      */
-    public void execute(Player player, Map<CardComponent, Map<Cargo, Integer>> planets) {
+    public  void execute(Player player, Map<CardComponent, Map<Cargo, Integer>> planets) {
         Map<Cargo, Integer> rewards = new HashMap<>();
 
             board.movePlayer(player,-getCost_of_days());

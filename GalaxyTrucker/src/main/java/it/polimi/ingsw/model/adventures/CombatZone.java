@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +28,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.North;
  *     or the player with the fewest crew members.</li>
  * </ul>
  */
-public class CombatZone extends CardAdventure{
+public class CombatZone extends CardAdventure implements Serializable {
     private int crewmates_loss;
     private int cargo_loss;
     private int id;

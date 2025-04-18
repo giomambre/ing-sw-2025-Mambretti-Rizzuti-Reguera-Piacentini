@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
  *     <li>crewmates_loss: how many crewmates (human and/or alien) the player loses when choosing to use the card</li>
  * </ul>
  */
-public class AbandonedShip extends CardAdventure {
+public class AbandonedShip extends CardAdventure implements Serializable {
     private int given_credits;
     private int crewmates_loss;
 

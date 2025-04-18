@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
@@ -160,9 +161,15 @@ public class Server {
 
 
                     if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
-                        System.out.println("tutti i player hanno scelto i colori fase di costruzione iniziata!");
+                        System.out.println("Tutti i player hanno scelto i colori fase di costruzione iniziata!");
                         sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
+
                         controller.startGame();
+
+
+
+                        sendToAllClients(controller.getLobby(), new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "",controller.seeDecksOnBoard()));
+                        System.out.println(controller.seeDecksOnBoard().get(Direction.East).size());
                         List<Player> safePlayers = new ArrayList<>();
                         for (Player p : controller.getPlayers()) {
                             safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
@@ -186,7 +193,7 @@ public class Server {
 
                     if (msgClient.getContent().isEmpty()) { //ha richiesto una carta casuale
 
-                        sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.ASK_CARD, "", msgClient.getId_client(), controller.getRandomCard()));
+                        sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", msgClient.getId_client(), controller.getRandomCard()));
 
                     } else {
 
@@ -194,7 +201,7 @@ public class Server {
                         for (CardComponent c : controller.getFacedUpCards()) {
                             if (c.getCard_uuid().equals(UUID.fromString(msgClient.getContent()))) {
                                 CardComponent tmp = controller.removeCardFacedUp(i);
-                                sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.ASK_CARD, "", msgClient.getId_client(),tmp));
+                                sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", msgClient.getId_client(),tmp));
                                 sendToAllClients(controller.getLobby(),new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED,"",msgClient.getId_client(),tmp));
 
                                 return;

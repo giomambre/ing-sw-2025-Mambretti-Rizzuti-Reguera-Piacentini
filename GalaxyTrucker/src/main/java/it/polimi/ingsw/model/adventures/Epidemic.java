@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
+import java.io.Serializable;
+
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 /**
@@ -20,7 +22,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.*;
  *     <li>COLS: number of rows of the ship's plance</li>
  * </ul>
  */
-public class Epidemic extends CardAdventure {
+public class Epidemic extends CardAdventure implements Serializable {
     int ROWS=5 , COLS=7;
 
     /**

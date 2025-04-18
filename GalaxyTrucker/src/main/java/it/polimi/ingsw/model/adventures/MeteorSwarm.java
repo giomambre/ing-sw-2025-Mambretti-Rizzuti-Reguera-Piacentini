@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
  *     <li>meteors: a list in which each element is a pair consisting of a value of type meteorType and one of type direction</li>
  * </ul>
  */
-public class MeteorSwarm extends CardAdventure {
+public class MeteorSwarm extends CardAdventure implements Serializable {
 
     private List<Pair<MeteorType, Direction>> meteors;
 

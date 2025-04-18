@@ -7,9 +7,10 @@ import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.enumerates.MeteorType;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Pirates extends CardAdventure{
+public class Pirates extends CardAdventure implements Serializable {
     private int cannons_strenght;
     private int credits;
     List<Pair<MeteorType, Direction>> meteors;

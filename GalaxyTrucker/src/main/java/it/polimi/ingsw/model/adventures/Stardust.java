@@ -5,10 +5,12 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 
+import java.io.Serializable;
+
 /**
  * This class is a sublass of CardAdventure, from which it inherits attributes and methods
  */
-public class Stardust extends CardAdventure{
+public class Stardust extends CardAdventure implements Serializable {
     /**
      *
      * @param level

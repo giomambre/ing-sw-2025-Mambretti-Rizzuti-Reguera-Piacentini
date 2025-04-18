@@ -74,6 +74,13 @@ public abstract class BaseGame {
     }
 
     /**
+     * called by the controller to give to each player a local copy of the decks present on the board
+     * @return a map having as key a direction that corresponds to a deck. (South=middle, East=Right, West=Left)
+     */
+    public abstract Map<Direction,List<CardAdventure>> seeDecksOnBoard();
+
+
+    /**
      * Sets the adventure deck with the given list of adventure cards.
      * @param deck_adventure
      */
