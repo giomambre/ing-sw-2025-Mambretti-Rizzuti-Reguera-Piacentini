@@ -37,14 +37,17 @@ public abstract class CardAdventure {
      * @param type
      * @param board
      */
-    public CardAdventure(int level, int cost_of_days ,CardAdventureType type, Board board) {
+    public CardAdventure(int level, int cost_of_days ,CardAdventureType type) {
 
         this.level = level;
         this.cost_of_days = cost_of_days;
-        this.board = board;
         this.type = type;
         this.face_down = true;
 
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     /**

@@ -14,8 +14,8 @@ public class Slavers extends CardAdventure {
     private int astronaut_loss;
     private int credits;
     
-    public Slavers(int level, int cost_of_days, CardAdventureType type, Board board, int cannons_strenght, int astronaut_loss, int credits) {
-        super(level, cost_of_days, type, board);
+    public Slavers(int level, int cost_of_days, CardAdventureType type, int cannons_strenght, int astronaut_loss, int credits) {
+        super(level, cost_of_days, type);
         this.cannons_strenght = cannons_strenght;
         this.astronaut_loss = astronaut_loss;
         this.credits=credits;

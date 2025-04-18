@@ -30,8 +30,8 @@ public class Planets extends CardAdventure {
      * @param board
      * @param cargo_reward
      */
-    public Planets(int level, int cost_of_days, CardAdventureType type, Board board, List<List<Cargo>> cargo_reward) {
-        super(level, cost_of_days, type, board);
+    public Planets(int level, int cost_of_days, CardAdventureType type, List<List<Cargo>> cargo_reward) {
+        super(level, cost_of_days, type);
         this.cargo_reward = cargo_reward;
     }
 

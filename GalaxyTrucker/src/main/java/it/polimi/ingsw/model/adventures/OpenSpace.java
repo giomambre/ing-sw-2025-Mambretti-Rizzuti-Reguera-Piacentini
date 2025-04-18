@@ -21,8 +21,8 @@
          * @param type
          * @param board
          */
-        public OpenSpace(int level, int cost_of_days, CardAdventureType type , Board board) {
-            super(level, cost_of_days,type ,board);
+        public OpenSpace(int level, int cost_of_days, CardAdventureType type) {
+            super(level, cost_of_days,type);
         }
         public void execute(){
             System.out.println("metodo cuscinetto");

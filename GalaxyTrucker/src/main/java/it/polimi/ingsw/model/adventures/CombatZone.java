@@ -41,8 +41,8 @@ public class CombatZone extends CardAdventure{
      * @param cargo_loss
      * @param meteors
      */
-    public CombatZone(int level, int cost_of_days, CardAdventureType type, Board board, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors) {
-        super(level, cost_of_days, type, board);
+    public CombatZone(int level, int cost_of_days, CardAdventureType type, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors) {
+        super(level, cost_of_days, type);
         this.crewmates_loss=crewmates_loss;
         this.cargo_loss=cargo_loss;
         this.meteors = meteors;

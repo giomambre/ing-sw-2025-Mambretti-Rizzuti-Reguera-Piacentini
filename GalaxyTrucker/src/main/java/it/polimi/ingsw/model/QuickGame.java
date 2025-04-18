@@ -39,6 +39,7 @@ public class QuickGame extends BaseGame {
             player.getShip().initializeShipPlance();
 
         }
+        board = new Board(18,this);
 
     }
 
@@ -50,36 +51,36 @@ public class QuickGame extends BaseGame {
     public void createDeckAdventure() {
         List<CardAdventure> deck_adventure = new ArrayList<>();
 
-        deck_adventure.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,board,
+        deck_adventure.add(new MeteorSwarm(1,0,CardAdventureType.MeteorSwarm,
                 List.of(
                         new Pair<>(MeteorType.LargeMeteor, North),
                         new Pair<>(MeteorType.SmallMeteor, East),
                         new Pair<>(MeteorType.SmallMeteor, West)
                 )
         ));
-        deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,board));
-        deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust,board));
-        deck_adventure.add(new Smugglers(1, 1,CardAdventureType.Smugglers,board,4,
+        deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace));
+        deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust));
+        deck_adventure.add(new Smugglers(1, 1,CardAdventureType.Smugglers,4,
                 Arrays.asList(
                         Cargo.Yellow,
                         Cargo.Green,
                         Cargo.Blue
                 ),
                 2));
-        deck_adventure.add(new AbandonedStation(1,1,CardAdventureType.AbandonedStation,5,board,
+        deck_adventure.add(new AbandonedStation(1,1,CardAdventureType.AbandonedStation,5,
                 Arrays.asList(
                         Cargo.Yellow,
                         Cargo.Green
                 )
         ));
-        deck_adventure.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,board,4,3));
-        deck_adventure.add(new CombatZone(1,3,CardAdventureType.CombatZone,board,2,0,
+        deck_adventure.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,4,3));
+        deck_adventure.add(new CombatZone(1,3,CardAdventureType.CombatZone,2,0,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, South),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
                 )
         ));
-        deck_adventure.add(new Planets(1,2,CardAdventureType.Planets,board,
+        deck_adventure.add(new Planets(1,2,CardAdventureType.Planets,
                 Arrays.asList(
                         Arrays.asList(Cargo.Red, Cargo.Red),
                         Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue),
@@ -89,6 +90,9 @@ public class QuickGame extends BaseGame {
 
         Collections.shuffle(deck_adventure);
         this.deck_adventure = deck_adventure;
+        for(CardAdventure card_adventure : this.deck_adventure) {
+            card_adventure.setBoard(this.board);
+        }
         return;
     }
 
@@ -96,7 +100,7 @@ public class QuickGame extends BaseGame {
      * This method is called to start the flight phase putting al the rockets on the board
      */
     public void startFlight() {
-        board = new Board(active_players,18,this);
+        board.putplayersonboard(active_players);
     }
 
     /**
