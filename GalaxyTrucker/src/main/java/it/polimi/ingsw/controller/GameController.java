@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Gametype;
 
 import java.util.*;
+
 public class GameController {
 
 
@@ -31,13 +32,13 @@ public class GameController {
 
     }
 
-    public void startGame(){
+    public void startGame() {
 
         game.startGame();
 
     }
 
-    public List<Player> getPlayers(){
+    public List<Player> getPlayers() {
         return game.getPlayers();
     }
 
@@ -49,11 +50,12 @@ public class GameController {
         return available_colors;
     }
 
-        public synchronized Player addPlayer(String nickname, Color color) {
-        if(game.getNicknames().contains(nickname)) throw new IllegalArgumentException(" Nickname already in use.");
+    public synchronized Player addPlayer(String nickname, Color color) {
+        if (game.getNicknames().contains(nickname)) throw new IllegalArgumentException(" Nickname already in use.");
 
-        if(!available_colors.contains(color)) throw new IllegalArgumentException("Color invalid or  already in use .\nthese are the available colors : " + available_colors);
-        Player  p= new Player(nickname, color,game);
+        if (!available_colors.contains(color))
+            throw new IllegalArgumentException("Color invalid or  already in use .\nthese are the available colors : " + available_colors);
+        Player p = new Player(nickname, color, game);
         available_colors.remove(p.getColor());
         game.addPlayer(p);
         return p;
@@ -67,22 +69,21 @@ public class GameController {
     }
 
 
-
     public synchronized int endPlayerBuildPhase(String nickname) {
 
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
         Map<CardComponent, Boolean> battery_usage = new HashMap<>();
-        if(ship.calculateEnginePower(battery_usage)==0){
+        if (ship.calculateEnginePower(battery_usage) == 0) {
             System.out.println("Im sorry but you dont have any Engine you cannot start the game.");
             return -1;
 
         }
 
-        if(ship.checkShipConnections().isEmpty()) {
+        if (ship.checkShipConnections().isEmpty()) {
             System.out.println("Congratulations, you ship is Valid, you can start the supply!");
             return 1;
-        }else{
+        } else {
 
             System.out.println("You cannot start the fly because your ship isn't valid , here are the incorret pieces : ");
             System.out.println(ship.checkShipConnections());
@@ -91,20 +92,16 @@ public class GameController {
         }
 
 
-
-
     }
 
 
-
-    public void addComponent(String nickname, CardComponent card,int x, int y) {
+    public void addComponent(String nickname, CardComponent card, int x, int y) {
         Player p = game.getPlayer(nickname);
 
-        try{
-            p.addToShip(card,x,y);
+        try {
+            p.addToShip(card, x, y);
             System.out.println("Added component!");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
 
@@ -116,30 +113,30 @@ public class GameController {
 
         Player p = game.getPlayer(nickname);
 
-        try{
-            p.secureComponent( card);
+        try {
+            p.secureComponent(card);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
 
     }
 
-public void dismissComponent(String nickname, CardComponent card) {
+    public void dismissComponent(String nickname, CardComponent card) {
 
         Player p = game.getPlayer(nickname);
-        try{
-        p.dismissComponent(card);
-}catch (Exception e){
+        try {
+            p.dismissComponent(card);
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
 
     }
 
 
-    public synchronized CardComponent pickComponentFacedUp( int index ) {
+    public synchronized CardComponent pickComponentFacedUp(int index) {
 
-        if(index<0 || index > game.getPlayers().size()) throw new IllegalArgumentException("Index out of bounds");
+        if (index < 0 || index > game.getPlayers().size()) throw new IllegalArgumentException("Index out of bounds");
 
         return game.getFacedUpCard(index);
 
@@ -164,7 +161,7 @@ public void dismissComponent(String nickname, CardComponent card) {
                 System.out.println("Alien Support not found.");
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
 
@@ -195,10 +192,6 @@ public void dismissComponent(String nickname, CardComponent card) {
     public List<CardComponent> getFacedUpCards() {
         return game.getCards_faced_up();
     }
-
-
-
-
 
 
 }

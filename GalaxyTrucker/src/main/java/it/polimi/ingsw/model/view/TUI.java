@@ -282,6 +282,7 @@ public class TUI implements View {
         printShip(ship_board);
     }
 
+
     @Override
     public void printShip(CardComponent[][] ship) {
         int CELL_WIDTH = 11;
@@ -320,6 +321,24 @@ public class TUI implements View {
         }
     }
 
+    public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
+        System.out.println("\nEcco i pezzi rimasti della tua nave: ");
+        int i=1;
+        CardComponent[][] ship_board = new CardComponent[5][7];
+        for (List<Pair<Integer, Integer>> piece : pieces) {
+            System.out.println(i+": \n");
+
+            for (Pair<Integer, Integer> pair : piece) {
+                ship_board[pair.getKey()][pair.getValue()] = ship[pair.getKey()][pair.getValue()];
+            }
+
+            printShip(ship_board);
+            i++;
+            System.out.println();
+        }
+
+    }
+
     private static String printConnector(ConnectorType connector, Direction direction) {
         switch (connector) {
             case Smooth: {
@@ -352,6 +371,10 @@ public class TUI implements View {
                         return " ≡≡ ";
                 }
             }
+
+            case Engine_Connector: { return " 🚀 "; }
+
+            case Cannon_Connector: return " 🔫 ";
 
             default:
                 return "    ";
