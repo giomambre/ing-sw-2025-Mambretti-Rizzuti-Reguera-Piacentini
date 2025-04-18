@@ -269,6 +269,20 @@ public class Game extends BaseGame{
     }
 
     /**
+     * called by the controller to give to each player a local copy of the decks present on the board
+     * @return a map having as key a direction that corresponds to a deck. (South=middle, East=Right, West=Left)
+     */
+    public Map<Direction,List<CardAdventure>> seeDecksOnBoard(){
+        Map<Direction,List<CardAdventure>> seeDecksOnBoard = new HashMap<>();
+        seeDecksOnBoard.put(South,deck_middle);
+        seeDecksOnBoard.put(East,deck_right);
+        seeDecksOnBoard.put(West,deck_left);
+
+        return seeDecksOnBoard;
+
+}
+
+    /**
      * This method is called by the controller when the assembly phase is finished to merge all the 4 decks present on the board
      * in one (our DeckAdventure).
      */
