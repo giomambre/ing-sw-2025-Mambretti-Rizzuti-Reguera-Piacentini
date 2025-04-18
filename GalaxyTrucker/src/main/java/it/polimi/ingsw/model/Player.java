@@ -86,6 +86,7 @@ public class Player implements Serializable {
         }
     }
 
+
     /**
      * This method is called by the controller when the player during the building phase wants to secure a component so he could use it later (or not, penalty at the end of the game).
      * This method is available only for the standard game. (not in quick game)

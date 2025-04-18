@@ -16,8 +16,8 @@ public class Stardust extends CardAdventure{
      * @param type
      * @param board
      */
-    public Stardust(int level, int cost_of_days, CardAdventureType type, Board board) {
-        super(level, cost_of_days, type, board);
+    public Stardust(int level, int cost_of_days, CardAdventureType type) {
+        super(level, cost_of_days, type);
     }
 
     /**

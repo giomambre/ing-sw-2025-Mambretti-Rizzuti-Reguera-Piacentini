@@ -28,8 +28,8 @@ public class MeteorSwarm extends CardAdventure {
      * @param board
      * @param meteors
      */
-    public MeteorSwarm(int level, int cost_of_days, CardAdventureType type, Board board, List<Pair<MeteorType, Direction>> meteors) {
-        super(level, cost_of_days, type, board);
+    public MeteorSwarm(int level, int cost_of_days, CardAdventureType type, List<Pair<MeteorType, Direction>> meteors) {
+        super(level, cost_of_days, type);
         this.meteors = meteors;
 
     }
@@ -121,5 +121,7 @@ public class MeteorSwarm extends CardAdventure {
 
     }
 
-
+    public List<Pair<MeteorType, Direction>> getMeteors() {
+        return meteors;
+    }
 }

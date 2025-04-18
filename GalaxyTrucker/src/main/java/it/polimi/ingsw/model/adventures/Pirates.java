@@ -14,8 +14,8 @@ public class Pirates extends CardAdventure{
     private int credits;
     List<Pair<MeteorType, Direction>> meteors;
 
-    public Pirates(int level, int cost_of_days, CardAdventureType type, Board board, int cannons_strenght, int credits, List<Pair<MeteorType, Direction>> meteors ) {
-        super(level, cost_of_days, type, board);
+    public Pirates(int level, int cost_of_days, CardAdventureType type, int cannons_strenght, int credits, List<Pair<MeteorType, Direction>> meteors ) {
+        super(level, cost_of_days, type);
         this.cannons_strenght = cannons_strenght;
         this.credits=credits;
         this.meteors = meteors;
@@ -29,5 +29,13 @@ public class Pirates extends CardAdventure{
     //executeloss gestito da meteorswarm
     public List<Pair<MeteorType, Direction>> getMeteors() {
         return meteors;
+    }
+
+    public int getCannons_strenght() {
+        return cannons_strenght;
+    }
+
+    public int getCredits() {
+        return credits;
     }
 }

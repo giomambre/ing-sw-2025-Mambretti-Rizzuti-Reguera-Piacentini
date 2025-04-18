@@ -16,18 +16,18 @@ public class Board {
     private Map<Integer, Player> player_position = new HashMap<>();
     private Player board_leader;
     private BaseGame game;
-    public Board(List<Player> players,int board_size, BaseGame game) { //mette i player nelle posizioni di partenza,
-        //in caso di nave che non puo partite, tipo non ha motori, viene rimossa e il player dopo scala avanti???
+    public Board(int board_size, BaseGame game) {
         this.board_size = board_size;
         this.game = game;
+    }
+
+    public void putplayersonboard(List<Player> players){
         int[] starting_positions = {7, 4, 2, 1}; // the first player that end the build is the first in the active player list
         int i = 0;
         for (Player player : players) {
             player_position.put(starting_positions[i], player);
             i++;
-
         }
-
     }
 
     /**

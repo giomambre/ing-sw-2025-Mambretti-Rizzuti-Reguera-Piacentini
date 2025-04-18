@@ -4,12 +4,9 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
 
 import java.io.PrintStream;
@@ -321,6 +318,7 @@ public class TUI implements View {
         }
     }
 
+    @Override
     public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         System.out.println("\nEcco i pezzi rimasti della tua nave: ");
         int i=1;
@@ -378,6 +376,142 @@ public class TUI implements View {
 
             default:
                 return "    ";
+        }
+    }
+
+    public void printCardAdventure(CardAdventure card) {
+
+        switch(card.getType()){
+
+            case OpenSpace: {
+                System.out.println("\n SPAZIO APERTO: \n");
+                System.out.println("Avanzi di tanti passi quanto la tua potenza motrice");
+                break;
+            }
+
+            case AbandonedShip: {
+                System.out.println("\n NAVE ABBANDONATA: \n");
+                System.out.println("Perdi "+card.getCost_of_days()+ " giorni di volo");
+                System.out.println("Rinunci a " +((AbandonedShip)card).getCrewmates_loss()+" membri dell'equipaggio");
+                System.out.println("Guadagni "+((AbandonedShip)card).getGiven_credits()+" crediti");
+                break;
+            }
+            case AbandonedStation: {
+                System.out.println("\n STAZIONE ABBANDONATA: \n");
+                System.out.println("Hai almeno "+((AbandonedStation)card).getNeeded_crewmates()+" membri dell'equipaggio?");
+                System.out.println("Perdi "+card.getCost_of_days()+ " giorni di volo");
+                System.out.println("Guadagni un carico merci" );
+                printCargo(((AbandonedStation)card).getCargo());
+                break;
+            }
+            case Planets: {
+                System.out.println("\n PIANETI: \n");
+                System.out.println("Perdi "+card.getCost_of_days()+ " giorni di volo");
+                System.out.println("Puoi posizionarti sui pianeti con i seguenti carichi merci");
+                for (int i = 0; i < ((Planets) card).getCargo_reward().size(); i++) {
+                    System.out.println("Pianeta "+i+ ":");
+                    printCargo(((Planets) card).getCargos(i));
+                }
+
+                break;
+            }
+            case Smugglers: {
+                System.out.println("\n CONTRABBANDIERI: \n");
+                System.out.println("Hai piu di " +((Smugglers)card).getCannons_strenght()+ " potenza di fuoco?");
+                System.out.println("Puoi vincere un carico merci");
+                printCargo(((Smugglers)card).getCargo_rewards());
+                System.out.println("Ma perdi "+card.getCost_of_days()+ " giorni di volo");
+                System.out.println("Hai meno potenza di fuoco" );
+                System.out.println("Perdi il seguente numero di merci " +((Smugglers)card).getCargo_loss());
+                break;
+            }
+            case CombatZone: {
+                System.out.println("\n ZONA DI GUERRA: \n");
+                if(((CombatZone)card).getId()==1){
+                    System.out.println("Il giocatore con meno membri dell'equipaggio perde "+ card.getCost_of_days()+ " giorni di volo");
+                    System.out.println("Il giocatore con meno forza motrice perde "+((CombatZone)card).getCrewmates_loss()+ " membri dell'equipaggio");
+                    System.out.println("Il giocatore con meno potenza di fuoco prende la seguente scarica di meteoriti:");
+                    printMeteors(((CombatZone)card).getMeteors());
+                }
+                else{
+                    System.out.println("Il giocatore con meno potenza di fuoco perde "+card.getCost_of_days()+ " giorni di volo");
+                    System.out.println("Il giocatore con meno forza motrice perde"+((CombatZone)card).getCargo_loss()+ " merci" );
+                    System.out.println("Il giocatore con meno membri dell'equipaggio prende la seguente scarica di meteoriti:");
+                    printMeteors(((CombatZone)card).getMeteors());
+                }
+                break;
+            }
+            case Epidemic: {
+                System.out.println("\n EPIDEMIA: \n");
+                break;
+            }
+            case MeteorSwarm: {
+                System.out.println("\n PIOGGIA DI METEORITI: \n");
+                System.out.println("In arrivo la seguente scarica di meteoriti:");
+                printMeteors(((MeteorSwarm)card).getMeteors());
+                break;
+            }
+            case Pirates: {
+                System.out.println("\n PIRATI: \n");
+                System.out.println("Hai una potenza di fuoco maggiore di " +((Pirates)card).getCannons_strenght()+ "?");
+                System.out.println("Puoi vincere "+((Pirates)card).getCredits()+ " crediti");
+                System.out.println("Ma perdi "+card.getCost_of_days()+ " giorni di volo");
+                System.out.println("Hai meno potenza di fuoco? prendi la seguente scarica di meteoriti:" );
+                printMeteors(((Pirates)card).getMeteors());
+                break;
+            }
+            case Slavers: {
+                System.out.println("\n SCHIAVISTI: \n");
+                System.out.println("Hai una potenza di fuoco maggiore di " +((Slavers)card).getCannons_strenght()+ "?");
+                System.out.println("Puoi vincere "+((Slavers)card).getCredits()+ " crediti");
+                System.out.println("Ma perdi "+card.getCost_of_days()+ " giorni di volo");
+                System.out.println("Hai meno potenza di fuoco? perdi "+((Slavers)card).getAstronaut_loss()+ " membri dell'equipaggio" );
+                break;
+            }
+            case Stardust: {
+                System.out.println("\n POLVERE STELLARE: \n");
+                System.out.println("Perdi 1 giorno di prova per ogni connettore esposto!");
+                break;
+            }
+
+
+        }
+    }
+
+    private void printCargo(List<Cargo> cargos) {
+        System.out.println("Il carico contiene le seguenti merci:");
+        for (Cargo cargo : cargos) {
+            switch (cargo) {
+                case Blue:
+                    System.out.println("cargo blu");
+                    break;
+                case Yellow:
+                    System.out.println("cargo giallo");
+                    break;
+                case Green:
+                    System.out.println("cargo verde");
+                    break;
+                case Red:
+                    System.out.println("cargo rosso");
+                    break;
+            }
+        }
+    }
+
+    private void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
+        for (Pair<MeteorType, Direction> meteor : meteors) {
+            switch (meteor.getKey()) {
+                case LargeMeteor -> System.out.println("Meteora grossa");
+                case SmallMeteor -> System.out.println("Meteora piccola");
+                case HeavyCannonFire -> System.out.println("Cannonata pesante");
+                case LightCannonFire -> System.out.println("Cannonata leggera");
+            }
+            switch (meteor.getValue()) {
+                case South -> System.out.println("da sud");
+                case East -> System.out.println("da est");
+                case West -> System.out.println("da ovest");
+                case North -> System.out.println("da nord");
+            }
         }
     }
 

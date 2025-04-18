@@ -38,7 +38,7 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("192.168.0.54", 12345);
+            Socket socket = new Socket("4.tcp.eu.ngrok.io", 19491);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 

@@ -33,8 +33,8 @@ public class Smugglers extends CardAdventure {
      * @param cargo_rewards
      * @param cargo_loss
      */
-    public Smugglers(int level, int cost_of_days, CardAdventureType type, Board board, int cannons_strenght, List<Cargo> cargo_rewards, int cargo_loss) {
-        super(level, cost_of_days, type, board);
+    public Smugglers(int level, int cost_of_days, CardAdventureType type, int cannons_strenght, List<Cargo> cargo_rewards, int cargo_loss) {
+        super(level, cost_of_days, type);
         this.cannons_strenght = cannons_strenght;
         this.cargo_rewards = cargo_rewards;
         this.cargo_loss = cargo_loss;
@@ -100,6 +100,18 @@ public class Smugglers extends CardAdventure {
 
 
         }
+    }
+
+    public int getCannons_strenght() {
+        return cannons_strenght;
+    }
+
+    public List<Cargo> getCargo_rewards() {
+        return cargo_rewards;
+    }
+
+    public int getCargo_loss() {
+        return cargo_loss;
     }
 }
 

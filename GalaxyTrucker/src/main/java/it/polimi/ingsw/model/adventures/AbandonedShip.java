@@ -28,8 +28,8 @@ public class AbandonedShip extends CardAdventure {
      * @param given_credits
      * @param crewmates_loss
      */
-    public AbandonedShip(int level, int cost_of_days, CardAdventureType type, Board board, int given_credits, int crewmates_loss) {
-        super(level, cost_of_days,type ,board);
+    public AbandonedShip(int level, int cost_of_days, CardAdventureType type, int given_credits, int crewmates_loss) {
+        super(level, cost_of_days,type);
         this.given_credits = given_credits;
         this.crewmates_loss = crewmates_loss;
         this.board = board;
@@ -64,6 +64,12 @@ public class AbandonedShip extends CardAdventure {
             }
 }
 
+    public int getCrewmates_loss() {
+        return crewmates_loss;
+    }
 
+    public int getGiven_credits(){
+        return given_credits;
+    }
 
 }
