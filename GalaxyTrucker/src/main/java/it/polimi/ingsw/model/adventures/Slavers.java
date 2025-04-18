@@ -43,4 +43,16 @@ public class Slavers extends CardAdventure {
             }
         }
     }
+
+    public int getCannons_strenght() {
+        return cannons_strenght;
+    }
+
+    public int getAstronaut_loss() {
+        return astronaut_loss;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
 }

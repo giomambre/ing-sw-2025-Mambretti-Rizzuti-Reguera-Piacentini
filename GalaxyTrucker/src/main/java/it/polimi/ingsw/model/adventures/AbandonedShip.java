@@ -64,6 +64,12 @@ public class AbandonedShip extends CardAdventure {
             }
 }
 
+    public int getCrewmates_loss() {
+        return crewmates_loss;
+    }
 
+    public int getGiven_credits(){
+        return given_credits;
+    }
 
 }

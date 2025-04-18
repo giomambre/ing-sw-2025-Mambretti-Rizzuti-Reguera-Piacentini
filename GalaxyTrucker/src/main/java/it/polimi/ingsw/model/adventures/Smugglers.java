@@ -101,5 +101,17 @@ public class Smugglers extends CardAdventure {
 
         }
     }
+
+    public int getCannons_strenght() {
+        return cannons_strenght;
+    }
+
+    public List<Cargo> getCargo_rewards() {
+        return cargo_rewards;
+    }
+
+    public int getCargo_loss() {
+        return cargo_loss;
+    }
 }
 

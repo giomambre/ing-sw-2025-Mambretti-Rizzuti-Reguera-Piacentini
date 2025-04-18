@@ -30,4 +30,12 @@ public class Pirates extends CardAdventure{
     public List<Pair<MeteorType, Direction>> getMeteors() {
         return meteors;
     }
+
+    public int getCannons_strenght() {
+        return cannons_strenght;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
 }

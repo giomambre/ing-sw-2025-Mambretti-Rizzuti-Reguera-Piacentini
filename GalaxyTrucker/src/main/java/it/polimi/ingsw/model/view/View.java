@@ -23,6 +23,9 @@ public interface View {
     void showShip(String nickname);
 
     void printShip(CardComponent[][] ship);
+
+    void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
+
     int selectDeck();
     int askFacedUpCard(List<CardComponent> cards);
     int askSecuredCard(List<CardComponent> cards);

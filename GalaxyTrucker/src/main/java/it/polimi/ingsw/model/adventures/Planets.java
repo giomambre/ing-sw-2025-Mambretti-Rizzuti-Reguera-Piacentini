@@ -60,6 +60,9 @@ public class Planets extends CardAdventure {
 
     }
 
+    public List<List<Cargo>> getCargo_reward() {
+        return cargo_reward;
+    }
 
     public List<Cargo> getCargos(int index) {
         return cargo_reward.get(index);

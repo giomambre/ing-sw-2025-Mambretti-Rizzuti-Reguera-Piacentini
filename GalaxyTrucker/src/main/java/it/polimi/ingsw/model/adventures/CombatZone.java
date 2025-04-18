@@ -30,6 +30,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.North;
 public class CombatZone extends CardAdventure{
     private int crewmates_loss;
     private int cargo_loss;
+    private int id;
     private List<Pair<MeteorType, Direction>> meteors;
 
     /**
@@ -41,11 +42,12 @@ public class CombatZone extends CardAdventure{
      * @param cargo_loss
      * @param meteors
      */
-    public CombatZone(int level, int cost_of_days, CardAdventureType type, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors) {
+    public CombatZone(int level, int cost_of_days, CardAdventureType type,int id, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors) {
         super(level, cost_of_days, type);
         this.crewmates_loss=crewmates_loss;
         this.cargo_loss=cargo_loss;
         this.meteors = meteors;
+        this.id = id;
     }
 
     /**
@@ -113,5 +115,17 @@ public class CombatZone extends CardAdventure{
      */
     public void executeLessCannonPower2(Player player) {
         board.movePlayer(player, -getCost_of_days());
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public int getCrewmates_loss() {
+        return crewmates_loss;
+    }
+
+    public int getCargo_loss() {
+        return cargo_loss;
     }
 }

@@ -121,5 +121,7 @@ public class MeteorSwarm extends CardAdventure {
 
     }
 
-
+    public List<Pair<MeteorType, Direction>> getMeteors() {
+        return meteors;
+    }
 }
