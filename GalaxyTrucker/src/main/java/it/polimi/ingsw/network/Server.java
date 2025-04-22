@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.components.CardComponent;
@@ -12,13 +13,19 @@ import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
 
 
-import javax.smartcardio.Card;
+//import javax.smartcardio.Card;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static it.polimi.ingsw.controller.GameState.BUILD_PHASE;
+import static it.polimi.ingsw.controller.GameState.FIXING_SHIPS;
 
 public class Server {
     private static final int PORT = 12345;
@@ -28,6 +35,12 @@ public class Server {
     private GameManager manager = new GameManager();
     private Map<Integer, GameController> all_games = new HashMap<>();
     GameController controller;
+
+    private static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static Map<Integer, ScheduledFuture<?>> buildPhaseTasks = new HashMap<>();
+    private static Map<Integer, Long> buildPhaseStartTimes = new HashMap<>();
+    private static Map<Integer, Boolean> buildPhaseActives = new HashMap<>();
+
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -165,18 +178,16 @@ public class Server {
                         sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
 
                         controller.startGame();
+                        controller.setGame_state(BUILD_PHASE);
+                        startBuildPhaseTimer(controller.getLobby().getLobbyId());
 
-
-
-                        sendToAllClients(controller.getLobby(), new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "",controller.seeDecksOnBoard()));
+                        sendToAllClients(controller.getLobby(), new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
                         System.out.println(controller.seeDecksOnBoard().get(Direction.East).size());
                         List<Player> safePlayers = new ArrayList<>();
                         for (Player p : controller.getPlayers()) {
                             safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
                         }
-                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",safePlayers));
-
-
+                        sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
 
 
                     }
@@ -201,49 +212,60 @@ public class Server {
                         for (CardComponent c : controller.getFacedUpCards()) {
                             if (c.getCard_uuid().equals(UUID.fromString(msgClient.getContent()))) {
                                 CardComponent tmp = controller.removeCardFacedUp(i);
-                                sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", msgClient.getId_client(),tmp));
-                                sendToAllClients(controller.getLobby(),new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED,"",msgClient.getId_client(),tmp));
+                                sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", msgClient.getId_client(), tmp));
+                                sendToAllClients(controller.getLobby(), new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "", msgClient.getId_client(), tmp));
 
                                 return;
                             }
                             i++;
                         }
-                        sendToClient(msgClient.getId_client(), new Message(MessageType.CARD_UNAVAILABLE,""));
+                        sendToClient(msgClient.getId_client(), new Message(MessageType.CARD_UNAVAILABLE, ""));
                     }
                 }
                 break;
 
 
-                case DISMISSED_CARD:
-                    CardComponentMessage card_msg = (CardComponentMessage) msg;
-                    controller = all_games.get(getLobbyId(card_msg.getId_client()));
-                    synchronized (controller) {
+            case DISMISSED_CARD:
+                CardComponentMessage card_msg = (CardComponentMessage) msg;
+                controller = all_games.get(getLobbyId(card_msg.getId_client()));
+                synchronized (controller) {
 
                     controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
                     System.out.println(controller.getFacedUpCards().toString());
-                    sendToAllClients(controller.getLobby(),new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED,"",card_msg.getId_client(),card_msg.getCardComponent()));
+                    sendToAllClients(controller.getLobby(), new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "", card_msg.getId_client(), card_msg.getCardComponent()));
 
-                    }
-                    break;
+                }
+                break;
 
             case PLACE_CARD:
                 CardComponentMessage place_msg = (CardComponentMessage) msg;
                 controller = all_games.get(getLobbyId(place_msg.getId_client()));
-                String[] parts = msg.getContent().split(" ");
-                int x = Integer.parseInt(parts[0]);
-                int y = Integer.parseInt(parts[1]);
-                synchronized (controller) {
-                    controller.addComponent(getNickname(place_msg.getId_client()), place_msg.getCardComponent(), x, y);
-                    List<Player> safePlayers = new ArrayList<>();
 
-                    for (Player p : controller.getPlayers()) {
-                        safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                if (controller.getGame_state() == BUILD_PHASE) {
+                    String[] parts = msg.getContent().split(" ");
+                    int x = Integer.parseInt(parts[0]);
+                    int y = Integer.parseInt(parts[1]);
+                    synchronized (controller) {
+                        controller.addComponent(getNickname(place_msg.getId_client()), place_msg.getCardComponent(), x, y);
+                        List<Player> safePlayers = new ArrayList<>();
+
+                        for (Player p : controller.getPlayers()) {
+                            safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                        }
+                        sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+
+
                     }
-                    sendToAllClients(controller.getLobby(),new PlayersShipsMessage(MessageType.UPDATED_SHIPS,"",safePlayers));
-
-
+                } else {
+                    sendToClient(place_msg.getId_client(), new Message(MessageType.UNAVAILABLE_PLACE, ""));
                 }
-            break;
+                break;
+
+            case BUILD_PHASE_ENDED:
+                msgClient = (StandardMessageClient) msg;
+                playerFinishedBuilding(getLobbyId(msgClient.getId_client()), msgClient.getId_client());
+                break;
+
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
@@ -252,6 +274,75 @@ public class Server {
 
         }
     }
+
+    private void startBuildPhaseTimer(int lobbyId) {
+        controller = all_games.get(lobbyId);
+
+        buildPhaseActives.put(lobbyId, true);
+        System.out.println("🕒 Inizio fase di assemblaggio per lobby " + lobbyId);
+        buildPhaseStartTimes.put(lobbyId, System.currentTimeMillis());
+
+        ScheduledFuture<?> task = scheduler.schedule(() -> {
+            System.out.println("⚡️ Nessuno ha finito in lobby " + lobbyId + ": partono comunque i 30 secondi extra!");
+            startExtra30Seconds(lobbyId);
+            sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 1));
+        }, 60, TimeUnit.SECONDS);
+
+        buildPhaseTasks.put(lobbyId, task);
+    }
+
+
+    private void startExtra30Seconds(int lobbyId) {
+        controller = all_games.get(lobbyId);
+
+
+        ScheduledFuture<?> task = scheduler.schedule(() -> {
+            System.out.println("⏰ Timer extra scaduto in lobby " + lobbyId + ": Fase di assemblaggio finita.");
+            sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 2));
+            buildPhaseActives.put(lobbyId, false);
+            if(controller.getActivePlayers().size() != controller.getLobby().getLimit()) {
+                for (String nickname : controller.getLobby().getPlayers()) {
+                    controller.addActivePlayer(nickname);
+                }
+            }
+            controller.setGame_state(FIXING_SHIPS);
+        }, 30, TimeUnit.SECONDS);
+
+        buildPhaseTasks.put(lobbyId, task);
+    }
+
+
+    private void playerFinishedBuilding(int lobbyId, UUID playerId) {
+        controller = all_games.get(lobbyId);
+
+        if (!buildPhaseActives.getOrDefault(lobbyId, false)) {
+            System.out.println("⚠️ Fase di assemblaggio già chiusa per lobby " + lobbyId);
+            return;
+        }
+
+        long elapsedSeconds = (System.currentTimeMillis() - buildPhaseStartTimes.get(lobbyId)) / 1000;
+        System.out.println("✅ Giocatore ha finito dopo " + elapsedSeconds + " secondi nella lobby " + lobbyId);
+
+        if (elapsedSeconds >= 30 && elapsedSeconds <= 60 && controller.getActivePlayers().isEmpty()) {
+            System.out.println("🕒 Partono 30 secondi extra per dichiarazione nella lobby " + lobbyId);
+
+            ScheduledFuture<?> task = buildPhaseTasks.get(lobbyId);
+            if (task != null && !task.isDone()) {
+                task.cancel(false);
+            }
+
+            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getActivePlayers().size()) );
+            controller.addActivePlayer(getNickname(playerId));
+
+            sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 3));
+            startExtra30Seconds(lobbyId);
+
+        } else {
+            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getActivePlayers().size()) );
+            controller.addActivePlayer(getNickname(playerId));
+        }
+    }
+
 
     public String getNickname(UUID id) {
         ClientHandler client = clients.get(id);

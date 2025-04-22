@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.view;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;

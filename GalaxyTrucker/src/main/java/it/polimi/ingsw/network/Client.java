@@ -256,6 +256,9 @@ public class Client {
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
+            case UNAVAILABLE_PLACE:
+                virtualView.showMessage("\nNon puoi posizionare la carta in questa fase del gioco ! ");
+            break;
 
             case CARD_COMPONENT_RECEIVED:
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
@@ -304,8 +307,39 @@ public class Client {
 
 
                 }
+                if (sel == 5) {
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
+                    elaborate(new Message(MessageType.BUILD_PHASE_ENDED, ""));
+                }
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
+
+            case TIME_UPDATE:
+                TimeUpdateMessage time_msg = (TimeUpdateMessage) msg;
+                switch (time_msg.getId()) {
+                    case 1:
+                        virtualView.showMessage("\nNessuno ha ancora finito l'assemblaggio, partono ulteriori 30 sec");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        break;
+                    case 2:
+                        virtualView.showMessage("\nFase di assemblaggio finita.");
+                        elaborate(new Message(MessageType.FLIGHT_PHASE, ""));
+                        break;
+                    case 3:
+                        virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        break;
+
+                }
+                break;
+
+            case BUILD_PHASE_ENDED:
+                BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
+                switch (build_msg.getPos()){
+                    case 1:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
+                        break;
+                }
         }
     }
 
