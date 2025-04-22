@@ -36,7 +36,6 @@ public abstract class CardAdventure implements Serializable {
      * @param level must be level 1 or 2
      * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be = 0
      * @param type
-     * @param board
      */
     public CardAdventure(int level, int cost_of_days ,CardAdventureType type) {
 
@@ -47,12 +46,18 @@ public abstract class CardAdventure implements Serializable {
 
     }
 
+    /**
+     * Sets the game board associated with this adventure card.
+     *
+     * @param board the board to be set
+     */
     public void setBoard(Board board) {
         this.board = board;
     }
 
     /**
      * Starts the resolution of this adventure.
+     *
      * @param players the list of players involved in the adventure
      */
     public void startAdventure(List <Player> players) {

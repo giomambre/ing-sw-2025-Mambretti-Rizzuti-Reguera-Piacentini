@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * This class is a sublass of {@code CardAdventure}, from which it inherits attributes and methods
  * <ul>
  *     <li>needed_crewmates: how many crewmates are required to use this adventure card</li>
  *     <li>cargo_reward: the list of cargo that the player can load onto the ship</li>
@@ -28,7 +28,6 @@ public class AbandonedStation extends  CardAdventure implements Serializable {
      * @param level must be level 1 or 2
      * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be =0
      * @param type
-     * @param board
      * @param needed_crewmates
      * @param cargo_reward
      */
@@ -39,11 +38,12 @@ public class AbandonedStation extends  CardAdventure implements Serializable {
     }
 
     /**
-     * This method is called when a player has enought crewmates to use this card and decides to use it.
-     * It moves the player back by cost_of_days positions through the 'movePlayer' function of board.
-     * It allows the player to receive cargo_reward cargo, calling the 'addCargo' function of storage.
-     * @param player
-     * @param new_cargo_positions
+     * This method is called when a player has enough crewmates and chooses to use this card.
+     * It moves the player back by by the number of days specified by {@code getCost_of_days} through the {@code movePlayer} function of the board.
+     * Then, it allows the player to receive cargo rewards by calling {@code addCargo} on the appropriate storage components.
+     *
+     * @param player who uses the card
+     * @param new_cargo_positions a map linking storage components to the cargo types and quantities to be added
      */
 //eventuale controllo se nessuno accetta la carte, da fare nel controller, tutto rimane invariato nel model
     public void execute(Player player, Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions) {
