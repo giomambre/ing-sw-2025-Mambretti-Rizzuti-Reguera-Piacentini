@@ -250,7 +250,13 @@ public class Client {
 
 
                 }
+                else if (deck_selected == 4) {
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
+                    elaborate(new Message(MessageType.BUILD_PHASE_ENDED, ""));
+                }
+
                 break;
+
             case CARD_UNAVAILABLE:
                 virtualView.showMessage("\nLa carta richiesta non è più disponibile ! ");
                 elaborate(new Message(MessageType.BUILD_START, ""));
@@ -307,10 +313,7 @@ public class Client {
 
 
                 }
-                if (sel == 5) {
-                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
-                    elaborate(new Message(MessageType.BUILD_PHASE_ENDED, ""));
-                }
+
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
