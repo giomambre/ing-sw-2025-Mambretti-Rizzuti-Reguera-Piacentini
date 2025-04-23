@@ -208,7 +208,7 @@ public class Ship implements Serializable {
 
                 // Verifica che il componente sia un'unità alieno del tipo specificato
                 if (component.getComponentType() != LivingUnit ||
-                        ((LivingUnit) component).getCrewmateType() != alienType) {
+                        ((LivingUnit) component).getCrewmate_type() != alienType) {
                     continue;
                 }
 
@@ -721,11 +721,11 @@ public class Ship implements Serializable {
                      CardComponent card = getComponent(row, col);
 
                      if(ship_board[row][col].getComponentType() == LivingUnit
-                             && ((LivingUnit)card).getCrewmateType() != Astronaut
+                             && ((LivingUnit)card).getCrewmate_type() != Astronaut
                              && ((LivingUnit)card).getNum_crewmates()>0 ) {
                          System.out.println(checkAlienSupport(card));
 
-                         if(!checkAlienSupport(card).contains(((LivingUnit)card).getCrewmateType())){
+                         if(!checkAlienSupport(card).contains(((LivingUnit)card).getCrewmate_type())){
                              //kill the alien
                              ((LivingUnit)card).removeCrewmates(1);
 
