@@ -26,6 +26,9 @@ public enum MessageType {
     UNAVAILABLE_PLACE,
     TIME_UPDATE,
 
+    CHECK_SHIPS,
     FLIGHT_PHASE,
+    ;
+
 }
 

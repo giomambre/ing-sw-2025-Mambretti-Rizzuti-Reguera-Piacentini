@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.*;
+import javafx.util.Pair;
 
 import java.util.*;
 
@@ -34,11 +35,11 @@ public class GameController {
 
     }
 
-    public GameState getGame_state() {
+    public GameState getGamestate() {
         return game_state;
     }
 
-    public void setGame_state(GameState game_state) {
+    public void setGamestate(GameState game_state) {
         this.game_state = game_state;
     }
 
@@ -76,6 +77,10 @@ public class GameController {
         game.addPlayer(p);
         return p;
 
+    }
+
+    public String getPlayerNickname(Player player) {
+        return player.getNickname();
     }
 
     public synchronized CardComponent getRandomCard() {
@@ -201,6 +206,36 @@ public class GameController {
         return ship.getShipBoard();
     }
 
+    public List<CardComponent[][]> getValidPieces(String nickname){
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+        List<List<Pair<Integer, Integer>>> pieces = ship.findShipPieces();
+        List<CardComponent[][]> validPieces = new ArrayList<>();
+
+        for (List<Pair<Integer, Integer>> piece : pieces) {
+            CardComponent[][] matrix = new CardComponent[5][7]; // 5 righe, 7 colonne
+
+            for (Pair<Integer, Integer> coord : piece) {
+                int x = coord.getKey();
+                int y = coord.getValue();
+                matrix[x][y] = ship.getComponent(x, y);
+            }
+
+            validPieces.add(matrix);
+        }
+
+        return validPieces;
+
+    }
+
+    public CardComponent[][] choosePieces (int choice, String nickname) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+        ship.choosePiece(choice);
+
+        return ship.getShipBoard();
+    }
+
     public CardComponent removeCardFacedUp(int index) {
         return  game.getFacedUpCard(index);
     }
@@ -214,6 +249,7 @@ public class GameController {
         if(!game.getBuildPhasePlayers().contains(p)) {
             game.addBuildPhasePlayer(p);
         }
+        else throw new IllegalArgumentException("");
     }
 
     public List<Player> getBuildPhasePlayers() {

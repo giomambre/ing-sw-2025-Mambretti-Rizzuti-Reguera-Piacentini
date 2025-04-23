@@ -61,11 +61,11 @@ public class Client {
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
                                  CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
-                                 CARD_UNAVAILABLE,  UNAVAILABLE_PLACE, BUILD_PHASE_ENDED:
+                                 CARD_UNAVAILABLE,  UNAVAILABLE_PLACE:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE:
+                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -320,13 +320,6 @@ public class Client {
 
 
 
-            case BUILD_PHASE_ENDED:
-                BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
-                switch (build_msg.getPos()){
-                    case 1:
-                        virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
-                        break;
-                }
         }
     }
 
@@ -417,6 +410,24 @@ public class Client {
 
                 }
                 break;
+
+            case BUILD_PHASE_ENDED:
+                BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
+                switch (build_msg.getPos()) {
+                    case 1:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
+                        break;
+                    case 2:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per secondo");
+                        break;
+                    case 3:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per terzo");
+                        break;
+                    case 4:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
+                        break;
+                }
+
 
 
         }
