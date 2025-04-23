@@ -2,14 +2,14 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.CrewmateType;
-import it.polimi.ingsw.model.enumerates.Gametype;
+import it.polimi.ingsw.model.enumerates.*;
 
 import java.util.*;
+
+import static it.polimi.ingsw.controller.GameState.SETTINGS;
 
 public class GameController {
 
@@ -18,7 +18,7 @@ public class GameController {
     List<Color> available_colors = new ArrayList<>();
 
     Lobby lobby;
-
+    GameState game_state;
     BaseGame game;
 
     public GameController(Lobby lobby) {
@@ -29,7 +29,17 @@ public class GameController {
         available_colors.add(Color.YELLOW);
         available_colors.add(Color.BLUE);
 
+        this.game_state = SETTINGS;
 
+
+    }
+
+    public GameState getGame_state() {
+        return game_state;
+    }
+
+    public void setGame_state(GameState game_state) {
+        this.game_state = game_state;
     }
 
     public void startGame() {
@@ -37,6 +47,12 @@ public class GameController {
         game.startGame();
 
     }
+
+    public Map<Direction, List<CardAdventure>> seeDecksOnBoard() {
+
+
+        return game.seeDecksOnBoard();
+}
 
     public List<Player> getPlayers() {
         return game.getPlayers();
@@ -193,5 +209,18 @@ public class GameController {
         return game.getCards_faced_up();
     }
 
+    public void addActivePlayer(String nickname) {
+        Player p = game.getPlayer(nickname);
+        if(!game.getActivePlayers().contains(p)) {
+            game.addPlayer(p);
+
+            List<Player> players = game.getPlayers();
+            game.setActivePlayers(players);
+        }
+    }
+
+    public List<Player> getActivePlayers() {
+        return game.getActivePlayers();
+    }
 
 }

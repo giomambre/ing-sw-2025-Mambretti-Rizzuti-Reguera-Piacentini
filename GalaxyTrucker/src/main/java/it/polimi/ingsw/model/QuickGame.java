@@ -74,7 +74,7 @@ public class QuickGame extends BaseGame {
                 )
         ));
         deck_adventure.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,4,3));
-        deck_adventure.add(new CombatZone(1,3,CardAdventureType.CombatZone,2,0,
+        deck_adventure.add(new CombatZone(1,3,CardAdventureType.CombatZone,2,0,0,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, South),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
@@ -96,11 +96,17 @@ public class QuickGame extends BaseGame {
         return;
     }
 
+    public Map<Direction,List<CardAdventure>> seeDecksOnBoard(){  //to implement
+
+        return null;
+
+    }
+
     /**
      * This method is called to start the flight phase putting al the rockets on the board
      */
     public void startFlight() {
-        board.putplayersonboard(active_players);
+        board.putPlayersOnBoard(active_players);
     }
 
     /**

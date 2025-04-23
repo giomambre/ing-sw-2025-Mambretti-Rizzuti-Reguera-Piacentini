@@ -54,6 +54,7 @@ public class Player implements Serializable {
 
     /**
      * This method is called when a player wants to look at one of the decks placed on the board during the construction phase
+     *
      * @param direction witch of the group the player wants to look
      *                  <ul>
      *                  <li>North: deck on top (forbidden action)</li>
@@ -91,6 +92,7 @@ public class Player implements Serializable {
      * This method is called by the controller when the player during the building phase wants to secure a component so he could use it later (or not, penalty at the end of the game).
      * This method is available only for the standard game. (not in quick game)
      * Each player can have maximum 2 secured component at the same time.
+     *
      * @param component the component that the player wants to secure
      */
     public void secureComponent(CardComponent component) {
@@ -105,6 +107,7 @@ public class Player implements Serializable {
 
     /**
      * This method adds a CardComponent to the ship
+     *
      * @param component the Card to add
      * @param row to identify in witch row on the plance the card will be added
      * @param col to identify in witch col on the plance the card will be added
@@ -115,6 +118,7 @@ public class Player implements Serializable {
 
     /**
      * This method is used to re-add a drawn but not used CardComponent to the deck.
+     *
      * @param component the card that needs to be re-added
      */
     public void dismissComponent(CardComponent component) {
@@ -126,6 +130,7 @@ public class Player implements Serializable {
     /**
      * This method is called by the controller when the player wants to add to his ship a CardComponent that has been secured in the past.
      * That is possible only in the standard game, not in the quick version.
+     *
      * @param component
      */
     public void useExtraComponent(CardComponent component) {
@@ -141,10 +146,7 @@ public class Player implements Serializable {
         }else throw new InvalidGameActionException("This action is forbidden in quick game");
     }
 
-    /**
-     *This method
-     * @return the result of the dices
-     */
+    /** @return the result of the dices*/
     public int throwDice(){
         Random dice1 = new Random();
         Random dice2 = new Random();
@@ -154,13 +156,16 @@ public class Player implements Serializable {
 
     /**
      * This method is used when the player has to receive credits at the end of the game
+     *
      * @param credits
      */
     public void receiveCredits(int credits) {
         this.credits += credits ;
     }
+
     /**
-     * This method is used when the player loose credits due to extra components on his plance(secured but not used or destroyed)
+     * This method is used when the player loose credits due to extra components on his plance (secured but not used or destroyed)
+     *
      * @param credits
      */
     public void LostCredits(int credits) {
@@ -168,26 +173,19 @@ public class Player implements Serializable {
         if (credits<0) this.credits = 0;
     }
 
-
     /**
      * This method is used to find out how many exposed connectors a ship has.
+     *
      * @return the number of exposed connectors
      */
     public int getExposed_connectors() {
+        exposed_connectors = getShip().calculateExposedConnectors();
         return exposed_connectors;
     }
 
     /**
-     * This method updates the list of exposed connectors for the player's ship.
-     * Calls {@code calculateExposedConnectors()} on the player's ship to determine
-     * which connectors are currently not connected to other components.
-     */
-    public void setExposed_connectors() {
-        this.exposed_connectors = ship.calculateExposedConnectors();
-    }
-
-    /**
      * This method is used to find out how many credits a player has.
+     *
      * @return the number of credits
      */
     public int getCredits() {
@@ -201,7 +199,6 @@ public class Player implements Serializable {
      */
     public void leaveGame(){
         game.removePlayer(this);
-
 
     }
 

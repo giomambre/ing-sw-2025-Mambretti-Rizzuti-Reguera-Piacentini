@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Map;
 import static it.polimi.ingsw.model.enumerates.Direction.North;
 
 /**
- * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * This class is a sublass of {@code CardAdventure}, from which it inherits attributes and methods
  * <ul>
  *     <li>crewmates_loss: how many crewmates the player with the weakest engines loses</li>
  *     <li>cargo_loss: how many cargo units the player with the least engine power loses</li>
@@ -27,25 +28,26 @@ import static it.polimi.ingsw.model.enumerates.Direction.North;
  *     or the player with the fewest crew members.</li>
  * </ul>
  */
-public class CombatZone extends CardAdventure{
+public class CombatZone extends CardAdventure implements Serializable {
     private int crewmates_loss;
     private int cargo_loss;
+    private int id;
     private List<Pair<MeteorType, Direction>> meteors;
 
     /**
      * @param level must be level 1 or 2
      * @param cost_of_days indicates how many position in the board the player will lose. Can be =0
      * @param type
-     * @param board
      * @param crewmates_loss
      * @param cargo_loss
      * @param meteors
      */
-    public CombatZone(int level, int cost_of_days, CardAdventureType type, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors) {
+    public CombatZone(int level, int cost_of_days, CardAdventureType type,int id, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors) {
         super(level, cost_of_days, type);
         this.crewmates_loss=crewmates_loss;
         this.cargo_loss=cargo_loss;
         this.meteors = meteors;
+        this.id = id;
     }
 
     /**
@@ -57,6 +59,7 @@ public class CombatZone extends CardAdventure{
 
     /**
      * This method applies a crew loss penalty to the player with the weakest engine power.
+     *
      * @param player the player with the weakest engine power
      * @param astronaut_losses a map linking ship components to the number of crew members to remove
      */
@@ -81,6 +84,7 @@ public class CombatZone extends CardAdventure{
     // LessCrewmates2 e LessCannonPower1 vengono gestiti con la execute di meteorswarm
     /**
      * This method applies a cargo loss penalty to the player with the weakest engine power.
+     *
      * @param player the player with the weakest engine power
      * @param cargo_position a map linking storage components to a sub-map of cargo types and their quantities to remove
      */
@@ -113,5 +117,17 @@ public class CombatZone extends CardAdventure{
      */
     public void executeLessCannonPower2(Player player) {
         board.movePlayer(player, -getCost_of_days());
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public int getCrewmates_loss() {
+        return crewmates_loss;
+    }
+
+    public int getCargo_loss() {
+        return cargo_loss;
     }
 }

@@ -21,7 +21,7 @@ public class Board {
         this.game = game;
     }
 
-    public void putplayersonboard(List<Player> players){
+    public void putPlayersOnBoard(List<Player> players){
         int[] starting_positions = {7, 4, 2, 1}; // the first player that end the build is the first in the active player list
         int i = 0;
         for (Player player : players) {
@@ -31,7 +31,6 @@ public class Board {
     }
 
     /**
-     * This method
      * @return leader
      */
     public Player getBoard_leader() {
@@ -40,6 +39,7 @@ public class Board {
 
     /**
      * this method is called to eventually change the board leader.
+     *
      * @see Board checkleader method used at the beginning to check who's the leader
      */
     public void changeBoard_leader() {
@@ -48,6 +48,7 @@ public class Board {
 
     /**
      * this method is called to check who's the current board leader on the board that is passed as parameter
+     *
      * @param player_position The map on which we want to find out who's the leader at the moment
      * @return returns the current leader
      */
@@ -96,8 +97,7 @@ public class Board {
     }
 
     /**
-     * This method
-     * @param p
+     * @param p player
      * @return position of player p
      */
     public int getPlayerPosition(Player p) {
@@ -113,6 +113,7 @@ public class Board {
     /**
      * This method moves the player p on the board of n=pos positions.
      * <ul></ul>Then update his position in player_positions and deletes the old one.
+     *
      * @param p the player that needs to move his rocket
      * @param pos the number of position gained (if pos>0) or lost (if pos<0)
      */

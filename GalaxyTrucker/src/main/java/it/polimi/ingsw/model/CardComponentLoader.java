@@ -25,6 +25,7 @@ public class CardComponentLoader {
 
     /**
      * Loads a list of {@code CardComponent} objects from a JSON file.
+     *
      * @param jsonFilePath the path to the JSON file containing the card data
      * @return a list of card component parsed from the file
      * @throws IOException if the file cannot be read or parsed

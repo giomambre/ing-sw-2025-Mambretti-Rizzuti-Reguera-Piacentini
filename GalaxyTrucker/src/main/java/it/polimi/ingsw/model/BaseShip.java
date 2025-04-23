@@ -524,6 +524,7 @@ public abstract class BaseShip {
     /**
      * This method identifies all connected components (pieces) on the ship's board and deletes
      * all components except the one specified by the {@code choose} index.
+     *
      * @param choose the index of the component to retain; all other components will be removed
      */
     public void choosePiece(int choose){
@@ -539,6 +540,7 @@ public abstract class BaseShip {
     /**
      * For each coordinate in the provided list, this method invokes {@code removeComponent(row, col)}
      * to eliminate the corresponding component from the board.
+     *
      * @param piece a list of coordinate pairs representing the connected component to be removed
      */
     public void deletePiece(List<Pair<Integer, Integer>> piece){
@@ -551,6 +553,7 @@ public abstract class BaseShip {
 
     /**
      * Removes the component located at the specified position on the ship's board by replacing it with an empty cell.
+     *
      * @param row the row index of the component to remove
      * @param col the column index of the component to remove
      */
@@ -571,6 +574,7 @@ public abstract class BaseShip {
     /**
      * Returns a list of coordinates for all components on the ship's board.
      * This method scans the entire board and collects the positions of all components that are neither empty nor marked as not accessible.
+     *
      * @return a list of coordinate pairs representing the non-empty and accessible components on the ship's board
      */
     public List<Pair<Integer, Integer>> printShipPlance() {

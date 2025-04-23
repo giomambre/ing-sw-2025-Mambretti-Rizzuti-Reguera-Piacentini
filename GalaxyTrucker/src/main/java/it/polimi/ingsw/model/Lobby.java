@@ -16,6 +16,7 @@ public class Lobby {
 
     /**
      * Creates a new lobby with the specified creator and player limit.
+     *
      * @param creator the username of the player who creates the lobby
      * @param limit   the maximum number of players allowed in the lobby
      */
@@ -28,6 +29,7 @@ public class Lobby {
 
     /**
      * Adds a player to the lobby if there is space and the player is not already present.
+     *
      * @param joiner the username of the player who wants to join
      * @throws IllegalStateException    if the lobby is full
      * @throws IllegalArgumentException if the player is already in the lobby
@@ -44,6 +46,7 @@ public class Lobby {
 
     /**
      * Checks if the lobby has reached its player limit.
+     *
      * @return true if the lobby is full, false otherwise
      */
     public boolean isLobbyFull(){
@@ -52,6 +55,7 @@ public class Lobby {
 
     /**
      * Removes a player from the lobby.
+     *
      * @param player the username of the player to remove
      */
     public void removePlayer(String player){
@@ -60,6 +64,7 @@ public class Lobby {
 
     /**
      * Checks if a player is currently in the lobby.
+     *
      * @param p the username of the player
      * @return true if the player is in the lobby, false otherwise
      */
@@ -84,6 +89,7 @@ public class Lobby {
 
     /**
      * Sets the global lobby counter.
+     *
      * @param count the new value of the static lobby counter
      */
     public static void setCount(int count) {

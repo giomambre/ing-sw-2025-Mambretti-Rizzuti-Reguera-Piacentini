@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
@@ -16,10 +18,7 @@ import java.net.Socket;
 
 import java.io.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -35,10 +34,11 @@ public class Client {
     private static GameState gameState;
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
+    private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("4.tcp.eu.ngrok.io", 19491);
+            Socket socket = new Socket("localhost", 12345);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
@@ -55,15 +55,16 @@ public class Client {
             new Thread(() -> {
                 try {
                     while (true) {
+
                         Message msg = (Message) in.readObject();
 
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
-                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , ASK_CARD, CARD_UNAVAILABLE:
+                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS:
+                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -132,6 +133,10 @@ public class Client {
                 if (join_or_create == 1) {
 
                     int num = virtualView.askNumPlayers();
+                    if(num ==-1){
+                        elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
+                        break;
+                    }
                     to_send = new CreateLobbyMessage(MessageType.CREATE_LOBBY, "", clientId, num);
                     try {
                         out.writeObject(to_send);
@@ -245,14 +250,23 @@ public class Client {
 
 
                 }
+                else if (deck_selected == 4) {
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
+                    elaborate(new Message(MessageType.BUILD_PHASE_ENDED, ""));
+                }
+
                 break;
+
             case CARD_UNAVAILABLE:
                 virtualView.showMessage("\nLa carta richiesta non è più disponibile ! ");
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
+            case UNAVAILABLE_PLACE:
+                virtualView.showMessage("\nNon puoi posizionare la carta in questa fase del gioco ! ");
+            break;
 
-            case ASK_CARD:
+            case CARD_COMPONENT_RECEIVED:
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
@@ -299,8 +313,36 @@ public class Client {
 
 
                 }
+
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
+
+            case TIME_UPDATE:
+                TimeUpdateMessage time_msg = (TimeUpdateMessage) msg;
+                switch (time_msg.getId()) {
+                    case 1:
+                        virtualView.showMessage("\nNessuno ha ancora finito l'assemblaggio, partono ulteriori 30 sec");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        break;
+                    case 2:
+                        virtualView.showMessage("\nFase di assemblaggio finita.");
+                        elaborate(new Message(MessageType.FLIGHT_PHASE, ""));
+                        break;
+                    case 3:
+                        virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
+                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        break;
+
+                }
+                break;
+
+            case BUILD_PHASE_ENDED:
+                BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
+                switch (build_msg.getPos()){
+                    case 1:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
+                        break;
+                }
         }
     }
 
@@ -364,6 +406,14 @@ public class Client {
                 break;
 
 
+
+            case DECK_CARD_ADVENTURE_UPDATED:
+
+                CardAdventureDeckMessage adm = (CardAdventureDeckMessage) msg;
+                local_adventure_deck = adm.getDeck();
+                ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
+                System.out.println("arrivate ");
+                break;
 
 
         }

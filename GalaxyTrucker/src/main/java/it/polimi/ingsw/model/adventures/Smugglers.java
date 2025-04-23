@@ -8,18 +8,19 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.Cargo;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
- * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * This class is a sublass of {@code CardAdventure}, from which it inherits attributes and methods
  * <ul>
  *     <li>cannons_strenght: the cannon power of card
  *     <li>cargo_rewards: the list of cargo that the player can load onto the ship</li>
  *     <li>cargo_loss: how much cargo the player loses</li>
  * </ul>
  */
-public class Smugglers extends CardAdventure {
+public class Smugglers extends CardAdventure implements Serializable {
     private int cannons_strenght;
     private List<Cargo> cargo_rewards;
     private int cargo_loss;
@@ -28,7 +29,6 @@ public class Smugglers extends CardAdventure {
      * @param level        must be level 1 or 2
      * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be =0
      * @param type
-     * @param board
      * @param cannons_strenght
      * @param cargo_rewards
      * @param cargo_loss
@@ -42,13 +42,13 @@ public class Smugglers extends CardAdventure {
 
     /**
      * This method is called when the player's cannon strenght is greater than the enemy's.
-     * If the player decides to claim the reward, the method first calls the 'getShip' function of the player in order to get the player's ship.
-     * It moves the player back by 'getCost_of_days' positions using the 'movePlayer' function,
-     * and finally allows adding the cargo through the 'addCargo' function at the 'new_cargo_position' position.
+     * If the player chooses to claim the reward, the method first retrieves the player's ship using {@code getShip}.
+     * It moves the player back by the number of days defined by {@code getCost_of_days}
+     * and finally allows adding the cargo to the indicated positions on the ship using {@code addCargo}.
      *
      * @param player
-     * @param new_cargo_position
-     * @param choice the boolean that rappresents the player's desire to recive the reward or not.
+     * @param new_cargo_position a map linking ship components to the cargos and quantities to be added
+     * @param choice a boolean indicating the player's desire to receive the reward or not.
      */
     public void executeWin(Player player, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
         if (choice) {
@@ -75,12 +75,12 @@ public class Smugglers extends CardAdventure {
 
     /**
      * This method is called when the player's cannon strenght is lower than the enemy's.
-     * The method first calls the 'getShip' function of the player in order to get the player's ship.
-     * It moves the player back by 'getCost_of_days' positions using the 'movePlayer' function,
-     * and finally removes cargo through the 'removeCargo' function from the 'cargo_position' position.
+     * The method first retrieves the player's ship using {@code getShip},
+     * then moves the player back by the number of days defined by {@code getCost_of_days},
+     * and finally removes cargo from the specified components using {@code removeCargo}.
      *
-     * @param player
-     * @param cargo_position
+     * @param player the player who suffers the penalty
+     * @param cargo_position a map linking storage components to the cargos and quantities to be removed
      */
     public void executeLoss(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
         Ship ship_player = player.getShip();
@@ -100,6 +100,21 @@ public class Smugglers extends CardAdventure {
 
 
         }
+    }
+
+    /** @return the cannon strength*/
+    public int getCannons_strenght() {
+        return cannons_strenght;
+    }
+
+    /** @return a list of cargo rewards*/
+    public List<Cargo> getCargo_rewards() {
+        return cargo_rewards;
+    }
+
+    /** @return a list of lost cargo*/
+    public int getCargo_loss() {
+        return cargo_loss;
     }
 }
 

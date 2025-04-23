@@ -11,16 +11,18 @@ import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 
+import java.io.Serializable;
+
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 /**
- * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * This class is a sublass of {@code CardAdventure}, from which it inherits attributes and methods
  * <ul>
  *     <li>ROWS: number of rows of the ship's plance</li>
  *     <li>COLS: number of rows of the ship's plance</li>
  * </ul>
  */
-public class Epidemic extends CardAdventure {
+public class Epidemic extends CardAdventure implements Serializable {
     int ROWS=5 , COLS=7;
 
     /**
@@ -28,16 +30,16 @@ public class Epidemic extends CardAdventure {
      * @param level
      * @param cost_of_days
      * @param type
-     * @param board
      */
     public Epidemic(int level, int cost_of_days, CardAdventureType type) {
         super(level, cost_of_days, type);
     }
 
     /**
-     * This method is called to remove one crewmate from each occupied 'LivingUnit' component card
-     * that is connected with another occupied cabin.
-     * It checks all adjacent card.
+     * The method iterates through all ship components, and for each valid {@code LivingUnit} component,
+     * it checks the four adjacent components (up, down, left, right).
+     * If both components in a pair are occupied and connected, one crewmate is removed from each.
+     *
      * @param player
      */
     public void execute(Player player) {
@@ -60,6 +62,7 @@ public class Epidemic extends CardAdventure {
 
     /**
      * This method checks if the given component is a living unit or a matches the specified main unit type.
+     *
      * @param component
      * @param mainUnit
      * @return true if the component is a living unit or has the same type as the main unit.
@@ -71,6 +74,7 @@ public class Epidemic extends CardAdventure {
     /**
      * Removes one crewmate from each of two connected living units on the ship,
      * if both have at least one crewmate and are connected through the specified directions.
+     *
      * @param ship
      * @param row1 the row of the first component
      * @param col1 the column of the first component
@@ -93,6 +97,7 @@ public class Epidemic extends CardAdventure {
 
     /**
      * This method checks wether the specified row and column are within the valid bounds of the ship grid.
+     *
      * @param row
      * @param col
      * @return true if the position is within the ship's grid; false otherwise
@@ -105,6 +110,7 @@ public class Epidemic extends CardAdventure {
      * Checks whether two components on the ship are connected through the given directions.
      * The connection is valid if the second component is a valid living unit (or matches the main unit type),
      * and the connectors on both components are compatible in the specified directions.
+     *
      * @param ship
      * @param row1 the row of the first component
      * @param col1 the column of the first component
