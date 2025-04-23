@@ -30,6 +30,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.West;
  */
 public abstract class BaseGame {
     protected List<Player> players = new ArrayList<>();
+    protected List<Player> build_phase_players = new ArrayList<>();
     protected int numPlayers;
     protected List<Player> active_players = new ArrayList<>();
     protected List<CardComponent> deck_components = new ArrayList<>();
@@ -405,6 +406,14 @@ public abstract class BaseGame {
         adventure.changeFace();
         if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO"); //manca da fare la gestione della fine del gioco
         return adventure;
+    }
+
+    public void addBuildPhasePlayer(Player player) {
+        build_phase_players.add(player);
+    }
+
+    public List<Player> getBuildPhasePlayers() {
+        return build_phase_players;
     }
 
 }

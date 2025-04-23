@@ -209,18 +209,15 @@ public class GameController {
         return game.getCards_faced_up();
     }
 
-    public void addActivePlayer(String nickname) {
+    public void addBuildPhasePlayer(String nickname) {
         Player p = game.getPlayer(nickname);
-        if(!game.getActivePlayers().contains(p)) {
-            game.addPlayer(p);
-
-            List<Player> players = game.getPlayers();
-            game.setActivePlayers(players);
+        if(!game.getBuildPhasePlayers().contains(p)) {
+            game.addBuildPhasePlayer(p);
         }
     }
 
-    public List<Player> getActivePlayers() {
-        return game.getActivePlayers();
+    public List<Player> getBuildPhasePlayers() {
+        return game.getBuildPhasePlayers();
     }
 
 }

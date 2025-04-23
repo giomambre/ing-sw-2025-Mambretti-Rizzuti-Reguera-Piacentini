@@ -300,9 +300,9 @@ public class Server {
             System.out.println("⏰ Timer extra scaduto in lobby " + lobbyId + ": Fase di assemblaggio finita.");
             sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 2));
             buildPhaseActives.put(lobbyId, false);
-            if(controller.getActivePlayers().size() != controller.getLobby().getLimit()) {
+            if(controller.getBuildPhasePlayers().size() != controller.getLobby().getLimit()) {
                 for (String nickname : controller.getLobby().getPlayers()) {
-                    controller.addActivePlayer(nickname);
+                    controller.addBuildPhasePlayer(nickname);
                 }
             }
             controller.setGame_state(FIXING_SHIPS);
@@ -323,7 +323,8 @@ public class Server {
         long elapsedSeconds = (System.currentTimeMillis() - buildPhaseStartTimes.get(lobbyId)) / 1000;
         System.out.println("✅ Giocatore ha finito dopo " + elapsedSeconds + " secondi nella lobby " + lobbyId);
 
-        if (elapsedSeconds >= 30 && elapsedSeconds <= 60 && controller.getActivePlayers().isEmpty()) {
+
+        if (elapsedSeconds >= 30 && elapsedSeconds <= 60 && controller.getBuildPhasePlayers().isEmpty()) {
             System.out.println("🕒 Partono 30 secondi extra per dichiarazione nella lobby " + lobbyId);
 
             ScheduledFuture<?> task = buildPhaseTasks.get(lobbyId);
@@ -331,15 +332,15 @@ public class Server {
                 task.cancel(false);
             }
 
-            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getActivePlayers().size()) );
-            controller.addActivePlayer(getNickname(playerId));
+            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getBuildPhasePlayers().size()) );
+            controller.addBuildPhasePlayer(getNickname(playerId));
 
             sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 3));
             startExtra30Seconds(lobbyId);
 
         } else {
-            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getActivePlayers().size()) );
-            controller.addActivePlayer(getNickname(playerId));
+            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getBuildPhasePlayers().size()) );
+            controller.addBuildPhasePlayer(getNickname(playerId));
         }
     }
 

@@ -60,11 +60,12 @@ public class Client {
 
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
-                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE:
+                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
+                                 CARD_UNAVAILABLE,  UNAVAILABLE_PLACE, BUILD_PHASE_ENDED:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED:
+                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -252,7 +253,7 @@ public class Client {
                 }
                 else if (deck_selected == 4) {
                     virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
-                    elaborate(new Message(MessageType.BUILD_PHASE_ENDED, ""));
+                    out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
 
                 break;
@@ -317,24 +318,7 @@ public class Client {
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
-            case TIME_UPDATE:
-                TimeUpdateMessage time_msg = (TimeUpdateMessage) msg;
-                switch (time_msg.getId()) {
-                    case 1:
-                        virtualView.showMessage("\nNessuno ha ancora finito l'assemblaggio, partono ulteriori 30 sec");
-                        elaborate(new Message(MessageType.BUILD_START, ""));
-                        break;
-                    case 2:
-                        virtualView.showMessage("\nFase di assemblaggio finita.");
-                        elaborate(new Message(MessageType.FLIGHT_PHASE, ""));
-                        break;
-                    case 3:
-                        virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
-                        elaborate(new Message(MessageType.BUILD_START, ""));
-                        break;
 
-                }
-                break;
 
             case BUILD_PHASE_ENDED:
                 BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
@@ -413,6 +397,25 @@ public class Client {
                 local_adventure_deck = adm.getDeck();
                 ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
                 System.out.println("arrivate ");
+                break;
+
+            case TIME_UPDATE:
+                TimeUpdateMessage time_msg = (TimeUpdateMessage) msg;
+                switch (time_msg.getId()) {
+                    case 1:
+                        virtualView.showMessage("\nNessuno ha ancora finito l'assemblaggio, partono ulteriori 30 sec");
+
+                        break;
+                    case 2:
+                        virtualView.showMessage("\nFase di assemblaggio finita.");
+
+                        break;
+                    case 3:
+                        virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
+
+                        break;
+
+                }
                 break;
 
 
