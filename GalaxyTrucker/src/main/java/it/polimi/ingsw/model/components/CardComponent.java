@@ -12,12 +12,14 @@ import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
 /**
- * This class represents a Card Component. Each card has:
+ * This class represents a Card Component.
+ * Each card has:
  * <ul>
- *     <li>component_type: indicates the type of the component card
- *     <li>connectors: Indicates for each direction (N,S,O,W) witch type of connectors it's present
- *     @see ComponentType ComponentType: to see the different types of card that compose the deck
+ *     <li>component_type: the type of the component card
+ *     <li>connectors: a map indicating which type of connector is present in each direction (N,S,O,W)
  * </ul>
+ *
+ * @see ComponentType ComponentType: to see the different types of card that compose the deck
  */
 
 public class CardComponent implements Serializable {
@@ -25,6 +27,10 @@ public class CardComponent implements Serializable {
     private Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
     private UUID card_uuid;
 
+    /**
+     * @param component_type the type of the component
+     * @param connectors a map of connectors for each direction
+     */
     public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors){
         card_uuid = UUID.randomUUID();
         this.component_type = component_type;
@@ -34,8 +40,9 @@ public class CardComponent implements Serializable {
 
     /**
      * This method tells us, giving a direction, witch type of connector is present on the card in that direction.
-     * @param direction   North, East, South, West
-     * @return one of the followings connector type:   Universal,Double,Single,Smooth,Cannon_Connector,Engine_Connector,EmptyConnector
+     *
+     * @param direction  North, East, South, West
+     * @return one of the followings connector type: Universal, Double, Single, Smooth, Cannon_Connector, Engine_Connector, EmptyConnector
      */
     public ConnectorType getConnector_type(Direction direction) {
         return connectors.get(direction);
@@ -43,6 +50,7 @@ public class CardComponent implements Serializable {
 
     /**
      * This method tells us, giving a connector type, witch types of connector can be connected to it.
+     *
      * @param connector
      * @return : a list containing all the possible connector that matches with the given one
      */
@@ -90,6 +98,7 @@ public class CardComponent implements Serializable {
 
     /**
      * This method, called on a Card component, tells us witch type of card is.
+     *
      * @return the type of the card
      * @see ComponentType Component type: contains all the possible types that can be returned
      */
@@ -99,6 +108,7 @@ public class CardComponent implements Serializable {
 
     /**
      * This method, given a Direction, tells witch type of connector is present in that direction.
+     *
      * @param direction North, East, South, West
      * @return  one of the followings: Universal,Double,Single,Smooth,Cannon_Connector,Engine_Connector,EmptyConnector
      */
@@ -106,12 +116,11 @@ public class CardComponent implements Serializable {
         return connectors.get(direction);
     }
 
+    //non bisogna magari eliminare il vecchio riferimento non ruotato??
     /**
      * This method rotate the card of 90 degrees in a counterclockwise direction.
      * It's called by the controller when the player is building his ship and wants to rotate a certain card component.
      */
-
-    //non bisogna magari eliminare il vecchio riferimento non ruotato??
     public void rotate() {
         Map<Direction, ConnectorType> rotated = new EnumMap<>(Direction.class);
 
@@ -124,11 +133,16 @@ public class CardComponent implements Serializable {
         connectors = rotated;
     }
 
-
+    /**
+     * This method sets the unique identifier (UUID) of this card component.
+     *
+     * @param card_uuid the UUID to assign
+     */
     public void setCard_uuid(UUID card_uuid) {
         this.card_uuid = card_uuid;
     }
 
+    /** @return the unique identifier of this card component*/
     public UUID getCard_uuid() {
         return card_uuid;
     }
@@ -142,13 +156,18 @@ public class CardComponent implements Serializable {
                 '}';
     }
 
-
+    /**
+     * This method creates and returns a copy of this component card, including its UUID.
+     *
+     * @return a new identical {@code CardComponent}
+     */
     public CardComponent copy() {
         CardComponent copy = new CardComponent(component_type, connectors);
         copy.setCard_uuid(card_uuid);
         return copy;
     }
 
+    /** @return a map of directions to connector types*/
     public Map<Direction, ConnectorType> getConnectors() {
         return connectors;
     }

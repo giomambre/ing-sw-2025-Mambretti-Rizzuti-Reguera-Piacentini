@@ -67,6 +67,7 @@ public abstract class BaseGame {
 
     /**
      * Gives the final ranking of the players based on the criteria of SetRewards method.
+     *
      * @param players
      */
     public void setRanking(List<Player> players) {
@@ -76,6 +77,7 @@ public abstract class BaseGame {
 
     /**
      * called by the controller to give to each player a local copy of the decks present on the board
+     *
      * @return a map having as key a direction that corresponds to a deck. (South=middle, East=Right, West=Left)
      */
     public abstract Map<Direction,List<CardAdventure>> seeDecksOnBoard();
@@ -83,6 +85,7 @@ public abstract class BaseGame {
 
     /**
      * Sets the adventure deck with the given list of adventure cards.
+     *
      * @param deck_adventure
      */
     public void setDeck_adventure(List<CardAdventure> deck_adventure) {
@@ -224,6 +227,7 @@ public abstract class BaseGame {
 
     /**
      *this method is used to initialise the deck of CardComponents before building the ship
+     *
      * @param deck_components the entire list of CardComponent used to build the ships
      */
     public void setDeck_components(List<CardComponent> deck_components) {
@@ -264,6 +268,7 @@ public abstract class BaseGame {
 
     /**
      * this method is called at the beginning of the game to add all the participants to the list of active_players
+     *
      * @param players the list of participants in the game
      */
     public void setActivePlayers(List<Player> players) {
@@ -272,6 +277,7 @@ public abstract class BaseGame {
 
     /**
      * this method is called when a player join the game
+     *
      * @param player the participant
      */
     public void addPlayer(Player player) {
@@ -280,6 +286,7 @@ public abstract class BaseGame {
 
     /**
      * @return return a random card component from the deck that is faced up
+     *
      * @see CardComponent as 'random card component' we mean a card component whose face_down==true
      */
     public CardComponent getRandomCardComponent() {
@@ -289,6 +296,7 @@ public abstract class BaseGame {
 
     /**
      * This method is called when the player wants to pick a card from the faced up cards
+     *
      * @return  the card of Card selected
      */
     public CardComponent getFacedUpCard(int index) {
@@ -297,6 +305,7 @@ public abstract class BaseGame {
 
     /**
      * this method is called when a player loose or choose to give up
+     *
      * @param player
      */
     public void removePlayer(Player player) {
@@ -305,6 +314,7 @@ public abstract class BaseGame {
 
     /**
      * This method is used to find a player
+     *
      * @param nickname
      * @return player called 'nickname'
      */
@@ -348,6 +358,7 @@ public abstract class BaseGame {
 
     /**
      * Sets the list of players participating in the game.
+     *
      * @param players
      */
     public void setPlayers(List<Player> players) {
@@ -356,6 +367,7 @@ public abstract class BaseGame {
 
     /**
      * Sets the number of players in the game.
+     *
      * @param numPlayers
      */
     public void setNumPlayers(int numPlayers) {
@@ -378,6 +390,7 @@ public abstract class BaseGame {
 
     /**
      * Sets the list of players who are currently active in the game.
+     *
      * @param active_players
      */
     public void setActive_players(List<Player> active_players) {
@@ -386,6 +399,7 @@ public abstract class BaseGame {
 
     /**
      * Sets the board for game.
+     *
      * @param board
      */
     public void setBoard(Board board) {
@@ -399,6 +413,7 @@ public abstract class BaseGame {
 
     /**
      * this method is called by the leader to draw the next card adventure
+     *
      * @return it returns the first card adventure of the deck, if we already solved all the adventures it returns null
      */
     public CardAdventure getRandomCardAdventure() {
