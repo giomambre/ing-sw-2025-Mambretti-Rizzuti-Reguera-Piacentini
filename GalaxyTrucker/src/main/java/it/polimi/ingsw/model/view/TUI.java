@@ -562,7 +562,7 @@ public class TUI implements View {
         do {
             out.println("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
             selected = readInt();
-        } while (selected != 1 && selected != 2 && selected != 3);
+        } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
         return selected;
 
 
