@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
@@ -61,7 +62,7 @@ public class Client {
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
                                  CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
-                                 CARD_UNAVAILABLE,  UNAVAILABLE_PLACE:
+                                 CARD_UNAVAILABLE, FORCE_BUILD_PHASE_END,  UNAVAILABLE_PLACE, ADD_CREWMATES:
                                 inputQueue.put(msg);
                                 break;
 
@@ -244,8 +245,13 @@ public class Client {
                         break;
                     } else {
 
+
                         int index = virtualView.askSecuredCard(player_local.getShip().getExtra_components());
-                        elaborate(new CardComponentMessage(MessageType.ASK_CARD, "", clientId, player_local.getShip().getExtra_components().get(index)));
+                        if (index == -1) {
+                            elaborate(new Message(MessageType.BUILD_START, ""));
+                        } else if (index >= 0 && index < player_local.getShip().getExtra_components().size()) {
+                            elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, player_local.getShip().getExtra_components().get(index)));
+                        }
 
                     }
 
@@ -313,10 +319,46 @@ public class Client {
                     }
 
 
+
+
                 }
 
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
+
+            case FORCE_BUILD_PHASE_END:
+
+                out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
+                break;
+
+            case ADD_CREWMATES:
+                sel = virtualView.crewmateAction();
+                CrewmateType type;
+                if (sel != 4) {
+                    if (sel == 1) {
+                        type = CrewmateType.Astronaut;
+                    } else if (sel == 2) {
+                        type = CrewmateType.PinkAlien;
+                    } else {
+                        type = CrewmateType.BrownAlien;
+                    }
+
+                    Pair<Integer, Integer> coords = virtualView.askCoordsCrewmate(player_local.getShip());
+                    if (coords.getKey() == -1 || coords.getValue() == -1) {
+                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
+                        break;
+                    } else {
+                        out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
+                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
+                        break;
+                    }
+                } else {
+                    virtualView.showMessage("Hai terminato la fase di equipaggiamento");
+                    out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
+                }
+                break;
+
+
 
 
 
@@ -401,7 +443,6 @@ public class Client {
                         break;
                     case 2:
                         virtualView.showMessage("\nFase di assemblaggio finita.");
-
                         break;
                     case 3:
                         virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
@@ -427,7 +468,7 @@ public class Client {
                         virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
                         break;
                 }
-
+                break;
 
 
         }

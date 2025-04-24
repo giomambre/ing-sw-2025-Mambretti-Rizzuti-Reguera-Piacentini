@@ -19,6 +19,9 @@ public interface View {
     public int askNumPlayers();
     public int showLobbies(List<Integer> lobbies);
     public Color askColor(List<Color> colors);
+
+    Pair<Integer, Integer> askCoordsCrewmate(Ship ship);
+
     public void showPlayer(Player player);
     void showShip(String nickname);
 
@@ -27,6 +30,9 @@ public interface View {
     void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
 
     int selectDeck();
+
+    int crewmateAction();
+
     int askFacedUpCard(List<CardComponent> cards);
     int askSecuredCard(List<CardComponent> cards);
 
