@@ -29,7 +29,7 @@ public enum MessageType {
     ADD_CREWMATES,
     CHECK_SHIPS,
     FLIGHT_PHASE,
-    ;
+
 
 
 }

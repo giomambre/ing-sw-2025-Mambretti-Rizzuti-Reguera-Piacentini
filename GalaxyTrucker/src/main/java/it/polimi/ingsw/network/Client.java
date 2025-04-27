@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.view.GUI;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
@@ -48,9 +49,16 @@ public class Client {
                 clientId = ((StandardMessageClient) response).getId_client();
                 System.out.println("✅ Connesso con UUID: " + clientId);
             }
+            int choice = -1;
 
+            do {
+                System.out.println("Inserisci 1 per la TUI 2 per la GUI : ");
+
+            }while (choice != 1 && choice != 2);
+
+            if(choice == 1)
             virtualView = new TUI();
-
+            else virtualView = new GUI();
 
 
             new Thread(() -> {
