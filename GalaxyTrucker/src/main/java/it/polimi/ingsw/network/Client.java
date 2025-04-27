@@ -43,7 +43,7 @@ public class Client {
             Socket socket = new Socket("localhost", 12345);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-
+            Scanner scanner = new Scanner(System.in);
             Message response = (Message) in.readObject();
             if (response.getType() == MessageType.ASSIGN_UUID) {
                 clientId = ((StandardMessageClient) response).getId_client();
@@ -53,6 +53,7 @@ public class Client {
 
             do {
                 System.out.println("Inserisci 1 per la TUI 2 per la GUI : ");
+                choice = scanner.nextInt();
 
             }while (choice != 1 && choice != 2);
 
