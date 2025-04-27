@@ -49,7 +49,7 @@ public class GUI extends JFrame implements View {
 
     @Override
     public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
+        JOptionPane.showMessageDialog(this, message, "Messaggio", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class GUI extends JFrame implements View {
 
     @Override
     public void showGenericError(String error) {
-
+        JOptionPane.showMessageDialog(this, error, "Errore", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
@@ -81,7 +81,21 @@ public class GUI extends JFrame implements View {
 
     @Override
     public int askNumPlayers() {
-        return 0;
+        JComboBox<Integer> comboBox = new JComboBox<>(new Integer[]{2, 3, 4});
+
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                comboBox,
+                "Seleziona il numero di giocatori",
+                JOptionPane.OK_CANCEL_OPTION, //pulsante ok e pulsante cancel
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            return (Integer) comboBox.getSelectedItem();
+        } else {
+            return -1;
+        }
     }
 
     @Override
@@ -91,7 +105,32 @@ public class GUI extends JFrame implements View {
 
     @Override
     public Color askColor(List<Color> colors) {
-        return null;
+        // Crea un array di stringhe con i nomi dei colori
+        String[] colorNames = colors.stream() //JAVA FUNZIONALE, se vogliamo cambiarlo cambiamo
+                .map(Color::name)
+                .map(String::toLowerCase)
+                .toArray(String[]::new);
+
+        JComboBox<String> comboBox = new JComboBox<>(colorNames);
+
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                comboBox,
+                "Scegli il tuo colore",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            String selectedName = (String) comboBox.getSelectedItem();
+            for (Color color : colors) {
+                if (color.name().equalsIgnoreCase(selectedName)) {
+                    return color;
+                }
+            }
+        }
+
+        return null; // se annulla o chiude
     }
 
     @Override
