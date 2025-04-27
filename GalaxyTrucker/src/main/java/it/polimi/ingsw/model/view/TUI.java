@@ -17,8 +17,7 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static it.polimi.ingsw.model.enumerates.ComponentType.Empty;
-import static it.polimi.ingsw.model.enumerates.ComponentType.NotAccessible;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 public class TUI implements View {
@@ -165,16 +164,21 @@ public class TUI implements View {
 
     private int readInt() {
         while (true) {
-            String in = "";
+            String in = readLine();
+
+            if (in.equalsIgnoreCase("/menu")) {
+                out.println("Input non valido, inserisci un numero:");
+                continue;
+            }
+
             try {
-                in = readLine();
                 return Integer.parseInt(in);
             } catch (NumberFormatException e) {
-                if (in.toLowerCase().equals("/menu")) out.println("Input non valido, inserisci un numero:");
-
+                out.println("Input non valido, inserisci un numero:");
             }
         }
     }
+
 
     private String readLine() {
         try {
@@ -556,15 +560,26 @@ public class TUI implements View {
 
     @Override
     public int selectDeck() {
-        lastRequest = "Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n";
+        lastRequest = ("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
         int selected = -1;
         do {
-            out.println("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n");
+            out.println("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
             selected = readInt();
-        } while (selected != 1 && selected != 2 && selected != 3);
+        } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
         return selected;
 
 
+    }
+
+    @Override
+    public int crewmateAction(){
+        lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n 4 : terminare l'equipaggiamento\n");
+        int selected = -1;
+        do {
+            out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n 4 : terminare l'equipaggiamento\n" );
+            selected = readInt();
+        } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
+        return selected;
     }
 
 
@@ -624,6 +639,7 @@ public class TUI implements View {
     public int askSecuredCard(List<CardComponent> cards) {
         lastRequest = "Premi l'indice della carta che vuoi prendere (-1 per uscire)\n";
         System.out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)\n");
+
 
         for (int i = 0; i < cards.size(); i++) {
             System.out.println("NUMERO : " + i );
@@ -698,6 +714,40 @@ public class TUI implements View {
                     validInput = true;  // Esci dal ciclo se la posizione è valida
                 } else {
                     out.println("Errore: c'è già una carta in questa poszione.");
+                }
+            }
+        }
+
+        // Restituisci le coordinate valide
+        return new Pair<>(x, y);
+    }
+
+    @Override
+    public Pair<Integer, Integer> askCoordsCrewmate(Ship ship) {
+        int x = -1, y = -1;
+        boolean validInput = false;
+
+        while (!validInput) {
+            lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ";
+            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
+            x = readInt();
+            if (x == -1) return new Pair<>(x, y);
+
+            lastRequest = "Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ";
+            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
+            y = readInt();
+            if (y == -1) return new Pair<>(x, y);
+
+            if (x < 0 || x >= ship.getROWS() || y < 0 || y >= ship.getCOLS()) {
+                out.println("Errore: le coordinate sono fuori dai limiti. Riprova.");
+            } else {
+                // Verifica se la posizione nella nave contiene un componente
+                CardComponent component = ship.getComponent(x, y);
+                if (component.getComponentType() == LivingUnit) {
+                    out.println("Nella posizione c'è una living unit ! ");  // Mostra il componente trovato
+                    validInput = true;  // Esci dal ciclo se la posizione è valida
+                } else {
+                    out.println("Errore: non c'è una carta living unit in questa poszione.");
                 }
             }
         }

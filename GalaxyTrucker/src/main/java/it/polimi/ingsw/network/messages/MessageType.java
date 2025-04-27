@@ -22,6 +22,15 @@ public enum MessageType {
     DISMISSED_CARD,
     UPDATED_SHIPS,
     PLACE_CARD,
+    BUILD_PHASE_ENDED,
+    FORCE_BUILD_PHASE_END,
+    UNAVAILABLE_PLACE,
+    TIME_UPDATE,
+    ADD_CREWMATES,
+    CHECK_SHIPS,
+    FLIGHT_PHASE,
+    ;
+
 
 }
 

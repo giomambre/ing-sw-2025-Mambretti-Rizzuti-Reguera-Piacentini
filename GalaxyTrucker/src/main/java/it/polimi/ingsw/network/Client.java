@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
@@ -60,11 +61,12 @@ public class Client {
 
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
-                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE:
+                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
+                                 CARD_UNAVAILABLE, FORCE_BUILD_PHASE_END,  UNAVAILABLE_PLACE, ADD_CREWMATES:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED:
+                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -243,19 +245,33 @@ public class Client {
                         break;
                     } else {
 
+
                         int index = virtualView.askSecuredCard(player_local.getShip().getExtra_components());
-                        elaborate(new CardComponentMessage(MessageType.ASK_CARD, "", clientId, player_local.getShip().getExtra_components().get(index)));
+                        if (index == -1) {
+                            elaborate(new Message(MessageType.BUILD_START, ""));
+                        } else if (index >= 0 && index < player_local.getShip().getExtra_components().size()) {
+                            elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, player_local.getShip().getExtra_components().get(index)));
+                        }
 
                     }
 
 
                 }
+                else if (deck_selected == 4) {
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
+                    out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
+                }
+
                 break;
+
             case CARD_UNAVAILABLE:
                 virtualView.showMessage("\nLa carta richiesta non è più disponibile ! ");
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
+            case UNAVAILABLE_PLACE:
+                virtualView.showMessage("\nNon puoi posizionare la carta in questa fase del gioco ! ");
+            break;
 
             case CARD_COMPONENT_RECEIVED:
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
@@ -303,9 +319,49 @@ public class Client {
                     }
 
 
+
+
                 }
+
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
+
+            case FORCE_BUILD_PHASE_END:
+
+                out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
+                break;
+
+            case ADD_CREWMATES:
+                sel = virtualView.crewmateAction();
+                CrewmateType type;
+                if (sel != 4) {
+                    if (sel == 1) {
+                        type = CrewmateType.Astronaut;
+                    } else if (sel == 2) {
+                        type = CrewmateType.PinkAlien;
+                    } else {
+                        type = CrewmateType.BrownAlien;
+                    }
+
+                    Pair<Integer, Integer> coords = virtualView.askCoordsCrewmate(player_local.getShip());
+                    if (coords.getKey() == -1 || coords.getValue() == -1) {
+                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
+                        break;
+                    } else {
+                        out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
+                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
+                        break;
+                    }
+                } else {
+                    virtualView.showMessage("Hai terminato la fase di equipaggiamento");
+                    out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
+                }
+                break;
+
+
+
+
+
         }
     }
 
@@ -376,6 +432,42 @@ public class Client {
                 local_adventure_deck = adm.getDeck();
                 ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
                 System.out.println("arrivate ");
+                break;
+
+            case TIME_UPDATE:
+                TimeUpdateMessage time_msg = (TimeUpdateMessage) msg;
+                switch (time_msg.getId()) {
+                    case 1:
+                        virtualView.showMessage("\nNessuno ha ancora finito l'assemblaggio, partono ulteriori 30 sec");
+
+                        break;
+                    case 2:
+                        virtualView.showMessage("\nFase di assemblaggio finita.");
+                        break;
+                    case 3:
+                        virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
+
+                        break;
+
+                }
+                break;
+
+            case BUILD_PHASE_ENDED:
+                BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
+                switch (build_msg.getPos()) {
+                    case 1:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
+                        break;
+                    case 2:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per secondo");
+                        break;
+                    case 3:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per terzo");
+                        break;
+                    case 4:
+                        virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
+                        break;
+                }
                 break;
 
 

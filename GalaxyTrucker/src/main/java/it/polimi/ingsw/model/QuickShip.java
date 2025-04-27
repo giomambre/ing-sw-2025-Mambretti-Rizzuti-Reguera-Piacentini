@@ -79,6 +79,7 @@ public class QuickShip extends BaseShip{
 
     /**
      * This method calculates the cannon's power based on its type (Cannon or DoubleCannon).
+     *
      * @param battery_usage the batteries used by the player in case he decides to activate the double cannon
      * @return power
      */
@@ -122,6 +123,7 @@ public class QuickShip extends BaseShip{
 
     /**
      * This method calculates the engine's power based on its type (Engine or DoubleEngine).
+     *
      * @param battery_usage the batteries used by the player in case he decides to activate the double engine
      * @return power
      */
@@ -162,6 +164,7 @@ public class QuickShip extends BaseShip{
 
     /**
      * Removes the component located at the specified position on the ship's board by replacing it with an empty cell.
+     *
      * @param x the row index of the component to remove
      * @param y the column index of the component to remove
      */

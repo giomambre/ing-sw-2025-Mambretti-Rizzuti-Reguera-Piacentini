@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class is a sublass of CardAdventure, from which it inherits attributes and methods
+ * This class is a sublass of {@code CardAdventure}, from which it inherits attributes and methods
  * <ul>
  *     <li>cargo_reward: list of rewards the player receives when landing on each planet</li>
  * </ul>
@@ -24,12 +24,10 @@ public class Planets extends CardAdventure implements Serializable {
     private List<List<Cargo>> cargo_reward;
 
     /**
-     *
      * @param level
      * @param cost_of_days
      * @param type
-     * @param board
-     * @param cargo_reward
+     * @param cargo_reward the list of cargo rewards available for each planet
      */
     public Planets(int level, int cost_of_days, CardAdventureType type, List<List<Cargo>> cargo_reward) {
         super(level, cost_of_days, type);
@@ -37,7 +35,10 @@ public class Planets extends CardAdventure implements Serializable {
     }
 
     /**
-     * This function gives the rewards to the player who landed on each planet.
+     * This function gives cargo rewards to the player who landed on each planet.
+     * The player receives rewards, and the cargo is added to the specified components if they are valid storage units.
+     *
+     * @param player the player receiving the rewards
      * @param planets a map of the carried cargos as value and the card component where he wants to put it.
      */
     public  void execute(Player player, Map<CardComponent, Map<Cargo, Integer>> planets) {
@@ -61,10 +62,17 @@ public class Planets extends CardAdventure implements Serializable {
 
     }
 
+    /**@return the full list of cargo rewards associated with all planets*/
     public List<List<Cargo>> getCargo_reward() {
         return cargo_reward;
     }
 
+    /**
+     * This method returns the list of cargo rewards associated with a specific planet.
+     *
+     * @param index the index of the planet
+     * @return the list of cargo rewards for that planet
+     */
     public List<Cargo> getCargos(int index) {
         return cargo_reward.get(index);
     }
