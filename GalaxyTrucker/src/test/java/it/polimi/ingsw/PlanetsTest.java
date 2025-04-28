@@ -39,7 +39,8 @@ public class PlanetsTest {
         player = new Player("Cice", YELLOW,game);
         ship = player.getShip();
         ship.initializeShipPlance();
-        board = new Board(Arrays.asList(player),24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(Arrays.asList(player));
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Universal);
         connectors.put(South, Engine_Connector);
@@ -63,7 +64,8 @@ public class PlanetsTest {
         cargo_reward.add(new ArrayList<>(List.of(Blue, Green)));
 
 
-        planets = new Planets(2,2, CardAdventureType.Planets, board, cargo_reward );
+        planets = new Planets(2,2, CardAdventureType.Planets, cargo_reward );
+        planets.setBoard(board);
 
 
 

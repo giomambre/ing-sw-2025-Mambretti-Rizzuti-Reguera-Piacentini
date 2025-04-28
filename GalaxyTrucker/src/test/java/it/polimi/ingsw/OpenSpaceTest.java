@@ -37,9 +37,11 @@ public class OpenSpaceTest {
         player1.getShip().initializeShipPlance();
         player2.getShip().initializeShipPlance();
         player3.getShip().initializeShipPlance();
-        board = new Board(Arrays.asList(player1, player2, player3),24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(Arrays.asList(player1, player2, player3));
 
-        openSpace = new OpenSpace(2,0,OpenSpace,board);
+        openSpace = new OpenSpace(2,0,OpenSpace);
+        openSpace.setBoard(board);
 
         connectors.put(North, Universal);
         connectors.put(South, Engine_Connector );

@@ -35,7 +35,8 @@ public class SlaversTest {
         Game game = new Game(Gametype.StandardGame);
         player1 = new Player("Reff", GREEN,game);
         ship1 = player1.getShip();
-        board = new Board(Arrays.asList (player1),24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(Arrays.asList(player1));
         ship1.initializeShipPlance();
 
 
@@ -215,7 +216,8 @@ public class SlaversTest {
 
         ship1.addComponent(new CardComponent(Engine, connectors), 4, 5);
 
-        slayers = new Slavers(2,2,CardAdventureType.Slavers, board, 3,3, 9);
+        slayers = new Slavers(2,2,CardAdventureType.Slavers, 3,3, 9);
+        slayers.setBoard(board);
 
     }
 

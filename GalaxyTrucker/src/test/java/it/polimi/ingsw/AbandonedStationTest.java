@@ -34,7 +34,8 @@ public class AbandonedStationTest {
         player1 = new Player("Alice", YELLOW,game);
         player2 = new Player("Mambre", BLUE,game);
         player3 = new Player("isabel", RED,game);
-        board = new Board(Arrays.asList (player1,player2,player3),24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(Arrays.asList (player1,player2,player3));
         player1.getShip().initializeShipPlance();
         player2.getShip().initializeShipPlance();
         player3.getShip().initializeShipPlance();
@@ -50,7 +51,8 @@ public class AbandonedStationTest {
         cargos.add(Cargo.Yellow);
 
 
-        abd_station = new AbandonedStation(1,1,AbandonedStation,5,board,cargos);
+        abd_station = new AbandonedStation(1,1,AbandonedStation,5,cargos);
+        abd_station.setBoard(board);
 
 
 

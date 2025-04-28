@@ -28,7 +28,8 @@ public class BoardTest {
         player4 = new Player("Raffa", Color.GREEN,game);
 
         List<Player> players = Arrays.asList(player1, player2, player3, player4);
-        board = new Board(players,24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(players);
     }
 
     @Test

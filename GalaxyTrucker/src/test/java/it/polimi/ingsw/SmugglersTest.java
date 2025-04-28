@@ -38,7 +38,8 @@ public class SmugglersTest {
         player = new Player("Cice", YELLOW,game);
         ship = player.getShip();
         ship.initializeShipPlance();
-        board = new Board(Arrays.asList(player),24,game );
+        board = new Board(24,game );
+        board.putPlayersOnBoard(Arrays.asList(player));
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Universal);
         connectors.put(South, Engine_Connector);
@@ -60,7 +61,8 @@ public class SmugglersTest {
         cargo_rewards.add(Cargo.Blue);
         cargo_rewards.add(Cargo.Blue);
 
-        smugglers = new Smugglers(2,2,CardAdventureType.Smugglers, board, 3,cargo_rewards, 2);
+        smugglers = new Smugglers(2,2,CardAdventureType.Smugglers, 3,cargo_rewards, 2);
+        smugglers.setBoard(board);
 
     }
 

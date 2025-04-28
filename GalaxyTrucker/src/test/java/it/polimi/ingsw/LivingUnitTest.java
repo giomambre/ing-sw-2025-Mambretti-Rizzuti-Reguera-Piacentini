@@ -40,7 +40,7 @@ public class LivingUnitTest {
         component = new LivingUnit(ComponentType.LivingUnit, connectors);
         ((LivingUnit)component).addAstronauts();
         assertEquals(2, ((LivingUnit)component).getNum_crewmates());
-        assertEquals(CrewmateType.Astronaut, ((LivingUnit)component).getCrewmateType());
+        assertEquals(CrewmateType.Astronaut, ((LivingUnit)component).getCrewmate_type());
 
     }
 
@@ -49,7 +49,7 @@ public class LivingUnitTest {
         component = new LivingUnit(ComponentType.PinkAlienUnit, connectors);
         ((LivingUnit)component).addAlien(CrewmateType.PinkAlien);
         assertEquals(1, ((LivingUnit)component).getNum_crewmates());
-        assertEquals(CrewmateType.PinkAlien, ((LivingUnit)component).getCrewmateType());
+        assertEquals(CrewmateType.PinkAlien, ((LivingUnit)component).getCrewmate_type());
 
     }
 
