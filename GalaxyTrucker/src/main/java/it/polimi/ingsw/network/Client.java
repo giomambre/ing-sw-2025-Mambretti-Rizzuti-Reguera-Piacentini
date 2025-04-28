@@ -362,13 +362,25 @@ public class Client {
                         break;
                     }
                 } else {
-                    virtualView.showMessage("Hai terminato la fase di equipaggiamento");
+                    virtualView.showMessage("Hai terminato la fase di equipaggiamento, inizio fase di controllo ");
                     out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
                 }
                 break;
 
 
+            case INVALIDS_CONNECTORS:
+                InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
+                if(icm.getInvalids().isEmpty()){
 
+                    virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
+
+                }else{
+                    virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids());
+                    out.writeObject(new ShipClientMessage(MessageType.UPDATED_SHIP, "", clientId,player_local.copyPlayer()));
+
+                }
+
+                break;
 
 
         }

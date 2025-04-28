@@ -187,4 +187,9 @@ public class GUI extends JFrame implements View {
     public Pair<Integer, Integer> askCoords(Ship ship) {
         return null;
     }
+
+    @Override
+    public void removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+
+    }
 }

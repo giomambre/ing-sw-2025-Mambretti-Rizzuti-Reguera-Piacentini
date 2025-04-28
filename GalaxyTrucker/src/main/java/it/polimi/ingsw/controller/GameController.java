@@ -14,7 +14,7 @@ import static it.polimi.ingsw.controller.GameState.SETTINGS;
 
 public class GameController {
 
-
+    List<Player> finished_build_players = new ArrayList<>();
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
 
@@ -89,6 +89,15 @@ public class GameController {
 
     }
 
+    public void finishFirstBuildPhase(String nickname){
+        Player p = game.getPlayer(nickname);
+        finished_build_players.add(p);
+
+    }
+
+    public List<Player> getFinished_build_players() {
+        return finished_build_players;
+    }
 
     public synchronized int endPlayerBuildPhase(String nickname) {
 
@@ -206,6 +215,20 @@ public class GameController {
 
         return ship.getShipBoard();
     }
+
+
+    public  List<Pair<Integer, Integer>> checkShipConnectors(String nickname) {
+
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+       return ship.checkShipConnections();
+    }
+
+public void setShipPlance(String nickname, Ship ship) {
+        Player p = game.getPlayer(nickname);
+
+        p.setShip(ship);
+}
 
     public List<CardComponent[][]> getValidPieces(String nickname){
         Player p = game.getPlayer(nickname);

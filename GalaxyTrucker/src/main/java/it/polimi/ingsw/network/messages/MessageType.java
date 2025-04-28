@@ -29,6 +29,8 @@ public enum MessageType {
     ADD_CREWMATES,
     CHECK_SHIPS,
     FLIGHT_PHASE,
+    INVALIDS_CONNECTORS,
+    UPDATED_SHIP,
 
 
 
