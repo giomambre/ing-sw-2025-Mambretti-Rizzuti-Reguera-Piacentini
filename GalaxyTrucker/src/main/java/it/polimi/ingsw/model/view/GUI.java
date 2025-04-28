@@ -12,14 +12,15 @@ import java.awt.*;
 import java.util.List;
 
 public class GUI extends JFrame implements View {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
+    private CardLayout cardLayout; //layout a pagine
+    private JPanel mainPanel; //contenitore
 
     private MenuPanel menuPanel;
     private NicknamePanel nicknamePanel;
     private ShipPanel shipPanel;
     private CardSelectionPanel cardSelectionPanel;
     private AdventurePanel adventurePanel;
+    private ConnectionPanel connectionPanel;
 
     public GUI() {
         super("Galaxy Trucker - GUI Version");
@@ -41,6 +42,7 @@ public class GUI extends JFrame implements View {
         mainPanel.add(shipPanel, "Ship");
         mainPanel.add(cardSelectionPanel, "CardSelection");
         mainPanel.add(adventurePanel, "Adventure");
+        mainPanel.add(connectionPanel, "Connection");
 
         add(mainPanel);
 
