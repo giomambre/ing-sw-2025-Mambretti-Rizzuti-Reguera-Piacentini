@@ -24,7 +24,7 @@ public class TUI implements View {
     private final PrintStream out;
     static BlockingQueue<String> inputQueue = new LinkedBlockingQueue<>();
     private List<Player> other_players_local = new ArrayList<>();
-    Map<Direction,List<CardAdventure>> local_adventure_deck;
+    Map<Direction, List<CardAdventure>> local_adventure_deck;
     private Player player_local;
     private boolean isMenuOpen = false; // Variabile per tenere traccia dello stato del menu
     private String lastRequest = ""; // Variabile per memorizzare l'ultima richiesta
@@ -70,7 +70,7 @@ public class TUI implements View {
         this.player_local = player;
     }
 
-    public void setLocal_adventure_deck(Map<Direction,List<CardAdventure>> local_adventure_deck) {
+    public void setLocal_adventure_deck(Map<Direction, List<CardAdventure>> local_adventure_deck) {
         this.local_adventure_deck = local_adventure_deck;
     }
 
@@ -143,16 +143,16 @@ public class TUI implements View {
     }
 
 
-    private void showAdventureDeck(Map<Direction,List<CardAdventure>> local_adventure_deck) {
+    private void showAdventureDeck(Map<Direction, List<CardAdventure>> local_adventure_deck) {
 
         if (local_adventure_deck == null || local_adventure_deck.isEmpty()) {
             out.println("\n=== MAZZO AVVENTURA VUOTA ===");
             return;
         }
-        for(Direction d : local_adventure_deck.keySet()) {
+        for (Direction d : local_adventure_deck.keySet()) {
             out.println("\n=== ADVENTURE DELLA PILA " + d.toString().toUpperCase() + " ===");
 
-            for(CardAdventure c : local_adventure_deck.get(d)) {
+            for (CardAdventure c : local_adventure_deck.get(d)) {
                 out.println();
                 printCardAdventure(c);
                 out.println();
@@ -249,7 +249,7 @@ public class TUI implements View {
         out.println(lastRequest);
 
         int resp = readInt();
-        if (resp==-1) return -1;
+        if (resp == -1) return -1;
         if (resp < 2 || resp > 4) {
             return this.askNumPlayers();
         }
@@ -364,10 +364,10 @@ public class TUI implements View {
     @Override
     public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         System.out.println("\nEcco i pezzi rimasti della tua nave: ");
-        int i=1;
+        int i = 1;
         CardComponent[][] ship_board = new CardComponent[5][7];
         for (List<Pair<Integer, Integer>> piece : pieces) {
-            System.out.println(i+": \n");
+            System.out.println(i + ": \n");
 
             for (Pair<Integer, Integer> pair : piece) {
                 ship_board[pair.getKey()][pair.getValue()] = ship[pair.getKey()][pair.getValue()];
@@ -413,9 +413,12 @@ public class TUI implements View {
                 }
             }
 
-            case Engine_Connector: { return " 🚀 "; }
+            case Engine_Connector: {
+                return " 🚀 ";
+            }
 
-            case Cannon_Connector: return " 🔫 ";
+            case Cannon_Connector:
+                return " 🔫 ";
 
             default:
                 return "    ";
@@ -424,7 +427,7 @@ public class TUI implements View {
 
     public void printCardAdventure(CardAdventure card) {
 
-        switch(card.getType()){
+        switch (card.getType()) {
 
             case OpenSpace: {
                 System.out.println("\n SPAZIO APERTO: \n");
@@ -434,25 +437,25 @@ public class TUI implements View {
 
             case AbandonedShip: {
                 System.out.println("\n NAVE ABBANDONATA: \n");
-                System.out.println("Perdi "+card.getCost_of_days()+ " giorni di volo");
-                System.out.println("Rinunci a " +((AbandonedShip)card).getCrewmates_loss()+" membri dell'equipaggio");
-                System.out.println("Guadagni "+((AbandonedShip)card).getGiven_credits()+" crediti");
+                System.out.println("Perdi " + card.getCost_of_days() + " giorni di volo");
+                System.out.println("Rinunci a " + ((AbandonedShip) card).getCrewmates_loss() + " membri dell'equipaggio");
+                System.out.println("Guadagni " + ((AbandonedShip) card).getGiven_credits() + " crediti");
                 break;
             }
             case AbandonedStation: {
                 System.out.println("\n STAZIONE ABBANDONATA: \n");
-                System.out.println("Hai almeno "+((AbandonedStation)card).getNeeded_crewmates()+" membri dell'equipaggio?");
-                System.out.println("Perdi "+card.getCost_of_days()+ " giorni di volo");
-                System.out.println("Guadagni un carico merci" );
-                printCargo(((AbandonedStation)card).getCargo());
+                System.out.println("Hai almeno " + ((AbandonedStation) card).getNeeded_crewmates() + " membri dell'equipaggio?");
+                System.out.println("Perdi " + card.getCost_of_days() + " giorni di volo");
+                System.out.println("Guadagni un carico merci");
+                printCargo(((AbandonedStation) card).getCargo());
                 break;
             }
             case Planets: {
                 System.out.println("\n PIANETI: \n");
-                System.out.println("Perdi "+card.getCost_of_days()+ " giorni di volo");
+                System.out.println("Perdi " + card.getCost_of_days() + " giorni di volo");
                 System.out.println("Puoi posizionarti sui pianeti con i seguenti carichi merci");
                 for (int i = 0; i < ((Planets) card).getCargo_reward().size(); i++) {
-                    System.out.println("Pianeta "+i+ ":");
+                    System.out.println("Pianeta " + i + ":");
                     printCargo(((Planets) card).getCargos(i));
                 }
 
@@ -460,27 +463,26 @@ public class TUI implements View {
             }
             case Smugglers: {
                 System.out.println("\n CONTRABBANDIERI: \n");
-                System.out.println("Hai piu di " +((Smugglers)card).getCannons_strenght()+ " potenza di fuoco?");
+                System.out.println("Hai piu di " + ((Smugglers) card).getCannons_strenght() + " potenza di fuoco?");
                 System.out.println("Puoi vincere un carico merci");
-                printCargo(((Smugglers)card).getCargo_rewards());
-                System.out.println("Ma perdi "+card.getCost_of_days()+ " giorni di volo");
-                System.out.println("Hai meno potenza di fuoco" );
-                System.out.println("Perdi il seguente numero di merci " +((Smugglers)card).getCargo_loss());
+                printCargo(((Smugglers) card).getCargo_rewards());
+                System.out.println("Ma perdi " + card.getCost_of_days() + " giorni di volo");
+                System.out.println("Hai meno potenza di fuoco");
+                System.out.println("Perdi il seguente numero di merci " + ((Smugglers) card).getCargo_loss());
                 break;
             }
             case CombatZone: {
                 System.out.println("\n ZONA DI GUERRA: \n");
-                if(((CombatZone)card).getId()==1){
-                    System.out.println("Il giocatore con meno membri dell'equipaggio perde "+ card.getCost_of_days()+ " giorni di volo");
-                    System.out.println("Il giocatore con meno forza motrice perde "+((CombatZone)card).getCrewmates_loss()+ " membri dell'equipaggio");
+                if (((CombatZone) card).getId() == 1) {
+                    System.out.println("Il giocatore con meno membri dell'equipaggio perde " + card.getCost_of_days() + " giorni di volo");
+                    System.out.println("Il giocatore con meno forza motrice perde " + ((CombatZone) card).getCrewmates_loss() + " membri dell'equipaggio");
                     System.out.println("Il giocatore con meno potenza di fuoco prende la seguente scarica di meteoriti:");
-                    printMeteors(((CombatZone)card).getMeteors());
-                }
-                else{
-                    System.out.println("Il giocatore con meno potenza di fuoco perde "+card.getCost_of_days()+ " giorni di volo");
-                    System.out.println("Il giocatore con meno forza motrice perde"+((CombatZone)card).getCargo_loss()+ " merci" );
+                    printMeteors(((CombatZone) card).getMeteors());
+                } else {
+                    System.out.println("Il giocatore con meno potenza di fuoco perde " + card.getCost_of_days() + " giorni di volo");
+                    System.out.println("Il giocatore con meno forza motrice perde" + ((CombatZone) card).getCargo_loss() + " merci");
                     System.out.println("Il giocatore con meno membri dell'equipaggio prende la seguente scarica di meteoriti:");
-                    printMeteors(((CombatZone)card).getMeteors());
+                    printMeteors(((CombatZone) card).getMeteors());
                 }
                 break;
             }
@@ -491,24 +493,24 @@ public class TUI implements View {
             case MeteorSwarm: {
                 System.out.println("\n PIOGGIA DI METEORITI: \n");
                 System.out.println("In arrivo la seguente scarica di meteoriti:");
-                printMeteors(((MeteorSwarm)card).getMeteors());
+                printMeteors(((MeteorSwarm) card).getMeteors());
                 break;
             }
             case Pirates: {
                 System.out.println("\n PIRATI: \n");
-                System.out.println("Hai una potenza di fuoco maggiore di " +((Pirates)card).getCannons_strenght()+ "?");
-                System.out.println("Puoi vincere "+((Pirates)card).getCredits()+ " crediti");
-                System.out.println("Ma perdi "+card.getCost_of_days()+ " giorni di volo");
-                System.out.println("Hai meno potenza di fuoco? prendi la seguente scarica di meteoriti:" );
-                printMeteors(((Pirates)card).getMeteors());
+                System.out.println("Hai una potenza di fuoco maggiore di " + ((Pirates) card).getCannons_strenght() + "?");
+                System.out.println("Puoi vincere " + ((Pirates) card).getCredits() + " crediti");
+                System.out.println("Ma perdi " + card.getCost_of_days() + " giorni di volo");
+                System.out.println("Hai meno potenza di fuoco? prendi la seguente scarica di meteoriti:");
+                printMeteors(((Pirates) card).getMeteors());
                 break;
             }
             case Slavers: {
                 System.out.println("\n SCHIAVISTI: \n");
-                System.out.println("Hai una potenza di fuoco maggiore di " +((Slavers)card).getCannons_strenght()+ "?");
-                System.out.println("Puoi vincere "+((Slavers)card).getCredits()+ " crediti");
-                System.out.println("Ma perdi "+card.getCost_of_days()+ " giorni di volo");
-                System.out.println("Hai meno potenza di fuoco? perdi "+((Slavers)card).getAstronaut_loss()+ " membri dell'equipaggio" );
+                System.out.println("Hai una potenza di fuoco maggiore di " + ((Slavers) card).getCannons_strenght() + "?");
+                System.out.println("Puoi vincere " + ((Slavers) card).getCredits() + " crediti");
+                System.out.println("Ma perdi " + card.getCost_of_days() + " giorni di volo");
+                System.out.println("Hai meno potenza di fuoco? perdi " + ((Slavers) card).getAstronaut_loss() + " membri dell'equipaggio");
                 break;
             }
             case Stardust: {
@@ -572,11 +574,11 @@ public class TUI implements View {
     }
 
     @Override
-    public int crewmateAction(){
+    public int crewmateAction() {
         lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n 4 : terminare l'equipaggiamento\n");
         int selected = -1;
         do {
-            out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n 4 : terminare l'equipaggiamento\n" );
+            out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n 4 : terminare l'equipaggiamento\n");
             selected = readInt();
         } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
         return selected;
@@ -614,7 +616,7 @@ public class TUI implements View {
         out.println("Premi l'indice della carta che vuoi prendere (-1 per uscire)\n");
 
         for (int i = 0; i < cards.size(); i++) {
-            System.out.println("NUMERO : " + i );
+            System.out.println("NUMERO : " + i);
             printCard(cards.get(i));
         }
 
@@ -642,7 +644,7 @@ public class TUI implements View {
 
 
         for (int i = 0; i < cards.size(); i++) {
-            System.out.println("NUMERO : " + i );
+            System.out.println("NUMERO : " + i);
             printCard(cards.get(i));
         }
 
@@ -722,6 +724,8 @@ public class TUI implements View {
         return new Pair<>(x, y);
     }
 
+
+
     @Override
     public Pair<Integer, Integer> askCoordsCrewmate(Ship ship) {
         int x = -1, y = -1;
@@ -789,6 +793,60 @@ public class TUI implements View {
 
     }
 
+
+    @Override
+    public void removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+        System.out.println("La tua nave presenta questi connettori esposti : ");
+        for (int i = 0; i < connectors.size(); i++) {
+            System.out.println("X :  " + connectors.get(i).getKey() + " --- " + connectors.get(i).getValue());
+        }
+        System.out.println("\n ora inserisci le cooridnate del componente che vuoi rimuovere (qualunque eccetto Main unit)");
+
+        while (!ship.checkShipConnections().isEmpty()){
+            askCoordsToRemove(ship);
+
+    }
+        System.out.println("\n\nCONNETTORI SISTEMATI\n\n");
+}
+
+
+    public void askCoordsToRemove(Ship ship) {
+        int x = -1, y = -1;
+
+        boolean validInput = false;
+        lastRequest = "\n RIMOZIONE COMPONENTE\n";
+        System.out.println("\n RIMOZIONE COMPONENTE\n");
+
+        while (!validInput) {
+            lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) ;
+            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) );
+            x = readInt();
+
+
+            lastRequest = "Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1);
+            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) );
+            y = readInt();
+
+
+            if (x < 0 || x >= ship.getROWS() || y < 0 || y >= ship.getCOLS()) {
+                out.println("Errore: le coordinate sono fuori dai limiti. Riprova.");
+            } else {
+                // Verifica se la posizione nella nave contiene un componente
+                CardComponent component = ship.getComponent(x, y);
+                if (component.getComponentType() != MainUnitGreen && component.getComponentType() != MainUnitRed && component.getComponentType() != MainUnitBlue && component.getComponentType() != MainUnitYellow) {
+                    out.println("RIMOZIONE VALIDA ed EFFETTUATA ");  // Mostra il componente trovato
+                    validInput = true;  // Esci dal ciclo se la posizione è valida
+                } else {
+                    out.println("Errore: non c'è una carta main living unit in questa poszione.");
+                }
+            }
+        }
+
+        // Restituisci le coordinate valide
+        ship.removeComponent(x, y);
+    }
+
+
     private static String printCard(ComponentType card) {
         return switch (card) {
             case Engine -> " E ";
@@ -823,6 +881,9 @@ public class TUI implements View {
         int padRight = padding - padLeft;
         return " ".repeat(padLeft) + str + " ".repeat(padRight);
     }
+
+
+
 
 
 }

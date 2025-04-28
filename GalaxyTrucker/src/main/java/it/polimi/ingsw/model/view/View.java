@@ -38,4 +38,6 @@ public interface View {
 
     int showCard(CardComponent card);
     Pair<Integer,Integer> askCoords(Ship ship);
+
+    void  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
 }

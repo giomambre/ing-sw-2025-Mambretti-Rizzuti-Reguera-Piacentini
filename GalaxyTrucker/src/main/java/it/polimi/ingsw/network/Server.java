@@ -5,12 +5,14 @@ import it.polimi.ingsw.controller.GameManager;
 import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.view.TUI;
 import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
+import javafx.util.Pair;
 
 
 //import javax.smartcardio.Card;
@@ -26,6 +28,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static it.polimi.ingsw.controller.GameState.BUILD_PHASE;
 import static it.polimi.ingsw.controller.GameState.FIXING_SHIPS;
+import static it.polimi.ingsw.network.messages.MessageType.INVALIDS_CONNECTORS;
 
 public class Server {
     private static final int PORT = 12345;
@@ -286,14 +289,37 @@ public class Server {
             case CHECK_SHIPS:
                 msgClient = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(msgClient.getId_client()));
-                List<String> p = new ArrayList<>();
+                controller.finishFirstBuildPhase(getNickname(msgClient.getId_client()));
+                List<Pair<Integer, Integer>> invalids_connections = new ArrayList<>();
 
-                p.add(getNickname(msgClient.getId_client()));
-                if (p.size() == controller.getLobby().getPlayers().size()) {
-                    //inizia fase di check
+                if (controller.getFinished_build_players().size() == controller.getLobby().getPlayers().size()) {  //quando tutti hanno fatto l equipaggiamento della ciurma
+
                     System.out.println("Inizia fase di controllo delle navi");
+
+                    for (Player p1 : controller.getPlayers()) {
+                        invalids_connections = controller.checkShipConnectors(getNickname(msgClient.getId_client()));
+
+
+                            sendToClient(getId_client(p1.getNickname()), new InvalidConnectorsMessage(INVALIDS_CONNECTORS,"",invalids_connections));
+                                //se la lista è empty allora i connettori sono giusti
+
+                    }
+
                 }
 
+                break;
+
+
+            case UPDATED_SHIP:
+                ShipClientMessage update_msg = (ShipClientMessage) msg;
+                Ship ship = update_msg.getPlayer().getShip();
+                controller = all_games.get(getLobbyId(update_msg.getId_client()));
+
+                synchronized (controller) {
+
+                controller.setShipPlance(getNickname(update_msg.getId_client()), ship);
+
+                }
                 break;
 
 
