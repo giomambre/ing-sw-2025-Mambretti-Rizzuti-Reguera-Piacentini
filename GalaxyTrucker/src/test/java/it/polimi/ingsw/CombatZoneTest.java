@@ -38,7 +38,8 @@ public class CombatZoneTest {
             Game game = new Game(Gametype.StandardGame);
             player1 = new Player("Reff", GREEN,game);
             ship1 = player1.getShip();
-            board = new Board(Arrays.asList (player1),24,game);
+            board = new Board(24,game);
+            board.putPlayersOnBoard(Arrays.asList (player1));
             ship1.initializeShipPlance();
 
 
@@ -229,10 +230,11 @@ public class CombatZoneTest {
                     new Pair<>(MeteorType.HeavyCannonFire, South), new Pair<>(MeteorType.HeavyCannonFire, North)
             );
 
-            combatZone = new CombatZone(2,2, CardAdventureType.CombatZone,board,2,0,meteors);
+            combatZone = new CombatZone(2,2, CardAdventureType.CombatZone,2,0,3,meteors);
             meteors = ((CombatZone)combatZone).getMeteors();
 
-            meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, board, meteors);
+            meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors);
+            meteorSwarm.setBoard(board);
             System.out.println(ship1.printShipPlance());
 
             for (Pair<MeteorType, Direction> pair : meteors) {

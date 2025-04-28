@@ -36,7 +36,8 @@ public class EpidemicTest {
         player = new Player("Cice", YELLOW,game);
         ship = player.getShip();
         ship.initializeShipPlance();
-        board = new Board(Arrays.asList(player),24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(Arrays.asList(player));
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Universal);
         connectors.put(South, Universal);
@@ -56,7 +57,8 @@ public class EpidemicTest {
 
     @Test
     public void epidemicTest() {
-        epidemic = new Epidemic(2,0, CardAdventureType.Epidemic, board);
+        epidemic = new Epidemic(2,0, CardAdventureType.Epidemic);
+        epidemic.setBoard(board);
 
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North,Universal);

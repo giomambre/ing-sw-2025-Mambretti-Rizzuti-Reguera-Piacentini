@@ -101,6 +101,7 @@ public class GameController {
 
         }
 
+
         if (ship.checkShipConnections().isEmpty()) {
             System.out.println("Congratulations, you ship is Valid, you can start the supply!");
             return 1;

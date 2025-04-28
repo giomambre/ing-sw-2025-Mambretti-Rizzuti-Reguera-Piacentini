@@ -40,7 +40,8 @@ public class PiratesTest {
         Game game  = new Game(Gametype.StandardGame);
         player1 = new Player("Reff", GREEN,game);
         ship1 = player1.getShip();
-        board = new Board(Arrays.asList (player1),24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(Arrays.asList (player1));
         ship1.initializeShipPlance();
 
 
@@ -225,7 +226,8 @@ public class PiratesTest {
                 new Pair<>(MeteorType.HeavyCannonFire, South), new Pair<>(MeteorType.HeavyCannonFire, North)
         );
 
-        pirates = new Pirates(2,2,CardAdventureType.Pirates, board, 3,3, meteors);
+        pirates = new Pirates(2,2,CardAdventureType.Pirates, 3,3, meteors);
+        pirates.setBoard(board);
 
     }
 
@@ -239,7 +241,7 @@ public class PiratesTest {
     @Test
     public void testExecuteLoss() {
         meteors = ((Pirates)pirates).getMeteors();
-        meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, board, meteors);
+        meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors);
         System.out.println(ship1.printShipPlance());
 
         for (Pair<MeteorType, Direction> pair : meteors) {

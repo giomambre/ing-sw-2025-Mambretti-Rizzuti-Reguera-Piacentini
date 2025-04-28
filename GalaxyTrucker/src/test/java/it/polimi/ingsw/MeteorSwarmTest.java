@@ -227,7 +227,8 @@ void setUp() {
                 new Pair<>(MeteorType.LargeMeteor, South), new Pair<>(MeteorType.LargeMeteor, North)
         );
 
-        meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, board, meteors);
+        meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors);
+        meteorSwarm.setBoard(board);
 
     System.out.println(ship1.printShipPlance());
 

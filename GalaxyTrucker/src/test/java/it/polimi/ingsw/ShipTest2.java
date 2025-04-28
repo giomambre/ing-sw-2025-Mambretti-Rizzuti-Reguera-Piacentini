@@ -271,7 +271,7 @@ public class ShipTest2 {
 @Test
     public  void  testRemoveComponentKillingAlien() {
 
-    assertEquals(PinkAlien, ((LivingUnit) ship1.getComponent(2,1)).getCrewmateType());
+    assertEquals(PinkAlien, ((LivingUnit) ship1.getComponent(2,1)).getCrewmate_type());
     assertEquals(1, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
     ship1.removeComponent(2,0);
     assertEquals(0, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());

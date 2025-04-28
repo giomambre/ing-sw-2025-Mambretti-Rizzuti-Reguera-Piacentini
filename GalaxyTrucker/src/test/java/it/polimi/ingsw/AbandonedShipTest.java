@@ -34,7 +34,8 @@ public class AbandonedShipTest {
         player = new Player("Cice", YELLOW,game);
         ship = player.getShip();
         ship.initializeShipPlance();
-        board = new Board(Arrays.asList(player),24,game);
+        board = new Board(24,game);
+        board.putPlayersOnBoard(Arrays.asList(player));
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Universal);
         connectors.put(South, Engine_Connector);
@@ -55,8 +56,8 @@ public class AbandonedShipTest {
     @Test
 
     public void testAbandonedShip() {
-        abandonedShip = new AbandonedShip(2,5,AbandonedShip,board,5,3);
-
+        abandonedShip = new AbandonedShip(2,5,AbandonedShip,5,3);
+        abandonedShip.setBoard(board);
         Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
         astronaut_losses.put(ship.getComponent(3,1),2);
         astronaut_losses.put(ship.getComponent(3,2),1);
