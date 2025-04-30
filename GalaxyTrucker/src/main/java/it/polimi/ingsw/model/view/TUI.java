@@ -329,6 +329,13 @@ public class TUI implements View {
         int rows = ship.length;
         int cols = ship[0].length;
 
+        // Stampa intestazione colonne centrata
+        StringBuilder colNumbers = new StringBuilder(" ".repeat(CELL_WIDTH));
+        for (int c = 0; c < cols; c++) {
+            colNumbers.append(center(String.valueOf(c), CELL_WIDTH));
+        }
+        System.out.println(colNumbers);
+
         for (int r = 0; r < rows; r++) {
             StringBuilder top = new StringBuilder();
             StringBuilder mid = new StringBuilder();
@@ -337,11 +344,18 @@ public class TUI implements View {
             for (int c = 0; c < cols; c++) {
                 CardComponent card = ship[r][c];
 
-                if (card.getComponentType() == Empty || card.getComponentType() == NotAccessible) {
+                if (card.getComponentType() == NotAccessible) {
+                    String redX = center(" ⛔️ ", CELL_WIDTH);
+                    top.append(" ".repeat(CELL_WIDTH));
+                    mid.append(redX);
+                    bot.append(" ".repeat(CELL_WIDTH));
+                }
+                else if (card.getComponentType() == Empty) {
                     top.append(" ".repeat(CELL_WIDTH));
                     mid.append(" ".repeat(CELL_WIDTH));
                     bot.append(" ".repeat(CELL_WIDTH));
-                } else {
+                }
+                else {
                     String topStr = printConnector(card.getConnector_type(North), North);
                     String midStr = printConnector(card.getConnector_type(West), West)
                             + printCard(card.getComponentType())
@@ -354,12 +368,15 @@ public class TUI implements View {
                 }
             }
 
-            System.out.println(top);
-            System.out.println(mid);
-            System.out.println(bot);
-            System.out.println("-".repeat(cols * CELL_WIDTH));
+            // Stampa le tre righe con il numero di riga SOLO nella mid
+            System.out.println(" ".repeat(CELL_WIDTH) + top);
+            System.out.println(center(String.valueOf(r), CELL_WIDTH) + mid);
+            System.out.println(" ".repeat(CELL_WIDTH) + bot);
+            System.out.println(" ".repeat(CELL_WIDTH) + "-".repeat(cols * CELL_WIDTH));
         }
     }
+
+
 
     @Override
     public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
