@@ -42,7 +42,8 @@ public class GUI extends JFrame implements View {
         mainPanel.add(shipPanel, "Ship");
         mainPanel.add(cardSelectionPanel, "CardSelection");
         mainPanel.add(adventurePanel, "Adventure");
-        mainPanel.add(connectionPanel, "Connection");
+        //mainPanel.add(connectionPanel, "Connection");
+
 
         add(mainPanel);
 
