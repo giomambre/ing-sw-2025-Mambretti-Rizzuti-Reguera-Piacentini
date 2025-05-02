@@ -28,8 +28,8 @@ public class LivingUnit extends CardComponent  implements Serializable {
     @JsonCreator
     public LivingUnit(
             @JsonProperty("component_type") ComponentType component_type,
-            @JsonProperty("connectors") Map<Direction, ConnectorType> connectors) {
-        super(component_type, connectors);
+            @JsonProperty("connectors") Map<Direction, ConnectorType> connectors, String imagePath) {
+        super(component_type, connectors, imagePath);
         this.num_crewmates = 0;
 
 
@@ -114,7 +114,7 @@ public class LivingUnit extends CardComponent  implements Serializable {
      * @return a cloned {@code LivingUnit}
      */
     public CardComponent copy(){
-        LivingUnit copy = new LivingUnit(getComponentType(),getConnectors());
+        LivingUnit copy = new LivingUnit(getComponentType(),getConnectors(), getImagePath());
         copy.setCard_uuid(getCard_uuid());
         copy.setCrewmate_type(getCrewmate_type());
         copy.setNum_crewmates(getNum_crewmates());
