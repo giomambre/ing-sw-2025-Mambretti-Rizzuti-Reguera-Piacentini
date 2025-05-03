@@ -10,6 +10,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
+import static it.polimi.ingsw.controller.GameState.BUILD_PHASE;
 import static it.polimi.ingsw.controller.GameState.SETTINGS;
 
 public class GameController {
@@ -44,7 +45,7 @@ public class GameController {
     }
 
     public void startGame() {
-
+        game_state = BUILD_PHASE;
         game.startGame();
 
     }

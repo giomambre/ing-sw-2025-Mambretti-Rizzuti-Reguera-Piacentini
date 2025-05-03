@@ -32,9 +32,9 @@ public class Shield extends CardComponent implements Serializable {
      */
     @JsonCreator
     public Shield( @JsonProperty("component_type") ComponentType component_type,
-                  @JsonProperty("connectors")Map<Direction, ConnectorType> connectors) {
+                  @JsonProperty("connectors")Map<Direction, ConnectorType> connectors, String imagePath) {
 
-            super(component_type, connectors);
+            super(component_type, connectors, imagePath);
             covered_sides.put(North,Boolean.TRUE);
             covered_sides.put(East,Boolean.TRUE);
             covered_sides.put(South,Boolean.FALSE);
@@ -82,7 +82,7 @@ public class Shield extends CardComponent implements Serializable {
      */
     public CardComponent copy() {
 
-        Shield copy = new Shield(getComponentType(),getConnectors());
+        Shield copy = new Shield(getComponentType(),getConnectors(), getImagePath());
         copy.setCovered_sides(covered_sides);
         copy.setCard_uuid(getCard_uuid());
         return copy;

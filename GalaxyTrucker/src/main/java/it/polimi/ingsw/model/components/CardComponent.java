@@ -26,15 +26,17 @@ public class CardComponent implements Serializable {
     private final ComponentType component_type;
     private Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
     private UUID card_uuid;
+    private String imagePath;
 
     /**
      * @param component_type the type of the component
      * @param connectors a map of connectors for each direction
      */
-    public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors){
+    public CardComponent(ComponentType component_type, Map<Direction,ConnectorType> connectors, String imagePath) {
         card_uuid = UUID.randomUUID();
         this.component_type = component_type;
         this.connectors = new EnumMap<>(connectors);
+        this.imagePath = imagePath;
 
     }
 
@@ -65,7 +67,6 @@ public class CardComponent implements Serializable {
             case Double:
                 valids.add(Double);
                 valids.add(Universal);
-
                 valids.add(Empty_Connector);
 
                 break;
@@ -87,7 +88,6 @@ public class CardComponent implements Serializable {
                 valids.add(Smooth);
                 valids.add(Empty_Connector);
                 break;
-
 
             case Engine_Connector,Cannon_Connector:
                 valids.add(Empty_Connector);
@@ -152,7 +152,7 @@ public class CardComponent implements Serializable {
         return "CardComponent{" +
                 "component_type=" + component_type +
                 ", connectors=" + connectors +
-
+                ", imagePath='" + imagePath +
                 '}';
     }
 
@@ -162,7 +162,7 @@ public class CardComponent implements Serializable {
      * @return a new identical {@code CardComponent}
      */
     public CardComponent copy() {
-        CardComponent copy = new CardComponent(component_type, connectors);
+        CardComponent copy = new CardComponent(component_type, connectors, imagePath);
         copy.setCard_uuid(card_uuid);
         return copy;
     }
@@ -170,6 +170,14 @@ public class CardComponent implements Serializable {
     /** @return a map of directions to connector types*/
     public Map<Direction, ConnectorType> getConnectors() {
         return connectors;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
 
