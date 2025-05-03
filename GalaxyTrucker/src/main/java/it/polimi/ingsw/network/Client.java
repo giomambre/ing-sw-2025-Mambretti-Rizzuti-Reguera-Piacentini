@@ -267,7 +267,7 @@ public class Client {
 
                 }
                 else if (deck_selected == 4) {
-                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! ora attendi gli altri!");
                     out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
 
@@ -435,11 +435,11 @@ public class Client {
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
-                    System.out.println("ARRIVATA CARTA");
+
 
                 }else{
                     facedUp_deck_local.remove(cpm.getCardComponent());
-                    System.out.println("RIMOSSA CARTA");
+
 
                 }
 
@@ -452,40 +452,31 @@ public class Client {
                 CardAdventureDeckMessage adm = (CardAdventureDeckMessage) msg;
                 local_adventure_deck = adm.getDeck();
                 ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
-                System.out.println("arrivate ");
+
                 break;
 
             case TIME_UPDATE:
-                TimeUpdateMessage time_msg = (TimeUpdateMessage) msg;
-                switch (time_msg.getId()) {
-                    case 1:
-                        virtualView.showMessage("\nNessuno ha ancora finito l'assemblaggio, partono ulteriori 30 sec");
 
-                        break;
-                    case 2:
-                        virtualView.showMessage("\nFase di assemblaggio finita.");
-                        break;
-                    case 3:
-                        virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
 
-                        break;
 
-                }
+                        virtualView.showMessage("\n" + msg.getContent());
+
+
                 break;
 
             case BUILD_PHASE_ENDED:
-                BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
-                switch (build_msg.getPos()) {
-                    case 1:
+
+                switch (msg.getContent()) {
+                    case "1":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
                         break;
-                    case 2:
+                    case "2":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per secondo");
                         break;
-                    case 3:
+                    case "3":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per terzo");
                         break;
-                    case 4:
+                    case "4":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
                         break;
                 }
