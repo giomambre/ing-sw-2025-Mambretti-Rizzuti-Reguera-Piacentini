@@ -34,8 +34,8 @@ public class Battery extends CardComponent  implements Serializable {
     public Battery(
 
             @JsonProperty("component_type") ComponentType component_type,
-            @JsonProperty("connectors") Map<Direction, ConnectorType> connectors, @JsonProperty("size") int size) {
-        super(component_type, connectors);
+            @JsonProperty("connectors") Map<Direction, ConnectorType> connectors, @JsonProperty("size") int size, String imagePath) {
+        super(component_type, connectors, imagePath);
         this.size = size;
         this.stored = size;
     }
@@ -97,7 +97,7 @@ public class Battery extends CardComponent  implements Serializable {
      * @return a new {@code Battery} with the same state
      */
     public CardComponent copy(){
-        Battery copy = new Battery(getComponentType(),getConnectors(),size);
+        Battery copy = new Battery(getComponentType(),getConnectors(),size, getImagePath());
          copy.setStored(stored);
          copy.setCard_uuid(getCard_uuid());
 
