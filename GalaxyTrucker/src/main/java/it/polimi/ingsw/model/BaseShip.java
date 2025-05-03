@@ -565,7 +565,7 @@ public abstract class BaseShip {
         connectors.put(East, Empty_Connector);
         connectors.put(West, Empty_Connector);
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
 
         ship_board[row][col] = EMPTY_CELL;
 

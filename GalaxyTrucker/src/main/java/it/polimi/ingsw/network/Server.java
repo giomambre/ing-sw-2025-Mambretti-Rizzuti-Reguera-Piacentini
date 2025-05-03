@@ -26,8 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static it.polimi.ingsw.controller.GameState.BUILD_PHASE;
-import static it.polimi.ingsw.controller.GameState.FIXING_SHIPS;
+import static it.polimi.ingsw.controller.GameState.*;
 import static it.polimi.ingsw.network.messages.MessageType.BUILD_PHASE_ENDED;
 import static it.polimi.ingsw.network.messages.MessageType.INVALIDS_CONNECTORS;
 
@@ -204,7 +203,7 @@ public class Server {
 
                         List<Player> safePlayers = new ArrayList<>();
                         for (Player p : controller.getPlayers()) {
-                            safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                            safePlayers.add(p.copyPlayer());
                         }
                         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
 
@@ -215,9 +214,12 @@ public class Server {
                 break;
 
             case ASK_CARD:
+
                 msgClient = (StandardMessageClient) msg;
 
                 GameController controller = all_games.get(getLobbyId(msgClient.getId_client()));
+
+                if(controller.getGamestate() != BUILD_PHASE) return;
 
                 synchronized (controller) {
 
@@ -286,7 +288,6 @@ public class Server {
                 StandardMessageClient endMsg = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(endMsg.getId_client()));
                 LobbyTimer lt = lobbyTimers.get(controller.getLobby().getLobbyId());
-
                 synchronized (controller) {
                     sendToClient(endMsg.getId_client(), new Message(BUILD_PHASE_ENDED, lt.getPositionByPlayer(endMsg.getId_client())));
 
@@ -296,6 +297,7 @@ public class Server {
                             () -> {
                                 sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
                                         "✅ Tutti hanno finito! Ordine: " + lt.getFinishOrder() ));
+                                controller.setGamestate(SUPLLY_PHASE);
 
                             },
                             // on30StartNeeded
@@ -308,7 +310,9 @@ public class Server {
 
                             () -> { sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
                                     "✅ Tempo Scaduto si comincia con la fase di Controllo! " + lt.getFinishOrder()));
-                    }
+
+
+                            }
 
                     );
 

@@ -406,6 +406,8 @@ public class Client {
 
 
                 case UPDATED_SHIPS:
+
+                    System.out.println("ARRIVATA NAVE");
                     PlayersShipsMessage ps_msg = (PlayersShipsMessage) msg;
                     List<Player> tmp = ps_msg.getPlayers();
 

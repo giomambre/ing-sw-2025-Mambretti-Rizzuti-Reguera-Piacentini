@@ -45,14 +45,25 @@ public class QuickShip extends BaseShip{
                 main_unit = MainUnitBlue;
                 break;
         }
+
+        String image_path = switch (player.getColor()){
+            case RED -> "images/cardComponent/GT-mainUnitRed.jpg";
+            case YELLOW -> "images/cardComponent/GT-mainUnitYellow.jpg";
+            case GREEN -> "images/cardComponent/GT-mainUnitGreen.jpg";
+            default -> "images/cardComponent/GT-mainUnitBlue.jpg";
+
+
+        };
+
+
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
         connectors.put(North, Empty_Connector);
         connectors.put(South, Empty_Connector);
         connectors.put(East, Empty_Connector);
         connectors.put(West, Empty_Connector);
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
 
-        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, connectors);
+        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, connectors,"");
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
 
@@ -63,7 +74,7 @@ public class QuickShip extends BaseShip{
                     connectors.put(East, Universal);
                     connectors.put(West, Universal);
 
-                    ship_board[row][col] = new LivingUnit(main_unit, connectors);
+                    ship_board[row][col] = new LivingUnit(main_unit, connectors,image_path);
 
                 } else if ((row == 0 && (col == 0 || col == 1 || col == 2 || col == 4 || col == 5 || col == 6)) ||
                            (row == 1 && (col == 0 || col == 1 || col == 5 || col == 6 )) ||
@@ -176,7 +187,7 @@ public class QuickShip extends BaseShip{
         connectors.put(East, Empty_Connector);
         connectors.put(West, Empty_Connector);
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
 
         ship_board[x][y] = EMPTY_CELL;
     }
