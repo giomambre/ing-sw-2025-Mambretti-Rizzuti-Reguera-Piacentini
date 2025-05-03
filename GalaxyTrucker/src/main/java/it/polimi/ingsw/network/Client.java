@@ -6,16 +6,14 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.view.GUI;
-import it.polimi.ingsw.model.view.TUI;
-import it.polimi.ingsw.model.view.View;
+import it.polimi.ingsw.view.GUI.GUI;
+import it.polimi.ingsw.view.GUI.GuiApplication;
+import it.polimi.ingsw.view.TUI.TUI;
+import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.network.messages.*;
 import javafx.util.Pair;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 import java.io.*;

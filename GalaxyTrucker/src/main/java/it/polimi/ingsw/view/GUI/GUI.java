@@ -1,20 +1,133 @@
-package it.polimi.ingsw.model.view;
+package it.polimi.ingsw.view.GUI;
 
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Ship;
-import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.view.View;
-import javafx.util.Pair;
+import it.polimi.ingsw.view.*;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.awt.*;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.Color;
+import javafx.util.Pair;
 import java.util.List;
 
-public class GUI extends JFrame implements View {
-    private CardLayout cardLayout; //layout a pagine
-    private JPanel mainPanel; //contenitore
 
+public class GUI implements View {
+
+    GuiApplication guiApp;
+    public GUI() {
+        guiApp = new GuiApplication();
+    };
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public String askNickname() {
+        guiApp.start(new Stage());
+        return "ciao";
+    }
+
+    @Override
+    public String chooseConnection() {
+        return "";
+    }
+
+    @Override
+    public String getInput() {
+        return "";
+    }
+
+    @Override
+    public void showGenericError(String error) {
+
+    }
+
+    @Override
+    public int askCreateOrJoin() {
+        return 0;
+    }
+
+    @Override
+    public int askNumPlayers() {
+        return 0;
+    }
+
+    @Override
+    public int showLobbies(List<Integer> lobbies) {
+        return 0;
+    }
+
+    @Override
+    public Color askColor(List<Color> colors) {
+        return null;
+    }
+
+    @Override
+    public Pair<Integer, Integer> askCoordsCrewmate(Ship ship) {
+        return null;
+    }
+
+    @Override
+    public void showPlayer(Player player) {
+
+    }
+
+    @Override
+    public void showShip(String nickname) {
+
+    }
+
+    @Override
+    public void printShip(CardComponent[][] ship) {
+
+    }
+
+    @Override
+    public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
+
+    }
+
+    @Override
+    public int selectDeck() {
+        return 0;
+    }
+
+    @Override
+    public int crewmateAction() {
+        return 0;
+    }
+
+    @Override
+    public int askFacedUpCard(List<CardComponent> cards) {
+        return 0;
+    }
+
+    @Override
+    public int askSecuredCard(List<CardComponent> cards) {
+        return 0;
+    }
+
+    @Override
+    public int showCard(CardComponent card) {
+        return 0;
+    }
+
+    @Override
+    public Pair<Integer, Integer> askCoords(Ship ship) {
+        return null;
+    }
+
+    @Override
+    public void removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+
+    }
+
+
+    /*private CardLayout cardLayout; //layout a pagine
+    private JPanel mainPanel; //contenitore
     private MenuPanel menuPanel;
     private NicknamePanel nicknamePanel;
     private ShipPanel shipPanel;
@@ -42,7 +155,7 @@ public class GUI extends JFrame implements View {
         mainPanel.add(shipPanel, "Ship");
         mainPanel.add(cardSelectionPanel, "CardSelection");
         mainPanel.add(adventurePanel, "Adventure");
-        mainPanel.add(connectionPanel, "Connection");
+        //mainPanel.add(connectionPanel, "Connection");
 
         add(mainPanel);
 
@@ -106,7 +219,7 @@ public class GUI extends JFrame implements View {
     }
 
     @Override
-    public Color askColor(List<Color> colors) {
+    public Color askColor(java.util.List<Color> colors) {
         // Crea un array di stringhe con i nomi dei colori
         String[] colorNames = colors.stream() //JAVA FUNZIONALE, se vogliamo cambiarlo cambiamo
                 .map(Color::name)
@@ -154,11 +267,9 @@ public class GUI extends JFrame implements View {
     public void printShip(CardComponent[][] ship) {
 
     }
-
-    @Override
-    public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
-
+    public void printShipPieces(java.util.List<java.util.List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship){
     }
+
 
     @Override
     public int selectDeck() {
@@ -171,14 +282,14 @@ public class GUI extends JFrame implements View {
     }
 
     @Override
-    public int askFacedUpCard(List<CardComponent> cards) {
+    public int askFacedUpCard(java.util.List<CardComponent> cards) {
+        return 0;
+    }
+    public int askSecuredCard(java.util.List<CardComponent> cards){
         return 0;
     }
 
-    @Override
-    public int askSecuredCard(List<CardComponent> cards) {
-        return 0;
-    }
+
 
     @Override
     public int showCard(CardComponent card) {
@@ -191,7 +302,7 @@ public class GUI extends JFrame implements View {
     }
 
     @Override
-    public void removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+    public void removeInvalidsConnections(Ship ship, java.util.List<Pair<Integer, Integer>> connectors) {
 
-    }
+    }*/
 }

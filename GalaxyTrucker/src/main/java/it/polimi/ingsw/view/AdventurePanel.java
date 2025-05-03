@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model.view;
+package it.polimi.ingsw.view;
+import it.polimi.ingsw.view.GUI.GUI;
+
 import javax.swing.*;
 
 public class AdventurePanel extends JPanel {

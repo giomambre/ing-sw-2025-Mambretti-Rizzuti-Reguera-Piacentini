@@ -1,9 +1,11 @@
-package it.polimi.ingsw.model.view;
+package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.view.GUI.GUI;
+import it.polimi.ingsw.view.TUI.TUI;
 import javafx.util.Pair;
 
 import java.util.List;

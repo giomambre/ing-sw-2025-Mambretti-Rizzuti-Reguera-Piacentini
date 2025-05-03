@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.view;
+package it.polimi.ingsw.view.TUI;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Lobby;
@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.*;
+import it.polimi.ingsw.view.View;
 import javafx.util.Pair;
 
 import java.io.PrintStream;

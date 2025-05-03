@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model.view;
+package it.polimi.ingsw.view;
+
+import it.polimi.ingsw.view.GUI.GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ import java.awt.*;
  */
 
 public class MenuPanel extends JPanel {
-    private GUI gui;
+    /*private GUI gui;
     private int choice = -1;
 
     private final Object lock = new Object();
@@ -47,6 +49,7 @@ public class MenuPanel extends JPanel {
     /**
      * @return the user's choice (1 for create, 2 for join).
      */
+    /*
     public int getChoice() {
         synchronized (lock) {
             while (choice == -1) {
@@ -58,5 +61,5 @@ public class MenuPanel extends JPanel {
             }
         }
         return choice;
-    }
+    }*/
 }

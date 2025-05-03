@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model.view;
+package it.polimi.ingsw.view.GUI;
+
+import javafx.scene.layout.VBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,15 +11,15 @@ import java.awt.*;
  * - a text field (JTextField) to input the nickname.
  * - a "Confirm" button to save the entered nickname.
  */
-public class NicknamePanel extends JPanel {
-    private GUI gui;
+public class NicknameScreen extends VBox {
+    /*private GUI gui;
     private JTextField nicknameField;
     private JButton confirmButton;
     private String nickname;
 
     private final Object lock = new Object(); // oggetto per sincronizzare
 
-    public NicknamePanel(GUI gui) {
+    public NicknameScreen(GUI gui) {
         this.gui = gui;
         setLayout(new BorderLayout());
 
@@ -42,6 +44,7 @@ public class NicknamePanel extends JPanel {
     /**
      * @return  a valid nickname
      */
+    /*
     public String getNickname() {
         synchronized (lock) {
             while (nickname == null || nickname.isEmpty()) {
@@ -54,4 +57,5 @@ public class NicknamePanel extends JPanel {
         }
         return nickname;
     }
+    */
 }
