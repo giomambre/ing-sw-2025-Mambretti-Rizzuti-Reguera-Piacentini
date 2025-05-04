@@ -240,6 +240,7 @@ public class TUI implements View {
         if (resp != 1 && resp != 2) {
             this.askCreateOrJoin();
         }
+
         return resp;
 
     }
@@ -254,6 +255,7 @@ public class TUI implements View {
         if (resp < 2 || resp > 4) {
             return this.askNumPlayers();
         }
+        out.println("Lobby creata rimani in attesa che altri player entrino!");
         return resp;
     }
 
@@ -813,18 +815,23 @@ public class TUI implements View {
 
 
     @Override
-    public void removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+    public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
         System.out.println("La tua nave presenta questi connettori esposti : ");
-        for (int i = 0; i < connectors.size(); i++) {
-            System.out.println("X :  " + connectors.get(i).getKey() + " --- " + connectors.get(i).getValue());
+        for (Pair<Integer, Integer> connector : connectors) {
+            System.out.println("X :  " + connector.getKey() + " --- Y:" + connector.getValue());
         }
-        System.out.println("\n ora inserisci le cooridnate del componente che vuoi rimuovere (qualunque eccetto Main unit)");
+        System.out.println("\n");
+        printShip(ship.getShipBoard());
+        System.out.println("\n");
+
+        System.out.println("\n Ora inserisci le coordinate del componente che vuoi rimuovere (qualunque eccetto Main unit)");
 
         while (!ship.checkShipConnections().isEmpty()){
             askCoordsToRemove(ship);
 
     }
         System.out.println("\n\nCONNETTORI SISTEMATI\n\n");
+        return ship;
 }
 
 
@@ -836,13 +843,13 @@ public class TUI implements View {
         System.out.println("\n RIMOZIONE COMPONENTE\n");
 
         while (!validInput) {
-            lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) ;
-            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) );
+            lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1 +")") ;
+            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) +")" );
             x = readInt();
 
 
-            lastRequest = "Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1);
-            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) );
+            lastRequest = "Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1+")");
+            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) +")" );
             y = readInt();
 
 
@@ -852,10 +859,10 @@ public class TUI implements View {
                 // Verifica se la posizione nella nave contiene un componente
                 CardComponent component = ship.getComponent(x, y);
                 if (component.getComponentType() != MainUnitGreen && component.getComponentType() != MainUnitRed && component.getComponentType() != MainUnitBlue && component.getComponentType() != MainUnitYellow) {
-                    out.println("RIMOZIONE VALIDA ed EFFETTUATA ");  // Mostra il componente trovato
+                    out.println("RIMOZIONE VALIDA ed EFFETTUATA.");  // Mostra il componente trovato
                     validInput = true;  // Esci dal ciclo se la posizione è valida
                 } else {
-                    out.println("Errore: non c'è una carta main living unit in questa poszione.");
+                    out.println("Errore: c'è una carta main living unit in questa posizione.");
                 }
             }
         }
