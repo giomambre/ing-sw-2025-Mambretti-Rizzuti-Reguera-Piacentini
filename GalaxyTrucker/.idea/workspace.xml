@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="timer">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="timer finito e quasi finito controllo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/TUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/view/View.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/LobbyTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/LobbyTimer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +162,7 @@
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\examples" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientMultiplo">
+  <component name="RunManager">
     <configuration name="ClientMultiplo" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.network.Client" />
       <module name="PSP17" />
@@ -370,15 +358,7 @@
       <workItem from="1745836134039" duration="2874000" />
       <workItem from="1745851692581" duration="5118000" />
       <workItem from="1746266317351" duration="12225000" />
-      <workItem from="1746366246649" duration="4749000" />
-    </task>
-    <task id="LOCAL-00037" summary="ShipValidityTest">
-      <option name="closed" value="true" />
-      <created>1742645883936</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1742645883936</updated>
+      <workItem from="1746366246649" duration="4982000" />
     </task>
     <task id="LOCAL-00038" summary="finita check ship e aggiunta anche il contrllo sui tronconi">
       <option name="closed" value="true" />
@@ -764,7 +744,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746268644322</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="timer finito e quasi finito controllo">
+      <option name="closed" value="true" />
+      <created>1746371385998</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1746371385999</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -798,7 +786,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="iniziati test Board" />
     <MESSAGE value="fixati i nomi" />
     <MESSAGE value="resa piu chiara la move player e testata tutta la Board  compresa la leader check" />
     <MESSAGE value="getBoard_leader finita in funzionale" />
@@ -823,6 +810,7 @@
     <MESSAGE value="aggiunto scelta gui tui" />
     <MESSAGE value="fixati test e aggiunto test controller" />
     <MESSAGE value="timer" />
-    <option name="LAST_COMMIT_MESSAGE" value="timer" />
+    <MESSAGE value="timer finito e quasi finito controllo" />
+    <option name="LAST_COMMIT_MESSAGE" value="timer finito e quasi finito controllo" />
   </component>
 </project>

@@ -121,8 +121,8 @@ public class GUI implements View {
     }
 
     @Override
-    public void removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
-
+    public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+return null;
     }
 
 
