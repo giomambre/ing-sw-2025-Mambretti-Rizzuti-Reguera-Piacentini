@@ -60,5 +60,5 @@ public interface View {
 
     Pair<Integer,Integer> askCoords(Ship ship);
 
-    void  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
+    Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
 }

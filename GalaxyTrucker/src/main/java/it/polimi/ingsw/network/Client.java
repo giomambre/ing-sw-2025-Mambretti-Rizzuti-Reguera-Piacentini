@@ -32,6 +32,7 @@ public class Client {
     private static BlockingQueue<Message> notificationQueue = new LinkedBlockingQueue<>();
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
+    private static boolean forced_close = false;
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
@@ -69,11 +70,11 @@ public class Client {
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
                                  CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
-                                 CARD_UNAVAILABLE, FORCE_BUILD_PHASE_END,  UNAVAILABLE_PLACE, ADD_CREWMATES:
+                                 CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES, INVALID_CONNECTORS:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
+                            case FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -220,7 +221,6 @@ public class Client {
                 break;
 
             case BUILD_START:
-
                 int deck_selected = virtualView.selectDeck();
 
                 if (deck_selected == 1) {
@@ -265,7 +265,7 @@ public class Client {
 
                 }
                 else if (deck_selected == 4) {
-                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! ora attendi gli altri!");
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio!");
                     out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
 
@@ -281,6 +281,7 @@ public class Client {
             break;
 
             case CARD_COMPONENT_RECEIVED:
+
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
@@ -333,12 +334,9 @@ public class Client {
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
-            case FORCE_BUILD_PHASE_END:
-
-                out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
-                break;
 
             case ADD_CREWMATES:
+                inputQueue.clear();
                 sel = virtualView.crewmateAction();
                 CrewmateType type;
                 if (sel != 4) {
@@ -366,15 +364,15 @@ public class Client {
                 break;
 
 
-            case INVALIDS_CONNECTORS:
+            case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if(icm.getInvalids().isEmpty()){
 
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
 
                 }else{
-                    virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids());
-                    out.writeObject(new ShipClientMessage(MessageType.UPDATED_SHIP, "", clientId,player_local.copyPlayer()));
+                    player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
+                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId,player_local.copyPlayer()));
 
                 }
 
@@ -385,7 +383,7 @@ public class Client {
     }
 
 
-        public static void handleNotification(Message msg) {
+        public static void handleNotification(Message msg) throws IOException {
 
 
         switch (msg.getType()) {
@@ -445,6 +443,11 @@ public class Client {
 
                 break;
 
+            case FORCE_BUILD_PHASE_END:
+                virtualView.showMessage("\n" + "Per favore dichiara di aver finito per continuare, qualunque carta piazzata/prenotata/scartata, verrà ignorata");
+
+                elaborate(new Message(MessageType.BUILD_PHASE_ENDED, msg.getContent()));
+                break;
 
 
             case DECK_CARD_ADVENTURE_UPDATED:
@@ -457,30 +460,32 @@ public class Client {
 
             case TIME_UPDATE:
 
-
-
-                        virtualView.showMessage("\n" + msg.getContent());
-
+      virtualView.showMessage("\n" + msg.getContent());
 
                 break;
 
             case BUILD_PHASE_ENDED:
-
                 switch (msg.getContent()) {
-                    case "1":
+                    case "0":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
                         break;
-                    case "2":
+                    case "1":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per secondo");
                         break;
-                    case "3":
+                    case "2":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per terzo");
                         break;
-                    case "4":
+                    case "3":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
                         break;
                 }
+
+
                 break;
+
+
+
+
 
 
         }

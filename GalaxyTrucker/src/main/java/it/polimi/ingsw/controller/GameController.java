@@ -15,7 +15,7 @@ import static it.polimi.ingsw.controller.GameState.SETTINGS;
 
 public class GameController {
 
-    List<Player> finished_build_players = new ArrayList<>();
+    List<Player> finished_supply_players = new ArrayList<>();
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
 
@@ -90,14 +90,14 @@ public class GameController {
 
     }
 
-    public void finishFirstBuildPhase(String nickname){
+    public void finishSupplyPhase(String nickname){
         Player p = game.getPlayer(nickname);
-        finished_build_players.add(p);
+        finished_supply_players.add(p);
 
     }
 
-    public List<Player> getFinished_build_players() {
-        return finished_build_players;
+    public List<Player> getFinished_supply_players() {
+        return finished_supply_players;
     }
 
     public synchronized int endPlayerBuildPhase(String nickname) {
@@ -117,7 +117,7 @@ public class GameController {
             return 1;
         } else {
 
-            System.out.println("You cannot start the fly because your ship isn't valid , here are the incorret pieces : ");
+            System.out.println("You cannot start the fly because your ship isn't valid , here are the invalid pieces : ");
             System.out.println(ship.checkShipConnections());
             return 0;
 
