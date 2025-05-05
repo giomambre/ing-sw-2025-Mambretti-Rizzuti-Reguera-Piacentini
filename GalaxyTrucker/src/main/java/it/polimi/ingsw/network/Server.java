@@ -306,6 +306,8 @@ public class Server {
                             sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
                                     "✅ Tutti hanno finito! Ordine: " + lt.getFinishOrder()));
                             controller.setGamestate(SUPLLY_PHASE);
+                            sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
+
 
                         },
                         // on30StartNeeded
@@ -330,6 +332,8 @@ public class Server {
                                 }
 
                             }
+                            controller.setGamestate(SUPLLY_PHASE);
+
                             sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
 
                         }
