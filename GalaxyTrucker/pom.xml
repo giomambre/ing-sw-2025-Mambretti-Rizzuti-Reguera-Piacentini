@@ -13,6 +13,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>5.10.2</junit.version>
     <javafx.sdk.path>C:/javafx-sdk-21</javafx.sdk.path>
+    <javafx.version>24.0.1</javafx.version>
   </properties>
 
 
@@ -27,6 +28,12 @@
         <artifactId>javafx-controls</artifactId>
         <version>24.0.1</version>
       </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>24.0.1</version>
+    </dependency>
 
     <!-- Jackson Core -->
     <dependency>

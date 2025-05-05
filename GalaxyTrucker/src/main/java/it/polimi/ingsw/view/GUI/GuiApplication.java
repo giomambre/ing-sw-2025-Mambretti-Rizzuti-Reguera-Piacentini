@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -14,7 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
-
+import javafx.fxml.FXMLLoader;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
@@ -26,7 +27,8 @@ public class GuiApplication extends Application  {
             GUI gui = new GUI(); // inizializza GUI qui
             setGui(gui);
             Platform.runLater(()->{
-
+                //Parent root = new FXMLLoader(getClass().getResource("sample.fxml"));
+                primaryStage.setTitle("Galaxy Trucker");
                 primaryStage.show();
             });
 

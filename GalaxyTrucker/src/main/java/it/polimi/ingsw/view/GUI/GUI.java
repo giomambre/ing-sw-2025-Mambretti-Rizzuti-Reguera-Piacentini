@@ -102,14 +102,21 @@ public class GUI implements View {
     }
 
     @Override
+    public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
+        return 0;
+    }
+
+    @Override
     public int selectDeck() {
         return 0;
     }
 
     @Override
-    public int crewmateAction() {
+    public int crewmateAction(CardComponent component) {
         return 0;
     }
+
+
 
     @Override
     public int askFacedUpCard(List<CardComponent> cards) {
@@ -132,8 +139,8 @@ public class GUI implements View {
     }
 
     @Override
-    public void removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
-
+    public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+        return null;
     }
 
 
