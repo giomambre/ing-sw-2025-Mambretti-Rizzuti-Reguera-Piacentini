@@ -303,12 +303,10 @@ public class Server {
                 lt.notifyFinished(getNickname(endMsg.getId_client()),
                         // onAllFinished
                         () -> {
-                            sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
-                                    "✅ Tutti hanno finito! Ordine: " + lt.getFinishOrder()));
+
                             controller.setGamestate(SUPLLY_PHASE);
                             sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
-
-
+                            System.out.println("mandato");
                         },
                         // on30StartNeeded
                         () -> {

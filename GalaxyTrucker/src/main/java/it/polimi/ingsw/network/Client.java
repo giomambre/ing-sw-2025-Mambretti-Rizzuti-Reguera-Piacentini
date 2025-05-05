@@ -310,6 +310,8 @@ public class Client {
                     } else {
 
                         out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
+                        player_local.addToShip(card_msg.getCardComponent(),coords.getKey(),coords.getValue());
+
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         player_local.getShip().getExtra_components().remove(card_msg.getCardComponent());
                         break;
@@ -340,42 +342,38 @@ public class Client {
 
             case ADD_CREWMATES:
                 inputQueue.clear();
-                Pair<Integer, Integer> coords = virtualView.askCoordsCrewmate(player_local.getShip());
-                if(coords.getKey() == 99 || coords.getValue() == 99) {
 
-                        virtualView.showMessage("Hai terminato la fase di equipaggiamento, inizio fase di controllo ");
-                        out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
+                for (CardComponent[] row : player_local.getShip().getShipBoard()) {
+                    for (CardComponent component : row) {
+                        if (component.getComponentType() == LivingUnit) {
+                            CrewmateType type;
+                            int select =  virtualView.crewmateAction(component);
 
-                }
+                            if (select == 1) {
+                                type = CrewmateType.Astronaut;
 
-                    CrewmateType type;
-                if(coords.getKey() == -1 || coords.getValue() == -1) {
-                elaborate(new Message(MessageType.ADD_CREWMATES, ""));
-                return;
-                }
-                int select = virtualView.crewmateAction(player_local.getShip().checkAlienSupport((LivingUnit)player_local.getShip().getComponent(coords.getKey(), coords.getValue())));
+                            } else if (select == 2) {
 
-                    if (select == 1) {
-                        type = CrewmateType.Astronaut;
+                                type = CrewmateType.PinkAlien;
 
-                    } else if (select == 2) {
+                            } else {
 
-                        type = CrewmateType.PinkAlien;
+                                type = CrewmateType.BrownAlien;
 
-                    } else {
+                            }
+                            out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, player_local.getShip().getCoords(component), type));
 
-                        type = CrewmateType.BrownAlien;
+
+                        }
 
                     }
+                }
 
-                    if (coords.getKey() == -1 || coords.getValue() == -1) {
-                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
 
-                    } else {
-                        out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
-                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
 
-                    }
+
+
+
 break;
 
             case INVALID_CONNECTORS:

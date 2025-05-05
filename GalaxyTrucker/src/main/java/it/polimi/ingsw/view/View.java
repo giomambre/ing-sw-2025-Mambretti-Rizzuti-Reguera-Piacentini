@@ -53,7 +53,7 @@ public interface View {
 
     int selectDeck();
 
-    int crewmateAction(List<CrewmateType> crewmateType);
+    int crewmateAction(CardComponent component);
 
     int askFacedUpCard(List<CardComponent> cards);
 

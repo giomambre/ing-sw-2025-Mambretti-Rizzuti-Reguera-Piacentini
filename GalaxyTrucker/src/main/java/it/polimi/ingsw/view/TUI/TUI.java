@@ -627,7 +627,7 @@ public class TUI implements View {
         printShip(player_local.getShip().getShipBoard());
         System.out.println("\n");
 }
-        lastRequest = ("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
+        lastRequest = ("Premi :\n 1 : per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
         int selected = -1;
         do {
             out.println("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
@@ -639,8 +639,11 @@ public class TUI implements View {
     }
 
     @Override
-    public int crewmateAction(List<CrewmateType> crewmateType) {
+    public int crewmateAction(CardComponent component) {
         int selected = -1;
+        List<CrewmateType> crewmateType = new ArrayList<>();
+        crewmateType = player_local.getShip().checkAlienSupport(component);
+        System.out.println("STAI RIMEPIENDO LA LIVING UNIT IN RIGA : " + player_local.getShip().getCoords(component).getKey() +  " COLONNA : " + player_local.getShip().getCoords(component).getValue());
 
         if (crewmateType.contains(CrewmateType.BrownAlien) && crewmateType.contains(CrewmateType.PinkAlien) ) {
             lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n ");
@@ -787,13 +790,13 @@ selected = 1;}
         boolean validInput = false;
 
         while (!validInput) {
-            lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ";
-            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
+            lastRequest = "Inserire la coordinata RIGA (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ";
+            out.println("Inserire la coordinata RIGA (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
             x = readInt();
             if (x == -1) return new Pair<>(x, y);
 
-            lastRequest = "Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ";
-            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
+            lastRequest = "Inserire la coordinata COLONNA (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ";
+            out.println("Inserire la coordinata COLONNA (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
             y = readInt();
             if (y == -1) return new Pair<>(x, y);
 
@@ -820,18 +823,20 @@ selected = 1;}
 
     @Override
     public Pair<Integer, Integer> askCoordsCrewmate(Ship ship) {
+        System.out.println("TUTTI HANNO FINITO, comincia la fase di supply delle Living Unit");
         int x = -1, y = -1;
         boolean validInput = false;
-        System.out.println("INSERISCI LA LIVING UNIT CHE VUOI FILLARE oppure premi -1 per uscire :");
+        System.out.println("Premi 1 per continuare oppure premi -1 per uscire e passare alla fase successiva :");
+
         if(x==-1) return new Pair<>(99, 99);
         while (!validInput) {
-            lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ";
-            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
+            lastRequest = "Inserire la coordinata RIGA (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ";
+            out.println("Inserire la coordinata RIGA (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
             x = readInt();
             if (x == -1) return new Pair<>(x, y);
 
-            lastRequest = "Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ";
-            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
+            lastRequest = "Inserire la coordinata COLONNA (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ";
+            out.println("Inserire la coordinata COLONNA (tra 0 e " + (ship.getCOLS() - 1) + " oppure -1 per uscire): ");
             y = readInt();
             if (y == -1) return new Pair<>(x, y);
 
@@ -893,7 +898,7 @@ selected = 1;}
     public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
         System.out.println("La tua nave presenta questi connettori esposti : ");
         for (Pair<Integer, Integer> connector : connectors) {
-            System.out.println("X :  " + connector.getKey() + " --- Y:" + connector.getValue());
+            System.out.println("RIGA :  " + connector.getKey() + " --- COLONNA :  " + connector.getValue());
         }
         System.out.println("\n");
         printShip(ship.getShipBoard());
@@ -918,13 +923,13 @@ selected = 1;}
         System.out.println("\n RIMOZIONE COMPONENTE\n");
 
         while (!validInput) {
-            lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1 +")") ;
-            out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) +")" );
+            lastRequest = "Inserire la coordinata RIGA (tra 0 e " + (ship.getROWS() - 1 +")") ;
+            out.println("Inserire la coordinata RIGA (tra 0 e " + (ship.getROWS() - 1) +")" );
             x = readInt();
 
 
-            lastRequest = "Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1+")");
-            out.println("Inserire la coordinata Y (tra 0 e " + (ship.getCOLS() - 1) +")" );
+            lastRequest = "Inserire la coordinata COLONNA (tra 0 e " + (ship.getCOLS() - 1+")");
+            out.println("Inserire la coordinata COLONNA (tra 0 e " + (ship.getCOLS() - 1) +")" );
             y = readInt();
 
 

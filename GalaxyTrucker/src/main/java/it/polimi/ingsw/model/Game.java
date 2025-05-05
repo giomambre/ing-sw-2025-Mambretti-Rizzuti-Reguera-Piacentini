@@ -644,38 +644,6 @@ public class Game extends BaseGame {
         deck_components.add(new Storage(RedStorage, connectors, 2, "images/cardComponent/GT-redStorage_2_3.jpg"));
 
 
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitBlue, connectors, "images/cardComponent/GT-mainUnitBlue.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitGreen, connectors, "images/cardComponent/GT-mainUnitGreen.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitRed, connectors, "images/cardComponent/GT-mainUnitRed.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitYellow, connectors, "images/cardComponent/GT-mainUnitYellow.jpg"));
-
-
         connectors.put(North, Smooth);
         connectors.put(South, Universal);
         connectors.put(East, Smooth);

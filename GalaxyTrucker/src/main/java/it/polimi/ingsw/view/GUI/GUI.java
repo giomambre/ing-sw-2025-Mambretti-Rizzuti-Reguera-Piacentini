@@ -97,7 +97,7 @@ public class GUI implements View {
     }
 
     @Override
-    public int crewmateAction(List<CrewmateType> crewmateType) {
+    public int crewmateAction(CardComponent card) {
         return 0;
     }
 
