@@ -6,16 +6,14 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.view.GUI;
-import it.polimi.ingsw.model.view.TUI;
-import it.polimi.ingsw.model.view.View;
+import it.polimi.ingsw.view.GUI.GUI;
+import it.polimi.ingsw.view.GUI.GuiApplication;
+import it.polimi.ingsw.view.TUI.TUI;
+import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.network.messages.*;
 import javafx.util.Pair;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 import java.io.*;
@@ -34,6 +32,7 @@ public class Client {
     private static BlockingQueue<Message> notificationQueue = new LinkedBlockingQueue<>();
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
+    private static boolean forced_close = false;
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
@@ -71,11 +70,11 @@ public class Client {
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
                                  CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
-                                 CARD_UNAVAILABLE, FORCE_BUILD_PHASE_END,  UNAVAILABLE_PLACE, ADD_CREWMATES:
+                                 CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES, INVALID_CONNECTORS:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
+                            case FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -222,7 +221,6 @@ public class Client {
                 break;
 
             case BUILD_START:
-
                 int deck_selected = virtualView.selectDeck();
 
                 if (deck_selected == 1) {
@@ -267,7 +265,7 @@ public class Client {
 
                 }
                 else if (deck_selected == 4) {
-                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! Ora ti aspetta la fase di volo");
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio!");
                     out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
 
@@ -283,6 +281,7 @@ public class Client {
             break;
 
             case CARD_COMPONENT_RECEIVED:
+
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
@@ -335,12 +334,9 @@ public class Client {
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
-            case FORCE_BUILD_PHASE_END:
-
-                out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
-                break;
 
             case ADD_CREWMATES:
+                inputQueue.clear();
                 sel = virtualView.crewmateAction();
                 CrewmateType type;
                 if (sel != 4) {
@@ -368,15 +364,15 @@ public class Client {
                 break;
 
 
-            case INVALIDS_CONNECTORS:
+            case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if(icm.getInvalids().isEmpty()){
 
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
 
                 }else{
-                    virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids());
-                    out.writeObject(new ShipClientMessage(MessageType.UPDATED_SHIP, "", clientId,player_local.copyPlayer()));
+                    player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
+                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId,player_local.copyPlayer()));
 
                 }
 
@@ -387,7 +383,7 @@ public class Client {
     }
 
 
-        public static void handleNotification(Message msg) {
+        public static void handleNotification(Message msg) throws IOException {
 
 
         switch (msg.getType()) {
@@ -406,6 +402,8 @@ public class Client {
 
 
                 case UPDATED_SHIPS:
+
+                    System.out.println("ARRIVATA NAVE");
                     PlayersShipsMessage ps_msg = (PlayersShipsMessage) msg;
                     List<Player> tmp = ps_msg.getPlayers();
 
@@ -435,16 +433,21 @@ public class Client {
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
-                    System.out.println("ARRIVATA CARTA");
+
 
                 }else{
                     facedUp_deck_local.remove(cpm.getCardComponent());
-                    System.out.println("RIMOSSA CARTA");
+
 
                 }
 
                 break;
 
+            case FORCE_BUILD_PHASE_END:
+                virtualView.showMessage("\n" + "Per favore dichiara di aver finito per continuare, qualunque carta piazzata/prenotata/scartata, verrà ignorata");
+
+                elaborate(new Message(MessageType.BUILD_PHASE_ENDED, msg.getContent()));
+                break;
 
 
             case DECK_CARD_ADVENTURE_UPDATED:
@@ -452,44 +455,37 @@ public class Client {
                 CardAdventureDeckMessage adm = (CardAdventureDeckMessage) msg;
                 local_adventure_deck = adm.getDeck();
                 ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
-                System.out.println("arrivate ");
+
                 break;
 
             case TIME_UPDATE:
-                TimeUpdateMessage time_msg = (TimeUpdateMessage) msg;
-                switch (time_msg.getId()) {
-                    case 1:
-                        virtualView.showMessage("\nNessuno ha ancora finito l'assemblaggio, partono ulteriori 30 sec");
 
-                        break;
-                    case 2:
-                        virtualView.showMessage("\nFase di assemblaggio finita.");
-                        break;
-                    case 3:
-                        virtualView.showMessage("\nUn giocatore ha finito in anticipo, partono ulteriori 30 sec");
+      virtualView.showMessage("\n" + msg.getContent());
 
-                        break;
-
-                }
                 break;
 
             case BUILD_PHASE_ENDED:
-                BuildPhaseEndedMessage build_msg = (BuildPhaseEndedMessage) msg;
-                switch (build_msg.getPos()) {
-                    case 1:
+                switch (msg.getContent()) {
+                    case "0":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
                         break;
-                    case 2:
+                    case "1":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per secondo");
                         break;
-                    case 3:
+                    case "2":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per terzo");
                         break;
-                    case 4:
+                    case "3":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
                         break;
                 }
+
+
                 break;
+
+
+
+
 
 
         }

@@ -87,6 +87,15 @@ public class Ship implements Serializable {
             case GREEN -> MainUnitGreen;
             default -> MainUnitBlue;
         };
+
+        String image_path = switch (player.getColor()){
+            case RED -> "images/cardComponent/GT-mainUnitRed.jpg";
+            case YELLOW -> "images/cardComponent/GT-mainUnitYellow.jpg";
+            case GREEN -> "images/cardComponent/GT-mainUnitGreen.jpg";
+            default -> "images/cardComponent/GT-mainUnitBlue.jpg";
+
+
+        };
         Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
         connectors.put(North, Empty_Connector);
         connectors.put(South, Empty_Connector);
@@ -94,9 +103,9 @@ public class Ship implements Serializable {
         connectors.put(West, Empty_Connector);
 
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
 
-        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, connectors);
+        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, connectors,"");
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
@@ -107,7 +116,7 @@ public class Ship implements Serializable {
                     connectors.put(East, Universal);
                     connectors.put(West, Universal);
 
-                    ship_board[row][col] = new LivingUnit(main_unit, connectors);
+                    ship_board[row][col] = new LivingUnit(main_unit, connectors,image_path);
                     ((LivingUnit)getComponent(row,col)).addAstronauts(); //already filled the main unit with 2 astounauts, no choices here
 
                 } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
@@ -713,7 +722,7 @@ public class Ship implements Serializable {
 
 
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
 
         if(this.getComponent(x, y).getComponentType() ==PinkAlienUnit || this.getComponent(x, y).getComponentType() ==BrownAlienUnit ) {
              for(int row=0; row<ROWS; row++) {
@@ -861,7 +870,7 @@ public class Ship implements Serializable {
         connectors.put(East, Empty_Connector);
         connectors.put(West, Empty_Connector);
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors);
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
 
         ship_board[row][col] = EMPTY_CELL;
 

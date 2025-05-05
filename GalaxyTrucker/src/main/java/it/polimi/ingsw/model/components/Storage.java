@@ -36,9 +36,10 @@ public class Storage extends CardComponent  implements Serializable {
     public Storage(
             @JsonProperty("component_type") ComponentType component_type,
             @JsonProperty("connectors") Map<Direction, ConnectorType> connectors,
-            @JsonProperty("size") int size
+            @JsonProperty("size") int size,
+            String imagePath
            ) {
-        super(component_type, connectors);
+        super(component_type, connectors, imagePath);
         this.size = size;
         this.carried_cargos = new ArrayList<>(Collections.nCopies(size, Cargo.Empty)); // Riempie la lista con EMPTY
 
@@ -119,7 +120,7 @@ public class Storage extends CardComponent  implements Serializable {
      * @return a new {@code Storage} identical to this one
      */
     public CardComponent copy() {
-    Storage copy = new Storage(getComponentType(),getConnectors(),size);
+    Storage copy = new Storage(getComponentType(),getConnectors(),size, getImagePath());
     copy.setCard_uuid(getCard_uuid());
     copy.setCarried_cargos(carried_cargos);
     return copy;

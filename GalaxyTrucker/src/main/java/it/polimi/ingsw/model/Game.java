@@ -322,7 +322,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_1.jpg"));
 
 
         connectors.put(North, Universal);
@@ -330,7 +330,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_2.jpg"));
 
 
         connectors.put(North, Universal);
@@ -338,7 +338,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -346,7 +346,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_4.jpg"));
 
 
         connectors.put(North, Universal);
@@ -354,7 +354,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_5.jpg"));
 
 
         connectors.put(North, Universal);
@@ -362,7 +362,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_6.jpg"));
 
 
         connectors.put(North, Universal);
@@ -370,7 +370,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_7.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -378,7 +378,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_8.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -386,7 +386,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_9.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -394,7 +394,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_10.jpg"));
 
 
         connectors.put(North, Universal);
@@ -402,7 +402,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Battery(Battery, connectors, 2));
+        deck_components.add(new Battery(Battery, connectors, 2, "images/cardComponent/GT-battery_2_11.jpg"));
 
 
         connectors.put(North, Single);
@@ -410,7 +410,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -418,7 +418,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_2.jpg"));
 
 
         connectors.put(North, Double);
@@ -426,7 +426,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -434,7 +434,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_4.jpg"));
 
 
         connectors.put(North, Double);
@@ -442,7 +442,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_5.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -450,7 +450,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 3));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_6.jpg"));
 
 
         connectors.put(North, Double);
@@ -458,7 +458,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_1.jpg"));
 
 
         connectors.put(North, Double);
@@ -466,7 +466,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_2.jpg"));
 
 
         connectors.put(North, Double);
@@ -474,7 +474,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_3.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -482,7 +482,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_4.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -490,7 +490,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_5.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -498,7 +498,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_6.jpg"));
 
 
         connectors.put(North, Double);
@@ -506,7 +506,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_7.jpg"));
 
 
         connectors.put(North, Universal);
@@ -514,7 +514,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_8.jpg"));
 
 
         connectors.put(North, Universal);
@@ -522,7 +522,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_9.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -530,7 +530,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -538,7 +538,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_2.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -546,7 +546,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -554,7 +554,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_4.jpg"));
 
 
         connectors.put(North, Single);
@@ -562,7 +562,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_5.jpg"));
 
 
         connectors.put(North, Double);
@@ -570,7 +570,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -578,7 +578,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(RedStorage, connectors, 1));
+        deck_components.add(new Storage(RedStorage, connectors, 1, "images/cardComponent/GT-redStorage_1_1.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -586,7 +586,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(RedStorage, connectors, 1));
+        deck_components.add(new Storage(RedStorage, connectors, 1, "images/cardComponent/GT-redStorage_1_2.jpg"));
 
 
         connectors.put(North, Single);
@@ -594,7 +594,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(RedStorage, connectors, 1));
+        deck_components.add(new Storage(RedStorage, connectors, 1, "images/cardComponent/GT-redStorage_1_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -602,7 +602,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(RedStorage, connectors, 1));
+        deck_components.add(new Storage(RedStorage, connectors, 1, "images/cardComponent/GT-redStorage_1_4.jpg"));
 
 
         connectors.put(North, Double);
@@ -610,7 +610,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(RedStorage, connectors, 1));
+        deck_components.add(new Storage(RedStorage, connectors, 1, "images/cardComponent/GT-redStorage_1_5.jpg"));
 
 
         connectors.put(North, Universal);
@@ -618,7 +618,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(RedStorage, connectors, 1));
+        deck_components.add(new Storage(RedStorage, connectors, 1, "images/cardComponent/GT-redStorage_1_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -626,7 +626,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(RedStorage, connectors, 2));
+        deck_components.add(new Storage(RedStorage, connectors, 2, "images/cardComponent/GT-redStorage_2_1.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -634,22 +634,14 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(RedStorage, connectors, 2));
+        deck_components.add(new Storage(RedStorage, connectors, 2, "images/cardComponent/GT-redStorage_2_2.jpg"));
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new Storage(RedStorage, connectors, 2));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitBlue, connectors));
+        deck_components.add(new Storage(RedStorage, connectors, 2, "images/cardComponent/GT-redStorage_2_3.jpg"));
 
 
         connectors.put(North, Universal);
@@ -657,7 +649,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(MainUnitGreen, connectors));
+        deck_components.add(new CardComponent(MainUnitBlue, connectors, "images/cardComponent/GT-mainUnitBlue.jpg"));
 
 
         connectors.put(North, Universal);
@@ -665,7 +657,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(MainUnitRed, connectors));
+        deck_components.add(new CardComponent(MainUnitGreen, connectors, "images/cardComponent/GT-mainUnitGreen.jpg"));
 
 
         connectors.put(North, Universal);
@@ -673,7 +665,15 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(MainUnitYellow, connectors));
+        deck_components.add(new CardComponent(MainUnitRed, connectors, "images/cardComponent/GT-mainUnitRed.jpg"));
+
+
+        connectors.put(North, Universal);
+        connectors.put(South, Universal);
+        connectors.put(East, Universal);
+        connectors.put(West, Universal);
+
+        deck_components.add(new CardComponent(MainUnitYellow, connectors, "images/cardComponent/GT-mainUnitYellow.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -681,7 +681,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -689,7 +689,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_2.jpg"));
 
 
         connectors.put(North, Single);
@@ -697,7 +697,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -705,7 +705,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_4.jpg"));
 
 
         connectors.put(North, Double);
@@ -713,7 +713,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_5.jpg"));
 
 
         connectors.put(North, Double);
@@ -721,7 +721,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -729,7 +729,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_7.jpg"));
 
 
         connectors.put(North, Single);
@@ -737,7 +737,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_8.jpg"));
 
 
         connectors.put(North, Double);
@@ -745,7 +745,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_9.jpg"));
 
 
         connectors.put(North, Universal);
@@ -753,7 +753,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_10.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -761,7 +761,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_11.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -769,7 +769,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_12.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -777,7 +777,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_13.jpg"));
 
 
         connectors.put(North, Single);
@@ -785,7 +785,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_14.jpg"));
 
 
         connectors.put(North, Single);
@@ -793,7 +793,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_15.jpg"));
 
 
         connectors.put(North, Double);
@@ -801,7 +801,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_16.jpg"));
 
 
         connectors.put(North, Double);
@@ -809,7 +809,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors));
+        deck_components.add(new CardComponent(LivingUnit, connectors, "images/cardComponent/GT-livingUnit_17.jpg"));
 
 
         connectors.put(North, Universal);
@@ -817,7 +817,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -825,7 +825,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_2.jpg"));
 
 
         connectors.put(North, Single);
@@ -833,7 +833,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_3.jpg"));
 
 
         connectors.put(North, Single);
@@ -841,7 +841,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_4.jpg"));
 
 
         connectors.put(North, Double);
@@ -849,7 +849,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_5.jpg"));
 
 
         connectors.put(North, Universal);
@@ -857,7 +857,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_6.jpg"));
 
 
         connectors.put(North, Universal);
@@ -865,7 +865,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_7.jpg"));
 
 
         connectors.put(North, Universal);
@@ -873,7 +873,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Tubes, connectors));
+        deck_components.add(new CardComponent(Tubes, connectors, "images/cardComponent/GT-tubes_8.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -881,7 +881,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_1.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -889,7 +889,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_2.jpg"));
 
 
         connectors.put(North, Single);
@@ -897,7 +897,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_3.jpg"));
 
 
         connectors.put(North, Single);
@@ -905,7 +905,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_4.jpg"));
 
 
         connectors.put(North, Single);
@@ -913,7 +913,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_5.jpg"));
 
 
         connectors.put(North, Double);
@@ -921,7 +921,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_6.jpg"));
 
 
         connectors.put(North, Double);
@@ -929,7 +929,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_7.jpg"));
 
 
         connectors.put(North, Double);
@@ -937,7 +937,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_8.jpg"));
 
 
         connectors.put(North, Universal);
@@ -945,7 +945,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_9.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -953,7 +953,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_10.jpg"));
 
 
         connectors.put(North, Double);
@@ -961,7 +961,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_11.jpg"));
 
 
         connectors.put(North, Universal);
@@ -969,7 +969,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_12.jpg"));
 
 
         connectors.put(North, Universal);
@@ -977,7 +977,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_13.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -985,7 +985,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_14.jpg"));
 
 
         connectors.put(North, Single);
@@ -993,7 +993,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_15.jpg"));
 
 
         connectors.put(North, Double);
@@ -1001,7 +1001,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_16.jpg"));
 
 
         connectors.put(North, Universal);
@@ -1009,7 +1009,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_17.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1017,7 +1017,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_18.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1025,7 +1025,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_19.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1033,7 +1033,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_20.jpg"));
 
 
         connectors.put(North, Single);
@@ -1041,7 +1041,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Engine, connectors));
+        deck_components.add(new CardComponent(Engine, connectors, "images/cardComponent/GT-engine_21.jpg"));
 
 
         connectors.put(North, Single);
@@ -1049,7 +1049,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -1057,7 +1057,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_2.jpg"));
 
 
         connectors.put(North, Double);
@@ -1065,7 +1065,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_3.jpg"));
 
 
         connectors.put(North, Universal);
@@ -1073,7 +1073,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_4.jpg"));
 
 
         connectors.put(North, Single);
@@ -1081,7 +1081,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_5.jpg"));
 
 
         connectors.put(North, Double);
@@ -1089,7 +1089,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_6.jpg"));
 
 
         connectors.put(North, Universal);
@@ -1097,7 +1097,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_7.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1105,7 +1105,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_8.jpg"));
 
 
         connectors.put(North, Double);
@@ -1113,7 +1113,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(DoubleEngine, connectors));
+        deck_components.add(new CardComponent(DoubleEngine, connectors, "images/cardComponent/GT-doubleEngine_9.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1121,7 +1121,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_1.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1129,7 +1129,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_2.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1137,7 +1137,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_3.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1145,7 +1145,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_4.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1153,7 +1153,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_5.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1161,7 +1161,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_6.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1169,7 +1169,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_7.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1177,7 +1177,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_8.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1185,7 +1185,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_9.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1193,7 +1193,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_10.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1201,7 +1201,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_11.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1209,7 +1209,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_12.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1217,7 +1217,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_13.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1225,7 +1225,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_14.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1233,7 +1233,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_15.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1241,7 +1241,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_16.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1249,7 +1249,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_17.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1257,7 +1257,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_18.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1265,7 +1265,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_19.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1273,7 +1273,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_20.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1281,7 +1281,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_21.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1289,7 +1289,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_22.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1297,7 +1297,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_23.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1305,7 +1305,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_24.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1313,7 +1313,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Cannon, connectors));
+        deck_components.add(new CardComponent(Cannon, connectors, "images/cardComponent/GT-cannon_25.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1321,7 +1321,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_1.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1329,7 +1329,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_2.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1337,7 +1337,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_3.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1345,7 +1345,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_4.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1353,7 +1353,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_5.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1361,7 +1361,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_6.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1369,7 +1369,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_7.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1377,7 +1377,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_8.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1385,7 +1385,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_9.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1393,7 +1393,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_10.jpg"));
 
 
         connectors.put(North, Cannon_Connector);
@@ -1401,7 +1401,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(DoubleCannon, connectors));
+        deck_components.add(new CardComponent(DoubleCannon, connectors, "images/cardComponent/GT-doubleCannon_11.jpg"));
 
 
         connectors.put(North, Single);
@@ -1409,7 +1409,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors, "images/cardComponent/brownAlienUnit_1.jpg"));
 
 
         connectors.put(North, Double);
@@ -1417,7 +1417,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors, "images/cardComponent/brownAlienUnit_2.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1425,7 +1425,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors, "images/cardComponent/brownAlienUnit_3.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1433,7 +1433,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors, "images/cardComponent/brownAlienUnit_4.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1441,7 +1441,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors, "images/cardComponent/brownAlienUnit_5.jpg"));
 
 
         connectors.put(North, Single);
@@ -1449,7 +1449,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(BrownAlienUnit, connectors));
+        deck_components.add(new CardComponent(BrownAlienUnit, connectors, "images/cardComponent/brownAlienUnit_6.jpg"));
 
 
         connectors.put(North, Single);
@@ -1457,7 +1457,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors, "images/cardComponent/pinkAlienUnit_1.jpg"));
 
 
         connectors.put(North, Double);
@@ -1465,14 +1465,14 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors, "images/cardComponent/pinkAlienUnit_2.jpg"));
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors, "images/cardComponent/pinkAlienUnit_3.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1480,7 +1480,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors, "images/cardComponent/pinkAlienUnit_4.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1488,7 +1488,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors, "images/cardComponent/pinkAlienUnit_5.jpg"));
 
 
         connectors.put(North, Double);
@@ -1496,7 +1496,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(PinkAlienUnit, connectors));
+        deck_components.add(new CardComponent(PinkAlienUnit, connectors, "images/cardComponent/pinkAlienUnit_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1504,7 +1504,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors)); //di defaul rivolti nord-est (da capire se fare sottoclasse)
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_1.jpg")); //di defaul rivolti nord-est (da capire se fare sottoclasse)
 
 
         connectors.put(North, Single);
@@ -1512,7 +1512,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_2.jpg"));
 
 
         connectors.put(North, Double);
@@ -1520,7 +1520,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_3.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1528,7 +1528,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_4.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1536,7 +1536,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_5.jpg"));
 
 
         connectors.put(North, Single);
@@ -1544,7 +1544,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1552,7 +1552,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Shield, connectors));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_7.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1560,7 +1560,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Shield, connectors));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_8.jpg"));
 
 
         //to add : adventure deck creation and allocation

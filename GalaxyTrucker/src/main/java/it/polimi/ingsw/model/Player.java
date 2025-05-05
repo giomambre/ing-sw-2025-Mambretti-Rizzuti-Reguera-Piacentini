@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.enumerates.Gametype;
-import it.polimi.ingsw.model.view.InvalidGameActionException;
 
 import java.io.Serializable;
 import java.util.*;

@@ -2,15 +2,11 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameManager;
-import it.polimi.ingsw.controller.GameState;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.view.TUI;
-import it.polimi.ingsw.model.view.View;
 import it.polimi.ingsw.network.messages.*;
 import javafx.util.Pair;
 
@@ -19,16 +15,11 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static it.polimi.ingsw.controller.GameState.BUILD_PHASE;
-import static it.polimi.ingsw.controller.GameState.FIXING_SHIPS;
-import static it.polimi.ingsw.network.messages.MessageType.INVALIDS_CONNECTORS;
+import static it.polimi.ingsw.controller.GameState.*;
+import static it.polimi.ingsw.network.messages.MessageType.*;
 
 public class Server {
     private static final int PORT = 12345;
@@ -39,11 +30,8 @@ public class Server {
     private Map<Integer, GameController> all_games = new HashMap<>();
     GameController controller;
 
-    private static ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static Map<Integer, ScheduledFuture<?>> buildPhaseTasks = new HashMap<>();
-    private static Map<Integer, Long> buildPhaseStartTimes = new HashMap<>();
-    private static Map<Integer, Boolean> buildPhaseActives = new HashMap<>();
-
+    private boolean build120Ended = false;
+    private Map<Integer, LobbyTimer> lobbyTimers = new HashMap<>();
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -178,17 +166,49 @@ public class Server {
 
                     if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
                         System.out.println("Tutti i player hanno scelto i colori fase di costruzione iniziata!");
-                        sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, ""));
+
 
                         controller.startGame();
-                        controller.setGamestate(BUILD_PHASE);
-                        startBuildPhaseTimer(controller.getLobby().getLobbyId());
+                        LobbyTimer lt = new LobbyTimer(controller.getLobby().getLimit());
+
+                        lobbyTimers.put(controller.getLobby().getLobbyId(), lt);
+
+                        // Invia BUILD_START
+
+                        sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, "Hai 120s per costruire"));
+
+                        // Avvia 120s
+
+                        lt.start120(() -> lt.handle120End(
+                                // callback per quando scadono i 120s E qualcuno ha già finito
+                                () -> sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE, "⏳ 30s rimanenti")),
+                                // callback per quando scadono i 120s E NESSUNO ha ancora finito
+                                () -> sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE, "⏱ 120 secondi terminati : in attesa del primo giocatore..."))
+                                ,
+                                () -> {
+                                    sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
+                                            "✅ Tempo SCADUTO si comincia con la fase di Controllo! "));
+
+
+                                    for (Player p : controller.getPlayers()) {
+
+                                        if (!lt.getFinishOrder().contains(p.getNickname())) {
+                                            lt.addPlayer(p.getNickname());
+                                            sendToClient(getId_client(p.getNickname()), new Message(FORCE_BUILD_PHASE_END, lt.getPositionByPlayer(p.getNickname())));
+
+                                        }
+
+                                    }
+                                }
+
+                        ));
+
 
                         sendToAllClients(controller.getLobby(), new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
-                        System.out.println(controller.seeDecksOnBoard().get(Direction.East).size());
+
                         List<Player> safePlayers = new ArrayList<>();
                         for (Player p : controller.getPlayers()) {
-                            safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                            safePlayers.add(p.copyPlayer());
                         }
                         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
 
@@ -199,9 +219,12 @@ public class Server {
                 break;
 
             case ASK_CARD:
+
                 msgClient = (StandardMessageClient) msg;
 
                 GameController controller = all_games.get(getLobbyId(msgClient.getId_client()));
+
+                if (controller.getGamestate() != BUILD_PHASE) return;
 
                 synchronized (controller) {
 
@@ -231,12 +254,15 @@ public class Server {
             case DISMISSED_CARD:
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 controller = all_games.get(getLobbyId(card_msg.getId_client()));
-                synchronized (controller) {
+                if (controller.getGamestate() == BUILD_PHASE) {
 
-                    controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
-                    System.out.println(controller.getFacedUpCards().toString());
-                    sendToAllClients(controller.getLobby(), new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "", card_msg.getId_client(), card_msg.getCardComponent()));
+                    synchronized (controller) {
 
+                        controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
+                        System.out.println(controller.getFacedUpCards().toString());
+                        sendToAllClients(controller.getLobby(), new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "", card_msg.getId_client(), card_msg.getCardComponent()));
+
+                    }
                 }
                 break;
 
@@ -265,19 +291,57 @@ public class Server {
                 break;
 
             case BUILD_PHASE_ENDED:
-                msgClient = (StandardMessageClient) msg;
-                controller = all_games.get(getLobbyId(msgClient.getId_client()));
 
-                if (controller.getGamestate() == BUILD_PHASE) {
-                    playerFinishedBuilding(getLobbyId(msgClient.getId_client()), msgClient.getId_client());
-                }
 
-                if (controller.getGamestate() == FIXING_SHIPS) {
-                    sendToAllClients(controller.getLobby(), new Message(MessageType.ADD_CREWMATES, ""));
-                }
+                StandardMessageClient endMsg = (StandardMessageClient) msg;
+                controller = all_games.get(getLobbyId(endMsg.getId_client()));
+                LobbyTimer lt = lobbyTimers.get(controller.getLobby().getLobbyId());
+                lt.addPlayer(getNickname(endMsg.getId_client()));
+                sendToClient(endMsg.getId_client(), new Message(BUILD_PHASE_ENDED, lt.getPositionByPlayer(getNickname(endMsg.getId_client()))));
+
+
+                lt.notifyFinished(getNickname(endMsg.getId_client()),
+                        // onAllFinished
+                        () -> {
+                            sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
+                                    "✅ Tutti hanno finito! Ordine: " + lt.getFinishOrder()));
+                            controller.setGamestate(SUPLLY_PHASE);
+
+                        },
+                        // on30StartNeeded
+                        () -> {
+                            sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
+                                    "🔔 Un giocatore ha finito! "));
+
+
+                        },
+
+                        () -> {
+                            sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
+                                    "✅ Tempo SCADUTO si comincia con la fase di Controllo! "));
+
+
+                            for (Player p : controller.getPlayers()) {
+
+                                if (!lt.getFinishOrder().contains(p.getNickname())) {
+                                    lt.addPlayer(p.getNickname());
+                                    sendToClient(getId_client(p.getNickname()), new Message(FORCE_BUILD_PHASE_END, lt.getPositionByPlayer(p.getNickname())));
+
+                                }
+
+                            }
+                            sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
+
+                        }
+
+                );
+
+
                 break;
 
+
             case ADD_CREWMATES:
+
                 AddCrewmateMessage addC_msg = (AddCrewmateMessage) msg;
                 controller = all_games.get(getLobbyId(addC_msg.getId_client()));
 
@@ -287,37 +351,42 @@ public class Server {
                 break;
 
             case CHECK_SHIPS:
+                System.out.println("Inizia fase di controllo delle navi");
+
                 msgClient = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(msgClient.getId_client()));
-                controller.finishFirstBuildPhase(getNickname(msgClient.getId_client()));
+                controller.finishSupplyPhase(getNickname(msgClient.getId_client()));
                 List<Pair<Integer, Integer>> invalids_connections = new ArrayList<>();
 
-                if (controller.getFinished_build_players().size() == controller.getLobby().getPlayers().size()) {  //quando tutti hanno fatto l equipaggiamento della ciurma
+                //    if (controller.getFinished_supply_players().size() == controller.getLobby().getPlayers().size()) {  //quando tutti hanno fatto l equipaggiamento della ciurma
 
-                    System.out.println("Inizia fase di controllo delle navi");
-
-                    for (Player p1 : controller.getPlayers()) {
-                        invalids_connections = controller.checkShipConnectors(getNickname(msgClient.getId_client()));
+                System.out.println("Inizia fase di controllo delle navi");
 
 
-                            sendToClient(getId_client(p1.getNickname()), new InvalidConnectorsMessage(INVALIDS_CONNECTORS,"",invalids_connections));
-                                //se la lista è empty allora i connettori sono giusti
+                invalids_connections = controller.checkShipConnectors(getNickname(msgClient.getId_client()));
 
-                    }
 
-                }
+                sendToClient(getId_client(getNickname(msgClient.getId_client())), new InvalidConnectorsMessage(INVALID_CONNECTORS, "", invalids_connections));
+                //se la lista è empty allora i connettori sono giusti
+
 
                 break;
 
 
-            case UPDATED_SHIP:
+            case FIXED_SHIP_CONNECTORS:
                 ShipClientMessage update_msg = (ShipClientMessage) msg;
                 Ship ship = update_msg.getPlayer().getShip();
                 controller = all_games.get(getLobbyId(update_msg.getId_client()));
 
                 synchronized (controller) {
 
-                controller.setShipPlance(getNickname(update_msg.getId_client()), ship);
+                    controller.setShipPlance(getNickname(update_msg.getId_client()), ship);
+
+                }
+
+                if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() > 1){
+
+                    //gestire la cosa dei tronconi
 
                 }
                 break;
@@ -328,99 +397,6 @@ public class Server {
                 break;
 
 
-        }
-    }
-
-    private void startBuildPhaseTimer(int lobbyId) {
-        controller = all_games.get(lobbyId);
-
-        buildPhaseActives.put(lobbyId, true);
-        System.out.println("🕒 Inizio fase di assemblaggio per lobby " + lobbyId);
-        buildPhaseStartTimes.put(lobbyId, System.currentTimeMillis());
-
-        ScheduledFuture<?> task = scheduler.schedule(() -> {
-            System.out.println("⚡️ Nessuno ha finito in lobby " + lobbyId + ": partono comunque i 30 secondi extra!");
-            startExtra30Seconds(lobbyId);
-            sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 1));
-        }, 120, TimeUnit.SECONDS);
-
-        buildPhaseTasks.put(lobbyId, task);
-    }
-
-
-    private void startExtra30Seconds(int lobbyId) {
-        controller = all_games.get(lobbyId);
-
-        ScheduledFuture<?> task = scheduler.schedule(() -> {
-            
-            System.out.println("⏰ Timer extra scaduto in lobby " + lobbyId + ": Fase di assemblaggio finita.");
-            sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 2));
-            buildPhaseActives.put(lobbyId, false);
-            if (controller.getBuildPhasePlayers().size() != controller.getLobby().getLimit()) {
-                for (String nickname : controller.getLobby().getPlayers()) {
-                    try {
-                        controller.addBuildPhasePlayer(nickname);
-                        sendToClient(getId_client(nickname), new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getBuildPhasePlayers().size()));
-
-                    } catch (Exception e) {
-                    }
-                    sendToClient(getId_client(nickname), new Message(MessageType.FORCE_BUILD_PHASE_END, ""));
-                }
-            }
-            controller.setGamestate(FIXING_SHIPS);
-        }, 30, TimeUnit.SECONDS);
-
-        buildPhaseTasks.put(lobbyId, task);
-    }
-
-
-    private void playerFinishedBuilding(int lobbyId, UUID playerId) {
-        controller = all_games.get(lobbyId);
-
-        if (!buildPhaseActives.getOrDefault(lobbyId, false)) {
-            System.out.println("⚠️ Fase di assemblaggio già chiusa per lobby " + lobbyId);
-            return;
-        }
-
-        long elapsedSeconds = (System.currentTimeMillis() - buildPhaseStartTimes.get(lobbyId)) / 1000;
-        System.out.println("✅ Giocatore ha finito dopo " + elapsedSeconds + " secondi nella lobby " + lobbyId);
-
-
-        if (elapsedSeconds <= 120 && controller.getBuildPhasePlayers().isEmpty()) {
-            System.out.println("🕒 Partono 30 secondi extra per dichiarazione nella lobby " + lobbyId);
-
-            ScheduledFuture<?> task = buildPhaseTasks.get(lobbyId);
-            if (task != null && !task.isDone()) {
-                task.cancel(false);
-            }
-
-            controller.addBuildPhasePlayer(getNickname(playerId));
-            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getBuildPhasePlayers().size()));
-
-            for (Player player : controller.getPlayers()) {
-                if (player.getNickname() != getNickname(playerId)) {
-                    sendToClient(getId_client(player.getNickname()), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 3));
-                }
-            }
-
-            // sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 3));
-            startExtra30Seconds(lobbyId);
-
-        } else {
-            controller.addBuildPhasePlayer(getNickname(playerId));
-            sendToClient(playerId, new BuildPhaseEndedMessage(MessageType.BUILD_PHASE_ENDED, "", controller.getBuildPhasePlayers().size()));
-            if (controller.getBuildPhasePlayers().size() == controller.getLobby().getLimit()) {
-                ScheduledFuture<?> task = buildPhaseTasks.get(lobbyId);
-                if (task != null && !task.isDone()) {
-                    task.cancel(false);
-                }
-                buildPhaseActives.put(lobbyId, false);
-
-                System.out.println("⏰ Tutti hanno finito: chiudo fase assemblaggio nella lobby " + lobbyId);
-
-                sendToAllClients(controller.getLobby(), new TimeUpdateMessage(MessageType.TIME_UPDATE, "", 2));
-                controller.setGamestate(FIXING_SHIPS);
-            }
         }
     }
 
