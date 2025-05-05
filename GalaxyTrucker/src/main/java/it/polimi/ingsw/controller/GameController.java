@@ -16,6 +16,7 @@ import static it.polimi.ingsw.controller.GameState.SETTINGS;
 public class GameController {
 
     List<Player> finished_supply_players = new ArrayList<>();
+    List<Player> waiting_fly_players = new ArrayList<>();
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
 
@@ -145,7 +146,9 @@ public class GameController {
 
         Player p = game.getPlayer(nickname);
 
+
         try {
+            if(p.getShip().getExtra_components().size()<2)
             p.secureComponent(card);
 
         } catch (Exception e) {
@@ -231,25 +234,24 @@ public void setShipPlance(String nickname, Ship ship) {
         p.setShip(ship);
 }
 
-    public List<CardComponent[][]> getValidPieces(String nickname){
+    public List<List<Pair<Integer, Integer>>> getValidPieces(String nickname){
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
         List<List<Pair<Integer, Integer>>> pieces = ship.findShipPieces();
-        List<CardComponent[][]> validPieces = new ArrayList<>();
 
-        for (List<Pair<Integer, Integer>> piece : pieces) {
-            CardComponent[][] matrix = new CardComponent[5][7]; // 5 righe, 7 colonne
+//        for (List<Pair<Integer, Integer>> piece : pieces) {
+//            CardComponent[][] matrix = new CardComponent[5][7]; // 5 righe, 7 colonne
+//
+//            for (Pair<Integer, Integer> coord : piece) {
+//                int x = coord.getKey();
+//                int y = coord.getValue();
+//                matrix[x][y] = ship.getComponent(x, y);
+//            }
+//
+//            validPieces.add(matrix);
+//        }
 
-            for (Pair<Integer, Integer> coord : piece) {
-                int x = coord.getKey();
-                int y = coord.getValue();
-                matrix[x][y] = ship.getComponent(x, y);
-            }
-
-            validPieces.add(matrix);
-        }
-
-        return validPieces;
+        return pieces;
 
     }
 

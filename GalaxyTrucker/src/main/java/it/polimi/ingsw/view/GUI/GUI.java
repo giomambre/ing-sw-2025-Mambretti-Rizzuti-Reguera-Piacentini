@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI;
 
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.view.*;
 import javafx.stage.Stage;
 
@@ -96,7 +97,7 @@ public class GUI implements View {
     }
 
     @Override
-    public int crewmateAction() {
+    public int crewmateAction(List<CrewmateType> crewmateType) {
         return 0;
     }
 
@@ -118,6 +119,11 @@ public class GUI implements View {
     @Override
     public Pair<Integer, Integer> askCoords(Ship ship) {
         return null;
+    }
+
+    @Override
+    public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
+        return 0;
     }
 
     @Override

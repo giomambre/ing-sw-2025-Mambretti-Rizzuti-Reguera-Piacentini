@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.view.View;
 import javafx.util.Pair;
@@ -27,6 +28,7 @@ public class TUI implements View {
     private List<Player> other_players_local = new ArrayList<>();
     Map<Direction, List<CardAdventure>> local_adventure_deck;
     private Player player_local;
+    private List<CardComponent> local_extra_components;
     private boolean isMenuOpen = false; // Variabile per tenere traccia dello stato del menu
     private String lastRequest = ""; // Variabile per memorizzare l'ultima richiesta
 
@@ -71,6 +73,10 @@ public class TUI implements View {
         this.player_local = player;
     }
 
+    public void setLocal_extra_components(List<CardComponent> extraComponents) {
+        this.local_extra_components = extraComponents;
+    }
+
     public void setLocal_adventure_deck(Map<Direction, List<CardAdventure>> local_adventure_deck) {
         this.local_adventure_deck = local_adventure_deck;
     }
@@ -110,7 +116,8 @@ public class TUI implements View {
         out.println("[1] Mostra stato nave");
         out.println("[2] Mostra tutti i giocatori");
         out.println("[3] Visualizza le Carte Avventura");
-        out.println("[4] Esci dal menu");
+        out.println("[4] Visualizza le Carte Prenotate");
+        out.println("[5] Esci dal menu");
 
         int scelta;
         do {
@@ -134,7 +141,9 @@ public class TUI implements View {
 
             case 3 -> showAdventureDeck(local_adventure_deck);
 
-            case 4 -> out.println("🔙 Uscita dal menu.");
+            case 4 -> showExtraCard();
+
+            case 5 -> out.println("🔙 Uscita dal menu.");
         }
 
         isMenuOpen = false;
@@ -144,10 +153,23 @@ public class TUI implements View {
     }
 
 
+    private void showExtraCard(){
+        if (local_extra_components == null || local_extra_components.isEmpty()) {
+            out.println("\n=== MAZZO EXTRA VUOTO ===");
+            return;
+        }
+        System.out.println("\n=== EXTRA CARD ===");
+        for(CardComponent c : local_extra_components) {
+            out.println();
+            printCard(c);
+            out.println();
+        }
+    }
+
     private void showAdventureDeck(Map<Direction, List<CardAdventure>> local_adventure_deck) {
 
         if (local_adventure_deck == null || local_adventure_deck.isEmpty()) {
-            out.println("\n=== MAZZO AVVENTURA VUOTA ===");
+            out.println("\n=== MAZZO AVVENTURA VUOTO ===");
             return;
         }
         for (Direction d : local_adventure_deck.keySet()) {
@@ -384,7 +406,7 @@ public class TUI implements View {
     @Override
     public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         System.out.println("\nEcco i pezzi rimasti della tua nave: ");
-        int i = 1;
+        int i = 0;
         CardComponent[][] ship_board = new CardComponent[5][7];
         for (List<Pair<Integer, Integer>> piece : pieces) {
             System.out.println(i + ": \n");
@@ -397,6 +419,22 @@ public class TUI implements View {
             i++;
             System.out.println();
         }
+
+    }
+
+    @Override
+    public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
+        printShipPieces(pieces, ship);
+        int choice = 1;
+        do{
+            if(choice < 0 || choice >= pieces.size())
+                System.out.println("\nHai inserito un valore non esistente!");
+            System.out.println("\nInserisci il numero del troncone che vuoi tenere");
+           choice = input.nextInt();
+
+        }while(choice < 0 || choice >= pieces.size());
+
+        return choice;
 
     }
 
@@ -582,6 +620,13 @@ public class TUI implements View {
 
     @Override
     public int selectDeck() {
+
+        if(player_local != null) {
+        System.out.println("\nECCO LA TUA NAVE : \n");
+
+        printShip(player_local.getShip().getShipBoard());
+        System.out.println("\n");
+}
         lastRequest = ("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
         int selected = -1;
         do {
@@ -594,13 +639,36 @@ public class TUI implements View {
     }
 
     @Override
-    public int crewmateAction() {
-        lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n 4 : terminare l'equipaggiamento\n");
+    public int crewmateAction(List<CrewmateType> crewmateType) {
         int selected = -1;
-        do {
-            out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n 4 : terminare l'equipaggiamento\n");
-            selected = readInt();
-        } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
+
+        if (crewmateType.contains(CrewmateType.BrownAlien) && crewmateType.contains(CrewmateType.PinkAlien) ) {
+            lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n ");
+            do {
+                out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n");
+                selected = readInt();
+            } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
+        }
+
+        else if(crewmateType.contains(CrewmateType.BrownAlien)){
+            lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno marrone\n ");
+            do {
+                out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno marrone\n");
+                selected = readInt();
+            } while (selected != 1 && selected != 2 );
+            if(selected == 2) selected++;
+        }
+        else if(crewmateType.contains(CrewmateType.PinkAlien)){
+            lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n ");
+            do {
+                out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n");
+                selected = readInt();
+            } while (selected != 1 && selected != 2 );
+        }
+else if(crewmateType.isEmpty()){ System.out.println("2 Astronauti aggiunti");
+selected = 1;}
+
+
         return selected;
     }
 
@@ -688,6 +756,8 @@ public class TUI implements View {
     @Override
     public int showCard(CardComponent card) {
 
+
+
         printCard(card);
         lastRequest = "Premi :\n 1 per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ";
         out.println("Premi :\n 1 per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ");
@@ -702,6 +772,7 @@ public class TUI implements View {
                 printCard(card);
 
             } else if (selected == 2 || selected == 3 || selected == 4) {
+
                 return selected;
             } else {
                 System.out.println("Indice non valido. Riprova.");
@@ -732,7 +803,8 @@ public class TUI implements View {
                 // Verifica se la posizione nella nave contiene un componente
                 CardComponent component = ship.getComponent(x, y);
                 if (component.getComponentType() == Empty) {
-                    out.println("Coordinate valide ! ");  // Mostra il componente trovato
+                    out.println("Coordinate valide ! ");
+
                     validInput = true;  // Esci dal ciclo se la posizione è valida
                 } else {
                     out.println("Errore: c'è già una carta in questa poszione.");
@@ -750,7 +822,8 @@ public class TUI implements View {
     public Pair<Integer, Integer> askCoordsCrewmate(Ship ship) {
         int x = -1, y = -1;
         boolean validInput = false;
-
+        System.out.println("INSERISCI LA LIVING UNIT CHE VUOI FILLARE oppure premi -1 per uscire :");
+        if(x==-1) return new Pair<>(99, 99);
         while (!validInput) {
             lastRequest = "Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ";
             out.println("Inserire la coordinata X (tra 0 e " + (ship.getROWS() - 1) + " oppure -1 per uscire): ");
@@ -767,9 +840,11 @@ public class TUI implements View {
             } else {
                 // Verifica se la posizione nella nave contiene un componente
                 CardComponent component = ship.getComponent(x, y);
-                if (component.getComponentType() == LivingUnit) {
-                    out.println("Nella posizione c'è una living unit ! ");  // Mostra il componente trovato
-                    validInput = true;  // Esci dal ciclo se la posizione è valida
+                if (component.getComponentType() == LivingUnit || ((LivingUnit)component).getNum_crewmates()>0) {
+                    out.println("Sono gia presenti astronauti / alieni qui ! ");
+                    if( ((LivingUnit)component).getNum_crewmates()==0) {// Mostra il componente trovato
+                        validInput = true;
+                    }// Esci dal ciclo se la posizione è valida
                 } else {
                     out.println("Errore: non c'è una carta living unit in questa poszione.");
                 }
