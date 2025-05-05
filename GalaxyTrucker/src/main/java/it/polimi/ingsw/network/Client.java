@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.GUI.GuiApplication;
 import it.polimi.ingsw.view.TUI.TUI;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.network.messages.*;
+import javafx.application.Application;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Client {
     private static ObjectOutputStream out;
     private static String nickname;
     private static View virtualView;
+    private static VirtualViewType virtualViewType;
     private static UUID clientId;
     private static BlockingQueue<Message> inputQueue = new LinkedBlockingQueue<>();
     private static BlockingQueue<Message> notificationQueue = new LinkedBlockingQueue<>();
@@ -55,9 +57,15 @@ public class Client {
 
             }while (choice != 1 && choice != 2);
 
-            if(choice == 1)
-            virtualView = new TUI();
-            else virtualView = new GUI();
+            if(choice == 1) {
+                virtualView = new TUI();
+                virtualViewType = VirtualViewType.TUI;
+            }
+            else {
+                Application.launch(GuiApplication.class);
+                virtualView = GuiApplication.getGui();
+                virtualViewType=VirtualViewType.GUI;
+            }
 
 
             new Thread(() -> {
@@ -503,7 +511,7 @@ public class Client {
         return nickname;
     }
 
-    public  View getVirtualView() {
+    public static View getVirtualView() {
         return virtualView;
     }
 
@@ -529,5 +537,12 @@ public class Client {
 
     public  List<CardComponent> getFacedUp_deck_local() {
         return facedUp_deck_local;
+    }
+    public void setVirtualViewType(VirtualViewType virtualViewType) {
+        this.virtualViewType = virtualViewType;
+    }
+
+    public VirtualViewType getVirtualViewType(){
+        return virtualViewType;
     }
 }
