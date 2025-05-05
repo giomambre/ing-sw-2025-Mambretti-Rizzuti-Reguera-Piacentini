@@ -426,7 +426,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_3.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -434,7 +434,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_4.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_4.jpg"));
 
 
         connectors.put(North, Double);
@@ -442,7 +442,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_5.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_5.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -450,7 +450,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_6.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_6.jpg"));
 
 
         connectors.put(North, Double);
