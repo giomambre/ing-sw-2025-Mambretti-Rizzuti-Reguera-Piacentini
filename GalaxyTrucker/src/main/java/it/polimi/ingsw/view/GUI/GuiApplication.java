@@ -26,6 +26,7 @@ public class GuiApplication extends Application  {
             GUI gui = new GUI(); // inizializza GUI qui
             setGui(gui);
             Platform.runLater(()->{
+
                 primaryStage.show();
             });
 
