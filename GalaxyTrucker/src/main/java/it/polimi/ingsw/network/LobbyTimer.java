@@ -11,7 +11,7 @@ public class LobbyTimer {
     private boolean thirtyStarted   = false;
     private boolean build120Ended = false;
 
-    private final List<UUID> finishOrder = new ArrayList<>();
+    private final List<String> finishOrder = new ArrayList<>();
     private final int totalPlayers;
     /**
      * Avvia il countdown di 120s.
@@ -23,7 +23,7 @@ public class LobbyTimer {
             public void run() {
                 on120End.run();
             }
-        }, 12 * 1000);
+        }, 120 * 1000);
     }
 
     public LobbyTimer(int totalPlayers) {
@@ -49,9 +49,10 @@ public class LobbyTimer {
      * Se già qualcuno ha finito, parte subito il 30s;
      * altrimenti si aspetta che arrivi notifySomeoneFinished().
      */
-    public void handle120End(Runnable on30End, Runnable onWaitStart) {
+    public void handle120End(Runnable on30, Runnable onWaitStart, Runnable on30End) {
         build120Ended = true;
         if (someoneFinished) {
+            on30.run();
             start30IfNeeded(on30End);
         } else {
             onWaitStart.run();
@@ -59,14 +60,14 @@ public class LobbyTimer {
         }
     }
 
-    public void notifyFinished(UUID playerId,
+    public void notifyFinished(String nick,
                                Runnable onAllFinished,
                                Runnable on30StartNeeded,
                                Runnable on30End) {
         someoneFinished = true;
 
-        if (!finishOrder.contains(playerId)) {
-            finishOrder.add(playerId);
+        if (!finishOrder.contains(nick)) {
+            finishOrder.add(nick);
         }
 
         if (finishOrder.size() == totalPlayers) {
@@ -83,12 +84,16 @@ public class LobbyTimer {
         }
     }
 
-    public String  getPositionByPlayer(UUID playerId) {
-        return String.valueOf(finishOrder.indexOf(playerId));
+    public String  getPositionByPlayer(String nick) {
+        return String.valueOf(finishOrder.indexOf(nick));
     }
 
-    public List<UUID> getFinishOrder() {
-        return Collections.unmodifiableList(finishOrder);
+    public List<String> getFinishOrder() {
+        return finishOrder;
+    }
+
+    public void addPlayer(String nick) {
+        finishOrder.add(nick);
     }
 
 

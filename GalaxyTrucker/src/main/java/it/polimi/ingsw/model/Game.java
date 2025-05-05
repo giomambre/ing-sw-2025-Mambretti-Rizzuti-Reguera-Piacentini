@@ -426,7 +426,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_3.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -434,7 +434,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_4.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_4.jpg"));
 
 
         connectors.put(North, Double);
@@ -442,7 +442,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_5.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_5.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -450,7 +450,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Battery(Battery, connectors, 3,"images/cardComponent/GT-battery_3_6.jpg"));
+        deck_components.add(new Battery(Battery, connectors, 3, "images/cardComponent/GT-battery_3_6.jpg"));
 
 
         connectors.put(North, Double);
@@ -642,38 +642,6 @@ public class Game extends BaseGame {
         connectors.put(West, Double);
 
         deck_components.add(new Storage(RedStorage, connectors, 2, "images/cardComponent/GT-redStorage_2_3.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitBlue, connectors, "images/cardComponent/GT-mainUnitBlue.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitGreen, connectors, "images/cardComponent/GT-mainUnitGreen.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitRed, connectors, "images/cardComponent/GT-mainUnitRed.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Universal);
-        connectors.put(East, Universal);
-        connectors.put(West, Universal);
-
-        deck_components.add(new CardComponent(MainUnitYellow, connectors, "images/cardComponent/GT-mainUnitYellow.jpg"));
 
 
         connectors.put(North, Smooth);

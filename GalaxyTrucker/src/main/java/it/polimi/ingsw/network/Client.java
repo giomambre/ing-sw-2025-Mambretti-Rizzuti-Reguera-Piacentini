@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
@@ -23,6 +24,8 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static it.polimi.ingsw.model.enumerates.ComponentType.LivingUnit;
+
 public class Client {
     private static ObjectInputStream in;
     private static ObjectOutputStream out;
@@ -34,6 +37,7 @@ public class Client {
     private static BlockingQueue<Message> notificationQueue = new LinkedBlockingQueue<>();
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
+    private static boolean forced_close = false;
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
@@ -77,11 +81,11 @@ public class Client {
                         switch (msg.getType()) {
                             case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
                                  CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
-                                 CARD_UNAVAILABLE, FORCE_BUILD_PHASE_END,  UNAVAILABLE_PLACE, ADD_CREWMATES:
+                                 CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES, INVALID_CONNECTORS,SELECT_PIECE:
                                 inputQueue.put(msg);
                                 break;
 
-                            case COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
+                            case WAITING_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -228,7 +232,6 @@ public class Client {
                 break;
 
             case BUILD_START:
-
                 int deck_selected = virtualView.selectDeck();
 
                 if (deck_selected == 1) {
@@ -273,7 +276,7 @@ public class Client {
 
                 }
                 else if (deck_selected == 4) {
-                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio! ora attendi gli altri!");
+                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio!");
                     out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
 
@@ -289,6 +292,7 @@ public class Client {
             break;
 
             case CARD_COMPONENT_RECEIVED:
+
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
@@ -314,6 +318,8 @@ public class Client {
                     } else {
 
                         out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
+                        player_local.addToShip(card_msg.getCardComponent(),coords.getKey(),coords.getValue());
+
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         player_local.getShip().getExtra_components().remove(card_msg.getCardComponent());
                         break;
@@ -341,59 +347,74 @@ public class Client {
                 elaborate(new Message(MessageType.BUILD_START, ""));
                 break;
 
-            case FORCE_BUILD_PHASE_END:
-
-                out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
-                break;
 
             case ADD_CREWMATES:
-                sel = virtualView.crewmateAction();
-                CrewmateType type;
-                if (sel != 4) {
-                    if (sel == 1) {
-                        type = CrewmateType.Astronaut;
-                    } else if (sel == 2) {
-                        type = CrewmateType.PinkAlien;
-                    } else {
-                        type = CrewmateType.BrownAlien;
-                    }
+                inputQueue.clear();
 
-                    Pair<Integer, Integer> coords = virtualView.askCoordsCrewmate(player_local.getShip());
-                    if (coords.getKey() == -1 || coords.getValue() == -1) {
-                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
-                        break;
-                    } else {
-                        out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
-                        elaborate(new Message(MessageType.ADD_CREWMATES, ""));
-                        break;
+                for (CardComponent[] row : player_local.getShip().getShipBoard()) {
+                    for (CardComponent component : row) {
+                        if (component.getComponentType() == LivingUnit) {
+                            CrewmateType type;
+                            int select =  virtualView.crewmateAction(component);
+
+                            if (select == 1) {
+                                type = CrewmateType.Astronaut;
+
+                            } else if (select == 2) {
+
+                                type = CrewmateType.PinkAlien;
+
+                            } else {
+
+                                type = CrewmateType.BrownAlien;
+
+                            }
+                            out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, player_local.getShip().getCoords(component), type));
+
+
+                        }
+
                     }
-                } else {
-                    virtualView.showMessage("Hai terminato la fase di equipaggiamento, inizio fase di controllo ");
-                    out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
                 }
-                break;
 
 
-            case INVALIDS_CONNECTORS:
+
+
+
+
+break;
+
+            case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if(icm.getInvalids().isEmpty()){
 
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
 
                 }else{
-                    virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids());
-                    out.writeObject(new ShipClientMessage(MessageType.UPDATED_SHIP, "", clientId,player_local.copyPlayer()));
+                    player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
+                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId,player_local.copyPlayer()));
 
                 }
 
                 break;
 
 
+            case SELECT_PIECE:
+
+                ShipPiecesMessage spm = (ShipPiecesMessage) msg;
+                List<List<Pair<Integer, Integer>>> pieces = spm.getPieces();
+               int piece = virtualView.askPiece(pieces,player_local.getShip().getShipBoard());
+                out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE,String.valueOf(piece),clientId));
+                break;
+
         }
+
+
+
     }
 
 
-        public static void handleNotification(Message msg) {
+        public static void handleNotification(Message msg) throws IOException {
 
 
         switch (msg.getType()) {
@@ -413,7 +434,6 @@ public class Client {
 
                 case UPDATED_SHIPS:
 
-                    System.out.println("ARRIVATA NAVE");
                     PlayersShipsMessage ps_msg = (PlayersShipsMessage) msg;
                     List<Player> tmp = ps_msg.getPlayers();
 
@@ -434,6 +454,7 @@ public class Client {
 
                     ((TUI) virtualView).setPlayer_local(player_local);
                     ((TUI) virtualView).setOther_players_local(other_players_local);
+                    ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
 
                     break;
 
@@ -453,6 +474,11 @@ public class Client {
 
                 break;
 
+            case FORCE_BUILD_PHASE_END:
+                virtualView.showMessage("\n" + "Per favore dichiara di aver finito per continuare, qualunque carta piazzata/prenotata/scartata, verrà ignorata");
+
+                elaborate(new Message(MessageType.BUILD_PHASE_ENDED, msg.getContent()));
+                break;
 
 
             case DECK_CARD_ADVENTURE_UPDATED:
@@ -465,30 +491,38 @@ public class Client {
 
             case TIME_UPDATE:
 
-
-
-                        virtualView.showMessage("\n" + msg.getContent());
-
+      virtualView.showMessage("\n" + msg.getContent());
 
                 break;
 
             case BUILD_PHASE_ENDED:
-
                 switch (msg.getContent()) {
-                    case "1":
+                    case "0":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per primo");
                         break;
-                    case "2":
+                    case "1":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per secondo");
                         break;
-                    case "3":
+                    case "2":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per terzo");
                         break;
-                    case "4":
+                    case "3":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
                         break;
                 }
+
+
                 break;
+
+
+            case WAITING_FLIGHT:
+                virtualView.showMessage("\nHai completato la fase di controllo ora rimani in attesa degli altri giocatori.\n" +
+                "Questa è la tua nave.\n ");
+
+                virtualView.printShip(player_local.getShip().getShipBoard());
+                break;
+
+
 
 
         }

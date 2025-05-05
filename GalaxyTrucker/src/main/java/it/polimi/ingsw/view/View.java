@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.TUI.TUI;
 import javafx.util.Pair;
@@ -48,9 +49,11 @@ public interface View {
 
     void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
 
+    public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
+
     int selectDeck();
 
-    int crewmateAction();
+    int crewmateAction(CardComponent component);
 
     int askFacedUpCard(List<CardComponent> cards);
 
@@ -60,5 +63,5 @@ public interface View {
 
     Pair<Integer,Integer> askCoords(Ship ship);
 
-    void  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
+    Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
 }
