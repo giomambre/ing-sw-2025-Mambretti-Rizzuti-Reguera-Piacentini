@@ -4,9 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="timer finito e quasi finito controllo">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="crewmate e tronconi da rivedere e testare">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +172,7 @@
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\examples" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.ClientMultiplo">
     <configuration name="ClientMultiplo" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.network.Client" />
       <module name="PSP17" />
@@ -358,31 +368,9 @@
       <workItem from="1745836134039" duration="2874000" />
       <workItem from="1745851692581" duration="5118000" />
       <workItem from="1746266317351" duration="12225000" />
-      <workItem from="1746366246649" duration="4982000" />
-    </task>
-    <task id="LOCAL-00038" summary="finita check ship e aggiunta anche il contrllo sui tronconi">
-      <option name="closed" value="true" />
-      <created>1742691556874</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1742691556874</updated>
-    </task>
-    <task id="LOCAL-00039" summary="AbandonedStation finita e testata">
-      <option name="closed" value="true" />
-      <created>1742731042984</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1742731042984</updated>
-    </task>
-    <task id="LOCAL-00040" summary="iniziati test Board">
-      <option name="closed" value="true" />
-      <created>1742739889545</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1742739889545</updated>
+      <workItem from="1746366246649" duration="5013000" />
+      <workItem from="1746447937784" duration="7788000" />
+      <workItem from="1746459420022" duration="3061000" />
     </task>
     <task id="LOCAL-00041" summary="fixati i nomi">
       <option name="closed" value="true" />
@@ -752,7 +740,31 @@
       <option name="project" value="LOCAL" />
       <updated>1746371385999</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="timer finito e quasi finito controllo">
+      <option name="closed" value="true" />
+      <created>1746371628738</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1746371628738</updated>
+    </task>
+    <task id="LOCAL-00088" summary="timer finito e quasi finito controllo">
+      <option name="closed" value="true" />
+      <created>1746447966736</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1746447966736</updated>
+    </task>
+    <task id="LOCAL-00089" summary="timer finito e quasi finito controllo">
+      <option name="closed" value="true" />
+      <created>1746447990263</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1746447990263</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -762,10 +774,16 @@
     <option name="OPEN_GENERIC_TABS">
       <map>
         <entry key="c414cbe4-41c4-4d7c-97d4-34bdef2a32d2" value="TOOL_WINDOW" />
+        <entry key="68023f32-d7ec-403e-86e3-86194547c645" value="TOOL_WINDOW" />
       </map>
     </option>
     <option name="TAB_STATES">
       <map>
+        <entry key="68023f32-d7ec-403e-86e3-86194547c645">
+          <value>
+            <State />
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State />
@@ -786,7 +804,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixati i nomi" />
     <MESSAGE value="resa piu chiara la move player e testata tutta la Board  compresa la leader check" />
     <MESSAGE value="getBoard_leader finita in funzionale" />
     <MESSAGE value="rimozione tronoconi non validi" />
@@ -811,6 +828,7 @@
     <MESSAGE value="fixati test e aggiunto test controller" />
     <MESSAGE value="timer" />
     <MESSAGE value="timer finito e quasi finito controllo" />
-    <option name="LAST_COMMIT_MESSAGE" value="timer finito e quasi finito controllo" />
+    <MESSAGE value="crewmate e tronconi da rivedere e testare" />
+    <option name="LAST_COMMIT_MESSAGE" value="crewmate e tronconi da rivedere e testare" />
   </component>
 </project>

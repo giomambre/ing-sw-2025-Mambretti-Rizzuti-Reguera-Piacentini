@@ -95,12 +95,8 @@ public class Player implements Serializable {
      * @param component the component that the player wants to secure
      */
     public void secureComponent(CardComponent component) {
-        if(game.getType() == Gametype.StandardGame) {
             List<CardComponent> extra_components = ship.getExtra_components();
-            if (extra_components.size() < 2) {
                 extra_components.add(component);
-            } else throw new IllegalArgumentException("Already has more than 2 components");
-        }else throw new InvalidGameActionException("This action is forbidden in quick game");
 
     }
 

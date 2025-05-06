@@ -747,7 +747,7 @@ public class Ship implements Serializable {
              }
         }
 
-
+        player.secureComponent(ship_board[x][y]);
         ship_board[x][y] = EMPTY_CELL;
     }
 

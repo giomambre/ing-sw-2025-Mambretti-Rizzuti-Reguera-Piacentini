@@ -303,10 +303,10 @@ public class Server {
                 lt.notifyFinished(getNickname(endMsg.getId_client()),
                         // onAllFinished
                         () -> {
-                            sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
-                                    "✅ Tutti hanno finito! Ordine: " + lt.getFinishOrder()));
-                            controller.setGamestate(SUPLLY_PHASE);
 
+                            controller.setGamestate(SUPLLY_PHASE);
+                            sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
+                            System.out.println("mandato");
                         },
                         // on30StartNeeded
                         () -> {
@@ -330,6 +330,8 @@ public class Server {
                                 }
 
                             }
+                            controller.setGamestate(SUPLLY_PHASE);
+
                             sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
 
                         }
@@ -382,15 +384,38 @@ public class Server {
 
                     controller.setShipPlance(getNickname(update_msg.getId_client()), ship);
 
+
                 }
+                List<Player> safePlayers = new ArrayList<>();
+                for (Player p : controller.getPlayers()) {
+                    safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                }
+                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+
 
                 if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() > 1){
 
-                    //gestire la cosa dei tronconi
+                    List<List<Pair<Integer, Integer>>> pieces = controller.getValidPieces(getNickname(update_msg.getId_client()));
+                    sendToClient(update_msg.getId_client(),new ShipPiecesMessage(SELECT_PIECE,"",pieces));
+                }
+                else if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() ==1){
 
+                    sendToClient(update_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
+
+
+                } else if (controller.getValidPieces(getNickname(update_msg.getId_client())).size() == 0) {
+                    //rimuoverlo dalla partita
                 }
                 break;
 
+
+            case SELECT_PIECE:
+                StandardMessageClient select_msg = (StandardMessageClient) msg;
+                int piece_chosen = Integer.parseInt( select_msg.getContent());
+                controller = all_games.get(getLobbyId(select_msg.getId_client()));
+                controller.choosePieces(piece_chosen, getNickname(select_msg.getId_client()));
+                sendToClient(select_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
+                break;
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
