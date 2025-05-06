@@ -4,6 +4,9 @@ import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -13,25 +16,48 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
 
 
 public class GUI implements View {
 
     NicknameController nicknameController;
+    Stage primaryStage;
+    private boolean nicknamesettato=false;
+    private String nicknamescelto;
 
 
     public GUI() {
     }
 
-
-
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+    public void setNicknamescelto(String nickname) {
+        System.out.println(nickname);
+        this.nicknamescelto = nickname;
+        nicknamesettato=true;
+    }
+    public boolean getnicknamesettato() {
+        return nicknamesettato;
+    }
 
     @Override
     public String askNickname()  {
-        return "ciao";
+        /*while(!nicknamesettato) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }*/
+        System.out.println("HO scelto"+nicknamescelto);
+        return nicknamescelto;
+
     }
 
     @Override
