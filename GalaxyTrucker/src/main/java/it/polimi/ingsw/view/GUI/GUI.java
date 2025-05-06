@@ -112,7 +112,7 @@ public class GUI implements View {
     }
 
     @Override
-    public int crewmateAction(CardComponent component) {
+    public int crewmateAction(Pair<Integer,Integer> component) {
         return 0;
     }
 

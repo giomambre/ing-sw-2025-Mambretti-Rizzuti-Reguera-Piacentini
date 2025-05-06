@@ -350,45 +350,58 @@ public class Client {
 
             case ADD_CREWMATES:
                 inputQueue.clear();
-
-                for (CardComponent[] row : player_local.getShip().getShipBoard()) {
-                    for (CardComponent component : row) {
+                CardComponent[][] plance = player_local.getShip().getShip_board() ;
+                Pair<Integer, Integer> coords;
+                for(int i = 0 ; i<player_local.getShip().getROWS(); i++){
+                    for(int j = 0 ; j<player_local.getShip().getCOLS(); j++){
+                  CardComponent component = plance[i][j];
+                  coords = new Pair<>(i,j);
                         if (component.getComponentType() == LivingUnit) {
+
                             CrewmateType type;
-                            int select =  virtualView.crewmateAction(component);
+                            int select =  virtualView.crewmateAction(coords);
 
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
+                                ((LivingUnit)component).addAstronauts();
 
                             } else if (select == 2) {
 
                                 type = CrewmateType.PinkAlien;
+                                ((LivingUnit)component).addAlien(CrewmateType.PinkAlien);
+
 
                             } else {
 
                                 type = CrewmateType.BrownAlien;
+                              ((LivingUnit)component).addAlien(CrewmateType.BrownAlien);
+
 
                             }
-                            out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, player_local.getShip().getCoords(component), type));
+                            out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
 
 
                         }
 
                     }
                 }
+                out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
 
 
 
 
 
 
-break;
+
+
+                break;
 
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if(icm.getInvalids().isEmpty()){
 
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
+                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId,player_local.copyPlayer()));
 
                 }else{
                     player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));

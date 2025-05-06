@@ -369,6 +369,12 @@ public class TUI implements View {
             for (int c = 0; c < cols; c++) {
                 CardComponent card = ship[r][c];
 
+                if(card == null){
+                    top.append(" ".repeat(CELL_WIDTH));
+                    mid.append(" ".repeat(CELL_WIDTH));
+                    bot.append(" ".repeat(CELL_WIDTH));
+                }else
+
                 if (card.getComponentType() == NotAccessible) {
                     String redX = center(" ⛔️ ", CELL_WIDTH);
                     top.append(" ".repeat(CELL_WIDTH));
@@ -407,8 +413,10 @@ public class TUI implements View {
     public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         System.out.println("\nEcco i pezzi rimasti della tua nave: ");
         int i = 0;
-        CardComponent[][] ship_board = new CardComponent[5][7];
+
         for (List<Pair<Integer, Integer>> piece : pieces) {
+            CardComponent[][] ship_board = new CardComponent[5][7];
+
             System.out.println(i + ": \n");
 
             for (Pair<Integer, Integer> pair : piece) {
@@ -418,6 +426,7 @@ public class TUI implements View {
             printShip(ship_board);
             i++;
             System.out.println();
+
         }
 
     }
@@ -639,9 +648,12 @@ public class TUI implements View {
     }
 
     @Override
-    public int crewmateAction(CardComponent component) {
+    public int crewmateAction(Pair<Integer,Integer> coords) {
         int selected = -1;
-        List<CrewmateType> crewmateType = new ArrayList<>();
+        System.out.println();
+        CardComponent[][] ship = player_local.getShip().getShipBoard();
+        CardComponent component = ship[coords.getKey()][coords.getValue()];
+        List<CrewmateType> crewmateType;
         crewmateType = player_local.getShip().checkAlienSupport(component);
         System.out.println("STAI RIMEPIENDO LA LIVING UNIT IN RIGA : " + player_local.getShip().getCoords(component).getKey() +  " COLONNA : " + player_local.getShip().getCoords(component).getValue());
 
@@ -668,7 +680,7 @@ public class TUI implements View {
                 selected = readInt();
             } while (selected != 1 && selected != 2 );
         }
-else if(crewmateType.isEmpty()){ System.out.println("2 Astronauti aggiunti");
+else if(crewmateType.isEmpty()){ System.out.println("Nessuna alien unit, 2 Astronauti aggiunti in automatico ");
 selected = 1;}
 
 
