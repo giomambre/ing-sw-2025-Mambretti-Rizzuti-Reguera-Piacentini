@@ -135,9 +135,16 @@ public class Client {
 
     public static void elaborate(Message msg) throws IOException {
 
+        /*if(virtualViewType == VirtualViewType.GUI) {
+            ((GUI) virtualView).waitUntilReady();
+        }*/
         switch (msg.getType()) {
 
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
+                if(virtualViewType==VirtualViewType.GUI){
+                    while(((GUI) virtualView).getnicknamesettato()==false){
+                    }
+                }
                 nickname = virtualView.askNickname();
 
                 try {
