@@ -82,6 +82,7 @@ public class GUI implements View {
         if (clientCallback != null) {
             clientCallback.sendNicknameToServer(nicknamescelto);
         }
+        System.out.println("nicknamescelto: " + nicknamescelto);
     }
     @Override
     public String askNickname()  {
