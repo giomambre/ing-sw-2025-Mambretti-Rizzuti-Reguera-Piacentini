@@ -66,9 +66,13 @@ public class Client {
                 virtualViewType = VirtualViewType.TUI;
             }
             else {
-                Application.launch(GuiApplication.class);
+                new Thread(() -> Application.launch(GuiApplication.class)).start();
+                while (GuiApplication.getGui() == null) {
+                    Thread.sleep(50);
+                }
                 virtualView = GuiApplication.getGui();
                 virtualViewType=VirtualViewType.GUI;
+                ((GUI)virtualView).setClient(clientId);
             }
 
 
@@ -127,6 +131,8 @@ public class Client {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -135,23 +141,32 @@ public class Client {
 
     public static void elaborate(Message msg) throws IOException {
 
-        /*if(virtualViewType == VirtualViewType.GUI) {
-            ((GUI) virtualView).waitUntilReady();
-        }*/
+
         switch (msg.getType()) {
 
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
-                if(virtualViewType==VirtualViewType.GUI){
-                    while(((GUI) virtualView).getnicknamesettato()==false){
-                    }
-                }
-                nickname = virtualView.askNickname();
+                if(virtualViewType == VirtualViewType.GUI) {
+                    ((GUI)virtualView).setClientCallback(nickname -> {
+                        try {
+                            System.out.println("(testing)Client ha scelto: " + nickname);
+                            out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+                            out.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    ((GUI)virtualView).createNicknamescreen();
 
-                try {
-                    out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
-                    out.flush();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                }
+                else {
+                    nickname = virtualView.askNickname();
+
+                    try {
+                        out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 break;
 

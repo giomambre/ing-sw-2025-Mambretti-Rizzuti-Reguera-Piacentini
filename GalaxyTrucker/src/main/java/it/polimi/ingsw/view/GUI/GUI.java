@@ -1,25 +1,27 @@
 package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.network.Client;
+import it.polimi.ingsw.network.messages.MessageType;
+import it.polimi.ingsw.network.messages.StandardMessageClient;
 import it.polimi.ingsw.view.*;
-import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.io.PrintStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
-import java.util.Scanner;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -27,38 +29,65 @@ public class GUI implements View {
 
     NicknameController nicknameController;
     Stage primaryStage;
-    private boolean nicknamesettato=false;
+    //private boolean nicknamesettato=false;
     private String nicknamescelto;
+    @FXML
+    public TextField nicknameField;
+    private CompletableFuture<String> nicknameFuture;
+    private GuiApplication application;
+    private ClientCallBack clientCallback;
+    private UUID client;
+    private static ObjectOutputStream out;
+
+    public void setClientCallback(ClientCallBack callback) {
+        this.clientCallback = callback;
+    }
+    public void setClient(UUID client) {
+        this.client = client;
+    }
+
 
 
     public GUI() {
     }
 
+    public void setGuiApplication(GuiApplication application) {
+        this.application = application;
+    }
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-    public void setNicknamescelto(String nickname) {
-        System.out.println(nickname);
-        this.nicknamescelto = nickname;
-        nicknamesettato=true;
-    }
-    public boolean getnicknamesettato() {
-        return nicknamesettato;
+
+    public void createNicknamescreen(){
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Nickname.fxml"));
+                loader.setController(this);
+                Parent root = loader.load();
+                Stage stage = application.getStage();
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
+    @FXML
+    public void sendNickname(ActionEvent event) {
+        System.out.println("sendNickname() chiamato");
+        this.nicknamescelto = nicknameField.getText();
+        if (clientCallback != null) {
+            clientCallback.sendNicknameToServer(nicknamescelto);
+        }
+    }
     @Override
     public String askNickname()  {
-        /*while(!nicknamesettato) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }*/
-        System.out.println("HO scelto"+nicknamescelto);
         return nicknamescelto;
-
     }
+
 
     @Override
     public void showMessage(String message) {
