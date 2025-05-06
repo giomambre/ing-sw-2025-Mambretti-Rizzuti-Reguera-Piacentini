@@ -1,12 +1,16 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.adventures.CardAdventure;
-import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.enumerates.Gametype;
+import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.model.enumerates.*;
 
 import java.io.Serializable;
 import java.util.*;
+
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
+import static it.polimi.ingsw.model.enumerates.CrewmateType.PinkAlien;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.Direction.West;
 
 /**
  * The Player class rapresent a player that joined the game.
@@ -109,6 +113,7 @@ public class Player implements Serializable {
      */
     public void addToShip(CardComponent component, int row, int col) {
         ship.addComponent(component, row, col);
+        ship.getExtra_components().remove(component);
     }
 
     /**
@@ -280,5 +285,175 @@ public class Player implements Serializable {
 
     public void setNum_laps(int num_laps) {
         this.num_laps = num_laps;
+    }
+    
+    
+    public void utilePerTestare(){
+
+
+        Map<Direction, ConnectorType> connectors = new HashMap<>();
+        connectors.put(North, Smooth);
+        connectors.put(East, Smooth);
+        connectors.put(South, Universal);
+        connectors.put(West, Smooth);
+        ship.addComponent(new Battery(ComponentType.Battery, connectors,2 , ""), 0, 2 );
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(East, Universal);
+        connectors.put(South, Smooth);
+        connectors.put(West, Smooth);
+
+        ship.addComponent(new CardComponent(DoubleCannon, connectors, ""), 1, 1);
+
+
+        connectors.put(North, Single);
+        connectors.put(East, Double);
+        connectors.put(South, Single);
+        connectors.put(West, Double);
+
+        ship.addComponent(new Battery(ComponentType.Battery, connectors,2 , ""), 1, 2);
+
+
+        connectors.put(North, Universal);
+        connectors.put(East, Single);
+        connectors.put(South, Universal);
+        connectors.put(West, Double);
+
+        ship.addComponent(new CardComponent(Tubes, connectors, ""), 1, 3);
+
+
+        connectors.put(North, Cannon_Connector);
+        connectors.put(East, Smooth);
+        connectors.put(South, Single);
+        connectors.put(West, Universal);
+
+        ship.addComponent(new CardComponent(DoubleCannon, connectors, ""), 1, 4);
+
+        connectors.put(North, Single);
+        connectors.put(East, Universal);
+        connectors.put(South, Single);
+        connectors.put(West, Smooth);
+
+        ship.addComponent(new Shield(ComponentType.Shield, connectors, ""), 1, 5);
+
+        Map<Direction,Boolean> covered_sides = new HashMap<>();
+        covered_sides.put(North, true);
+        covered_sides.put(East, false);
+        covered_sides.put(South, false);
+        covered_sides.put(West, true);
+
+
+        connectors.put(North, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(South, Smooth);
+        connectors.put(West, Single);
+
+        ship.addComponent(new CardComponent(PinkAlienUnit, connectors, ""), 2, 0);
+
+
+        connectors.put(North, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(South, Double);
+        connectors.put(West, Double);
+
+        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors, ""), 2, 1);
+
+
+        connectors.put(North, Single);
+        connectors.put(East, Double);
+        connectors.put(South, Smooth);
+        connectors.put(West, Single);
+
+        ship.addComponent(new Battery(ComponentType.Battery, connectors,3, ""), 2, 2);
+
+        connectors.put(North, Single);
+        connectors.put(East, Universal);
+        connectors.put(South, Smooth);
+        connectors.put(West, Double);
+
+        ship.addComponent(new Storage(RedStorage, connectors,1, ""), 2, 4);
+
+        connectors.put(North, Single);
+        connectors.put(East, Double);
+        connectors.put(South, Single);
+        connectors.put(West, Double);
+
+        ship.addComponent(new Shield(Shield, connectors, ""), 2, 5);
+
+        connectors.put(North, Smooth);
+        connectors.put(East, Cannon_Connector);
+        connectors.put(South, Single);
+        connectors.put(West, Universal);
+
+        ship.addComponent(new CardComponent(DoubleCannon, connectors, ""), 2, 6);
+
+        connectors.put(North, Smooth);
+        connectors.put(East, Double);
+        connectors.put(South, Smooth);
+        connectors.put(West, Cannon_Connector);
+
+        ship.addComponent(new CardComponent(Cannon, connectors, ""), 3, 0);
+
+
+
+        connectors.put(North, Smooth);
+        connectors.put(East, Universal);
+        connectors.put(South, Single);
+        connectors.put(West, Smooth);
+
+        ship.addComponent(new LivingUnit(LivingUnit, connectors, ""), 3, 2);
+
+
+
+        connectors.put(North, Smooth);
+        connectors.put(East, Double);
+        connectors.put(South, Single);
+        connectors.put(West, Universal);
+
+        ship.addComponent(new Storage(BlueStorage, connectors,2, ""), 3, 4);
+
+        connectors.put(North, Universal);
+        connectors.put(East, Single);
+        connectors.put(South, Double);
+        connectors.put(West, Universal);
+
+        ship.addComponent(new CardComponent(Tubes, connectors, ""), 3, 5);
+
+        connectors.put(North, Universal);
+        connectors.put(East, Smooth);
+        connectors.put(South, Engine_Connector);
+        connectors.put(West, Single);
+
+        ship.addComponent(new CardComponent(DoubleEngine, connectors, ""), 3, 6);
+
+        connectors.put(North, Double);
+        connectors.put(East, Universal);
+        connectors.put(South, Engine_Connector);
+        connectors.put(West, Smooth);
+
+        ship.addComponent(new CardComponent(Engine, connectors, ""), 4, 1);
+
+        connectors.put(North, Single);
+        connectors.put(East, Double);
+        connectors.put(South, Universal);
+        connectors.put(West, Double);
+
+        ship.addComponent(new Storage(BlueStorage, connectors,2, ""), 4, 2);
+
+
+        connectors.put(North, Universal);
+        connectors.put(East, Smooth);
+        connectors.put(South, Universal);
+        connectors.put(West, Smooth);
+
+        ship.addComponent(new Storage(RedStorage, connectors,1, ""), 4, 4);
+
+        connectors.put(North, Double);
+        connectors.put(East, Smooth);
+        connectors.put(South, Engine_Connector);
+        connectors.put(West, Smooth);
+
+        ship.addComponent(new CardComponent(Engine, connectors, ""), 4, 5);
+        
     }
 }

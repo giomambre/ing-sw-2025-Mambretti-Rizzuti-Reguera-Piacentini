@@ -6,7 +6,7 @@ public enum MessageType {
     REQUEST_NAME,
     NAME_ACCEPTED,
     NAME_REJECTED,
-
+    FINISHED_SUPPLY,
     CREATE_LOBBY,
     SEE_LOBBIES,
     SELECT_LOBBY,
@@ -35,7 +35,8 @@ public enum MessageType {
     INVALIDS_PIECES,
     SELECT_PIECE,
     START_FLIGHT,
-    WAITING_FLIGHT
+    WAITING_FLIGHT,
+    UPDATE_SHIP
 
 
 

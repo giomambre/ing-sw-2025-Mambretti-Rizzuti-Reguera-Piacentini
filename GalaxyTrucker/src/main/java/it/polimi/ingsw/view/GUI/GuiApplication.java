@@ -25,6 +25,7 @@ import java.util.List;
 
 public class GuiApplication extends Application  {
    private static GUI gui;
+   private Stage stage;
     @FXML
     public TextField nicknameField;
 
@@ -32,18 +33,20 @@ public class GuiApplication extends Application  {
     public void start(Stage primaryStage) {
             GUI gui = new GUI(); // inizializza GUI qui
             setGui(gui);
+            gui.setGuiApplication(this);
             gui.setPrimaryStage(primaryStage);
+            this.stage = primaryStage;
             Platform.runLater(()->{
-                FXMLLoader loader= new FXMLLoader(getClass().getResource("/Nickname.fxml"));
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("/Startgui.fxml"));
                 Parent root = null;
                 try {
                     root = loader.load();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                loader.setController(this);
+                loader.setController(gui);
                 Scene scene = new Scene(root);
-                primaryStage.setTitle("Username");
+                primaryStage.setTitle("Startgui");
                 primaryStage.setScene(scene);
                 primaryStage.show();
 
@@ -55,18 +58,20 @@ public class GuiApplication extends Application  {
 
     }
 
+    public Stage getStage() {
+        return stage;
+    }
 
     public static void setGui(GUI g) {
         gui = g;
-
     }
 
     public static GUI getGui() {
         return gui;
     }
 
-    public void sendNickname(ActionEvent actionEvent) {
+    /*public void sendNickname(ActionEvent actionEvent) {
             Platform.runLater(()->gui.setNicknamescelto(nicknameField.getText()));
             System.out.println("bottone cliccato");
-    }
+    }*/
 }
