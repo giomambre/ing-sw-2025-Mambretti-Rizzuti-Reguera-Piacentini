@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 public class GUI implements View {
 
     Joingamecontroller joingamecontroller;
+    Numplayercontroller numplayercontroller;
     Stage stage;
     private String nicknamescelto;
     @FXML
@@ -124,6 +125,35 @@ public class GUI implements View {
         }
     }
 
+    public void createnumplayerscontroller(){
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                Numplayercontroller controller = new Numplayercontroller();
+                controller.setGui(this);
+                this.numplayercontroller = controller;
+                controller.start(this.stage);
+                future.complete(null);  // Segnala che la GUI è pronta
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+        try {
+            future.get(); // aspetta che la GUI venga inizializzata
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public int askNumPlayers() {
+        try {
+            return numplayercontroller.getPlayerNumber().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 
     @Override
     public void showMessage(String message) {
@@ -148,11 +178,6 @@ public class GUI implements View {
     }
 
 
-
-    @Override
-    public int askNumPlayers() {
-        return 0;
-    }
 
     @Override
     public int showLobbies(List<Integer> lobbies) {
