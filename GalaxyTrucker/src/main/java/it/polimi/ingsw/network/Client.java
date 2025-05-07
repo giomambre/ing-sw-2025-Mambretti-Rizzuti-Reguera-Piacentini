@@ -72,7 +72,6 @@ public class Client {
                 }
                 virtualView = GuiApplication.getGui();
                 virtualViewType=VirtualViewType.GUI;
-                ((GUI)virtualView).setClient(clientId);
             }
 
 
@@ -146,9 +145,10 @@ public class Client {
 
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
                 if(virtualViewType == VirtualViewType.GUI) {
+                    //System.out.println("Connesso con GUI");
                     ((GUI)virtualView).setClientCallback(nickname -> {
                         try {
-                            System.out.println("(testing)Client ha scelto: " + nickname);
+                            System.out.println(" Client Hai scelto: " + nickname); // <-- Questa è la stampa corretta
                             out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
                             out.flush();
                         } catch (IOException e) {

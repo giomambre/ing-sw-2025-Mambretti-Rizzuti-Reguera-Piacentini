@@ -13,17 +13,6 @@ import java.util.concurrent.CompletableFuture;
 
 
 public class NicknameController {
-    private GUI gui;
-    @FXML
-    private TextField nickname;
-
-    public NicknameController(GUI gui) {
-        this.gui = gui;
-        System.out.println("sono nel costruttore di nicknamecontroller");
-    }
-
-
-
 
 
 
