@@ -30,7 +30,7 @@ public class StorageTest {
         connectors.put(South, Double );
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
-        player.getShip().addComponent((new Storage(BlueStorage,connectors,3)),3,1);
+        player.getShip().addComponent((new Storage(BlueStorage,connectors,3,"")),3,1);
 
 
 

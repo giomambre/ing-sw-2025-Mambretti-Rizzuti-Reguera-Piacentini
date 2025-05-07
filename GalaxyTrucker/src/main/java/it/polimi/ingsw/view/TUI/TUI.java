@@ -349,7 +349,7 @@ public class TUI implements View {
 
 
     @Override
-    public void printShip(CardComponent[][] ship) {
+    public void printShip(CardComponent[][] ship){
         int CELL_WIDTH = 11;
         int rows = ship.length;
         int cols = ship[0].length;
@@ -406,6 +406,10 @@ public class TUI implements View {
             System.out.println(" ".repeat(CELL_WIDTH) + "-".repeat(cols * CELL_WIDTH));
         }
     }
+
+
+
+
 
 
 
@@ -987,7 +991,75 @@ selected = 1;}
         };
     }
 
+    @Override
+    public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
+        final int BOARD_SIZE = 24;
+        final int ROW_WIDTH = 6;
+        final int CELL_WIDTH = 10; // Larghezza di ogni cella
 
+        String[][][] board = new String[BOARD_SIZE][4][1];
+
+        // Inizializza ogni blocco
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            board[i][0][0] = "+--------+";
+            board[i][1][0] = String.format("| Pos %02d |", i);
+            board[i][2][0] = "|        |";
+            board[i][3][0] = "+--------+";
+        }
+
+        // Inserisci i dati dei giocatori
+        for (Map.Entry<Integer, Player> entry : positions.entrySet()) {
+            int pos = entry.getKey();
+            Player p = entry.getValue();
+            String nome = p.getNickname().length() > 6 ?
+                    p.getNickname().substring(0, 6) :
+                    String.format("%-6s", p.getNickname());
+            board[pos][2][0] = "| " + nome + " |";
+
+            // Trova il numero di giri
+            int lap = 0;
+            for (Map.Entry<Integer, Player> lapEntry : laps.entrySet()) {
+                if (lapEntry.getValue().equals(p)) {
+                    lap = lapEntry.getValue().getNum_laps();
+                    break;
+                }
+            }
+            board[pos][3][0] = String.format("| Lap %2d |", lap);
+        }
+
+        // --- TOP ROW (00-05) ---
+        printRow(0, ROW_WIDTH, board);
+
+        // --- SIDES (LEFT 23-18, RIGHT 06-11) ---
+        int leftStart = 23;
+        int rightStart = 6;
+
+        for (int i = 0; i < ROW_WIDTH; i++) {
+            // Calcola spaziatura per allineare la colonna destra
+            int spacing = (ROW_WIDTH * (CELL_WIDTH + 1)) - CELL_WIDTH - 2;
+
+            for (int row = 0; row < 4; row++) {
+                System.out.print(board[leftStart - i][row][0]);
+                System.out.print(" ".repeat(spacing));
+                System.out.println(board[rightStart + i][row][0]);
+            }
+        }
+
+        // --- BOTTOM ROW (17-12) ---
+        printRow(17, -1, board); // Stampa in ordine inverso
+    }
+
+    private void printRow(int start, int direction, String[][][] board) {
+
+        for (int row = 0; row < 4; row++) {
+            System.out.print("\t");
+            for (int i = 0; i < 6; i++) {
+                int pos = direction > 0 ? start + i : start - i;
+                System.out.print(board[pos][row][0] + " ");
+            }
+            System.out.println();
+        }
+    }
     // Centra una stringa su una larghezza fissa
     private static String center(String str, int width) {
         if (str.length() >= width) {

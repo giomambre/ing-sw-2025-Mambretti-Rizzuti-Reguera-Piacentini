@@ -30,7 +30,7 @@ public class CardComponentTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        component = new CardComponent(ComponentType.BlueStorage, connectors);
+        component = new CardComponent(ComponentType.BlueStorage, connectors,"");
     }
 
 

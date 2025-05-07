@@ -21,6 +21,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -173,6 +174,8 @@ public class GUI implements View {
     }
 
 
+    @Override
+    public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps){};
 
     @Override
     public int askFacedUpCard(List<CardComponent> cards) {

@@ -30,7 +30,7 @@ public class BatteryTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        battery = new Battery(ComponentType.Battery, connectors, 2);
+        battery = new Battery(ComponentType.Battery, connectors, 2,"");
     }
 
 

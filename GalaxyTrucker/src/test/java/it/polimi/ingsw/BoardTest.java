@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.enumerates.Gametype;
+import it.polimi.ingsw.view.TUI.TUI;
+import it.polimi.ingsw.view.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -133,6 +135,15 @@ public class BoardTest {
 
 
 
+
+    }
+
+    @Test
+    public void testShowBoard() {
+        Map<Integer, Player> playerPositions = board.getBoard();
+        View v= new TUI();
+
+        v.showBoard(playerPositions, board.getLaps());
 
     }
 }

@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.TUI.TUI;
 import javafx.util.Pair;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract base class representing the view of a client-side application.
@@ -60,6 +61,8 @@ public interface View {
     int askSecuredCard(List<CardComponent> cards);
 
     int showCard(CardComponent card);
+
+    void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps);
 
     Pair<Integer,Integer> askCoords(Ship ship);
 

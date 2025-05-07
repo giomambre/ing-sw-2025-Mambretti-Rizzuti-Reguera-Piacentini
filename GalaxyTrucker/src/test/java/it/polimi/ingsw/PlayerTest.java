@@ -31,7 +31,7 @@ public class PlayerTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        component = new CardComponent(ComponentType.Cannon, connectors);
+        component = new CardComponent(ComponentType.Cannon, connectors, "");
     }
 
     @Test

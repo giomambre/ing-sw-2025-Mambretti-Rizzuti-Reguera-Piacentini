@@ -68,7 +68,7 @@ public class ShipTest {
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
-        CardComponent comp = new CardComponent(DoubleEngine, connectors);
+        CardComponent comp = new CardComponent(DoubleEngine, connectors,"");
         player1.getShip().addComponent(comp, 3, 2);
         assertEquals(comp, player1.getShip().getComponent(3, 2));
 
@@ -81,7 +81,7 @@ public class ShipTest {
         connectors.put(South, Cannon_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
-        CardComponent comp = new CardComponent(Cannon, connectors);
+        CardComponent comp = new CardComponent(Cannon, connectors,"");
         player1.getShip().addComponent(comp, 3, 2);
         assertEquals(comp, player1.getShip().getComponent(3, 2));
 
@@ -97,18 +97,18 @@ public class ShipTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        player1.getShip().addComponent(new CardComponent(DoubleEngine, connectors), 3, 2);
-        player1.getShip().addComponent(new CardComponent(Engine, connectors), 4, 1);
+        player1.getShip().addComponent(new CardComponent(DoubleEngine, connectors,""), 3, 2);
+        player1.getShip().addComponent(new CardComponent(Engine, connectors,""), 4, 1);
 
         Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
         player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
         player1BatteryUsage.put(player1.getShip().getComponent(4, 1), false);
 
 
-        player2.getShip().addComponent(new CardComponent(DoubleEngine, connectors), 3, 1);
-        player2.getShip().addComponent(new CardComponent(Engine, connectors), 3, 2);
-        player2.getShip().addComponent(new CardComponent(Engine, connectors), 3, 3);
-        player2.getShip().addComponent(new CardComponent(DoubleEngine, connectors), 3, 4);
+        player2.getShip().addComponent(new CardComponent(DoubleEngine, connectors,""), 3, 1);
+        player2.getShip().addComponent(new CardComponent(Engine, connectors,""), 3, 2);
+        player2.getShip().addComponent(new CardComponent(Engine, connectors,""), 3, 3);
+        player2.getShip().addComponent(new CardComponent(DoubleEngine, connectors,""), 3, 4);
 
         Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
 
@@ -129,17 +129,17 @@ public class ShipTest {
         connectors.put(South, Cannon_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
-        player1.getShip().addComponent(new CardComponent(DoubleCannon, connectors), 3, 2);
-        player1.getShip().addComponent(new CardComponent(Cannon, connectors), 4, 1);
+        player1.getShip().addComponent(new CardComponent(DoubleCannon, connectors,""), 3, 2);
+        player1.getShip().addComponent(new CardComponent(Cannon, connectors,""), 4, 1);
 
         Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
         player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
         player1BatteryUsage.put(player1.getShip().getComponent(4, 1), false);
 
-        player2.getShip().addComponent(new CardComponent(DoubleCannon, connectors), 3, 1);
-        player2.getShip().addComponent(new CardComponent(Cannon, connectors), 3, 2);
-        player2.getShip().addComponent(new CardComponent(Cannon, connectors), 3, 3);
-        player2.getShip().addComponent(new CardComponent(DoubleCannon, connectors), 3, 4);
+        player2.getShip().addComponent(new CardComponent(DoubleCannon, connectors,""), 3, 1);
+        player2.getShip().addComponent(new CardComponent(Cannon, connectors,""), 3, 2);
+        player2.getShip().addComponent(new CardComponent(Cannon, connectors,""), 3, 3);
+        player2.getShip().addComponent(new CardComponent(DoubleCannon, connectors,""), 3, 4);
 
 
         Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
@@ -161,32 +161,32 @@ public class ShipTest {
         connectors.put(South, Cannon_Connector);
         connectors.put(East, Double);
         connectors.put(West, Single);
-        ship.addComponent(new CardComponent(Cannon, connectors), 1, 2);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 1, 2);
 
         connectors.put(North, Cannon_Connector);
         connectors.put(South, Universal);
         connectors.put(East, Single);
         connectors.put(West, Double);
-        ship.addComponent(new CardComponent(Cannon, connectors), 1, 3);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 1, 3);
 
         connectors.put(North, Smooth);
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        ship.addComponent(new CardComponent(Engine, connectors), 1, 4);
+        ship.addComponent(new CardComponent(Engine, connectors,""), 1, 4);
 
 
         connectors.put(North, Smooth);
         connectors.put(South, Universal);
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
-        ship.addComponent(new Battery(Battery, connectors, 2), 2, 1);
+        ship.addComponent(new Battery(Battery, connectors, 2,""), 2, 1);
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
         connectors.put(East, Universal);
         connectors.put(West, Double);
-        ship.addComponent(new Storage(BlueStorage, connectors, 2), 2, 2);
+        ship.addComponent(new Storage(BlueStorage, connectors, 2,""), 2, 2);
 
 
 
@@ -194,63 +194,63 @@ public class ShipTest {
         connectors.put(South, Double);
         connectors.put(East, Cannon_Connector);
         connectors.put(West, Smooth);
-        ship.addComponent(new CardComponent(Cannon, connectors), 2, 5);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 2, 5);
 
         connectors.put(North, Single);
         connectors.put(South, Universal);
         connectors.put(East, Double);
         connectors.put(West, Double);
-        ship.addComponent(new Storage(BlueStorage, connectors, 2), 3, 1);
+        ship.addComponent(new Storage(BlueStorage, connectors, 2,""), 3, 1);
 
 
         connectors.put(North, Cannon_Connector);
         connectors.put(South, Single);
         connectors.put(East, Smooth);
         connectors.put(West, Double);
-        ship.addComponent(new CardComponent(Cannon, connectors), 3, 2);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 3, 2);
 
         connectors.put(North, Double);
         connectors.put(South, Smooth);
         connectors.put(East, Universal);
         connectors.put(West, Cannon_Connector);
-        ship.addComponent(new CardComponent(Cannon, connectors), 3, 3);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 3, 3);
 
         connectors.put(North, Cannon_Connector);
         connectors.put(South, Double);
         connectors.put(East, Double);
         connectors.put(West, Double);
-        ship.addComponent(new CardComponent(Cannon, connectors), 3, 4);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 3, 4);
 
         connectors.put(North, Double);
         connectors.put(South, Smooth);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        ship.addComponent(new Battery(Battery, connectors, 2), 3, 5);
+        ship.addComponent(new Battery(Battery, connectors, 2,""), 3, 5);
 
         connectors.put(North, Single);
         connectors.put(South, Smooth);
         connectors.put(East, Cannon_Connector);
         connectors.put(West, Smooth);
-        ship.addComponent(new CardComponent(Cannon, connectors), 4, 1);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 4, 1);
 
         connectors.put(North, Single);
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
-        ship.addComponent(new CardComponent(Engine, connectors), 4, 2);
+        ship.addComponent(new CardComponent(Engine, connectors,""), 4, 2);
 
         connectors.put(North, Double);
         connectors.put(South, Single);
         connectors.put(East, Universal);
         connectors.put(West, Cannon_Connector);
-        ship.addComponent(new CardComponent(Cannon, connectors), 4, 4);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 4, 4);
 
         connectors.put(North, Smooth);
         connectors.put(South, Cannon_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Double);
-        ship.addComponent(new CardComponent(Engine, connectors), 4, 5);
+        ship.addComponent(new CardComponent(Engine, connectors,""), 4, 5);
 
         List<Pair<Integer, Integer>> invalids = ship.checkShipConnections();
 
@@ -276,51 +276,51 @@ public class ShipTest {
         connectors.put(South, Smooth);
         connectors.put(East, Double);
         connectors.put(West, Single);
-        ship.addComponent(new CardComponent(Cannon, connectors), 1, 2);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 1, 2);
 
         connectors.put(North, Single);
         connectors.put(South, Single);
         connectors.put(East, Double);
         connectors.put(West, Double);
-        ship.addComponent(new LivingUnit(LivingUnit, connectors), 1, 3);
+        ship.addComponent(new LivingUnit(LivingUnit, connectors,""), 1, 3);
         ((LivingUnit) ship.getComponent(1,3)).addAstronauts();
 
         connectors.put(North, Smooth);
         connectors.put(South, Single);
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
-        ship.addComponent(new Storage(BlueStorage, connectors, 2), 3, 1);
+        ship.addComponent(new Storage(BlueStorage, connectors, 2,""), 3, 1);
 
         connectors.put(North, Smooth);
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        ship.addComponent(new CardComponent(Engine, connectors), 2, 4);
+        ship.addComponent(new CardComponent(Engine, connectors,""), 2, 4);
 
         connectors.put(North, Cannon_Connector);
         connectors.put(South, Smooth);
         connectors.put(East, Single);
         connectors.put(West, Smooth);
-        ship.addComponent(new CardComponent(Cannon, connectors), 3, 2);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 3, 2);
 
         connectors.put(North, Single);
         connectors.put(South, Smooth);
         connectors.put(East, Universal);
         connectors.put(West, Universal);
-        ship.addComponent(new Storage(RedStorage, connectors, 1), 3, 3);
+        ship.addComponent(new Storage(RedStorage, connectors, 1,""), 3, 3);
 
         connectors.put(North, Single);
         connectors.put(South, Engine_Connector);
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        ship.addComponent(new CardComponent(Engine, connectors), 4, 1);
+        ship.addComponent(new CardComponent(Engine, connectors,""), 4, 1);
 
         connectors.put(North, Smooth);
         connectors.put(South, Cannon_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        ship.addComponent(new CardComponent(Cannon, connectors), 4, 2);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 4, 2);
 
         assertTrue(ship.checkShipConnections().isEmpty());
 
@@ -362,13 +362,13 @@ public class ShipTest {
         connectors.put(South, Smooth);
         connectors.put(East, Double);
         connectors.put(West, Single);
-        ship.addComponent(new CardComponent(Cannon, connectors), 1, 2);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 1, 2);
 
         connectors.put(North, Single);
         connectors.put(South, Single);
         connectors.put(East, Double);
         connectors.put(West, Double);
-        ship.addComponent(new LivingUnit(LivingUnit, connectors), 1, 3);
+        ship.addComponent(new LivingUnit(LivingUnit, connectors,""), 1, 3);
         ((LivingUnit) ship.getComponent(1,3)).addAstronauts();;
 
 
@@ -376,19 +376,19 @@ public class ShipTest {
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        ship.addComponent(new CardComponent(Engine, connectors), 2, 4);
+        ship.addComponent(new CardComponent(Engine, connectors,""), 2, 4);
 
         connectors.put(North, Cannon_Connector);
         connectors.put(South, Smooth);
         connectors.put(East, Single);
         connectors.put(West, Smooth);
-        ship.addComponent(new CardComponent(Cannon, connectors), 3, 2);
+        ship.addComponent(new CardComponent(Cannon, connectors,""), 3, 2);
 
         connectors.put(North, Single);
         connectors.put(South, Smooth);
         connectors.put(East, Universal);
         connectors.put(West, Universal);
-        ship.addComponent(new Storage(RedStorage, connectors, 1), 3, 3);
+        ship.addComponent(new Storage(RedStorage, connectors, 1,""), 3, 3);
 
         assertEquals(5,ship.calculateExposedConnectors());
 
