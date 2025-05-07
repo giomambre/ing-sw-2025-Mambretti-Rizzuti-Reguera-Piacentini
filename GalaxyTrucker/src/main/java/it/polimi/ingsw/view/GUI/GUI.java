@@ -1,8 +1,5 @@
 package it.polimi.ingsw.view.GUI;
 
-import it.polimi.ingsw.network.Client;
-import it.polimi.ingsw.network.messages.MessageType;
-import it.polimi.ingsw.network.messages.StandardMessageClient;
 import it.polimi.ingsw.view.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -23,29 +20,24 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 
 public class GUI implements View {
 
-    NicknameController nicknameController;
-    Stage primaryStage;
-    //private boolean nicknamesettato=false;
+    Joingamecontroller joingamecontroller;
+    Stage stage;
     private String nicknamescelto;
     @FXML
     public TextField nicknameField;
-    private CompletableFuture<String> nicknameFuture;
     private GuiApplication application;
     private ClientCallBack clientCallback;
-    private UUID client;
-    private static ObjectOutputStream out;
+
+
 
     public void setClientCallback(ClientCallBack callback) {
         this.clientCallback = callback;
     }
-    public void setClient(UUID client) {
-        this.client = client;
-    }
-
 
 
     public GUI() {
@@ -55,8 +47,8 @@ public class GUI implements View {
         this.application = application;
     }
 
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public void createNicknamescreen(){
@@ -89,6 +81,49 @@ public class GUI implements View {
         return nicknamescelto;
     }
 
+    /*public void createjoingamecontroller(){
+        Platform.runLater(() -> {
+            try {
+                Joingamecontroller joingamecontroller = new Joingamecontroller();
+                this.joingamecontroller = joingamecontroller;
+                joingamecontroller.setGui(this);
+                joingamecontroller.start(this.stage);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }*/
+
+    public void createjoingamecontroller(){
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                Joingamecontroller controller = new Joingamecontroller();
+                controller.setGui(this);
+                this.joingamecontroller = controller;
+                controller.start(this.stage);
+                future.complete(null);  // Segnala che la GUI è pronta
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+        try {
+            future.get(); // aspetta che la GUI venga inizializzata
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int askCreateOrJoin() {
+        try {
+            return joingamecontroller.getChoiceFuture().get(); // blocca finché non c'è risposta
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 
     @Override
     public void showMessage(String message) {
@@ -112,10 +147,7 @@ public class GUI implements View {
 
     }
 
-    @Override
-    public int askCreateOrJoin() {
-        return 0;
-    }
+
 
     @Override
     public int askNumPlayers() {

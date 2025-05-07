@@ -171,7 +171,14 @@ public class Client {
                 break;
 
             case NAME_ACCEPTED:
-                int join_or_create = virtualView.askCreateOrJoin();
+                int join_or_create;
+                if(virtualViewType == VirtualViewType.GUI) {
+                    ((GUI)virtualView).createjoingamecontroller();
+                    join_or_create = virtualView.askCreateOrJoin();
+                   System.out.println("scelta"+join_or_create);
+                }else {
+                    join_or_create = virtualView.askCreateOrJoin();
+                }
                 Message to_send;
                 if (join_or_create == 1) {
 
@@ -200,6 +207,7 @@ public class Client {
                 break;
 
             case CREATE_LOBBY:
+                System.out.println("sono nella creazione della lobby");
                 if (msg.getContent().isEmpty()) {
                     virtualView.showGenericError("Errore nella creazione della lobby, riprovare\n");
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
@@ -211,6 +219,7 @@ public class Client {
                 break;
 
             case SEE_LOBBIES:
+                System.out.println("ora guardo le lobby cge ci sono");
                 AvaiableLobbiesMessage l_msg = (AvaiableLobbiesMessage) msg;
 
                 if (!msg.getContent().isEmpty()) {
