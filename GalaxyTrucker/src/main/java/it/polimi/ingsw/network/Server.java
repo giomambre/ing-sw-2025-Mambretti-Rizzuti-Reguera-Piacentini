@@ -348,7 +348,6 @@ public class Server {
                 controller = all_games.get(getLobbyId(addC_msg.getId_client()));
 
                 controller.crewmatesSupply(getNickname(addC_msg.getId_client()), addC_msg.getPos().getKey(), addC_msg.getPos().getValue(), addC_msg.getCmType());
-                sendToClient(addC_msg.getId_client(), new Message(MessageType.ADD_CREWMATES, ""));
 
                 break;
 
@@ -361,8 +360,6 @@ public class Server {
                 List<Pair<Integer, Integer>> invalids_connections = new ArrayList<>();
 
                 //    if (controller.getFinished_supply_players().size() == controller.getLobby().getPlayers().size()) {  //quando tutti hanno fatto l equipaggiamento della ciurma
-
-                System.out.println("Inizia fase di controllo delle navi");
 
 
                 invalids_connections = controller.checkShipConnectors(getNickname(msgClient.getId_client()));
@@ -391,7 +388,7 @@ public class Server {
                     safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
                 }
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
-
+                System.out.println(getNickname(update_msg.getId_client()) + " " + controller.getValidPieces(getNickname(update_msg.getId_client())).size() );
 
                 if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() > 1){
 
@@ -414,6 +411,12 @@ public class Server {
                 int piece_chosen = Integer.parseInt( select_msg.getContent());
                 controller = all_games.get(getLobbyId(select_msg.getId_client()));
                 controller.choosePieces(piece_chosen, getNickname(select_msg.getId_client()));
+                safePlayers = new ArrayList<>();
+
+                for (Player p : controller.getPlayers()) {
+                    safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                }
+                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 sendToClient(select_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
                 break;
 

@@ -130,6 +130,9 @@ public class Ship implements Serializable {
 
             }
         }
+
+        player.utilePerTestare();
+
     }
 
     /**
@@ -657,7 +660,7 @@ public class Ship implements Serializable {
      */
     public CardComponent getComponent(int x, int y) {
 
-        if(x<0 || y<0 || x>=ROWS || y>=COLS) throw new IndexOutOfBoundsException("x or y out of bounds");
+        if(x<0 || y<0 || x>=ROWS || y>=COLS) throw new IndexOutOfBoundsException();
         return ship_board[x][y];
     }
 
@@ -671,6 +674,15 @@ public class Ship implements Serializable {
     public Boolean validatePiece(List<Pair<Integer, Integer>> piece) {
         int valid_cannon = 0;
         int valid_unit = 0;
+       ComponentType util =  switch (player.getColor()){
+
+            case GREEN ->  MainUnitGreen;
+            case BLUE -> MainUnitBlue;
+            case RED -> MainUnitRed;
+            case YELLOW -> MainUnitYellow;
+
+        };
+
         for (Pair<Integer, Integer> pos : piece) {
             int x = pos.getKey();
             int y = pos.getValue();
@@ -682,6 +694,8 @@ public class Ship implements Serializable {
 
                 valid_unit = 1;
 
+            }else if(component.getComponentType() == util && ((LivingUnit) component).getNum_crewmates() >= 1){
+                valid_unit = 1;
             }
         }
 
@@ -696,14 +710,14 @@ public class Ship implements Serializable {
      * @return a pair of integers representing the (row, column) coordinates of the component
      */
     public Pair<Integer,Integer> getCoords(CardComponent component) {
-        for(int i = 0; i < ROWS; i++) {
-            for(int j = 0; j < COLS; j++) {
-                if(this.getComponent(i, j) == component) {
-                    return new Pair(i, j);
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    if (ship_board[i][j]== component) {
+                        return new Pair<>(i, j);
+                    }
                 }
             }
-        }
-        return new Pair(0,0);
+        return new Pair<>(0,0);
     }
 
     /**
@@ -905,26 +919,26 @@ public class Ship implements Serializable {
         }
 
         if (x!=0 && this.getComponent(x-1,y).getComponentType() == PinkAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North)))
+                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x-1,y).getConnector(North)))
             crew.add(PinkAlien);
         else if (x!=0 && this.getComponent(x-1,y).getComponentType() == BrownAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x+1,y).getConnector(North))) {
+                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x-1,y).getConnector(North))) {
             crew.add(BrownAlien);
         }
 
         if (y!=6 && this.getComponent(x,y+1).getComponentType() == PinkAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West)))
+                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x,y+1).getConnector(West)))
             crew.add(PinkAlien);
         else if (y!=6 && this.getComponent(x,y+1).getComponentType() == BrownAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x+1,y).getConnector(West))) {
+                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x,y+1).getConnector(West))) {
             crew.add(BrownAlien);
         }
 
         if (y!=0 && this.getComponent(x,y-1).getComponentType() == PinkAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East)))
+                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x,y-1).getConnector(East)))
             crew.add(PinkAlien);
         else if (y!=0 &&this.getComponent(x,y-1).getComponentType() == BrownAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x+1,y).getConnector(East))) {
+                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x,y-1).getConnector(East))) {
             crew.add(BrownAlien);
         }
 

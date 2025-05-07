@@ -133,6 +133,8 @@ public class GameController {
 
         try {
             p.addToShip(card, x, y);
+
+            p.getShip().getExtra_components().remove(card);
             System.out.println("Added component!");
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
@@ -184,12 +186,14 @@ public class GameController {
             Player p = game.getPlayer(nickname);
             Ship ship = p.getShip();
             CardComponent card = ship.getComponent(x, y);
+
             if (card.getComponentType() != ComponentType.LivingUnit)
                 throw new IllegalArgumentException("The component isn't a LivingUnit");
 
             if (type == CrewmateType.Astronaut) ((LivingUnit) card).addAstronauts();
             else if (ship.checkAlienSupport(card).contains(type)) {
                 ((LivingUnit) card).addAlien(type);
+
 
 
             } else {
@@ -237,7 +241,6 @@ public void setShipPlance(String nickname, Ship ship) {
     public List<List<Pair<Integer, Integer>>> getValidPieces(String nickname){
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
-        List<List<Pair<Integer, Integer>>> pieces = ship.findShipPieces();
 
 //        for (List<Pair<Integer, Integer>> piece : pieces) {
 //            CardComponent[][] matrix = new CardComponent[5][7]; // 5 righe, 7 colonne
@@ -251,7 +254,7 @@ public void setShipPlance(String nickname, Ship ship) {
 //            validPieces.add(matrix);
 //        }
 
-        return pieces;
+        return ship.findShipPieces();
 
     }
 

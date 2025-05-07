@@ -66,7 +66,10 @@ public class Client {
                 virtualViewType = VirtualViewType.TUI;
             }
             else {
-                Application.launch(GuiApplication.class);
+                new Thread(() -> Application.launch(GuiApplication.class)).start();
+                while (GuiApplication.getGui() == null) {
+                    Thread.sleep(50);
+                }
                 virtualView = GuiApplication.getGui();
                 virtualViewType=VirtualViewType.GUI;
             }
@@ -127,6 +130,8 @@ public class Client {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -135,16 +140,33 @@ public class Client {
 
     public static void elaborate(Message msg) throws IOException {
 
+
         switch (msg.getType()) {
 
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
-                nickname = virtualView.askNickname();
+                if(virtualViewType == VirtualViewType.GUI) {
+                    //System.out.println("Connesso con GUI");
+                    ((GUI)virtualView).setClientCallback(nickname -> {
+                        try {
+                            System.out.println(" Client Hai scelto: " + nickname); // <-- Questa è la stampa corretta
+                            out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+                            out.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    ((GUI)virtualView).createNicknamescreen();
 
-                try {
-                    out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
-                    out.flush();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                }
+                else {
+                    nickname = virtualView.askNickname();
+
+                    try {
+                        out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 break;
 
@@ -350,45 +372,58 @@ public class Client {
 
             case ADD_CREWMATES:
                 inputQueue.clear();
-
-                for (CardComponent[] row : player_local.getShip().getShipBoard()) {
-                    for (CardComponent component : row) {
+                CardComponent[][] plance = player_local.getShip().getShip_board() ;
+                Pair<Integer, Integer> coords;
+                for(int i = 0 ; i<player_local.getShip().getROWS(); i++){
+                    for(int j = 0 ; j<player_local.getShip().getCOLS(); j++){
+                  CardComponent component = plance[i][j];
+                  coords = new Pair<>(i,j);
                         if (component.getComponentType() == LivingUnit) {
+
                             CrewmateType type;
-                            int select =  virtualView.crewmateAction(component);
+                            int select =  virtualView.crewmateAction(coords);
 
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
+                                ((LivingUnit)component).addAstronauts();
 
                             } else if (select == 2) {
 
                                 type = CrewmateType.PinkAlien;
+                                ((LivingUnit)component).addAlien(CrewmateType.PinkAlien);
+
 
                             } else {
 
                                 type = CrewmateType.BrownAlien;
+                              ((LivingUnit)component).addAlien(CrewmateType.BrownAlien);
+
 
                             }
-                            out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, player_local.getShip().getCoords(component), type));
+                            out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
 
 
                         }
 
                     }
                 }
+                out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
 
 
 
 
 
 
-break;
+
+
+                break;
 
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if(icm.getInvalids().isEmpty()){
 
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
+                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId,player_local.copyPlayer()));
 
                 }else{
                     player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));

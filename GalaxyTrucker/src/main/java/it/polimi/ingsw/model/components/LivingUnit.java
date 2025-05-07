@@ -43,7 +43,7 @@ public class LivingUnit extends CardComponent  implements Serializable {
     public void addAstronauts() {
 
         if(num_crewmates>0){
-            throw new IllegalArgumentException("Trying to remove a Crewmate, you can't add two crewmates");
+            throw new IllegalArgumentException("Try to remove a Crewmate, you can't add two crewmates");
         }
 
         this.crewmate_type = CrewmateType.Astronaut;
