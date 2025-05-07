@@ -35,6 +35,7 @@ public class GuiApplication extends Application  {
             setGui(gui);
             gui.setGuiApplication(this);
             gui.setStage(primaryStage);
+            primaryStage.setMaximized(true);
             this.stage = primaryStage;
             Platform.runLater(()->{
                 FXMLLoader loader= new FXMLLoader(getClass().getResource("/Startgui.fxml"));
