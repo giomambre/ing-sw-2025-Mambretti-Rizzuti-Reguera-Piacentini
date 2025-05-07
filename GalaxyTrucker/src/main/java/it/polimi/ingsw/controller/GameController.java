@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.*;
@@ -281,6 +281,83 @@ public void setShipPlance(String nickname, Ship ship) {
         }
         else throw new IllegalArgumentException("");
     }
+
+    public void executeAbandonedShip(String nickname, Map<CardComponent,Integer> astronaut_losses, AbandonedShip abandonedShip) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+        int total_crewmates = 0;
+
+        for(int i = 0 ; i<ship.getROWS(); i++){
+            for(int j = 0 ; j<ship.getCOLS(); j++) {
+                if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit)
+                    total_crewmates+= ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates();
+            }
+        }
+
+        if(total_crewmates> abandonedShip.getCrewmates_loss()){
+            abandonedShip.execute(p, astronaut_losses);
+        }
+        else {
+            throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
+        }
+
+    }
+
+    public void executeAbandonedStation(String nickname, Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions, AbandonedStation abandonedStation) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+        int total_crewmates = 0;
+
+        for(int i = 0 ; i<ship.getROWS(); i++){
+            for(int j = 0 ; j<ship.getCOLS(); j++) {
+                if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit)
+                    total_crewmates+= ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates();
+            }
+        }
+
+        if (total_crewmates> abandonedStation.getNeeded_crewmates()){
+            abandonedStation.execute(p, new_cargo_positions );
+        }
+        else {
+            throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
+        }
+    }
+
+    //Serie di metodi di Combat Zone che vanno gestiti poi dal controller in base a quale id esce
+    public List<Pair<MeteorType, Direction>> getCombatZoneMeteors(CombatZone combatZone) {
+        return combatZone.getMeteors();
+    }
+
+    public void executeMeteors(String nickname, CardAdventure meteor, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage){
+        Player p = game.getPlayer(nickname);
+        ((MeteorSwarm)meteor).execute(p,direction,meteor_type,shield_usage,battery,position,double_cannon_usage);
+    }
+    //Metodi Combat Zone id 1
+
+    public void executeLessCrewmates1(String nickname, CombatZone combatZone) {
+        Player p = game.getPlayer(nickname);
+        combatZone.executeLessCrewmates1(p);
+    }
+
+    public void executeLessEnginePower1(String nickname,Map<CardComponent,Integer> astronaut_losses, CombatZone combatZone) {
+        Player p = game.getPlayer(nickname);
+        combatZone.executeLessEnginePower1(p, astronaut_losses);
+    }
+
+    //Metodi Combat Zone 2
+
+    public void executeLessCannonPower2(String nickname, CombatZone combatZone) {
+        Player p = game.getPlayer(nickname);
+        combatZone.executeLessCannonPower2(p);
+    }
+
+    public void executeLessEnginePower2(String nickname, Map<CardComponent, Map<Cargo, Integer>> cargo_position, CombatZone combatZone) {
+        Player p = game.getPlayer(nickname);
+        combatZone.executeLessEnginePower2(p, cargo_position);
+    }
+
+
+
 
     public List<Player> getBuildPhasePlayers() {
         return game.getBuildPhasePlayers();

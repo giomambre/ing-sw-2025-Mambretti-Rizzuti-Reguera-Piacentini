@@ -56,9 +56,12 @@ public class AbandonedShip extends CardAdventure implements Serializable {
 
                     for (CardComponent unit : astronaut_losses.keySet()) {
                         if (component.equals(unit)){
+                            if (((LivingUnit) component).getNum_crewmates()<astronaut_losses.get(unit))
+                                throw new IllegalArgumentException("Non puoi rimuovere crewmates da questa living unit");
 
-                            ((LivingUnit) component).removeCrewmates(astronaut_losses.get(unit)); // occhio al cast Exception
-
+                            else {
+                                ((LivingUnit) component).removeCrewmates(astronaut_losses.get(unit));
+                            }
                         }
                     }
                 }
