@@ -148,7 +148,7 @@ public class Client {
                     //System.out.println("Connesso con GUI");
                     ((GUI)virtualView).setClientCallback(nickname -> {
                         try {
-                            System.out.println(" Client Hai scelto: " + nickname); // <-- Questa è la stampa corretta
+                            System.out.println(" (testing)Client Hai scelto: " + nickname);
                             out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
                             out.flush();
                         } catch (IOException e) {
@@ -171,12 +171,27 @@ public class Client {
                 break;
 
             case NAME_ACCEPTED:
-                int join_or_create = virtualView.askCreateOrJoin();
+                int join_or_create;
+                if(virtualViewType == VirtualViewType.GUI) {
+                    ((GUI)virtualView).createjoingamecontroller();
+                    join_or_create = virtualView.askCreateOrJoin();
+                   System.out.println("(testing)scelta"+join_or_create);
+                }else {
+                    join_or_create = virtualView.askCreateOrJoin();
+                }
                 Message to_send;
                 if (join_or_create == 1) {
-
-                    int num = virtualView.askNumPlayers();
+                    int num;
+                    if(virtualViewType == VirtualViewType.GUI) {
+                        ((GUI)virtualView).createnumplayerscontroller();
+                         num=virtualView.askNumPlayers();
+                         System.out.println("(testing)scelta:"+num);
+                    }
+                    else {
+                        num = virtualView.askNumPlayers();
+                    }
                     if(num ==-1){
+                        System.out.println("(testing)scelta:-1");
                         elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
                         break;
                     }
@@ -200,6 +215,7 @@ public class Client {
                 break;
 
             case CREATE_LOBBY:
+                System.out.println("(testing)sono nella creazione della lobby");
                 if (msg.getContent().isEmpty()) {
                     virtualView.showGenericError("Errore nella creazione della lobby, riprovare\n");
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
@@ -211,6 +227,7 @@ public class Client {
                 break;
 
             case SEE_LOBBIES:
+                System.out.println("(testing)ora guardo le lobby cge ci sono");
                 AvaiableLobbiesMessage l_msg = (AvaiableLobbiesMessage) msg;
 
                 if (!msg.getContent().isEmpty()) {
