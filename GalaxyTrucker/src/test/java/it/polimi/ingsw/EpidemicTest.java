@@ -44,13 +44,13 @@ public class EpidemicTest {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors),3,1);
+        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors, ""),3,1);
         ((LivingUnit)ship.getComponent(3,1)).addAstronauts();
 
-        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors),3,2);
+        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors,""),3,2);
         ((LivingUnit)ship.getComponent(3,2)).addAlien(CrewmateType.BrownAlien);
 
-        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors),3,3);
+        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors,""),3,3);
         ((LivingUnit)ship.getComponent(3,3)).addAlien(CrewmateType.PinkAlien);
 
     }
@@ -66,7 +66,7 @@ public class EpidemicTest {
         connectors.put(East, Universal);
         connectors.put(West, Universal);
 
-        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors),2,4);
+        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors,""),2,4);
         ((LivingUnit)ship.getComponent(2,4)).addAstronauts();
 
         connectors.put(North,Universal);
@@ -74,7 +74,7 @@ public class EpidemicTest {
         connectors.put(East, Universal);
         connectors.put(West, Smooth);
 
-        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors),2,5);
+        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors,""),2,5);
         ((LivingUnit)ship.getComponent(2,5)).addAstronauts();
 
         ((Epidemic)epidemic).execute(player);

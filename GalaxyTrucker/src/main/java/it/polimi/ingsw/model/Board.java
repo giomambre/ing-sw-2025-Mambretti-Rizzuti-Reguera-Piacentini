@@ -213,6 +213,19 @@ public class Board {
                 .toList();
     }
 
+    public Map<Integer, Player> getLaps() {
+        Map<Integer, Player> player_laps = new HashMap<>();
+
+        // Iteriamo attraverso tutte le posizioni e giocatori nella mappa player_position
+        for (Map.Entry<Integer, Player> entry : player_position.entrySet()) {
+            Player player = entry.getValue();
+            // Aggiungiamo il giocatore alla mappa risultante con il suo numero di giri
+            player_laps.put(player.getNum_laps(), player);
+        }
+
+        return player_laps;
+    }
+
     /**
      * This function removes the players that got lapped by the group leader.
      * They are removed to the list of active players.

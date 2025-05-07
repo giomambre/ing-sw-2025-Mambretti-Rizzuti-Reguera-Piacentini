@@ -34,7 +34,7 @@ public class GuiApplication extends Application  {
             GUI gui = new GUI(); // inizializza GUI qui
             setGui(gui);
             gui.setGuiApplication(this);
-            gui.setPrimaryStage(primaryStage);
+            gui.setStage(primaryStage);
             this.stage = primaryStage;
             Platform.runLater(()->{
                 FXMLLoader loader= new FXMLLoader(getClass().getResource("/Startgui.fxml"));

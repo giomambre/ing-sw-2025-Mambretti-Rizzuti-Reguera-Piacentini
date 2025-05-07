@@ -46,16 +46,16 @@ public class SmugglersTest {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        ship.addComponent(new Storage(ComponentType.BlueStorage, connectors, 3),3,1);
+        ship.addComponent(new Storage(ComponentType.BlueStorage, connectors, 3,""),3,1);
         Map<Cargo, Integer> cargos = new HashMap<>();
         cargos.put(Blue, 2);
         ((Storage)ship.getComponent(3,1)).addCargo(cargos);
 
-        ship.addComponent(new Storage(ComponentType.RedStorage, connectors, 3),3,2);
+        ship.addComponent(new Storage(ComponentType.RedStorage, connectors, 3,""),3,2);
         cargos.put(Cargo.Red, 1);
         ((Storage)ship.getComponent(3,2)).addCargo(cargos);
 
-        ship.addComponent(new Storage(ComponentType.BlueStorage, connectors, 3),3,3);
+        ship.addComponent(new Storage(ComponentType.BlueStorage, connectors, 3,""),3,3);
 
         List<Cargo> cargo_rewards = new ArrayList<>();
         cargo_rewards.add(Cargo.Blue);

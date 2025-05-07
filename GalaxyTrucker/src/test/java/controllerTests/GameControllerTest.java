@@ -67,7 +67,7 @@ assertEquals(-1,controller.endPlayerBuildPhase("Gio"));
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-controller.addComponent("Isabel",new CardComponent(Engine, connectors), 1, 4);
+controller.addComponent("Isabel",new CardComponent(Engine, connectors,""), 1, 4);
 assertEquals(1,controller.endPlayerBuildPhase("Isabel"));
 
 
@@ -83,10 +83,10 @@ assertEquals(1,controller.endPlayerBuildPhase("Isabel"));
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        controller.addComponent("Isabel",new CardComponent(Engine, connectors), 1, 4);
+        controller.addComponent("Isabel",new CardComponent(Engine, connectors,""), 1, 4);
 
         assertEquals(Engine,controller.getPlayers().get(1).getShip().getComponent(1,4).getComponentType());
-        controller.addComponent("Isabel",new CardComponent(Cannon, connectors), 1, 5);
+        controller.addComponent("Isabel",new CardComponent(Cannon, connectors,""), 1, 5);
         assertEquals(Cannon,controller.getPlayers().get(1).getShip().getComponent(1,5).getComponentType());
 
 
@@ -101,7 +101,7 @@ assertEquals(1,controller.endPlayerBuildPhase("Isabel"));
         connectors.put(South, Engine_Connector);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        controller.secureComponent("Isabel",new CardComponent(Engine, connectors));
+        controller.secureComponent("Isabel",new CardComponent(Engine, connectors,""));
 
         assertEquals(1,controller.getPlayers().get(1).getShip().getExtra_components().size());
         assertEquals(Engine,controller.getPlayers().get(1).getShip().getExtra_components().getFirst().getComponentType());
@@ -116,7 +116,7 @@ assertEquals(1,controller.endPlayerBuildPhase("Isabel"));
         connectors.put(South, Double);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
-        controller.addComponent("Isabel",new LivingUnit(LivingUnit, connectors), 1, 4);
+        controller.addComponent("Isabel",new LivingUnit(LivingUnit, connectors,""), 1, 4);
 
         controller.crewmatesSupply("Isabel",1,4,Astronaut);
         assertEquals(2,((LivingUnit) controller.getPlayers().get(1).getShip().getComponent(1,4)).getNum_crewmates());

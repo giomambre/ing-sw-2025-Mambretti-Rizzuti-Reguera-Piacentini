@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="400.0" prefWidth="600.0">
+    <Spinner fx:id="playerNumberSpinner" layoutX="100" layoutY="100" />
+
+    <Button text="Conferma"
+            layoutX="100" layoutY="160"
+            onAction="#setPlayerNumber" />
+
+    <Button text="Esc"
+            layoutX="100" layoutY="210"
+            onAction="#setOne" />
+
+</AnchorPane>
