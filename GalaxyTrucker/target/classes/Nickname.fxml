@@ -1,19 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <URL value="@Nickname.css" />
+   </stylesheets>
    <children>
-      <VBox id="NicknameController" alignment="CENTER" layoutX="140.0" layoutY="105.0" prefHeight="189.0" prefWidth="320.0">
+      <ImageView fitHeight="407.0" fitWidth="600.0" pickOnBounds="true" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@images/backgrounds/background.jpg" />
+         </image>
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+         <rotationAxis>
+            <Point3D />
+         </rotationAxis>
+      </ImageView>
+      <VBox id="NicknameController" fx:id="nicknameBox" alignment="CENTER" fillWidth="false" layoutX="144.0" layoutY="83.0" prefHeight="189.0" prefWidth="320.0" spacing="7.0">
          <children>
-            <Label text="Inserisci lo username:" />
-            <TextField fx:id="nicknameField" prefHeight="17.0" prefWidth="286.0" />
-            <Button mnemonicParsing="false" onAction="#sendNickname" text="Continua" />
+            <Label text="Inserisci lo username:"
+                   wrapText="false"
+                   maxWidth="Infinity"
+                   style="-fx-font-family: 'Orbitron'; -fx-font-size: 20px; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <TextField fx:id="nicknameField" prefHeight="17.0" prefWidth="286.0" promptText="nome..." />
          </children>
+         <padding>
+            <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+         </padding>
       </VBox>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="201.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/backgrounds/logo.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="240.0" fitWidth="368.0" layoutX="133.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-62.0" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="222.0">
+         <image>
+            <Image url="@images/backgrounds/crewmates.PNG" />
+         </image>
+      </ImageView>
+      <Button layoutX="259.0" layoutY="222.0" mnemonicParsing="false" onAction="#sendNickname" text="Continua" textFill="#7699f8" />
    </children>
 </AnchorPane>

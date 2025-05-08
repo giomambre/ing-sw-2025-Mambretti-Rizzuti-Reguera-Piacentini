@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -28,19 +29,23 @@ public class GUI implements View {
 
     Joingamecontroller joingamecontroller;
     Numplayercontroller numplayercontroller;
+    Guiselectcontroller guiselectcontroller;
     Stage stage;
     private String nicknamescelto;
     @FXML
     public TextField nicknameField;
     private GuiApplication application;
     private ClientCallBack clientCallback;
+    private List<Integer> lobbies;
 
 
 
     public void setClientCallback(ClientCallBack callback) {
         this.clientCallback = callback;
     }
-
+    public List<Integer> getlobbies() {
+        return this.lobbies;
+    }
 
     public GUI() {
     }
@@ -158,7 +163,44 @@ public class GUI implements View {
 
     @Override
     public void showMessage(String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Messaggio");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
 
+    public void createselectlobbyscreen(List<Integer> lobbies){
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                Guiselectcontroller controller = new Guiselectcontroller();
+                controller.setGui(this);
+                this.guiselectcontroller = controller;
+                this.lobbies = lobbies;
+                controller.start(this.stage);
+                future.complete(null);  // Segnala che la GUI è pronta
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+        try {
+            future.get(); // aspetta che la GUI venga inizializzata
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public int showLobbies(List<Integer> lobbies) {
+        try {
+            return guiselectcontroller.getSelectedLobbyFuture().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
 
@@ -180,10 +222,7 @@ public class GUI implements View {
 
 
 
-    @Override
-    public int showLobbies(List<Integer> lobbies) {
-        return 0;
-    }
+
 
     @Override
     public Color askColor(List<Color> colors) {

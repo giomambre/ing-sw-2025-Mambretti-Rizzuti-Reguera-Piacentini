@@ -240,9 +240,14 @@ public class Client {
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
                     break;
                 } else {
-
-                    int lobby_index = virtualView.showLobbies(l_msg.getLobbies());
-
+                    int lobby_index;
+                    if(virtualViewType == VirtualViewType.GUI) {
+                        ((GUI)virtualView).createselectlobbyscreen(l_msg.getLobbies());
+                        lobby_index=virtualView.showLobbies(l_msg.getLobbies());
+                        System.out.println("(testing) lobby scelta:"+lobby_index);
+                    }else {
+                        lobby_index = virtualView.showLobbies(l_msg.getLobbies());
+                    }
                     out.writeObject(new StandardMessageClient(MessageType.SELECT_LOBBY, "" + lobby_index, clientId));
 
                 }
