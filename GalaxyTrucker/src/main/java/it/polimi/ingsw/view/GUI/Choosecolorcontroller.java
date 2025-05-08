@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -25,7 +26,8 @@ import java.util.concurrent.CompletableFuture;
 public class Choosecolorcontroller{
     private GUI gui;
     private List<Color> colorsavailable;
-    private CompletableFuture<Color> colorChosen; ;
+    private CompletableFuture<Color> colorChosen;
+
 
     @FXML public Button blueRectangle;
     @FXML public Button greenRectangle;
@@ -40,9 +42,11 @@ public class Choosecolorcontroller{
 
     public void setColorsavailable(List<Color> colorsavailable) {
         Platform.runLater(() -> {
-            this.colorsavailable.addAll(colorsavailable);
+            this.colorsavailable = new ArrayList<>(colorsavailable);
+            setActiveButton(this.colorsavailable);
         });
     }
+
     public void setActiveButton(List<Color> colors) {
         if(colors.contains(Color.BLUE)) {
             blueRectangle.setVisible(true);
@@ -75,7 +79,7 @@ public class Choosecolorcontroller{
      * @param stage the primary stage for this application
      * @throws Exception if an error occurs during loading the FXML file or setting the scene
      */
-    public void start(Stage stage) throws Exception {
+    /*public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChooseColor.fxml"));
         loader.setController(this);
         Parent root = loader.load();
@@ -83,7 +87,6 @@ public class Choosecolorcontroller{
         Scene scene = new Scene(root);
         stage.setTitle("Choosing Color");
         setColorsavailable(gui.getColorsavailable());
-        setActiveButton(colorsavailable);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
@@ -91,24 +94,40 @@ public class Choosecolorcontroller{
             Platform.exit();
             System.exit(0);
         }));
+    }*/
+    public void start(Parent root) {
+        Scene scene = new Scene(root);
+        gui.getStage().setTitle("Choosing Color");
+        gui.getStage().setScene(scene);
+        gui.getStage().centerOnScreen();
+        gui.getStage().show();
+        gui.getStage().setOnCloseRequest((event -> {
+            Platform.exit();
+            System.exit(0);
+        }));
     }
+
 
 
     @FXML
     public void blueChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.BLUE);
+        gui.setChooseColorScreenOpen(false);
     }
     @FXML
     public void yellowChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.YELLOW);
+        gui.setChooseColorScreenOpen(false);
     }
     @FXML
     public void redChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.RED);
+        gui.setChooseColorScreenOpen(false);
     }
     @FXML
     public void greenChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.GREEN);
+        gui.setChooseColorScreenOpen(false);
     }
 
     public CompletableFuture<Color> getColorChosen() {
@@ -118,11 +137,6 @@ public class Choosecolorcontroller{
         return colorChosen;
     }
 
-    /*
-     blueRectangle.setVisible(false);
-        greenRectangle.setVisible(false);
-        redRectangle.setVisible(false);
-        yellowRectangle.setVisible(false);
-     */
+
 
 }

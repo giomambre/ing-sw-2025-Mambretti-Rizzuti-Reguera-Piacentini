@@ -64,6 +64,8 @@ public class Client {
             if(choice == 1) {
                 virtualView = new TUI();
                 virtualViewType = VirtualViewType.TUI;
+                out.writeObject(new StandardMessageClient(MessageType.INIT_VIEW, "TUI", clientId));
+                out.flush();
             }
             else {
                 new Thread(() -> Application.launch(GuiApplication.class)).start();
@@ -72,6 +74,8 @@ public class Client {
                 }
                 virtualView = GuiApplication.getGui();
                 virtualViewType=VirtualViewType.GUI;
+                out.writeObject(new StandardMessageClient(MessageType.INIT_VIEW, "GUI", clientId));
+                out.flush();
             }
 
 
@@ -271,11 +275,17 @@ public class Client {
                 if (gs_msg.getContent().isEmpty()) {
                     virtualView.showMessage("\nPartita avviata!");
                 }
-
+                List<Color> availableColors = ((GameStartedMessage) msg).getAvailableColors();
                 Color c;
                 if(virtualViewType == VirtualViewType.GUI) {
+                    /*((GUI) virtualView).updateColorSelectionScreen(availableColors);
                     ((GUI)virtualView).createchoosecolorscreen(gs_msg.getAvailableColors());
-                    c = virtualView.askColor(gs_msg.getAvailableColors());
+                    c = virtualView.askColor(gs_msg.getAvailableColors());*/
+                    if (!((GUI) virtualView).isChooseColorScreenOpen()) {
+                        ((GUI) virtualView).createchoosecolorscreen(availableColors);
+                    }
+                    ((GUI) virtualView).updateColorSelectionScreen(availableColors);
+                    c = virtualView.askColor(availableColors);
                     System.out.println("(testing)scelta"+c);
                 }else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
@@ -284,6 +294,7 @@ public class Client {
                 break;
 
             case BUILD_START:
+                System.out.println("(testing)sono nella build start");
                 int deck_selected = virtualView.selectDeck();
 
                 if (deck_selected == 1) {
@@ -516,11 +527,11 @@ public class Client {
                         }
                     }
 
-
-                    ((TUI) virtualView).setPlayer_local(player_local);
-                    ((TUI) virtualView).setOther_players_local(other_players_local);
-                    ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
-
+                    if(virtualViewType==VirtualViewType.TUI) {
+                        ((TUI) virtualView).setPlayer_local(player_local);
+                        ((TUI) virtualView).setOther_players_local(other_players_local);
+                        ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
+                    }
                     break;
 
 
@@ -550,8 +561,9 @@ public class Client {
 
                 CardAdventureDeckMessage adm = (CardAdventureDeckMessage) msg;
                 local_adventure_deck = adm.getDeck();
-                ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
-
+                if(virtualViewType==VirtualViewType.TUI) {
+                    ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
+                }
                 break;
 
             case TIME_UPDATE:

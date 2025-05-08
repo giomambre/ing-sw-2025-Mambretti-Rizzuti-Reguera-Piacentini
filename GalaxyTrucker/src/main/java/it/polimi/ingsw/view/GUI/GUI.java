@@ -39,6 +39,17 @@ public class GUI implements View {
     private ClientCallBack clientCallback;
     private List<Integer> lobbies;
     private List<Color> colorsavailable;
+    private boolean chooseColorScreenOpen = false;
+
+    public boolean isChooseColorScreenOpen() {
+        return chooseColorScreenOpen;
+    }
+    public void setChooseColorScreenOpen(boolean b) {
+        this.chooseColorScreenOpen = b;
+    }
+    public Stage getStage(){
+        return stage;
+    }
 
 
 
@@ -211,7 +222,7 @@ public class GUI implements View {
         }
     }
 
-    public void createchoosecolorscreen(List<Color> colors) {
+    /*public void createchoosecolorscreen(List<Color> colors) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
             try {
@@ -219,9 +230,37 @@ public class GUI implements View {
                 controller.setGUI(this);
                 this.choosecolorcontroller = controller;
                 this.colorsavailable = colors;
+                setChooseColorScreenOpen(true);
                 controller.start(this.stage);
                 future.complete(null);  // Segnala che la GUI è pronta
             } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+        try {
+            future.get(); // aspetta che la GUI venga inizializzata
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }*/
+    public void createchoosecolorscreen(List<Color> colors) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChooseColor.fxml"));
+                Parent root = loader.load();
+                Choosecolorcontroller controller = loader.getController(); // ✅ ottieni il controller FXML
+
+                controller.setGUI(this);
+                controller.setColorsavailable(colors); // imposta i colori disponibili
+                this.choosecolorcontroller = controller;
+                this.colorsavailable = colors;
+                setChooseColorScreenOpen(true);
+
+                controller.start(root); // adesso il controller si occupa di mostrare lo stage
+                future.complete(null);
+            } catch (Exception ex) {
+                ex.printStackTrace();
                 future.completeExceptionally(ex);
             }
         });
@@ -239,6 +278,12 @@ public class GUI implements View {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void updateColorSelectionScreen(List<Color> colorsAvailable) {
+        if (choosecolorcontroller != null) {
+            choosecolorcontroller.setActiveButton(colorsAvailable);
         }
     }
 

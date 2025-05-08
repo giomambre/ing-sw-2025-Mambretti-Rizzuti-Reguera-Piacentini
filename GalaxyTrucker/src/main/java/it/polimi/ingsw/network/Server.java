@@ -72,15 +72,24 @@ public class Server {
 
         switch (msg.getType()) {
 
-            case SENDED_NAME:
+            case INIT_VIEW:
                 StandardMessageClient msgClient = (StandardMessageClient) msg;
+                ClientHandler handler = clients.get(msgClient.getId_client());
+                if (msg.getContent().equalsIgnoreCase("GUI")) {
+                    handler.setViewType(VirtualViewType.GUI);
+                } else {
+                    handler.setViewType(VirtualViewType.TUI);
+                }
+                break;
+            case SENDED_NAME:
+                msgClient = (StandardMessageClient) msg;
                 String requestedName = msg.getContent();
                 System.out.println("nick name inviato : " + requestedName);
                 if (connectedNames.contains(requestedName)) {
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Nome già in uso. Inserisci un altro nickname.", msgClient.getId_client()));
                 } else {
                     connectedNames.add(requestedName);
-                    ClientHandler handler = clients.get(msgClient.getId_client());
+                    handler = clients.get(msgClient.getId_client());
                     handler.setNickname(requestedName);
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_ACCEPTED, "✅ Nickname accettato: " + requestedName, msgClient.getId_client()));
 
@@ -142,7 +151,7 @@ public class Server {
                 break;
 
             case COLOR_SELECTED:
-                msgClient = (StandardMessageClient) msg;
+               /* msgClient = (StandardMessageClient) msg;
 
                 controller = all_games.get(getLobbyId(msgClient.getId_client()));
 
@@ -161,7 +170,36 @@ public class Server {
 
                         sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
 
+                    }*/
+                msgClient = (StandardMessageClient) msg;
+                controller = all_games.get(getLobbyId(msgClient.getId_client()));
+
+                synchronized (controller) {
+                    Color c = Color.valueOf(msg.getContent().toUpperCase());
+                    if (controller.getAvailable_colors().contains(c)) {
+                        System.out.println("COLORE " + c + " PRESO ");
+                        controller.addPlayer(getNickname(msgClient.getId_client()), c);
+
+                        // Notifica testuale a tutti
+                        sendToAllClients(controller.getLobby(), new Message(MessageType.COLOR_SELECTED, getNickname(msgClient.getId_client()) + " " + c));
+
+                        // Notifica GUI con i nuovi colori disponibili (eccetto il client che ha scelto)
+                        for (String nickname : controller.getLobby().getPlayers()) {
+                            UUID clientId = getId_client(nickname);
+                            ClientHandler h = clients.get(clientId);
+
+                            if (h.getViewType() == VirtualViewType.GUI && !clientId.equals(msgClient.getId_client())) {
+                                sendToClient(clientId,
+                                        new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
+                            }
+                        }
+
+                    } else {
+                        // Il colore era già preso, reinvia l'elenco aggiornato solo al client richiedente
+                        sendToClient(msgClient.getId_client(),
+                                new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
                     }
+                    //da qui in poi metodo vecchio gio +clienthandler(viewtipe e metodo getter e setter) messaggio nel server INIT_VIEW
 
 
                     if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {

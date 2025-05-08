@@ -36,8 +36,8 @@ public enum MessageType {
     SELECT_PIECE,
     START_FLIGHT,
     WAITING_FLIGHT,
-    UPDATE_SHIP
-
+    UPDATE_SHIP,
+    INIT_VIEW
 
 
 }
