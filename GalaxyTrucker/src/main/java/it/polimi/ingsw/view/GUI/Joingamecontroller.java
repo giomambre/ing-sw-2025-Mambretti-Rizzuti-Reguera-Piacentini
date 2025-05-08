@@ -26,7 +26,7 @@ public class Joingamecontroller {
     private GUI gui;
 
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/joinGame.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/JoinGame.fxml"));
         loader.setController(this);
         Parent root = loader.load();
         gui.setStage(stage);

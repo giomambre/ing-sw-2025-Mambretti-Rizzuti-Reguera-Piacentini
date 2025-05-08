@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI;
 
+import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.view.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -319,10 +321,7 @@ public class GUI implements View {
 
     }
 
-    @Override
-    public void showShip(String nickname) {
 
-    }
 
     @Override
     public void printShip(CardComponent[][] ship) {
@@ -349,6 +348,19 @@ public class GUI implements View {
         return 0;
     }
 
+    @Override
+    public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss){
+        Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
+
+        return astronaut_losses;
+    };
+
+    @Override
+    public Map<CardComponent,Map <Cargo, Integer>> manageCargo(Ship ship){
+        Map<CardComponent, Map<Cargo, Integer>> cargos = new HashMap<>();
+
+        return cargos;
+    };
 
     @Override
     public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps){};

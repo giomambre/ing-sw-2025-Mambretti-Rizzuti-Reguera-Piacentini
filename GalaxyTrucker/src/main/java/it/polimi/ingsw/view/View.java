@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.view.GUI.GUI;
@@ -44,7 +45,6 @@ public interface View {
     Pair<Integer, Integer> askCoordsCrewmate(Ship ship);
 
     public void showPlayer(Player player);
-    void showShip(String nickname);
 
     void printShip(CardComponent[][] ship);
 
@@ -63,6 +63,10 @@ public interface View {
     int showCard(CardComponent card);
 
     void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps);
+
+    public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss);
+
+    public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship);
 
     Pair<Integer,Integer> askCoords(Ship ship);
 

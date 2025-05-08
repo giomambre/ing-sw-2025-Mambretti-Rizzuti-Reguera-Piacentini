@@ -1,37 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      alignment="CENTER"
-      spacing="20"
-      prefWidth="320"
-      prefHeight="189"
-      style="-fx-background-color: #e6ddbc;">
+<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
-    <Button fx:id="lobbyButton"
-            onAction="#setOne"
-            text="Create Game"
-            prefWidth="200"
-            prefHeight="40"
-            style="-fx-background-color: #5F3075;" textFill="WHITE">
-        <font>
-            <Font name="Bodoni 72 Smallcaps Book" size="18.0" />
-        </font>
-    </Button>
+    <stylesheets>
+        <URL value="@JoinGame.css" />
+    </stylesheets>
 
-    <Button fx:id="joinButton"
-            onAction="#setTwo"
-            text="Join a Lobby"
-            prefWidth="200"
-            prefHeight="40"
-            style="-fx-background-color: #5F3075;" textFill="WHITE">
-        <font>
-            <Font name="Bodoni 72 Smallcaps Book" size="18.0" />
-        </font>
-    </Button>
+    <children>
+        <ImageView preserveRatio="false">
+            <image>
+                <Image url="@images/backgrounds/bgJoinGameScreen.jpg" />
+            </image>
+        </ImageView>
 
-</VBox>
+        <VBox alignment="CENTER" spacing="30">
+         <ImageView fitHeight="193.0" fitWidth="355.0" preserveRatio="true">
+            <image>
+               <Image url="@images/backgrounds/logo.png" />
+            </image>
+            <VBox.margin>
+               <Insets bottom="100.0" top="-200.0" />
+            </VBox.margin>
+         </ImageView>
+            <Label style="-fx-font-size: 28px; -fx-font-family: 'Verdana'; -fx-text-fill:  #fef6d5; -fx-font-weight: bold;" text="Benvenuto, inizia il tuo viaggio stellare">
+            <VBox.margin>
+               <Insets />
+            </VBox.margin></Label>
+            <Button fx:id="createLobbyButton" onAction="#setOne" prefHeight="67.0" prefWidth="232.0" style="-fx-text-fill: #fef6d5; -fx-font-size: 20px;" styleClass="button" text="Crea una lobby">
+                    <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="34.0">
+                            <image>
+                                <Image url="@images/icons/rocket.png" />
+                            </image>
+                        </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="joinLobbyButton" onAction="#setTwo" prefHeight="67.0" prefWidth="232.0" style="-fx-text-fill: #fef6d5; -fx-font-size: 20px;" styleClass="button" text="Entra in una lobby">
+                <graphic>
+                    <ImageView fitHeight="29.0" fitWidth="34.0">
+                        <image>
+                            <Image url="@images/icons/door.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            <VBox.margin>
+               <Insets bottom="50.0" />
+            </VBox.margin></Button>
+        </VBox>
+
+    </children>
+</StackPane>
+
