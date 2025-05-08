@@ -30,6 +30,7 @@ public class GUI implements View {
     Joingamecontroller joingamecontroller;
     Numplayercontroller numplayercontroller;
     Guiselectcontroller guiselectcontroller;
+    Choosecolorcontroller choosecolorcontroller;
     Stage stage;
     private String nicknamescelto;
     @FXML
@@ -37,6 +38,7 @@ public class GUI implements View {
     private GuiApplication application;
     private ClientCallBack clientCallback;
     private List<Integer> lobbies;
+    private List<Color> colorsavailable;
 
 
 
@@ -45,6 +47,12 @@ public class GUI implements View {
     }
     public List<Integer> getlobbies() {
         return this.lobbies;
+    }
+    public void setColorsavailable(List<Color> colorsavailable) {
+        this.colorsavailable = colorsavailable;
+    }
+    public List<Color> getColorsavailable() {
+        return this.colorsavailable;
     }
 
     public GUI() {
@@ -203,6 +211,37 @@ public class GUI implements View {
         }
     }
 
+    public void createchoosecolorscreen(List<Color> colors) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                Choosecolorcontroller controller = new Choosecolorcontroller();
+                controller.setGUI(this);
+                this.choosecolorcontroller = controller;
+                this.colorsavailable = colors;
+                controller.start(this.stage);
+                future.complete(null);  // Segnala che la GUI è pronta
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+        try {
+            future.get(); // aspetta che la GUI venga inizializzata
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Color askColor(List<Color> colors) {
+        try {
+            return choosecolorcontroller.getColorChosen().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
     @Override
@@ -224,10 +263,6 @@ public class GUI implements View {
 
 
 
-    @Override
-    public Color askColor(List<Color> colors) {
-        return null;
-    }
 
     @Override
     public Pair<Integer, Integer> askCoordsCrewmate(Ship ship) {

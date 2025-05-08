@@ -271,7 +271,15 @@ public class Client {
                 if (gs_msg.getContent().isEmpty()) {
                     virtualView.showMessage("\nPartita avviata!");
                 }
-                Color c = virtualView.askColor(gs_msg.getAvailableColors());
+
+                Color c;
+                if(virtualViewType == VirtualViewType.GUI) {
+                    ((GUI)virtualView).createchoosecolorscreen(gs_msg.getAvailableColors());
+                    c = virtualView.askColor(gs_msg.getAvailableColors());
+                    System.out.println("(testing)scelta"+c);
+                }else {
+                    c = virtualView.askColor(gs_msg.getAvailableColors());
+                }
                 out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 break;
 
