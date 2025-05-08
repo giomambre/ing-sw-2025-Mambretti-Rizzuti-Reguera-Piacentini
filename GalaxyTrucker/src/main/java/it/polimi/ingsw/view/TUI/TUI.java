@@ -7,15 +7,13 @@ import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
+import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.view.View;
 import javafx.util.Pair;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -596,7 +594,9 @@ public class TUI implements View {
 
     private void printCargo(List<Cargo> cargos) {
         System.out.println("Il carico contiene le seguenti merci:");
+        int i=0;
         for (Cargo cargo : cargos) {
+            System.out.println(i+": ");
             switch (cargo) {
                 case Blue:
                     System.out.println("cargo blu");
@@ -990,6 +990,122 @@ selected = 1;}
             default -> "   ";
         };
     }
+
+    @Override
+    public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss){
+        Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
+        int totalAstronautsLosses = 0;
+
+        int choice=0;
+        int num;
+        while(totalAstronautsLosses == astronautLoss){
+            System.out.println("Devi rimuovere ancora "+astronaut_losses+"membri dell'equipaggiamento");
+            for(int i = 0 ; i<ship.getROWS(); i++){
+                for(int j = 0 ; j<ship.getCOLS(); j++) {
+                    if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit && ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates() > 0) {
+                        System.out.println("LIVING UNIT alle coordinate: x: "+i+" y: "+j+"con "+((LivingUnit)ship.getComponent(i,j)).getNum_crewmates()+ " membri" );
+                        System.out.println("1. Per rimuovere membri da questa living unit \n 2. Per passare alla prossima living unit\n");
+                        while(choice != 1 && choice != 2){
+                            choice = readInt();
+                            if (choice != 1 && choice != 2) {
+                                System.out.println("Opzione non disponibile, reinserire:");
+                            } else if (choice == 1) {
+                                System.out.println("Inserisci il numero di membri dell'equipaggio che vuoi rimuovere: ");
+                                num = readInt();
+                                while ((num!=1 && num!=2) || num>astronautLoss ){
+
+                                    if((num==1 || num==2) && num>astronautLoss ){
+                                        System.out.println("Stai cercando di rimuovere più membri di quanti dovresti, reinserire: ");
+                                    }
+                                    else{
+                                        System.out.println("Valore non disponibile, reinserire: ");
+                                    }
+                                    num = readInt();
+                                }
+                                astronaut_losses.put(ship.getComponent(i,j), num);
+                                totalAstronautsLosses+=num;
+                                astronautLoss-=num;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return astronaut_losses;
+    }
+
+    @Override
+    public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship){
+        Map<CardComponent, Map<Cargo, Integer>> cargos = new HashMap<>();
+        Map<Cargo, Integer> cargo = new HashMap<>();
+
+        System.out.println("Stai per ricevere nuova merce! Premi:\n 1. per rimuovere cargo \n 2. lasciare le tue merci invariate");
+        int choice = readInt();
+        int n = 0;
+        while(choice != 1 && choice != 2){
+            if (choice == 1) {
+                for(int i = 0 ; i<ship.getROWS(); i++){
+                    for(int j = 0 ; j<ship.getCOLS(); j++) {
+                        if ((ship.getComponent(i,j).getComponentType() == BlueStorage || ship.getComponent(i,j).getComponentType() == RedStorage) && ((Storage)ship.getComponent(i,j)).getCargoCount() > 0){
+                            if(ship.getComponent(i,j).getComponentType() == BlueStorage)
+                                System.out.println("BLU STORAGE alle coordinate x: "+i+" y:" +j);
+                            else
+                                System.out.println("RED STORAGE alle coordinate x: "+i+" y:" +j);
+                            System.out.println("Capienza: " +((Storage)ship.getComponent(i,j)).getSize());
+                            printCargo(((Storage)ship.getComponent(i,j)).getCarried_cargos());
+                            System.out.println("Premi: \n 1. per rimuovere cargo \n 2. passare al prossimo storage ");
+                            int choice1 = readInt();
+                            while(choice1 != 1 && choice1 != 2 ){
+                                System.out.println("Opzione non disponibile, reinserire:");
+                                choice1 = readInt();
+                            }
+                            if (choice1 == 1){
+                                int remove=0;
+                                while(remove != -1){
+                                    System.out.println("Premi: \n -1. per passare al prossimo cargo \n altrimenti il numero del cargo che vuoi rimuovere: ");
+                                    printCargo(((Storage)ship.getComponent(i,j)).getCarried_cargos());
+                                    System.out.println("");
+                                    remove=readInt();
+
+                                    while (remove<-1 || remove>((Storage)ship.getComponent(i,j)).getSize()){
+                                        System.out.println("Opzione non disponibile, reinserire:");
+                                        remove = readInt();
+                                    }
+                                    if(remove>=0 && remove <= ((Storage)ship.getComponent(i,j)).getSize()){
+                                        cargo.put(((Storage)ship.getComponent(i,j)).getCargo(remove),1);
+                                        cargos.put(ship.getComponent(i,j), cargo);
+                                    }
+                                }
+
+                            }
+                            else{
+                                break;
+                            }
+
+
+                        }
+                        else{
+                            System.out.println("Non hai merci presenti sulla tua nave ");
+                        }
+                    }
+                }
+
+            }
+            else if (choice == 2) {
+                break;
+            }
+            else {
+                System.out.println("Opzione non disponibile, reinserire:");
+                choice = readInt();
+            }
+        }
+
+        return cargos;
+    }
+
 
     @Override
     public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
