@@ -24,10 +24,6 @@
         public OpenSpace(int level, int cost_of_days, CardAdventureType type) {
             super(level, cost_of_days,type);
         }
-        public void execute(){
-            System.out.println("metodo cuscinetto");
-        }
-
         /**
          * @param players the list of players whose engine power is evaluated
          * @param batteryUsageMap a map specifying, for each player, which engine components use batteries
