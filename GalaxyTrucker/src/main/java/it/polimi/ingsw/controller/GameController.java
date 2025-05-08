@@ -332,6 +332,43 @@ public void setShipPlance(String nickname, Ship ship) {
         Player p = game.getPlayer(nickname);
         ((MeteorSwarm)meteor).execute(p,direction,meteor_type,shield_usage,battery,position,double_cannon_usage);
     }
+
+    public String calculateLessCrewmates(List<Player> players){
+        String lessCrewmatesNickname = "";
+        int lessCrewmates = 100;
+        int total_crewmates = 0;
+        Ship ship;
+        for(Player p : players){
+            ship = p.getShip();
+            for(int i = 0 ; i<ship.getROWS(); i++){
+                for(int j = 0 ; j<ship.getCOLS(); j++) {
+                    if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit)
+                        total_crewmates+= ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates();
+                }
+            }
+
+            if(total_crewmates < lessCrewmates){
+                lessCrewmatesNickname = p.getNickname();
+                lessCrewmates = total_crewmates;
+            }
+        }
+
+        return lessCrewmatesNickname;
+    }
+
+    public double calculateEnginePower(String nickname, Map<CardComponent, Boolean> battery_usage){
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+
+        return ship.calculateEnginePower(battery_usage);
+    }
+
+    public double calculateCannonPower(String nickname, Map<CardComponent, Boolean> battery_usage){
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+
+        return ship.calculateCannonPower(battery_usage);
+    }
     //Metodi Combat Zone id 1
 
     public void executeLessCrewmates1(String nickname, CombatZone combatZone) {
@@ -356,7 +393,94 @@ public void setShipPlance(String nickname, Ship ship) {
         combatZone.executeLessEnginePower2(p, cargo_position);
     }
 
+    public void executeEpidemic(String nickname, Epidemic epidemic) {
+        Player p = game.getPlayer(nickname);
+        epidemic.execute(p);
+    }
 
+    public List<Pair<MeteorType, Direction>> getMeteorSwarmMeteors(MeteorSwarm meteor) {
+        return meteor.getMeteors();
+    }
+
+    public void executeOpenSpace(List<Player> players, Map<Player,Map<CardComponent, Boolean>> battery_usage, OpenSpace openspace) {
+        openspace.execute(players, battery_usage);
+    }
+
+    public List<Pair<MeteorType, Direction>> getMeteorSwarm(Pirates pirates) {
+        return pirates.getMeteors();
+    }
+
+    public boolean winOrLossPirates(String nickname, Map<CardComponent, Boolean> battery_usage, Pirates pirates) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+
+        if (pirates.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+            return true;
+
+        return false;
+    }
+
+    public void executeWinPirates(String nickname, Pirates pirates, Map<CardComponent, Boolean> battery_usage) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+
+        if (pirates.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+            pirates.executeWin(p);
+    }
+
+    public List<Cargo> getCargosPlanets(Planets planets, int choice) {
+        return planets.getCargos(choice);
+    }
+
+    public void executePlanets(Planets planets, String nickname, Map<CardComponent, Map<Cargo, Integer>> cargos) {
+        Player p = game.getPlayer(nickname);
+        planets.execute(p, cargos);
+    }
+
+    public boolean winOrLossSlavers(String nickname, Map<CardComponent, Boolean> battery_usage, Slavers slavers) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+
+        if (slavers.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+            return true;
+
+        return false;
+    }
+
+    public void executeWinSlavers(String nickname, Slavers slavers) {
+        Player p = game.getPlayer(nickname);
+        slavers.executeWin(p);
+    }
+
+    public void executeLossSlavers(String nickname, Map<CardComponent,Integer> astronaut_losses,Slavers slavers) {
+        Player p = game.getPlayer(nickname);
+        slavers.executeLoss(p, astronaut_losses);
+    }
+
+    public boolean winOrLossSmugglers(String nickname, Map<CardComponent, Boolean> battery_usage, Smugglers smugglers) {
+        Player p = game.getPlayer(nickname);
+        Ship ship = p.getShip();
+
+        if (smugglers.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+            return true;
+
+        return false;
+    }
+
+    public void executeWinSmugglers(String nickname, Smugglers smugglers,Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
+        Player p = game.getPlayer(nickname);
+        smugglers.executeWin(p, new_cargo_position, choice);
+    }
+
+    public void executeLossSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> cargo_position){
+        Player p = game.getPlayer(nickname);
+        smugglers.executeLoss(p, cargo_position);
+    }
+
+    public void executeStardust(String nickname, Stardust stardust) {
+        Player p = game.getPlayer(nickname);
+        stardust.execute(p);
+    }
 
 
     public List<Player> getBuildPhasePlayers() {
