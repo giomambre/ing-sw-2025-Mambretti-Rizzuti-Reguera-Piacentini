@@ -5,7 +5,6 @@
 .label {
     -fx-font-family: "Orbitron";
     -fx-font-size: 20px;
-    -fx-font-weight: bold;
     -fx-text-fill: white;
 }
 
@@ -13,7 +12,6 @@
     -fx-font-size: 16px;
     -fx-font-family: "Orbitron";
     -fx-background-color: #dddddd;
-    -fx-text-fill: black;
     -fx-prompt-text-fill: #666666;
     -fx-background-radius: 8;
     -fx-border-color: #cccccc;
@@ -33,11 +31,13 @@
 }
 
 .button:hover {
-    -fx-background-color: #ffcc00;
+    -fx-background-color: linear-gradient(to bottom, #fff176, #fdd835);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 8, 0.3, 0, 3);
 }
 
 .button:pressed {
-    -fx-background-color: #e6b800;
+    -fx-background-color: linear-gradient(to bottom, #fbc02d, #f57f17);
+    -fx-translate-y: 1;
 }
 
 .logo {
