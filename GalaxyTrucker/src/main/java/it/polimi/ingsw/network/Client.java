@@ -271,7 +271,15 @@ public class Client {
                 if (gs_msg.getContent().isEmpty()) {
                     virtualView.showMessage("\nPartita avviata!");
                 }
-                Color c = virtualView.askColor(gs_msg.getAvailableColors());
+
+                Color c;
+                if(virtualViewType == VirtualViewType.GUI) {
+                    ((GUI)virtualView).createchoosecolorscreen(gs_msg.getAvailableColors());
+                    c = virtualView.askColor(gs_msg.getAvailableColors());
+                    System.out.println("(testing)scelta"+c);
+                }else {
+                    c = virtualView.askColor(gs_msg.getAvailableColors());
+                }
                 out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 break;
 
@@ -340,6 +348,16 @@ public class Client {
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
+
+                if(sel == 1){
+
+                    CardComponent card = card_msg.getCardComponent();
+                    card.rotate();
+
+                    elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
+                    return;
+                }
+
                 if (sel == 3) {
 
                     if (player_local.getShip().getExtra_components().contains(card_msg.getCardComponent())) {

@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,7 +36,7 @@ public class GuiApplication extends Application  {
             setGui(gui);
             gui.setGuiApplication(this);
             gui.setStage(primaryStage);
-            primaryStage.setMaximized(true);
+            this.stage = primaryStage;
             this.stage = primaryStage;
             Platform.runLater(()->{
                 FXMLLoader loader= new FXMLLoader(getClass().getResource("/Startgui.fxml"));
@@ -46,11 +47,21 @@ public class GuiApplication extends Application  {
                     throw new RuntimeException(e);
                 }
                 loader.setController(gui);
-                Scene scene = new Scene(root);
+
+                double baseWidth=1000;
+                double baseHeight=700;
+                Group scalableRoot = new Group();
+                Scene scene = new Scene(scalableRoot, baseWidth, baseHeight);
+                StackPane wrapper = new StackPane(root);
+                scalableRoot.getChildren().add(wrapper);
+                root.scaleXProperty().bind(scene.widthProperty().divide(baseWidth));
+                root.scaleYProperty().bind(scene.heightProperty().divide(baseHeight));
+
+
                 primaryStage.setTitle("Startgui");
                 primaryStage.setScene(scene);
                 primaryStage.show();
-
+                primaryStage.setMaximized(true);
                 primaryStage.setOnCloseRequest(event -> {
                     Platform.exit();
                     System.exit(0);

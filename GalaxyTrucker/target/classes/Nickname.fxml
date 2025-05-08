@@ -11,14 +11,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="902.0" prefWidth="1467.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
       <URL value="@Nickname.css" />
    </stylesheets>
    <children>
-      <ImageView fitHeight="407.0" fitWidth="600.0" pickOnBounds="true" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView layoutX="-137.0" layoutY="-41.0" pickOnBounds="true" AnchorPane.bottomAnchor="-73.0" AnchorPane.leftAnchor="-137.0" AnchorPane.rightAnchor="-76.0" AnchorPane.topAnchor="-41.0">
          <image>
             <Image url="@images/backgrounds/background.jpg" />
          </image>
@@ -29,28 +28,25 @@
             <Point3D />
          </rotationAxis>
       </ImageView>
-      <VBox id="NicknameController" fx:id="nicknameBox" alignment="CENTER" fillWidth="false" layoutX="144.0" layoutY="83.0" prefHeight="189.0" prefWidth="320.0" spacing="7.0">
+      <VBox id="NicknameController" fx:id="nicknameBox" alignment="CENTER" fillWidth="false" layoutX="531.0" layoutY="306.0" prefHeight="270.0" prefWidth="399.0" spacing="15.0">
          <children>
-            <Label text="Inserisci lo username:"
-                   wrapText="false"
-                   maxWidth="Infinity"
-                   style="-fx-font-family: 'Orbitron'; -fx-font-size: 20px; -fx-text-fill: white; -fx-font-weight: bold;" />
+            <Label maxWidth="Infinity" style="-fx-font-family: 'Verdana'; -fx-font-size: 20px; -fx-text-fill: white;" text="Inserisci il tuo nome:" />
             <TextField fx:id="nicknameField" prefHeight="17.0" prefWidth="286.0" promptText="nome..." />
+            <Button mnemonicParsing="false" onAction="#sendNickname" text="Continua" textFill="#7699f8" />
          </children>
          <padding>
             <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
          </padding>
       </VBox>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="201.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView styleClass="logo" fitHeight="190.0" fitWidth="354.0" layoutX="555.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/backgrounds/logo.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="240.0" fitWidth="368.0" layoutX="133.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-62.0" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="107.0" AnchorPane.topAnchor="222.0">
+      <ImageView fitHeight="389.0" fitWidth="552.0" layoutX="465.0" layoutY="560.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/backgrounds/crewmates.PNG" />
          </image>
       </ImageView>
-      <Button layoutX="259.0" layoutY="222.0" mnemonicParsing="false" onAction="#sendNickname" text="Continua" textFill="#7699f8" />
    </children>
 </AnchorPane>
