@@ -68,6 +68,40 @@ public class TUI implements View {
         this.other_players_local = players;
     }
 
+    /**
+     * Funzione generica per leggere un intero con validazione.
+     *
+     * @param prompt Messaggio da mostrare all'utente
+     * @param minVal Valore minimo accettato (incluso)
+     * @param maxVal Valore massimo accettato (incluso)
+     * @param allowExit Se true, permette di inserire -1 come valore di uscita
+     * @return Il valore letto oppure -1 se allowExit è true e si vuole uscire
+     */
+    private int readValidInt(String prompt, int minVal, int maxVal, boolean allowExit) {
+        int value;
+        String fullPrompt = prompt + (allowExit ? " (-1 per uscire)" : "") + ": ";
+        do {
+            System.out.print(fullPrompt);
+            String input = readLine().trim();
+
+            if (allowExit && input.equalsIgnoreCase("-1")) {
+                return -1;
+            }
+
+            try {
+                value = Integer.parseInt(input);
+                if (value < minVal || value > maxVal) {
+                    System.out.println(RED + "Errore: il valore deve essere compreso tra " + minVal + " e " + maxVal + "." + RESET);
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(RED + "Errore: inserisci un numero valido." + RESET);
+                value = Integer.MIN_VALUE; // forza il ciclo a ripetere
+            }
+        } while (value < minVal || value > maxVal);
+
+        return value;
+    }
+
     public void setPlayer_local(Player player) {
 
         this.player_local = player;
@@ -112,22 +146,12 @@ public class TUI implements View {
 
         out.println("\n=== MENU ===");
 // Sezione comandi
-        out.println("\n🎮 SCEGLI UN'AZIONE:");
         out.println("[1] Mostra stato nave");
         out.println("[2] Mostra tutti i giocatori");
         out.println("[3] Visualizza le Carte Avventura");
         out.println("[4] Visualizza le Carte Prenotate");
-        out.println("[5] Esci dal menu");
 
-        int scelta;
-        do {
-            out.print("Inserisci il numero dell'azione: ");
-            while (!input.hasNextInt()) {
-                input.next(); // scarta input errato
-                out.print("⚠️ Inserisci un numero valido: ");
-            }
-            scelta = input.nextInt();
-        } while (scelta < 1 || scelta > 5);
+      int scelta = readValidInt("Scelta ",1,4,true);
 
         switch (scelta) {
             case 1 -> showPlayer(player_local);
@@ -143,7 +167,7 @@ public class TUI implements View {
 
             case 4 -> showExtraCard();
 
-            case 5 -> out.println("🔙 Uscita dal menu.");
+            case -1 -> out.println("🔙 Uscita dal menu.");
         }
 
         isMenuOpen = false;
@@ -258,10 +282,7 @@ public class TUI implements View {
     public int askCreateOrJoin() {
         lastRequest = "PREMERE: \n 1 PER CREARE UNA LOBBY \n 2 PER ENTRARE IN UNA LOBBY ";
         out.println(lastRequest);
-        int resp = readInt();
-        if (resp != 1 && resp != 2) {
-            this.askCreateOrJoin();
-        }
+        int resp = readValidInt("Scelta ",1,2,false);
 
         return resp;
 
@@ -272,11 +293,7 @@ public class TUI implements View {
         lastRequest = "Inserisci il numero di player della lobby (2-4) , -1 per uscire: ";
         out.println(lastRequest);
 
-        int resp = readInt();
-        if (resp == -1) return -1;
-        if (resp < 2 || resp > 4) {
-            return this.askNumPlayers();
-        }
+        int resp = readValidInt("Scelta ",2,4,false);
         out.println("Lobby creata rimani in attesa che altri player entrino!");
         return resp;
     }
@@ -299,7 +316,7 @@ public class TUI implements View {
         int resp = readInt();
 
         while (resp != -1 && !lobbies.contains(resp)) {
-            System.out.println("Risposta non valilda,riprova : ");
+            System.out.println("Risposta non Valida,riprova : ");
             resp = readInt();
 
         }
@@ -340,12 +357,7 @@ public class TUI implements View {
     }
 
 
-    @Override
-    public void showShip(String nickname) {
-        GameController game = new GameController(new Lobby("giustoperfarelaprova", 3));
-        CardComponent[][] ship_board = game.getShipPlance(nickname);
-        printShip(ship_board);
-    }
+
 
 
     @Override
@@ -438,14 +450,8 @@ public class TUI implements View {
     @Override
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         printShipPieces(pieces, ship);
-        int choice = 1;
-        do{
-            if(choice < 0 || choice >= pieces.size())
-                System.out.println("\nHai inserito un valore non esistente!");
-            System.out.println("\nInserisci il numero del troncone che vuoi tenere");
-           choice = input.nextInt();
+        int choice = readValidInt("Scelta Troncone : ",0,pieces.size()-1,false);
 
-        }while(choice < 0 || choice >= pieces.size());
 
         return choice;
 
@@ -641,54 +647,60 @@ public class TUI implements View {
         System.out.println("\n");
 }
         lastRequest = ("Premi :\n 1 : per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
-        int selected = -1;
-        do {
+
             out.println("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
-            selected = readInt();
-        } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
-        return selected;
+        return readValidInt("Scelta" , 1 , 4, false);
 
 
     }
 
     @Override
-    public int crewmateAction(Pair<Integer,Integer> coords) {
-        int selected = -1;
-        System.out.println();
+
+    public int crewmateAction(Pair<Integer, Integer> coords) {
         CardComponent[][] ship = player_local.getShip().getShipBoard();
         CardComponent component = ship[coords.getKey()][coords.getValue()];
-        List<CrewmateType> crewmateType;
-        crewmateType = player_local.getShip().checkAlienSupport(component);
-        System.out.println("STAI RIMEPIENDO LA LIVING UNIT IN RIGA : " + player_local.getShip().getCoords(component).getKey() +  " COLONNA : " + player_local.getShip().getCoords(component).getValue());
+        List<CrewmateType> crewmateType = player_local.getShip().checkAlienSupport(component);
 
-        if (crewmateType.contains(CrewmateType.BrownAlien) && crewmateType.contains(CrewmateType.PinkAlien) ) {
-            lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n ");
-            do {
-                out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n 3 : per aggiungere un alieno marrone\n");
-                selected = readInt();
-            } while (selected != 1 && selected != 2 && selected != 3 && selected != 4);
+        System.out.println("STAI RIMEPIENDO LA LIVING UNIT IN RIGA: " +
+                coords.getKey() + " COLONNA: " + coords.getValue());
+
+        String prompt;
+        int choice;
+
+        if (crewmateType.contains(CrewmateType.BrownAlien) && crewmateType.contains(CrewmateType.PinkAlien)) {
+            prompt = """
+                Premi:
+                 1: per aggiungere un astronauta
+                 2: per aggiungere un alieno rosa
+                 3: per aggiungere un alieno marrone""";
+            System.out.println(prompt);
+            choice = readValidInt("Scelta", 1, 3,false);
+
+        } else if (crewmateType.contains(CrewmateType.BrownAlien)) {
+            prompt = """
+                Premi:
+                 1: per aggiungere un astronauta
+                 2: per aggiungere un alieno marrone""";
+            System.out.println(prompt);
+            choice = readValidInt("Scelta", 1, 2,false);
+
+        } else if (crewmateType.contains(CrewmateType.PinkAlien)) {
+            prompt = """
+                Premi:
+                 1: per aggiungere un astronauta
+                 2: per aggiungere un alieno rosa""";
+            System.out.println(prompt);
+            choice = readValidInt("Scelta", 1, 2,false);
+
+        } else {
+            prompt = """
+                Premi:
+                 1: per aggiungere un astronauta""";
+            System.out.println(prompt);
+            choice = readValidInt("Scelta", 1, 1,false);
         }
 
-        else if(crewmateType.contains(CrewmateType.BrownAlien)){
-            lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno marrone\n ");
-            do {
-                out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno marrone\n");
-                selected = readInt();
-            } while (selected != 1 && selected != 2 );
-            if(selected == 2) selected++;
-        }
-        else if(crewmateType.contains(CrewmateType.PinkAlien)){
-            lastRequest = ("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n ");
-            do {
-                out.println("Premi :\n 1 per aggiungere un astronauta\n 2 : per aggiungere un alieno rosa\n");
-                selected = readInt();
-            } while (selected != 1 && selected != 2 );
-        }
-else if(crewmateType.isEmpty()){ System.out.println("Nessuna alien unit, 2 Astronauti aggiunti in automatico ");
-selected = 1;}
-
-
-        return selected;
+        return choice;
     }
 
 
@@ -778,25 +790,9 @@ selected = 1;}
 
 
         printCard(card);
-        lastRequest = "Premi :\n 1 per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ";
-        out.println("Premi :\n 1 per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ");
-
-        while (true) {
-            System.out.print("Scelta: ");
-            int selected = readInt();
-
-            if (selected == 1) {
-                out.println("\nCarta ruotata");
-                card.rotate();
-                printCard(card);
-
-            } else if (selected == 2 || selected == 3 || selected == 4) {
-
-                return selected;
-            } else {
-                System.out.println("Indice non valido. Riprova.");
-            }
-        }
+        lastRequest = "Premi :\n 1 : per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ";
+        out.println("Premi :\n 1 : per ruotare la carta in senso orario\n 2 : per inserirla \n 3 : per scartarla \n 4 : per prenotarla ");
+            return readValidInt("Scelta", 1, 4,false);
     }
 
 

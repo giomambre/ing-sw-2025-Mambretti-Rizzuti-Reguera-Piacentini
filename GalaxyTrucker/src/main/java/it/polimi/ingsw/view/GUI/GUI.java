@@ -274,10 +274,7 @@ public class GUI implements View {
 
     }
 
-    @Override
-    public void showShip(String nickname) {
 
-    }
 
     @Override
     public void printShip(CardComponent[][] ship) {

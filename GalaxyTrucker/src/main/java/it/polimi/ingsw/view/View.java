@@ -44,7 +44,6 @@ public interface View {
     Pair<Integer, Integer> askCoordsCrewmate(Ship ship);
 
     public void showPlayer(Player player);
-    void showShip(String nickname);
 
     void printShip(CardComponent[][] ship);
 

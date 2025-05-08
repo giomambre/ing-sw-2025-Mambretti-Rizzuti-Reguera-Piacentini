@@ -348,6 +348,16 @@ public class Client {
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
+
+                if(sel == 1){
+
+                    CardComponent card = card_msg.getCardComponent();
+                    card.rotate();
+
+                    elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
+                    return;
+                }
+
                 if (sel == 3) {
 
                     if (player_local.getShip().getExtra_components().contains(card_msg.getCardComponent())) {
