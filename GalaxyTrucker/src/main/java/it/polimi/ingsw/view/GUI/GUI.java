@@ -288,11 +288,7 @@ public class GUI implements View {
         }
     }*/
 
-    /*public void updateColorSelectionScreen(List<Color> colorsAvailable) {
-        if (choosecolorcontroller != null) {
-            choosecolorcontroller.setActiveButton(colorsAvailable);
-        }
-    }*/
+
 
 
 
