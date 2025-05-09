@@ -43,12 +43,7 @@ public class GUI implements View {
     private List<Color> colorsavailable;
     private boolean chooseColorScreenOpen = false;
 
-    /*public boolean isChooseColorScreenOpen() {
-        return chooseColorScreenOpen;
-    }
-    public void setChooseColorScreenOpen(boolean b) {
-        this.chooseColorScreenOpen = b;
-    }*/
+
     public Stage getStage(){
         return stage;
     }
