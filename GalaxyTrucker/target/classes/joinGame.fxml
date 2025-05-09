@@ -9,19 +9,16 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.Pane?>
 <StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
     <stylesheets>
         <URL value="@JoinGame.css" />
     </stylesheets>
 
-    <Pane fx:id="starsPane" prefWidth="1000.0" prefHeight="700.0" />
-
     <children>
         <ImageView preserveRatio="false">
             <image>
-                <Image url="@images/backgrounds/background2.jpg" />
+                <Image url="@images/backgrounds/bgJoinGameScreen.jpg" />
             </image>
         </ImageView>
 
@@ -42,7 +39,7 @@
                     <graphic>
                         <ImageView fitHeight="35.0" fitWidth="34.0">
                             <image>
-                                <Image url="@images/backgrounds/rocket.png" />
+                                <Image url="@images/icons/rocket.png" />
                             </image>
                         </ImageView>
                 </graphic>
@@ -51,7 +48,7 @@
                 <graphic>
                     <ImageView fitHeight="29.0" fitWidth="34.0">
                         <image>
-                            <Image url="@images/backgrounds/door.png" />
+                            <Image url="@images/icons/door.png" />
                         </image>
                     </ImageView>
                 </graphic>

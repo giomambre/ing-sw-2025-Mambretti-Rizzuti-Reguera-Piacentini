@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Shield;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.model.enumerates.ComponentType;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import javafx.scene.chart.BarChart;
 import javafx.util.Pair;
 
 import java.io.Serializable;
@@ -45,14 +47,16 @@ public class Ship implements Serializable {
         return COLS;
     }
 
-    public CardComponent[][] getShipBoard() { return ship_board; }
+    public CardComponent[][] getShipBoard() {
+        return ship_board;
+    }
 
     /**
      * Add a CardComponent to the ship.
      *
      * @param component the one to add
-     * @param row to identify in witch row of the ship board the component will be added
-     * @param col to identify in witch col of the ship board the component will be added
+     * @param row       to identify in witch row of the ship board the component will be added
+     * @param col       to identify in witch col of the ship board the component will be added
      */
     public void addComponent(CardComponent component, int row, int col) {
 
@@ -61,18 +65,33 @@ public class Ship implements Serializable {
         //se si: aggiorna view e richiede al player di inserire, se no: invoca questa funzione qui
 
 
-        if(ship_board[row][col].getComponentType() == NotAccessible )
+        if (ship_board[row][col].getComponentType() == NotAccessible)
             throw new IllegalArgumentException("Position not Accessible");
 
-        if(ship_board[row][col].getComponentType() != Empty )
+        if (ship_board[row][col].getComponentType() != Empty)
             throw new IllegalArgumentException("Position already in use");
-
-
 
 
         ship_board[row][col] = component;
 
 
+    }
+
+
+    public int getTotalBattery() {
+        int total = 0;
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                CardComponent card = ship_board[row][col];
+                if (card.getComponentType() == Battery) {
+
+                    if (((Battery) card).getStored() > 0)
+                        total += ((Battery) card).getStored();
+                }
+            }
+        }
+
+        return total;
     }
 
     /**
@@ -88,7 +107,7 @@ public class Ship implements Serializable {
             default -> MainUnitBlue;
         };
 
-        String image_path = switch (player.getColor()){
+        String image_path = switch (player.getColor()) {
             case RED -> "images/cardComponent/GT-mainUnitRed.jpg";
             case YELLOW -> "images/cardComponent/GT-mainUnitYellow.jpg";
             case GREEN -> "images/cardComponent/GT-mainUnitGreen.jpg";
@@ -103,9 +122,9 @@ public class Ship implements Serializable {
         connectors.put(West, Empty_Connector);
 
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors, "");
 
-        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, connectors,"");
+        CardComponent NOT_ACCESSIBLE_CELL = new CardComponent(NotAccessible, connectors, "");
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
 
@@ -116,8 +135,8 @@ public class Ship implements Serializable {
                     connectors.put(East, Universal);
                     connectors.put(West, Universal);
 
-                    ship_board[row][col] = new LivingUnit(main_unit, connectors,image_path);
-                    ((LivingUnit)getComponent(row,col)).addAstronauts(); //already filled the main unit with 2 astounauts, no choices here
+                    ship_board[row][col] = new LivingUnit(main_unit, connectors, image_path);
+                    ((LivingUnit) getComponent(row, col)).addAstronauts(); //already filled the main unit with 2 astounauts, no choices here
 
                 } else if (row == 0 && (col == 0 || col == 1 || col == 3 || col == 5 || col == 6)) {
                     ship_board[row][col] = NOT_ACCESSIBLE_CELL;
@@ -131,7 +150,7 @@ public class Ship implements Serializable {
             }
         }
 
-        //player.utilePerTestare();
+        player.utilePerTestare();
 
     }
 
@@ -199,7 +218,7 @@ public class Ship implements Serializable {
      *
      * @return boolean
      */
-    public boolean findBrownAlien(){
+    public boolean findBrownAlien() {
         return findAlien(BrownAlien, BrownAlienUnit);
     }
 
@@ -429,7 +448,9 @@ public class Ship implements Serializable {
         return invalids;
     }
 
-    /** @return the number of crewmates*/
+    /**
+     * @return the number of crewmates
+     */
     public int getNumOfCrewmates() {
         CardComponent tmp;
         int total = 0;
@@ -489,7 +510,7 @@ public class Ship implements Serializable {
                     List<Pair<Integer, Integer>> piece = new ArrayList<>();
                     explorePiece(row, col, visited, piece);
 
-                    if(validatePiece(piece) ) pieces.add(piece);
+                    if (validatePiece(piece)) pieces.add(piece);
 
                     else deletePiece(piece);
                 }
@@ -587,27 +608,27 @@ public class Ship implements Serializable {
 
                         case North:
                             if (row != 0 && (component.getConnector(North) == Universal || component.getConnector(North) == Double || component.getConnector(North) == Single)
-                                    && this.getComponent(row - 1, col).getConnector(South) == Empty_Connector )
+                                    && this.getComponent(row - 1, col).getConnector(South) == Empty_Connector)
                                 exposed_connectors++;
                             break;
 
                         case South:
                             if (row != 4 && (component.getConnector(South) == Universal || component.getConnector(South) == Double || component.getConnector(South) == Single)
-                                    && this.getComponent(row + 1, col).getConnector(North) == Empty_Connector )
+                                    && this.getComponent(row + 1, col).getConnector(North) == Empty_Connector)
                                 exposed_connectors++;
 
                             break;
 
                         case East:
                             if (col != 6 && (component.getConnector(East) == Universal || component.getConnector(East) == Double || component.getConnector(East) == Single)
-                                    && this.getComponent(row, col + 1).getConnector(West) == Empty_Connector )
+                                    && this.getComponent(row, col + 1).getConnector(West) == Empty_Connector)
                                 exposed_connectors++;
 
                             break;
 
                         case West:
                             if (col != 0 && (component.getConnector(West) == Universal || component.getConnector(West) == Double || component.getConnector(West) == Single)
-                                    && this.getComponent(row, col - 1).getConnector(East) == Empty_Connector )
+                                    && this.getComponent(row, col - 1).getConnector(East) == Empty_Connector)
                                 exposed_connectors++;
 
                             break;
@@ -652,7 +673,7 @@ public class Ship implements Serializable {
     }
 
     /**
-     *This method retrieves the component card located at a specific position on the ship.
+     * This method retrieves the component card located at a specific position on the ship.
      *
      * @param x row
      * @param y col
@@ -660,7 +681,7 @@ public class Ship implements Serializable {
      */
     public CardComponent getComponent(int x, int y) {
 
-        if(x<0 || y<0 || x>=ROWS || y>=COLS) throw new IndexOutOfBoundsException();
+        if (x < 0 || y < 0 || x >= ROWS || y >= COLS) throw new IndexOutOfBoundsException();
         return ship_board[x][y];
     }
 
@@ -674,9 +695,9 @@ public class Ship implements Serializable {
     public Boolean validatePiece(List<Pair<Integer, Integer>> piece) {
         int valid_cannon = 0;
         int valid_unit = 0;
-       ComponentType util =  switch (player.getColor()){
+        ComponentType util = switch (player.getColor()) {
 
-            case GREEN ->  MainUnitGreen;
+            case GREEN -> MainUnitGreen;
             case BLUE -> MainUnitBlue;
             case RED -> MainUnitRed;
             case YELLOW -> MainUnitYellow;
@@ -689,12 +710,12 @@ public class Ship implements Serializable {
 
             CardComponent component = ship_board[x][y];
             if (component.getComponentType() == Engine || component.getComponentType() == DoubleEngine) {
-                valid_cannon= 1;
+                valid_cannon = 1;
             } else if (component.getComponentType() == LivingUnit && ((LivingUnit) component).getNum_crewmates() >= 1) {
 
                 valid_unit = 1;
 
-            }else if(component.getComponentType() == util && ((LivingUnit) component).getNum_crewmates() >= 1){
+            } else if (component.getComponentType() == util && ((LivingUnit) component).getNum_crewmates() >= 1) {
                 valid_unit = 1;
             }
         }
@@ -709,15 +730,15 @@ public class Ship implements Serializable {
      * @param component
      * @return a pair of integers representing the (row, column) coordinates of the component
      */
-    public Pair<Integer,Integer> getCoords(CardComponent component) {
-            for (int i = 0; i < ROWS; i++) {
-                for (int j = 0; j < COLS; j++) {
-                    if (ship_board[i][j]== component) {
-                        return new Pair<>(i, j);
-                    }
+    public Pair<Integer, Integer> getCoords(CardComponent component) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (ship_board[i][j] == component) {
+                    return new Pair<>(i, j);
                 }
             }
-        return new Pair<>(0,0);
+        }
+        return new Pair<>(0, 0);
     }
 
     /**
@@ -734,31 +755,29 @@ public class Ship implements Serializable {
         connectors.put(West, Empty_Connector);
 
 
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors, "");
+
+        if (this.getComponent(x, y).getComponentType() == PinkAlienUnit || this.getComponent(x, y).getComponentType() == BrownAlienUnit) {
+            for (int row = 0; row < ROWS; row++) {
+                for (int col = 0; col < COLS; col++) {
+                    CardComponent card = getComponent(row, col);
+
+                    if (ship_board[row][col].getComponentType() == LivingUnit
+                            && ((LivingUnit) card).getCrewmate_type() != Astronaut
+                            && ((LivingUnit) card).getNum_crewmates() > 0) {
+                        System.out.println(checkAlienSupport(card));
+
+                        if (!checkAlienSupport(card).contains(((LivingUnit) card).getCrewmate_type())) {
+                            //kill the alien
+                            ((LivingUnit) card).removeCrewmates(1);
+
+                        }
+
+                    }
 
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
-
-        if(this.getComponent(x, y).getComponentType() ==PinkAlienUnit || this.getComponent(x, y).getComponentType() ==BrownAlienUnit ) {
-             for(int row=0; row<ROWS; row++) {
-                 for(int col=0 ;col<COLS; col++) {
-                     CardComponent card = getComponent(row, col);
-
-                     if(ship_board[row][col].getComponentType() == LivingUnit
-                             && ((LivingUnit)card).getCrewmate_type() != Astronaut
-                             && ((LivingUnit)card).getNum_crewmates()>0 ) {
-                         System.out.println(checkAlienSupport(card));
-
-                         if(!checkAlienSupport(card).contains(((LivingUnit)card).getCrewmate_type())){
-                             //kill the alien
-                             ((LivingUnit)card).removeCrewmates(1);
-
-                         }
-
-                     }
-
-
-                 }
-             }
+                }
+            }
         }
 
         player.secureComponent(ship_board[x][y]);
@@ -774,7 +793,9 @@ public class Ship implements Serializable {
         this.extra_components = extraComponents;
     }
 
-    /**@return list of extra components*/
+    /**
+     * @return list of extra components
+     */
     public List<CardComponent> getExtra_components() {
         return extra_components;
     }
@@ -806,40 +827,40 @@ public class Ship implements Serializable {
      * @param pos row or column to search along
      * @return the first component found in the given direction and position
      */
-    public CardComponent getFirstComponent(Direction dir , int pos ) {
+    public CardComponent getFirstComponent(Direction dir, int pos) {
 
 // ritorna un component NOT ACCESSIBLE se non ce nessun componente colpito
 
         switch (dir) {
             case North:
                 for (int i = 0; i < ROWS; i++) {
-                    if (this.getComponent(i,pos-4).getComponentType() != ComponentType.Empty && this.getComponent(i,pos-4).getComponentType() != NotAccessible)
-                        return this.getComponent(i,pos-4);
+                    if (this.getComponent(i, pos - 4).getComponentType() != ComponentType.Empty && this.getComponent(i, pos - 4).getComponentType() != NotAccessible)
+                        return this.getComponent(i, pos - 4);
                 }
-                return this.getComponent(0,0);
+                return this.getComponent(0, 0);
 
             case South:
                 for (int i = ROWS - 1; i >= 0; i--) {
-                    if (this.getComponent(i,pos-4).getComponentType() != ComponentType.Empty && this.getComponent(i,pos-4).getComponentType() != NotAccessible)
-                        return this.getComponent(i,pos-4);
+                    if (this.getComponent(i, pos - 4).getComponentType() != ComponentType.Empty && this.getComponent(i, pos - 4).getComponentType() != NotAccessible)
+                        return this.getComponent(i, pos - 4);
                 }
-                return this.getComponent(0,0);
+                return this.getComponent(0, 0);
 
             case West:
                 for (int i = 0; i < COLS; i++) {
-                    if (this.getComponent(pos-5,i).getComponentType() != ComponentType.Empty && this.getComponent(pos-5,i).getComponentType() != NotAccessible)
-                        return this.getComponent(pos-5,i);
+                    if (this.getComponent(pos - 5, i).getComponentType() != ComponentType.Empty && this.getComponent(pos - 5, i).getComponentType() != NotAccessible)
+                        return this.getComponent(pos - 5, i);
                 }
-                return this.getComponent(0,0);
+                return this.getComponent(0, 0);
 
             case East:
                 for (int i = COLS - 1; i >= 0; i--) {
-                    if (this.getComponent(pos-5,i).getComponentType() != ComponentType.Empty && this.getComponent(pos-5,i).getComponentType() != NotAccessible)
-                        return this.getComponent(pos-5,i);
+                    if (this.getComponent(pos - 5, i).getComponentType() != ComponentType.Empty && this.getComponent(pos - 5, i).getComponentType() != NotAccessible)
+                        return this.getComponent(pos - 5, i);
                 }
-                return this.getComponent(0,0);
+                return this.getComponent(0, 0);
         }
-        return this.getComponent(0,0);
+        return this.getComponent(0, 0);
     }
 
     /**
@@ -848,9 +869,9 @@ public class Ship implements Serializable {
      *
      * @param choose the index of the component to retain; all other components will be removed
      */
-    public void choosePiece(int choose){
+    public void choosePiece(int choose) {
         List<List<Pair<Integer, Integer>>> pieces = new ArrayList<>(findShipPieces());
-        for (int i = 0; i < pieces.size() ; i++) {
+        for (int i = 0; i < pieces.size(); i++) {
             if (i != choose) {
                 deletePiece(pieces.get(i));
             }
@@ -863,11 +884,11 @@ public class Ship implements Serializable {
      *
      * @param piece a list of coordinate pairs representing the connected component to be removed
      */
-    public void deletePiece(List<Pair<Integer, Integer>> piece){
+    public void deletePiece(List<Pair<Integer, Integer>> piece) {
 
-                       for(Pair<Integer, Integer> pos : piece){
-                           removeComponent(pos.getKey(),pos.getValue());
-                       }
+        for (Pair<Integer, Integer> pos : piece) {
+            removeComponent(pos.getKey(), pos.getValue());
+        }
     }
 
     /**
@@ -884,7 +905,7 @@ public class Ship implements Serializable {
         connectors.put(East, Empty_Connector);
         connectors.put(West, Empty_Connector);
 
-        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors,"");
+        CardComponent EMPTY_CELL = new CardComponent(Empty, connectors, "");
 
         ship_board[row][col] = EMPTY_CELL;
 
@@ -910,35 +931,35 @@ public class Ship implements Serializable {
 
         living_unit = this.getComponent(x, y);
 
-        if (x!=4 && this.getComponent(x+1,y).getComponentType() == PinkAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South)))
+        if (x != 4 && this.getComponent(x + 1, y).getComponentType() == PinkAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(North)).contains(this.getComponent(x + 1, y).getConnector(South)))
             crew.add(PinkAlien);
-        else if (x!=4 && this.getComponent(x+1,y).getComponentType() == BrownAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(North)).contains(this.getComponent(x+1,y).getConnector(South))) {
+        else if (x != 4 && this.getComponent(x + 1, y).getComponentType() == BrownAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(North)).contains(this.getComponent(x + 1, y).getConnector(South))) {
             crew.add(BrownAlien);
         }
 
-        if (x!=0 && this.getComponent(x-1,y).getComponentType() == PinkAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x-1,y).getConnector(North)))
+        if (x != 0 && this.getComponent(x - 1, y).getComponentType() == PinkAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x - 1, y).getConnector(North)))
             crew.add(PinkAlien);
-        else if (x!=0 && this.getComponent(x-1,y).getComponentType() == BrownAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x-1,y).getConnector(North))) {
+        else if (x != 0 && this.getComponent(x - 1, y).getComponentType() == BrownAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(South)).contains(this.getComponent(x - 1, y).getConnector(North))) {
             crew.add(BrownAlien);
         }
 
-        if (y!=6 && this.getComponent(x,y+1).getComponentType() == PinkAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x,y+1).getConnector(West)))
+        if (y != 6 && this.getComponent(x, y + 1).getComponentType() == PinkAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x, y + 1).getConnector(West)))
             crew.add(PinkAlien);
-        else if (y!=6 && this.getComponent(x,y+1).getComponentType() == BrownAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x,y+1).getConnector(West))) {
+        else if (y != 6 && this.getComponent(x, y + 1).getComponentType() == BrownAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(East)).contains(this.getComponent(x, y + 1).getConnector(West))) {
             crew.add(BrownAlien);
         }
 
-        if (y!=0 && this.getComponent(x,y-1).getComponentType() == PinkAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x,y-1).getConnector(East)))
+        if (y != 0 && this.getComponent(x, y - 1).getComponentType() == PinkAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x, y - 1).getConnector(East)))
             crew.add(PinkAlien);
-        else if (y!=0 &&this.getComponent(x,y-1).getComponentType() == BrownAlienUnit
-                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x,y-1).getConnector(East))) {
+        else if (y != 0 && this.getComponent(x, y - 1).getComponentType() == BrownAlienUnit
+                && living_unit.getValidConnectors(living_unit.getConnector(West)).contains(this.getComponent(x, y - 1).getConnector(East))) {
             crew.add(BrownAlien);
         }
 
@@ -954,10 +975,10 @@ public class Ship implements Serializable {
     public List<Pair<Integer, Integer>> printShipPlance() {
         List<Pair<Integer, Integer>> ships = new ArrayList<>();
 
-        for(int i = 0; i < ROWS; i++) {
-            for(int j = 0; j < COLS; j++) {
-                if(this.getComponent(i, j).getComponentType() != Empty
-                && this.getComponent(i, j).getComponentType() != NotAccessible) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (this.getComponent(i, j).getComponentType() != Empty
+                        && this.getComponent(i, j).getComponentType() != NotAccessible) {
                     ships.add(new Pair<>(i, j));
                 }
             }
@@ -966,7 +987,7 @@ public class Ship implements Serializable {
     }
 
 
-    public CardComponent[][] deepCopyBoard(CardComponent[][] plance ) {
+    public CardComponent[][] deepCopyBoard(CardComponent[][] plance) {
         // Copia tutti i componenti della nave
         CardComponent[][] copy = new CardComponent[ROWS][COLS];
         for (int r = 0; r < ROWS; r++) {

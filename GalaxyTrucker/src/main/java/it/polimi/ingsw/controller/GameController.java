@@ -16,9 +16,10 @@ import static it.polimi.ingsw.controller.GameState.SETTINGS;
 public class GameController {
 
     List<Player> finished_supply_players = new ArrayList<>();
-    List<Player> waiting_fly_players = new ArrayList<>();
+    List<String> waiting_fly_players = new ArrayList<>();
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
+    List<String> build_order_players = new ArrayList<>();
 
     Lobby lobby;
     GameState game_state;
@@ -41,6 +42,11 @@ public class GameController {
         return game_state;
     }
 
+
+    public void setBuild_order_players(List<String> players) {
+        this.build_order_players = players;
+    }
+
     public void setGamestate(GameState game_state) {
         this.game_state = game_state;
     }
@@ -55,6 +61,12 @@ public class GameController {
 
 
         return game.seeDecksOnBoard();
+}
+
+
+public void startFlight(){
+
+        game.startFlight();
 }
 
     public List<Player> getPlayers() {
@@ -81,6 +93,10 @@ public class GameController {
 
     }
 
+    public Board getBoard() {
+        return game.getBoard();
+    }
+
     public String getPlayerNickname(Player player) {
         return player.getNickname();
     }
@@ -91,14 +107,56 @@ public class GameController {
 
     }
 
+
+    public void addWaitingFlyPlayer(String nick) {
+        waiting_fly_players.add(nick);
+    }
+
+    public List<String> getWaitingFlyPlayers() {
+        return waiting_fly_players;
+    }
     public void finishSupplyPhase(String nickname){
         Player p = game.getPlayer(nickname);
         finished_supply_players.add(p);
 
     }
 
+    public List<String> getBuild_order_players(){
+        return build_order_players;
+    }
     public List<Player> getFinished_supply_players() {
         return finished_supply_players;
+    }
+
+
+    public void putPlayersOnBoard(List<Player> players) {
+        game.getBoard().putPlayersOnBoard(players);
+    }
+
+    public  List<Player> ordinaPlayers(List<Player> players, List<String> order) {
+
+
+
+        Map<String, Player> playerMap = new HashMap<>();
+        for (Player p : players) {
+            playerMap.put(p.getNickname(), p);
+        }
+
+        List<Player> order_player = new ArrayList<>();
+        for (String nick : order) {
+            if (playerMap.containsKey(nick)) {
+                order_player.add(playerMap.get(nick));
+            }
+        }
+
+        return order_player;
+    }
+
+
+
+
+    public CardAdventure getRandomAdventure() {
+        return game.getRandomCardAdventure();
     }
 
     public synchronized int endPlayerBuildPhase(String nickname) {
@@ -125,6 +183,10 @@ public class GameController {
         }
 
 
+    }
+
+    public void removePlayerFromOrder(String nickname) {
+        build_order_players.remove(nickname);
     }
 
 

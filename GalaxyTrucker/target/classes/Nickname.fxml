@@ -19,7 +19,7 @@
    <children>
       <ImageView preserveRatio="false">
          <image>
-            <Image url="@images/backgrounds/background.jpg" />
+            <Image url="@images/backgrounds/bgNicknameScreen.jpg" />
          </image>
       </ImageView>
 

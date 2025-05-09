@@ -138,12 +138,5 @@ public class BoardTest {
 
     }
 
-    @Test
-    public void testShowBoard() {
-        Map<Integer, Player> playerPositions = board.getBoard();
-        View v= new TUI();
 
-        v.showBoard(playerPositions, board.getLaps());
-
-    }
 }

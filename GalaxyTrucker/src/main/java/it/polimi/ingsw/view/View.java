@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
@@ -62,7 +63,7 @@ public interface View {
 
     int showCard(CardComponent card);
 
-    void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps);
+    void showBoard(Board board);
 
     public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss);
 
@@ -71,4 +72,6 @@ public interface View {
     Pair<Integer,Integer> askCoords(Ship ship);
 
     Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
+
+    int askCannon();
 }

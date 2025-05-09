@@ -18,15 +18,9 @@ public class ClientHandler implements Runnable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String nickname;
-    private VirtualViewType viewType;
 
-    public void setViewType(VirtualViewType viewType) {
-        this.viewType = viewType;
-    }
 
-    public VirtualViewType getViewType() {
-        return viewType;
-    }
+
 
     public ClientHandler(Socket clientSocket, Set<String> connectedNames, Queue<Message> messageQueue) {
         this.clientSocket = clientSocket;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -11,11 +12,11 @@ import java.util.*;
  * </ul>
  */
 
-public class Board {
+public class Board implements Serializable {
     private int board_size;
     private Map<Integer, Player> player_position = new HashMap<>();
     private Player board_leader;
-    private BaseGame game;
+    private transient BaseGame game;
     public Board(int board_size, BaseGame game) {
         this.board_size = board_size;
         this.game = game;
@@ -43,7 +44,7 @@ public class Board {
      * @see Board checkleader method used at the beginning to check who's the leader
      */
     public void changeBoard_leader() {
-        this.board_leader = getRanking().get(0);
+        this.board_leader = getRanking().getFirst();
     }
 
     /**
