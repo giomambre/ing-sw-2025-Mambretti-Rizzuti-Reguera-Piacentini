@@ -44,6 +44,12 @@ public class Client {
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
+    private static List<Color> still_Available_colors = new ArrayList<>();
+
+    public static void setNickname(String nickname) {
+        Client.nickname = nickname;
+    }
+
     public static void main(String[] args) {
         try {
 
@@ -80,7 +86,10 @@ public class Client {
                 out.writeObject(new StandardMessageClient(MessageType.INIT_VIEW, "GUI", clientId));
                 out.flush();
             }
-
+            still_Available_colors.add(Color.BLUE);
+            still_Available_colors.add(Color.RED);
+            still_Available_colors.add(Color.YELLOW);
+            still_Available_colors.add(Color.GREEN);
 
             new Thread(() -> {
                 try {
@@ -156,6 +165,7 @@ public class Client {
                     ((GUI)virtualView).setClientCallback(nickname -> {
                         try {
                             System.out.println(" (testing)Client Hai scelto: " + nickname);
+                            setNickname(nickname);
                             out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
                             out.flush();
                         } catch (IOException e) {
@@ -273,16 +283,15 @@ public class Client {
                 break;
 
             case GAME_STARTED:
-
                 GameStartedMessage gs_msg = (GameStartedMessage) msg;
                 if (gs_msg.getContent().isEmpty()) {
                     virtualView.showMessage("\nPartita avviata!");
                 }
-                List<Color> availableColors = ((GameStartedMessage) msg).getAvailableColors();
                 Color c;
                 if(virtualViewType == VirtualViewType.GUI) {
-                    ((GUI)virtualView).createchoosecolorscreen(gs_msg.getAvailableColors());
-                    c = virtualView.askColor(gs_msg.getAvailableColors());
+                    ((GUI)virtualView).createchoosecolorscreen(still_Available_colors);
+                    c = virtualView.askColor(still_Available_colors);
+                    System.out.println("(testing) color chosen:"+c);
                 }else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
                 }
@@ -503,12 +512,33 @@ public class Client {
 
 
             case COLOR_SELECTED:
+                System.out.println("(testing)il server ha ricevuto il colore ora analizza che fare");
+                System.out.println(msg.getContent());
+                System.out.println(nickname);
                 gameState = GameState.BuildingPhase;
                 String[] parts = msg.getContent().split(" ");
+                try {
+                    Color chosen = Color.valueOf(parts[1]);
+                    still_Available_colors.remove(chosen);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Errore: colore non valido " + parts[1]);
+                }
                 if (parts[0].equals(nickname)) {
+                    System.out.println("testing questo if funzione");
                     virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
+                    if(virtualViewType==VirtualViewType.GUI){
+                        elaborate(new Message(MessageType.BUILD_START,""));
+                    }
                 } else {
                    // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
+                    System.out.println("sono nell'altro ramo");
+                    if(virtualViewType==VirtualViewType.GUI){
+                        virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
+                        System.out.println(">>> [DEBUG] still_Available_colors: " + still_Available_colors);
+                        ((GUI) virtualView).updateColors(still_Available_colors);
+                       /* elaborate(new GameStartedMessage(MessageType.GAME_STARTED,"",still_Available_colors));*/
+                        break;
+                    }
 
                 }
                 break;
