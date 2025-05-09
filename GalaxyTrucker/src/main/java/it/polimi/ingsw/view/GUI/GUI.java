@@ -18,9 +18,11 @@ import it.polimi.ingsw.model.enumerates.Color;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -30,7 +32,7 @@ public class GUI implements View {
     Joingamecontroller joingamecontroller;
     Numplayercontroller numplayercontroller;
     Guiselectcontroller guiselectcontroller;
-    Choosecolorcontroller chooseColorController;
+    Choosecolorcontroller choosecolorcontroller;
     Stage stage;
     private String nicknamescelto;
     @FXML
@@ -243,7 +245,7 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }*/
-    public void createChooseColorScreen(List<Color> colors) {
+    public void createchoosecolorscreen(List<Color> colors) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
             try {
@@ -253,7 +255,7 @@ public class GUI implements View {
 
                 controller.setGUI(this);
                 controller.setColorsavailable(colors); // imposta i colori disponibili
-                this.chooseColorController = controller;
+                this.choosecolorcontroller = controller;
                 this.colorsavailable = colors;
                 setChooseColorScreenOpen(true);
 
@@ -274,7 +276,7 @@ public class GUI implements View {
     @Override
     public Color askColor(List<Color> colors) {
         try {
-            return chooseColorController.getColorChosen().get();
+            return choosecolorcontroller.getColorChosen().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
@@ -282,8 +284,8 @@ public class GUI implements View {
     }
 
     public void updateColorSelectionScreen(List<Color> colorsAvailable) {
-        if (chooseColorController != null) {
-            chooseColorController.setActiveButton(colorsAvailable);
+        if (choosecolorcontroller != null) {
+            choosecolorcontroller.setActiveButton(colorsAvailable);
         }
     }
 
@@ -361,7 +363,24 @@ public class GUI implements View {
     };
 
     @Override
-    public void showBoard(Board board){};
+    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward){
+        Map<CardComponent, Map<Cargo,Integer>> cargos = new HashMap<>();
+        Map<Cargo, Integer> cargo = new HashMap<>();
+
+        return cargos;
+    }
+
+    @Override
+    public CardComponent useBattery(Ship ship){return null;};
+
+    @Override
+    public Map<CardComponent, Boolean> batteryUsage(Ship ship){return null;};
+
+    @Override
+    public boolean useShield(Ship ship){return true;};
+
+    @Override
+    public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps){};
 
     @Override
     public int askFacedUpCard(List<CardComponent> cards) {

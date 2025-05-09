@@ -365,11 +365,22 @@ public void setShipPlance(String nickname, Ship ship) {
 
     }
 
+    public List<Cargo> getCargoReward(CardAdventure cardAdventure) {
+        CardAdventureType type = cardAdventure.getType();
+        switch (type) {
+            case AbandonedStation -> {
+                return ((AbandonedStation)cardAdventure).getCargo();
+            }
+
+            default -> throw new IllegalArgumentException("err");
+
+        }
+    }
+
     public void executeAbandonedStation(String nickname, Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions, AbandonedStation abandonedStation) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
         int total_crewmates = 0;
-
         for(int i = 0 ; i<ship.getROWS(); i++){
             for(int j = 0 ; j<ship.getCOLS(); j++) {
                 if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit)
