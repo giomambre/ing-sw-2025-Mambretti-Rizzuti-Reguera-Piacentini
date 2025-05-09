@@ -37,8 +37,10 @@ public enum MessageType {
     START_FLIGHT,
     WAITING_FLIGHT,
     UPDATE_SHIP,
-    INIT_VIEW
+    INIT_VIEW,
+    INVALID_SHIP,
+    UPDATE_BOARD,
+    OPEN_SPACE
 
 
 }
-

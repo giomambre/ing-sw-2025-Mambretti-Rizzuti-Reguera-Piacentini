@@ -416,12 +416,7 @@ public abstract class BaseGame {
      *
      * @return it returns the first card adventure of the deck, if we already solved all the adventures it returns null
      */
-    public CardAdventure getRandomCardAdventure() {
-        CardAdventure adventure = deck_adventure.removeFirst();
-        adventure.changeFace();
-        if (deck_adventure.isEmpty()) System.out.println("GIOCO FINITO"); //manca da fare la gestione della fine del gioco
-        return adventure;
-    }
+    public abstract CardAdventure getRandomCardAdventure() ;
 
     public void addBuildPhasePlayer(Player player) {
         build_phase_players.add(player);

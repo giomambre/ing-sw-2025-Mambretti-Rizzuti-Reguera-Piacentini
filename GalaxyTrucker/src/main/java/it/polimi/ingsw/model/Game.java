@@ -285,6 +285,18 @@ public class Game extends BaseGame {
 
     }
 
+
+    @Override
+    public CardAdventure getRandomCardAdventure() {
+        if (deck_adventure.isEmpty()) return  null; //manca da fare la gestione della fine del gioco
+
+        CardAdventure adventure = deck_adventure.removeFirst();
+        adventure.changeFace();
+        return adventure;
+    }
+
+
+
     /**
      * This method is called by the controller when the assembly phase is finished to merge all the 4 decks present on the board
      * in one (our DeckAdventure).

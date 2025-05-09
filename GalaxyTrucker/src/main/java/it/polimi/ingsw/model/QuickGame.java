@@ -100,11 +100,21 @@ public class QuickGame extends BaseGame {
 
         return null;
 
+
+
     }
 
-    /**
-     * This method is called to start the flight phase putting al the rockets on the board
-     */
+    @Override
+    public CardAdventure getRandomCardAdventure() {
+        if (deck_adventure.isEmpty()) return null; //manca da fare la gestione della fine del gioco
+
+        CardAdventure adventure = deck_adventure.removeFirst();
+        adventure.changeFace();
+        return  adventure;
+    }
+        /**
+         * This method is called to start the flight phase putting al the rockets on the board
+         */
     public void startFlight() {
         board.putPlayersOnBoard(active_players);
     }

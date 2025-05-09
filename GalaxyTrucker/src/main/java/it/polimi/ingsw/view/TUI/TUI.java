@@ -1,10 +1,12 @@
 package it.polimi.ingsw.view.TUI;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.*;
+import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
@@ -29,7 +31,7 @@ public class TUI implements View {
     private List<CardComponent> local_extra_components;
     private boolean isMenuOpen = false; // Variabile per tenere traccia dello stato del menu
     private String lastRequest = ""; // Variabile per memorizzare l'ultima richiesta
-
+    private Board local_board;
     Scanner input = new Scanner(System.in);
     // Codici ANSI
     final String RESET = "\u001B[0m";
@@ -105,6 +107,11 @@ public class TUI implements View {
         this.player_local = player;
     }
 
+    public void setLocal_board(Board local_board) {
+        this.local_board = local_board;
+    }
+
+
     public void setLocal_extra_components(List<CardComponent> extraComponents) {
         this.local_extra_components = extraComponents;
     }
@@ -146,10 +153,11 @@ public class TUI implements View {
 // Sezione comandi
         out.println("[1] Mostra stato nave");
         out.println("[2] Mostra tutti i giocatori");
-        out.println("[3] Visualizza le Carte Avventura");
-        out.println("[4] Visualizza le Carte Prenotate");
+        out.println("[3] Mostra il Tabellone");
+        out.println("[4] Visualizza le Carte Avventura");
+        out.println("[5] Visualizza le Carte Prenotate");
 
-      int scelta = readValidInt("Scelta ",1,4,true);
+      int scelta = readValidInt("Scelta ",1,5,true);
 
         switch (scelta) {
             case 1 -> showPlayer(player_local);
@@ -161,9 +169,11 @@ public class TUI implements View {
                 }
             }
 
-            case 3 -> showAdventureDeck(local_adventure_deck);
+            case 3-> showBoard(local_board);
 
-            case 4 -> showExtraCard();
+            case 4 -> showAdventureDeck(local_adventure_deck);
+
+            case 5 -> showExtraCard();
 
             case -1 -> out.println("🔙 Uscita dal menu.");
         }
@@ -288,10 +298,10 @@ public class TUI implements View {
 
     @Override
     public int askNumPlayers() {
-        lastRequest = "Inserisci il numero di player della lobby (2-4) , -1 per uscire: ";
+        lastRequest = "Inserisci il numero di player della lobby (2-4): ";
         out.println(lastRequest);
 
-        int resp = readValidInt("Scelta ",2,4,false);
+        int resp = readValidInt("Scelta ",2,4,true);
         out.println("Lobby creata rimani in attesa che altri player entrino!");
         return resp;
     }
@@ -448,7 +458,7 @@ public class TUI implements View {
     @Override
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         printShipPieces(pieces, ship);
-        int choice = readValidInt("Scelta Troncone : ",0,pieces.size()-1,false);
+        int choice = readValidInt("\nScelta Troncone ",0,pieces.size()-1,false);
 
 
         return choice;
@@ -616,6 +626,9 @@ public class TUI implements View {
                 case Red:
                     System.out.println("cargo rosso");
                     break;
+                case Empty:
+                    System.out.println("cargo vuoto");
+                    break;
             }
         }
     }
@@ -648,7 +661,7 @@ public class TUI implements View {
 }
         lastRequest = ("Premi :\n 1 : per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
 
-            out.println("Premi :\n 1 per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
+            out.println("Premi :\n 1 : per prendere una carta casuale\n 2 : per scegliere dal mazzo delle carte scoperte\n 3 : per usare una carta prenotata \n 4 : terminare l'assemblaggio\n");
         return readValidInt("Scelta" , 1 , 4, false);
 
 
@@ -1034,6 +1047,44 @@ public class TUI implements View {
     }
 
     @Override
+    public int askCannon() {
+        return 0;
+    }
+
+
+    /*
+    @Override
+    public List<Pair<Integer,Integer>> askCannon() {
+        Ship ship = player_local.getShip();
+        List<Pair<Integer,Integer>> cannons = new ArrayList<>();
+        int total = 0 ;
+        for(int i = 0 ; i<ship.getROWS(); i++){
+            for(int j = 0 ; j<ship.getCOLS(); j++) {
+                if(ship.getComponent(i,j).getComponentType() == DoubleCannon){
+                    System.out.println("\nDOUBLE CANNON a Riga : " + i + " Colonna" + j);
+
+                    if(ship.getTotalBattery() >0){
+
+
+                    System.out.println("\nPremere :\t1 : per usarlo come DOPPIO \t2 : per usarlo come SINGOLO   ");
+                    int choice = readValidInt("Scelta ", 1 ,2 , false);
+                    if(choice == 1){}
+
+                }
+            }
+
+
+
+
+        }
+return total;
+    }
+*/
+
+
+
+
+    @Override
     public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship){
         Map<CardComponent, Map<Cargo, Integer>> cargos = new HashMap<>();
         Map<Cargo, Integer> cargo = new HashMap<>();
@@ -1102,9 +1153,128 @@ public class TUI implements View {
         return cargos;
     }
 
+    @Override
+    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward){
+        Map<CardComponent, Map<Cargo,Integer>> cargos = new HashMap<>();
+        Map<Cargo, Integer> cargo = new HashMap<>();
+        int chooseCargo;
+        int choice;
+        for(int i = 0 ; i<ship.getROWS(); i++)
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                printCargo(cargoReward);
+                System.out.println("Questa è la lista dei cargo che hai ricevuto! Premi: \n -1. per uscire \n altrimenti il numero del cargo che vuoi aggiungere ");
+                chooseCargo = readValidInt("Scelta:",0,cargoReward.size(),true);
+
+                if ((ship.getComponent(i, j).getComponentType() == BlueStorage || ship.getComponent(i, j).getComponentType() == RedStorage)&&chooseCargo!=-1) {
+                    if (ship.getComponent(i, j).getComponentType() == BlueStorage)
+                        System.out.println("BLU STORAGE alle coordinate x: " + i + " y:" + j);
+                    else
+                        System.out.println("RED STORAGE alle coordinate x: " + i + " y:" + j);
+                    System.out.println("Capienza: " + ((Storage) ship.getComponent(i, j)).getSize());
+                    printCargo(((Storage) ship.getComponent(i, j)).getCarried_cargos());
+                    System.out.println("Premi: \n 1. per aggiungere cargo \n 2. passare al prossimo storage ");
+                    choice=readValidInt("Scelta: ",1,2,false);
+                    if (choice == 1) {
+                        int remove = 0;
+                        while (remove != -1) {
+                            System.out.println("Premi: \n -1. per passare al prossimo cargo \n altrimenti il numero della stiva dove vuoi aggiungere/sostituire il cargo: ");
+                            printCargo(((Storage) ship.getComponent(i, j)).getCarried_cargos());
+                            System.out.println("");
+                            remove = readInt();
+
+                            while (remove < -1 || remove > ((Storage) ship.getComponent(i, j)).getSize()) {
+                                System.out.println("Opzione non disponibile, reinserire:");
+                                remove = readInt();
+                            }
+                            if (remove >= 0 && remove <= ((Storage) ship.getComponent(i, j)).getSize()) {
+                                cargo.put(cargoReward.get(chooseCargo), remove);
+                                cargos.put(ship.getComponent(i, j), cargo);
+                                cargoReward.remove(chooseCargo);
+                            }
+                        }
+
+                    } else {
+                        break;
+                    }
+
+
+                }
+            }
+
+        return cargos;
+    }
 
     @Override
-    public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
+    public CardComponent useBattery(Ship ship) {
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == Battery && ((Battery)ship.getComponent(i, j)).getStored()>0) {
+                    System.out.println("Batteria alle coordinate x: " + i + " y: " + j);
+                    System.out.println("Premi: \n 0. per usare la batteria \n 1. per passare alla prossima \n");
+                    int choose = readValidInt("Scelta: ", 0, 1, false);
+                    if (choose == 0) {
+                        return ship.getComponent(i, j);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Map<CardComponent, Boolean> batteryUsage(Ship ship) {
+        Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+        int choose;
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == Battery && ((Battery)ship.getComponent(i, j)).getStored()>0) {
+                    System.out.println("Batteria alle coordinate x: " + i + " y: " + j+ "contiene "+((Battery)ship.getComponent(i, j)).getStored()+ "batterie/a");
+                    if (((Battery)ship.getComponent(i, j)).getStored()==2) {
+                        System.out.println("Premi: \n 0. per usare una batteria \n 1. per usarle entrambi \n 2. per passare alla prossima");
+                         choose = readValidInt("Scelta: ", 0, 2, false);
+                         if (choose == 0) {
+                             battery_usage.put(ship.getComponent(i, j), true);
+                         } else if (choose == 1) {
+                             battery_usage.put(ship.getComponent(i, j), true);
+                             battery_usage.put(ship.getComponent(i, j), true);
+                         }
+
+                    }
+                    else {
+                        System.out.println("Premi: \n 0. per usare la batteria \n 1. per passare alla prossima \n");
+                        choose = readValidInt("Scelta: ", 0, 1, false);
+                        if (choose == 0) {
+                            battery_usage.put(ship.getComponent(i, j), true);
+                        }
+                    }
+                }
+            }
+        }
+        return battery_usage;
+    }
+
+    @Override
+    public boolean useShield(Ship ship) {
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == Shield){
+                    System.out.println("Scudo alle coordinate x: " + i + " y: " + j);
+                    System.out.println("Premi: \n 0. per usarlo \n 1. per passare al prossimo");
+                    int choose = readValidInt("Scelta: ", 0, 1, false);
+                    if (choose == 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public void showBoard(Board b) {
+        Map<Integer, Player> positions = b.getBoard();
+        Map<Integer, Player> laps = b.getLaps();
         final int BOARD_SIZE = 24;
         final int ROW_WIDTH = 6;
         final int CELL_WIDTH = 10; // Larghezza di ogni cella

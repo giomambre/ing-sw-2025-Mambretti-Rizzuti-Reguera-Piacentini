@@ -1,7 +1,9 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.Color;
@@ -38,6 +40,7 @@ public class Client {
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
     private static boolean forced_close = false;
+    private static Board localBoard;
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
@@ -92,7 +95,7 @@ public class Client {
                                 inputQueue.put(msg);
                                 break;
 
-                            case WAITING_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
+                            case UPDATE_BOARD,WAITING_FLIGHT,INVALID_SHIP, START_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -278,15 +281,8 @@ public class Client {
                 List<Color> availableColors = ((GameStartedMessage) msg).getAvailableColors();
                 Color c;
                 if(virtualViewType == VirtualViewType.GUI) {
-                    /*((GUI) virtualView).updateColorSelectionScreen(availableColors);
                     ((GUI)virtualView).createchoosecolorscreen(gs_msg.getAvailableColors());
-                    c = virtualView.askColor(gs_msg.getAvailableColors());*/
-                    if (!((GUI) virtualView).isChooseColorScreenOpen()) {
-                        ((GUI) virtualView).createchoosecolorscreen(availableColors);
-                    }
-                    ((GUI) virtualView).updateColorSelectionScreen(availableColors);
-                    c = virtualView.askColor(availableColors);
-                    System.out.println("(testing)scelta"+c);
+                    c = virtualView.askColor(gs_msg.getAvailableColors());
                 }else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
                 }
@@ -607,14 +603,61 @@ public class Client {
                 "Questa è la tua nave.\n ");
 
                 virtualView.printShip(player_local.getShip().getShipBoard());
+
+                virtualView.showMessage("\n\n\tRIMANI IN ATTESA CHE GLI ALTRI PLAYER FINISCANO IL CONTROLLO !");
                 break;
 
 
+
+            case UPDATE_BOARD:
+                BoardMessage bm = (BoardMessage) msg;
+                localBoard = bm.getBoard();
+
+                if(virtualViewType==VirtualViewType.TUI) {
+                    ((TUI) virtualView).setLocal_board(localBoard);
+
+
+                }
+
+
+                break;
+
+
+                case INVALID_SHIP:
+                    virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo : " + msg.getContent());
+                    System.exit(0);
+
+
+                    break;
+
+            case START_FLIGHT:
+                virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
+                break;
 
 
         }
 
 
+
+
+    }
+
+
+
+    public void manageAdventure(CardAdventure adventure) {
+
+        switch (adventure.getType()){
+
+
+
+            case OpenSpace :
+                OpenSpace openSpace = (OpenSpace) adventure;
+                int power = virtualView.askCannon();
+                break;
+
+
+
+        }
 
 
     }
@@ -666,4 +709,6 @@ public class Client {
     public VirtualViewType getVirtualViewType(){
         return virtualViewType;
     }
+
+
 }

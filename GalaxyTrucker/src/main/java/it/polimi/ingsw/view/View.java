@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
@@ -10,6 +11,7 @@ import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.TUI.TUI;
 import javafx.util.Pair;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,13 +64,23 @@ public interface View {
 
     int showCard(CardComponent card);
 
-    void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps);
+    void showBoard(Board board);
 
     public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss);
 
     public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship);
 
+    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward);
+
+    public CardComponent useBattery(Ship ship);
+
+    public Map<CardComponent, Boolean> batteryUsage(Ship ship);
+
+    public boolean useShield(Ship ship);
+
     Pair<Integer,Integer> askCoords(Ship ship);
 
     Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
+
+    int askCannon();
 }

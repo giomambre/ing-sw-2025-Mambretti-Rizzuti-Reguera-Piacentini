@@ -1,5 +1,7 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.model.Lobby;
+
 import java.util.*;
 // LobbyTimer.java
 import java.util.Timer;
@@ -10,7 +12,7 @@ public class LobbyTimer {
     private boolean someoneFinished = false;
     private boolean thirtyStarted   = false;
     private boolean build120Ended = false;
-
+    private Lobby lobby;
     private final List<String> finishOrder = new ArrayList<>();
     private final int totalPlayers;
     /**
@@ -26,11 +28,15 @@ public class LobbyTimer {
         }, 120 * 1000);
     }
 
-    public LobbyTimer(int totalPlayers) {
+    public LobbyTimer(int totalPlayers, Lobby lobby) {
+
+        this.lobby = lobby;
         this.totalPlayers = totalPlayers;
     }
 
-
+    public Lobby getLobby() {
+        return lobby;
+    }
 
     public void start30IfNeeded(Runnable on30End) {
         if (thirtyStarted) return;

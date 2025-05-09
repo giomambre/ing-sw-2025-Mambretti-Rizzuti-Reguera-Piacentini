@@ -2,9 +2,12 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameManager;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.network.messages.*;
@@ -72,24 +75,16 @@ public class Server {
 
         switch (msg.getType()) {
 
-            case INIT_VIEW:
-                StandardMessageClient msgClient = (StandardMessageClient) msg;
-                ClientHandler handler = clients.get(msgClient.getId_client());
-                if (msg.getContent().equalsIgnoreCase("GUI")) {
-                    handler.setViewType(VirtualViewType.GUI);
-                } else {
-                    handler.setViewType(VirtualViewType.TUI);
-                }
-                break;
+
             case SENDED_NAME:
-                msgClient = (StandardMessageClient) msg;
+                StandardMessageClient msgClient = (StandardMessageClient) msg;
                 String requestedName = msg.getContent();
                 System.out.println("nick name inviato : " + requestedName);
                 if (connectedNames.contains(requestedName)) {
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Nome già in uso. Inserisci un altro nickname.", msgClient.getId_client()));
                 } else {
                     connectedNames.add(requestedName);
-                    handler = clients.get(msgClient.getId_client());
+                    ClientHandler handler = clients.get(msgClient.getId_client());
                     handler.setNickname(requestedName);
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_ACCEPTED, "✅ Nickname accettato: " + requestedName, msgClient.getId_client()));
 
@@ -151,7 +146,7 @@ public class Server {
                 break;
 
             case COLOR_SELECTED:
-               /* msgClient = (StandardMessageClient) msg;
+                msgClient = (StandardMessageClient) msg;
 
                 controller = all_games.get(getLobbyId(msgClient.getId_client()));
 
@@ -170,36 +165,8 @@ public class Server {
 
                         sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
 
-                    }*/
-                msgClient = (StandardMessageClient) msg;
-                controller = all_games.get(getLobbyId(msgClient.getId_client()));
-
-                synchronized (controller) {
-                    Color c = Color.valueOf(msg.getContent().toUpperCase());
-                    if (controller.getAvailable_colors().contains(c)) {
-                        System.out.println("COLORE " + c + " PRESO ");
-                        controller.addPlayer(getNickname(msgClient.getId_client()), c);
-
-                        // Notifica testuale a tutti
-                        sendToAllClients(controller.getLobby(), new Message(MessageType.COLOR_SELECTED, getNickname(msgClient.getId_client()) + " " + c));
-
-                        // Notifica GUI con i nuovi colori disponibili (eccetto il client che ha scelto)
-                        for (String nickname : controller.getLobby().getPlayers()) {
-                            UUID clientId = getId_client(nickname);
-                            ClientHandler h = clients.get(clientId);
-
-                            if (h.getViewType() == VirtualViewType.GUI && !clientId.equals(msgClient.getId_client())) {
-                                sendToClient(clientId,
-                                        new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
-                            }
-                        }
-
-                    } else {
-                        // Il colore era già preso, reinvia l'elenco aggiornato solo al client richiedente
-                        sendToClient(msgClient.getId_client(),
-                                new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
                     }
-                    //da qui in poi metodo vecchio gio +clienthandler(viewtipe e metodo getter e setter) messaggio nel server INIT_VIEW
+
 
 
                     if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
@@ -207,7 +174,7 @@ public class Server {
 
 
                         controller.startGame();
-                        LobbyTimer lt = new LobbyTimer(controller.getLobby().getLimit());
+                        LobbyTimer lt = new LobbyTimer(controller.getLobby().getLimit(),controller.getLobby());
 
                         lobbyTimers.put(controller.getLobby().getLobbyId(), lt);
 
@@ -219,12 +186,12 @@ public class Server {
 
                         lt.start120(() -> lt.handle120End(
                                 // callback per quando scadono i 120s E qualcuno ha già finito
-                                () -> sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE, "⏳ 30s rimanenti")),
+                                () -> sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE, "⏳ 30s rimanenti")),
                                 // callback per quando scadono i 120s E NESSUNO ha ancora finito
-                                () -> sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE, "⏱ 120 secondi terminati : in attesa del primo giocatore..."))
+                                () -> sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE, "⏱ 120 secondi terminati : in attesa del primo giocatore..."))
                                 ,
                                 () -> {
-                                    sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
+                                    sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE,
                                             "✅ Tempo SCADUTO si comincia con la fase di Controllo! "));
 
 
@@ -343,19 +310,19 @@ public class Server {
                         () -> {
 
                             controller.setGamestate(SUPLLY_PHASE);
-                            sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
+                            sendToAllClients(lt.getLobby(), new Message(ADD_CREWMATES, ""));
                             System.out.println("mandato");
                         },
                         // on30StartNeeded
                         () -> {
-                            sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
+                            sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE,
                                     "🔔 Un giocatore ha finito! "));
 
 
                         },
 
                         () -> {
-                            sendToAllClients(controller.getLobby(), new Message(MessageType.TIME_UPDATE,
+                            sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE,
                                     "✅ Tempo SCADUTO si comincia con la fase di Controllo! "));
 
 
@@ -374,8 +341,12 @@ public class Server {
 
                         }
 
+
+
                 );
 
+
+                controller.setBuild_order_players(lt.getFinishOrder());
 
                 break;
 
@@ -425,7 +396,7 @@ public class Server {
                 for (Player p : controller.getPlayers()) {
                     safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
                 }
-                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+                sendToClient(update_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 System.out.println(getNickname(update_msg.getId_client()) + " " + controller.getValidPieces(getNickname(update_msg.getId_client())).size() );
 
                 if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() > 1){
@@ -438,8 +409,10 @@ public class Server {
                     sendToClient(update_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
 
 
-                } else if (controller.getValidPieces(getNickname(update_msg.getId_client())).size() == 0) {
-                    //rimuoverlo dalla partita
+                } else if (controller.getValidPieces(getNickname(update_msg.getId_client())).isEmpty()) {
+                    sendToClient(update_msg.getId_client(), new Message(INVALID_SHIP, ""));
+                    controller.removePlayerFromOrder(getNickname(update_msg.getId_client()));
+
                 }
                 break;
 
@@ -454,8 +427,34 @@ public class Server {
                 for (Player p : controller.getPlayers()) {
                     safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
                 }
-                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+                sendToClient(select_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 sendToClient(select_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
+                controller.addWaitingFlyPlayer(getNickname(select_msg.getId_client()));
+
+                if(controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
+
+                    handleMessage(new StandardMessageClient(START_FLIGHT, "",select_msg.getId_client()));
+
+                }
+
+                break;
+
+
+            case START_FLIGHT:
+                StandardMessageClient start_msg = (StandardMessageClient) msg;
+                controller = all_games.get(getLobbyId(start_msg.getId_client()));
+                controller.startFlight();
+                sendToAllClients(controller.getLobby(),new Message(START_FLIGHT, ""));
+                controller.putPlayersOnBoard(controller.ordinaPlayers(controller.getPlayers(),controller.getBuild_order_players()));
+                sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard()));
+                System.out.println(controller.ordinaPlayers(controller.getPlayers(),controller.getBuild_order_players()));
+
+                CardAdventure adventure = controller.getRandomAdventure();
+                manageAdventure(adventure,controller);
+
+
+
+
                 break;
 
             default:
@@ -464,6 +463,29 @@ public class Server {
 
 
         }
+
+
+
+    }
+
+
+
+    public void manageAdventure(CardAdventure adventure, GameController controller) {
+
+        switch (adventure.getType()){
+
+
+
+            case OpenSpace :
+                OpenSpace openSpace = (OpenSpace) adventure;
+                sendToAllClients(controller.getLobby(),new AdventureCardMessage(OPEN_SPACE, "",adventure));
+            break;
+
+
+
+        }
+
+
     }
 
 
