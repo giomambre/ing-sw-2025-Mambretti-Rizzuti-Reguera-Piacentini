@@ -1047,6 +1047,13 @@ public class TUI implements View {
     }
 
     @Override
+    public int askCannon() {
+        return 0;
+    }
+
+
+    /*
+    @Override
     public List<Pair<Integer,Integer>> askCannon() {
         Ship ship = player_local.getShip();
         List<Pair<Integer,Integer>> cannons = new ArrayList<>();
@@ -1072,6 +1079,7 @@ public class TUI implements View {
         }
 return total;
     }
+*/
 
 
 

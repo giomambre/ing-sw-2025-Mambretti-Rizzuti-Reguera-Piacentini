@@ -281,7 +281,7 @@ public class Client {
                 List<Color> availableColors = ((GameStartedMessage) msg).getAvailableColors();
                 Color c;
                 if(virtualViewType == VirtualViewType.GUI) {
-                    ((GUI)virtualView).createChooseColorScreen(gs_msg.getAvailableColors());
+                    ((GUI)virtualView).createchoosecolorscreen(gs_msg.getAvailableColors());
                     c = virtualView.askColor(gs_msg.getAvailableColors());
                 }else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
