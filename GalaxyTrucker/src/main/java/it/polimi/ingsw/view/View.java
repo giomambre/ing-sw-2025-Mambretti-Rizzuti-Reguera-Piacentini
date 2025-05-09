@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.TUI.TUI;
 import javafx.util.Pair;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +68,14 @@ public interface View {
     public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss);
 
     public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship);
+
+    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward);
+
+    public CardComponent useBattery(Ship ship);
+
+    public Map<CardComponent, Boolean> batteryUsage(Ship ship);
+
+    public boolean useShield(Ship ship);
 
     Pair<Integer,Integer> askCoords(Ship ship);
 

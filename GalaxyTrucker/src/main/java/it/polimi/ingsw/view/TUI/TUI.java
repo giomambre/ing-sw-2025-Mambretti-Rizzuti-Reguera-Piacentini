@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.*;
+import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
@@ -616,6 +617,9 @@ public class TUI implements View {
                 case Red:
                     System.out.println("cargo rosso");
                     break;
+                case Empty:
+                    System.out.println("cargo vuoto");
+                    break;
             }
         }
     }
@@ -1100,6 +1104,123 @@ public class TUI implements View {
         }
 
         return cargos;
+    }
+
+    @Override
+    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward){
+        Map<CardComponent, Map<Cargo,Integer>> cargos = new HashMap<>();
+        Map<Cargo, Integer> cargo = new HashMap<>();
+        int chooseCargo;
+        int choice;
+        for(int i = 0 ; i<ship.getROWS(); i++)
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                printCargo(cargoReward);
+                System.out.println("Questa è la lista dei cargo che hai ricevuto! Premi: \n -1. per uscire \n altrimenti il numero del cargo che vuoi aggiungere ");
+                chooseCargo = readValidInt("Scelta:",0,cargoReward.size(),true);
+
+                if ((ship.getComponent(i, j).getComponentType() == BlueStorage || ship.getComponent(i, j).getComponentType() == RedStorage)&&chooseCargo!=-1) {
+                    if (ship.getComponent(i, j).getComponentType() == BlueStorage)
+                        System.out.println("BLU STORAGE alle coordinate x: " + i + " y:" + j);
+                    else
+                        System.out.println("RED STORAGE alle coordinate x: " + i + " y:" + j);
+                    System.out.println("Capienza: " + ((Storage) ship.getComponent(i, j)).getSize());
+                    printCargo(((Storage) ship.getComponent(i, j)).getCarried_cargos());
+                    System.out.println("Premi: \n 1. per aggiungere cargo \n 2. passare al prossimo storage ");
+                    choice=readValidInt("Scelta: ",1,2,false);
+                    if (choice == 1) {
+                        int remove = 0;
+                        while (remove != -1) {
+                            System.out.println("Premi: \n -1. per passare al prossimo cargo \n altrimenti il numero della stiva dove vuoi aggiungere/sostituire il cargo: ");
+                            printCargo(((Storage) ship.getComponent(i, j)).getCarried_cargos());
+                            System.out.println("");
+                            remove = readInt();
+
+                            while (remove < -1 || remove > ((Storage) ship.getComponent(i, j)).getSize()) {
+                                System.out.println("Opzione non disponibile, reinserire:");
+                                remove = readInt();
+                            }
+                            if (remove >= 0 && remove <= ((Storage) ship.getComponent(i, j)).getSize()) {
+                                cargo.put(cargoReward.get(chooseCargo), remove);
+                                cargos.put(ship.getComponent(i, j), cargo);
+                                cargoReward.remove(chooseCargo);
+                            }
+                        }
+
+                    } else {
+                        break;
+                    }
+
+
+                }
+            }
+
+        return cargos;
+    }
+
+    @Override
+    public CardComponent useBattery(Ship ship) {
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == Battery && ((Battery)ship.getComponent(i, j)).getStored()>0) {
+                    System.out.println("Batteria alle coordinate x: " + i + " y: " + j);
+                    System.out.println("Premi: \n 0. per usare la batteria \n 1. per passare alla prossima \n");
+                    int choose = readValidInt("Scelta: ", 0, 1, false);
+                    if (choose == 0) {
+                        return ship.getComponent(i, j);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Map<CardComponent, Boolean> batteryUsage(Ship ship) {
+        Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+        int choose;
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == Battery && ((Battery)ship.getComponent(i, j)).getStored()>0) {
+                    System.out.println("Batteria alle coordinate x: " + i + " y: " + j+ "contiene "+((Battery)ship.getComponent(i, j)).getStored()+ "batterie/a");
+                    if (((Battery)ship.getComponent(i, j)).getStored()==2) {
+                        System.out.println("Premi: \n 0. per usare una batteria \n 1. per usarle entrambi \n 2. per passare alla prossima");
+                         choose = readValidInt("Scelta: ", 0, 2, false);
+                         if (choose == 0) {
+                             battery_usage.put(ship.getComponent(i, j), true);
+                         } else if (choose == 1) {
+                             battery_usage.put(ship.getComponent(i, j), true);
+                             battery_usage.put(ship.getComponent(i, j), true);
+                         }
+
+                    }
+                    else {
+                        System.out.println("Premi: \n 0. per usare la batteria \n 1. per passare alla prossima \n");
+                        choose = readValidInt("Scelta: ", 0, 1, false);
+                        if (choose == 0) {
+                            battery_usage.put(ship.getComponent(i, j), true);
+                        }
+                    }
+                }
+            }
+        }
+        return battery_usage;
+    }
+
+    @Override
+    public boolean useShield(Ship ship) {
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == Shield){
+                    System.out.println("Scudo alle coordinate x: " + i + " y: " + j);
+                    System.out.println("Premi: \n 0. per usarlo \n 1. per passare al prossimo");
+                    int choose = readValidInt("Scelta: ", 0, 1, false);
+                    if (choose == 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 

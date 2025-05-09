@@ -363,6 +363,23 @@ public class GUI implements View {
     };
 
     @Override
+    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward){
+        Map<CardComponent, Map<Cargo,Integer>> cargos = new HashMap<>();
+        Map<Cargo, Integer> cargo = new HashMap<>();
+
+        return cargos;
+    }
+
+    @Override
+    public CardComponent useBattery(Ship ship){return null;};
+
+    @Override
+    public Map<CardComponent, Boolean> batteryUsage(Ship ship){return null;};
+
+    @Override
+    public boolean useShield(Ship ship){return true;};
+
+    @Override
     public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps){};
 
     @Override
