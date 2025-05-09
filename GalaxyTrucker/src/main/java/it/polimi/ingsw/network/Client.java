@@ -291,11 +291,13 @@ public class Client {
                 if(virtualViewType == VirtualViewType.GUI) {
                     ((GUI)virtualView).createchoosecolorscreen(still_Available_colors);
                     c = virtualView.askColor(still_Available_colors);
+                    out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                     System.out.println("(testing) color chosen:"+c);
                 }else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
+                    out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 }
-                out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
+                //out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 break;
 
             case BUILD_START:
@@ -526,9 +528,9 @@ public class Client {
                 if (parts[0].equals(nickname)) {
                     System.out.println("testing questo if funzione");
                     virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
-                    if(virtualViewType==VirtualViewType.GUI){
+                    /*if(virtualViewType==VirtualViewType.GUI){
                         elaborate(new Message(MessageType.BUILD_START,""));
-                    }
+                    }*/
                 } else {
                    // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
                     System.out.println("sono nell'altro ramo");

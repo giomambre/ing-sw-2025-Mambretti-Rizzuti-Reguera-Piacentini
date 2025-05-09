@@ -43,12 +43,12 @@ public class GUI implements View {
     private List<Color> colorsavailable;
     private boolean chooseColorScreenOpen = false;
 
-    public boolean isChooseColorScreenOpen() {
+    /*public boolean isChooseColorScreenOpen() {
         return chooseColorScreenOpen;
     }
     public void setChooseColorScreenOpen(boolean b) {
         this.chooseColorScreenOpen = b;
-    }
+    }*/
     public Stage getStage(){
         return stage;
     }
@@ -224,7 +224,7 @@ public class GUI implements View {
         }
     }
 
-    /*public void createchoosecolorscreen(List<Color> colors) {
+    public void createchoosecolorscreen(List<Color> colors) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
             try {
@@ -232,7 +232,6 @@ public class GUI implements View {
                 controller.setGUI(this);
                 this.choosecolorcontroller = controller;
                 this.colorsavailable = colors;
-                setChooseColorScreenOpen(true);
                 controller.start(this.stage);
                 future.complete(null);  // Segnala che la GUI è pronta
             } catch (Exception ex) {
@@ -244,8 +243,29 @@ public class GUI implements View {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-    }*/
-    public void createchoosecolorscreen(List<Color> colors) {
+    }
+
+
+    @Override
+    public Color askColor(List<Color> colors) {
+        try {
+            return choosecolorcontroller.getColorChosen().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public void updateColors(List<Color> newColors) {
+        Platform.runLater(() -> {
+            System.out.println(">>> [DEBUG] updateColors called with: " + newColors);
+            this.colorsavailable = newColors;
+            if (choosecolorcontroller != null) {
+                choosecolorcontroller.setActiveButton(newColors);
+                choosecolorcontroller.stateLabel.setText("Colori aggiornati!");
+            }
+        });
+    }
+    /*public void createchoosecolorscreen(List<Color> colors) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
             try {
@@ -271,23 +291,13 @@ public class GUI implements View {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    @Override
-    public Color askColor(List<Color> colors) {
-        try {
-            return choosecolorcontroller.getColorChosen().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public void updateColorSelectionScreen(List<Color> colorsAvailable) {
+    /*public void updateColorSelectionScreen(List<Color> colorsAvailable) {
         if (choosecolorcontroller != null) {
             choosecolorcontroller.setActiveButton(colorsAvailable);
         }
-    }
+    }*/
 
 
 
@@ -379,8 +389,6 @@ public class GUI implements View {
     @Override
     public boolean useShield(Ship ship){return true;};
 
-    @Override
-    public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps){};
 
     @Override
     public int askFacedUpCard(List<CardComponent> cards) {
@@ -398,6 +406,11 @@ public class GUI implements View {
     }
 
     @Override
+    public void showBoard(Board board) {
+
+    }
+
+    @Override
     public Pair<Integer, Integer> askCoords(Ship ship) {
         return null;
     }
@@ -407,6 +420,10 @@ public class GUI implements View {
         return null;
     }
 
+    @Override
+    public int askCannon() {
+        return 0;
+    }
 
 
 }
