@@ -5,5 +5,6 @@ public enum GameState {
     BUILD_PHASE,
     FIXING_SHIPS,
     SUPLLY_PHASE,
-    FLYING_PHASE
+    FLYING_PHASE,
+
 }

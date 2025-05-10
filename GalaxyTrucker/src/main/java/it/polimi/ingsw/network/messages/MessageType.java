@@ -40,7 +40,8 @@ public enum MessageType {
     INIT_VIEW,
     INVALID_SHIP,
     UPDATE_BOARD,
-    OPEN_SPACE
+    OPEN_SPACE,
+    ADVENTURE_COMPLETED
 
 
 }
