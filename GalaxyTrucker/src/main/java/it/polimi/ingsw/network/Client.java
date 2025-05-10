@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
@@ -26,7 +27,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static it.polimi.ingsw.model.enumerates.ComponentType.LivingUnit;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
 public class Client {
     private static ObjectInputStream in;
@@ -98,7 +99,7 @@ public class Client {
                         Message msg = (Message) in.readObject();
 
                         switch (msg.getType()) {
-                            case REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
+                            case OPEN_SPACE,REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
                                  CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
                                  CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES, INVALID_CONNECTORS,SELECT_PIECE:
                                 inputQueue.put(msg);
@@ -107,6 +108,7 @@ public class Client {
                             case UPDATE_BOARD,WAITING_FLIGHT,INVALID_SHIP, START_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
+
 
                             default:
                                 // messaggi non previsti o debug
@@ -500,6 +502,12 @@ public class Client {
                 out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE,String.valueOf(piece),clientId));
                 break;
 
+
+            default:
+
+                AdventureCardMessage adv = (AdventureCardMessage) msg;
+                manageAdventure(adv.getAdventure());
+                break;
         }
 
 
@@ -676,7 +684,7 @@ public class Client {
 
 
 
-    public void manageAdventure(CardAdventure adventure) {
+    public static void manageAdventure(CardAdventure adventure) {
 
         switch (adventure.getType()){
 
@@ -684,7 +692,35 @@ public class Client {
 
             case OpenSpace :
                 OpenSpace openSpace = (OpenSpace) adventure;
-                int power = virtualView.askCannon();
+                Ship ship = player_local.getShip();
+                Map<CardComponent,Boolean> battery_usage = new HashMap<>();
+                Pair<Integer,Integer> battery;
+                for(int i = 0 ; i<ship.getROWS(); i++){
+                    for(int j = 0 ; j<ship.getCOLS(); j++) {
+                        CardComponent card = ship.getComponent(i,j);
+
+                        if(card.getComponentType() == DoubleEngine){
+
+                           battery =  virtualView.askEngine(new Pair<>(i,j));
+                           if(battery.getKey() == -1 || battery.getValue() == -1){
+                               //didnt used battery
+
+                               battery_usage.put(card,false);
+
+                           }else{
+
+
+
+                               battery_usage.put(card,true);
+                           }
+
+                        }
+
+                    }
+                }
+
+                double power = ship.calculateEnginePower(battery_usage);
+                System.out.println("\n\n\nPOTENZA MOTORE " + power);
                 break;
 
 

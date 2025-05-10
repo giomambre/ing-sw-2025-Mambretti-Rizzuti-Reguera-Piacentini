@@ -1047,12 +1047,22 @@ public class TUI implements View {
     }
 
     @Override
-    public int askCannon() {
-        return 0;
+    public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
+
+
+        System.out.println("\nCannone doppio trovato a RIGA : " + cannon.getKey()  + " COLONNA : " + cannon.getValue());
+
+        System.out.println("Premere :\n1 : usare batteria\n2 : NON usare batteria");
+        int choice = readValidInt("Scelta " , 1, 2, false);
+
+        if(choice == 2)return new Pair<>(-1,-1);
+
+        else return  useBattery(player_local.getShip());
+
+
     }
 
-
-    /*
+   /*
     @Override
     public List<Pair<Integer,Integer>> askCannon() {
         Ship ship = player_local.getShip();
@@ -1205,21 +1215,39 @@ return total;
     }
 
     @Override
-    public CardComponent useBattery(Ship ship) {
+    public Pair<Integer, Integer> useBattery(Ship ship) {
+        List<Pair<Integer, Integer>> batteryPositions = new ArrayList<>();
+
+        // Trova tutte le batterie con energia > 0
         for (int i = 0; i < ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
-                if (ship.getComponent(i, j).getComponentType() == Battery && ((Battery)ship.getComponent(i, j)).getStored()>0) {
-                    System.out.println("Batteria alle coordinate x: " + i + " y: " + j);
-                    System.out.println("Premi: \n 0. per usare la batteria \n 1. per passare alla prossima \n");
-                    int choose = readValidInt("Scelta: ", 0, 1, false);
-                    if (choose == 0) {
-                        return ship.getComponent(i, j);
-                    }
+                CardComponent component = ship.getComponent(i, j);
+                if (component.getComponentType() == ComponentType.Battery && ((Battery) component).getStored() > 0) {
+                    batteryPositions.add(new Pair<>(i, j));
                 }
             }
         }
-        return null;
+
+        // Se non ci sono batterie disponibili
+        if (batteryPositions.isEmpty()) {
+            System.out.println("Nessuna batteria disponibile.");
+            return new Pair<>(-1, -1);
+        }
+
+        // Stampa l'elenco numerato delle batterie
+        System.out.println("Seleziona una batteria:");
+        for (int idx = 0; idx < batteryPositions.size(); idx++) {
+            Pair<Integer, Integer> pos = batteryPositions.get(idx);
+            System.out.println("\n\t"+(idx + 1) + ". Batteria alla RIGA : " + pos.getKey() + ", COLONNA  : " + pos.getValue() );
+        }
+
+        // Chiedi all'utente di scegliere un'opzione
+        int choice = readValidInt("\nInserisci il numero della batteria da utilizzare", 1, batteryPositions.size(), false);
+
+        // Restituisce la posizione della batteria selezionata
+        return batteryPositions.get(choice - 1);
     }
+
 
     @Override
     public Map<CardComponent, Boolean> batteryUsage(Ship ship) {
@@ -1260,7 +1288,7 @@ return total;
                 if (ship.getComponent(i, j).getComponentType() == Shield){
                     System.out.println("Scudo alle coordinate x: " + i + " y: " + j);
                     System.out.println("Premi: \n 0. per usarlo \n 1. per passare al prossimo");
-                    int choose = readValidInt("Scelta: ", 0, 1, false);
+                    int choose = readValidInt("Scelta ", 0, 1, false);
                     if (choose == 0) {
                         return true;
                     }

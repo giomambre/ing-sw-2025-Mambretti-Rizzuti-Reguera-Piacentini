@@ -372,7 +372,7 @@ public class GUI implements View {
     }
 
     @Override
-    public CardComponent useBattery(Ship ship){return null;};
+    public Pair<Integer,Integer> useBattery(Ship ship){return null;};
 
     @Override
     public Map<CardComponent, Boolean> batteryUsage(Ship ship){return null;};
@@ -412,8 +412,8 @@ public class GUI implements View {
     }
 
     @Override
-    public int askCannon() {
-        return 0;
+    public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
+        return null;
     }
 
 
