@@ -168,7 +168,7 @@ public class Server {
                     }
 
 
-
+                    System.out.println(controller.getAvailable_colors());
                     if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
                         System.out.println("Tutti i player hanno scelto i colori fase di costruzione iniziata!");
 

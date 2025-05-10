@@ -44,6 +44,7 @@ public interface View {
 
     public Color askColor(List<Color> colors);
 
+
     Pair<Integer, Integer> askCoordsCrewmate(Ship ship);
 
     public void showPlayer(Player player);

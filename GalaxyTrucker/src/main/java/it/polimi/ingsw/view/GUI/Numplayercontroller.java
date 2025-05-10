@@ -58,6 +58,7 @@ public class Numplayercontroller {
 
     @FXML
     public void setPlayerNumber(ActionEvent event) {
+        gui.showMessage("In attesa di player nella lobby");
         this.playerNumber.complete(playerNumberSpinner.getValue());
     }
     @FXML
