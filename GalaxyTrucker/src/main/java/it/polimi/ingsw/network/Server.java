@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.network.messages.*;
 import javafx.util.Pair;
@@ -168,7 +169,7 @@ public class Server {
                     }
 
 
-
+                    System.out.println(controller.getAvailable_colors());
                     if (4 - controller.getAvailable_colors().size() == controller.getLobby().getPlayers().size()) {
                         System.out.println("Tutti i player hanno scelto i colori fase di costruzione iniziata!");
 
@@ -450,6 +451,9 @@ public class Server {
                 System.out.println(controller.ordinaPlayers(controller.getPlayers(),controller.getBuild_order_players()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
+                while(adventure.getType() != CardAdventureType.OpenSpace){
+                    adventure = controller.getRandomAdventure();
+                }
                 manageAdventure(adventure,controller);
 
 
@@ -478,6 +482,9 @@ public class Server {
 
             case OpenSpace :
                 OpenSpace openSpace = (OpenSpace) adventure;
+
+
+
                 sendToAllClients(controller.getLobby(),new AdventureCardMessage(OPEN_SPACE, "",adventure));
             break;
 

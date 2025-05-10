@@ -38,9 +38,9 @@
                <Insets top="30.0" />
             </VBox.margin></Label>
 
-         <TextField fx:id="nicknameField" maxWidth="300.0" prefHeight="39.0" prefWidth="300.0" promptText="nome..." />
+         <TextField fx:id="nicknameField" maxWidth="300.0" prefHeight="39.0" prefWidth="300.0" promptText="Nome..." style="-fx-font-size: 22;" />
 
-         <Button maxWidth="160.0" onAction="#sendNickname" prefHeight="42.0" prefWidth="160.0" text="Continua">
+         <Button onAction="#sendNickname" style="-fx-font-family: 'Verdana'; -fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Continua">
             <VBox.margin>
                <Insets bottom="-30.0" />
             </VBox.margin></Button>

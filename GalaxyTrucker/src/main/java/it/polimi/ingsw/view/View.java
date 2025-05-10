@@ -6,12 +6,10 @@ import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.TUI.TUI;
 import javafx.util.Pair;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +42,7 @@ public interface View {
 
     public Color askColor(List<Color> colors);
 
+
     Pair<Integer, Integer> askCoordsCrewmate(Ship ship);
 
     public void showPlayer(Player player);
@@ -72,7 +71,7 @@ public interface View {
 
     public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward);
 
-    public CardComponent useBattery(Ship ship);
+    public Pair<Integer,Integer> useBattery(Ship ship);
 
     public Map<CardComponent, Boolean> batteryUsage(Ship ship);
 
@@ -82,5 +81,5 @@ public interface View {
 
     Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
 
-    int askCannon();
+    Pair<Integer,Integer> askEngine(Pair<Integer,Integer>  cannon);
 }
