@@ -1,0 +1,53 @@
+.button {
+    -fx-background-color: #f9e07f;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-font-size: 24px;
+    -fx-font-family: "Verdana";
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-padding: 10 25 10 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0.1, 0, 1);
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #fff9b0, #fce98e);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0.3, 0, 2);
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #f9d65d, #f6c23e);
+    -fx-translate-y: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 2, 0.2, 0, 1);
+}
+
+.list-view {
+    -fx-background-color: #fff8b0;
+    -fx-border-color: #f9e07f;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,150,0.5), 8, 0.3, 0, 2);
+    -fx-padding: 6;
+    -fx-font-family: "Orbitron", "Verdana";
+    -fx-font-size: 20px;
+    -fx-text-fill: #222222;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #222222;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.list-cell:filled:selected, .list-cell:filled:selected:hover {
+    -fx-background-color: #ffe97f;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.list-cell:hover {
+    -fx-cursor: hand;
+}
