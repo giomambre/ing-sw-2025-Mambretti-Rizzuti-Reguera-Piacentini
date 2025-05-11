@@ -461,6 +461,41 @@ public class Server {
 
                 break;
 
+
+                case ADVENTURE_COMPLETED:
+                    StandardMessageClient adv_msg = (StandardMessageClient) msg;
+                    controller = all_games.get(getLobbyId(adv_msg.getId_client()));
+
+                    switch (controller.getCurrentAdventure().getType()){
+
+
+                        case OpenSpace :
+
+                            int eng_power = Integer.parseInt( adv_msg.getContent());
+                            controller.movePlayer(getNickname(adv_msg.getId_client()),eng_power);
+                            sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
+                                    + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power ,controller.getBoard()));
+
+                            if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
+
+                                System.out.println("DA PESACARE UN ALTRA CARTA");
+
+
+                            }else {
+
+                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
+                            }
+                            break;
+
+
+
+
+                    }
+
+
+
+
+
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
                 break;
@@ -483,9 +518,12 @@ public class Server {
             case OpenSpace :
                 OpenSpace openSpace = (OpenSpace) adventure;
 
+                controller.initializeAdventure(adventure);
 
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
 
-                sendToAllClients(controller.getLobby(),new AdventureCardMessage(OPEN_SPACE, "",adventure));
+                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "",adventure));
+
             break;
 
 

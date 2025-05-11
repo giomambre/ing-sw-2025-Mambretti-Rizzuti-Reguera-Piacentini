@@ -15,6 +15,14 @@ import static it.polimi.ingsw.controller.GameState.SETTINGS;
 
 public class GameController {
 
+
+
+    private CardAdventure adventure;
+    private int adv_index = 0;
+
+
+    List<Player> finishedAdventure = new ArrayList<>();
+    List<Player> adventureOrder = new ArrayList<>();
     List<Player> finished_supply_players = new ArrayList<>();
     List<String> waiting_fly_players = new ArrayList<>();
     List<Player> disconnected_players = new ArrayList<>();
@@ -37,6 +45,45 @@ public class GameController {
 
 
     }
+
+    public CardAdventure getCurrentAdventure(){
+
+        return  adventure;
+
+    }
+
+    public void initializeAdventure(CardAdventure adventure) {
+
+
+        this.adventure = adventure;
+        adventureOrder = game.getBoard().getRanking();
+
+
+    }
+public List<Player> getAdventureOrder() {
+        return adventureOrder;
+}
+
+    public int getAdv_index(){
+        return adv_index;
+    }
+
+
+    public String nextAdventurePlayer(){
+
+        Player player = adventureOrder.get(adv_index);
+        adv_index++;
+        return player.getNickname();
+
+
+    }
+
+    public void movePlayer(String nickname,int pos){
+        Player p = game.getPlayer(nickname);
+        game.getBoard().movePlayer(p,pos);
+
+    }
+
 
     public GameState getGamestate() {
         return game_state;

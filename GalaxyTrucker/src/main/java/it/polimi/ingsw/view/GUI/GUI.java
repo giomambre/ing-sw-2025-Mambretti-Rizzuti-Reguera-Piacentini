@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI;
 
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.view.*;
 import javafx.application.Platform;
@@ -337,6 +338,11 @@ public class GUI implements View {
     @Override
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         return 0;
+    }
+
+    @Override
+    public void printCardAdventure(CardAdventure adventure) {
+
     }
 
     @Override

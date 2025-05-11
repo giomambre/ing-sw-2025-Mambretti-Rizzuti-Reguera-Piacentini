@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.Color;
@@ -52,6 +53,8 @@ public interface View {
     void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
 
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
+
+    void printCardAdventure(CardAdventure adventure);
 
     int selectDeck();
 

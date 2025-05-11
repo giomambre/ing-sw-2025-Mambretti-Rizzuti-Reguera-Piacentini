@@ -105,7 +105,7 @@ public class Client {
                                 inputQueue.put(msg);
                                 break;
 
-                            case UPDATE_BOARD,WAITING_FLIGHT,INVALID_SHIP, START_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
+                            case NEW_ADVENTURE_DRAWN,UPDATE_BOARD,WAITING_FLIGHT,INVALID_SHIP, START_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -540,13 +540,13 @@ public class Client {
                         elaborate(new Message(MessageType.BUILD_START,""));
                     }*/
                 } else {
-                   // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
+                    // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
                     System.out.println("sono nell'altro ramo");
-                    if(virtualViewType==VirtualViewType.GUI){
+                    if (virtualViewType == VirtualViewType.GUI) {
                         virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
                         System.out.println(">>> [DEBUG] still_Available_colors: " + still_Available_colors);
                         ((GUI) virtualView).updateColors(still_Available_colors);
-                       /* elaborate(new GameStartedMessage(MessageType.GAME_STARTED,"",still_Available_colors));*/
+                        /* elaborate(new GameStartedMessage(MessageType.GAME_STARTED,"",still_Available_colors));*/
                         break;
                     }
 
@@ -554,32 +554,31 @@ public class Client {
                 break;
 
 
-                case UPDATED_SHIPS:
+            case UPDATED_SHIPS:
 
-                    PlayersShipsMessage ps_msg = (PlayersShipsMessage) msg;
-                    List<Player> tmp = ps_msg.getPlayers();
-
-
-                    other_players_local.clear(); // rimuove vecchi dati
-
-                    for (Player p : tmp) {
-                        if (p.getNickname().equals(nickname)) {
-
-                            player_local = p;
+                PlayersShipsMessage ps_msg = (PlayersShipsMessage) msg;
+                List<Player> tmp = ps_msg.getPlayers();
 
 
-                        } else {
-                            other_players_local.add(p);
-                        }
+                other_players_local.clear(); // rimuove vecchi dati
+
+                for (Player p : tmp) {
+                    if (p.getNickname().equals(nickname)) {
+
+                        player_local = p;
+
+
+                    } else {
+                        other_players_local.add(p);
                     }
+                }
 
-                    if(virtualViewType==VirtualViewType.TUI) {
-                        ((TUI) virtualView).setPlayer_local(player_local);
-                        ((TUI) virtualView).setOther_players_local(other_players_local);
-                        ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
-                    }
-                    break;
-
+                if (virtualViewType == VirtualViewType.TUI) {
+                    ((TUI) virtualView).setPlayer_local(player_local);
+                    ((TUI) virtualView).setOther_players_local(other_players_local);
+                    ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
+                }
+                break;
 
 
             case FACED_UP_CARD_UPDATED:
@@ -588,7 +587,7 @@ public class Client {
                     facedUp_deck_local.add(cpm.getCardComponent());
 
 
-                }else{
+                } else {
                     facedUp_deck_local.remove(cpm.getCardComponent());
 
 
@@ -607,14 +606,14 @@ public class Client {
 
                 CardAdventureDeckMessage adm = (CardAdventureDeckMessage) msg;
                 local_adventure_deck = adm.getDeck();
-                if(virtualViewType==VirtualViewType.TUI) {
+                if (virtualViewType == VirtualViewType.TUI) {
                     ((TUI) virtualView).setLocal_adventure_deck(local_adventure_deck);
                 }
                 break;
 
             case TIME_UPDATE:
 
-      virtualView.showMessage("\n" + msg.getContent());
+                virtualView.showMessage("\n" + msg.getContent());
 
                 break;
 
@@ -640,7 +639,7 @@ public class Client {
 
             case WAITING_FLIGHT:
                 virtualView.showMessage("\nHai completato la fase di controllo ora rimani in attesa degli altri giocatori.\n" +
-                "Questa è la tua nave.\n ");
+                        "Questa è la tua nave.\n ");
 
                 virtualView.printShip(player_local.getShip().getShipBoard());
 
@@ -648,31 +647,44 @@ public class Client {
                 break;
 
 
-
             case UPDATE_BOARD:
                 BoardMessage bm = (BoardMessage) msg;
                 localBoard = bm.getBoard();
 
-                if(virtualViewType==VirtualViewType.TUI) {
-                    ((TUI) virtualView).setLocal_board(localBoard);
+                if (!bm.getContent().isEmpty()) {
+                    virtualView.showMessage(bm.getContent());
+                    virtualView.showBoard(localBoard);
+                    System.out.println("\n\n");
 
 
                 }
 
 
+                if (virtualViewType == VirtualViewType.TUI) {
+                    ((TUI) virtualView).setLocal_board(localBoard);
+
+
+                }
                 break;
 
 
-                case INVALID_SHIP:
-                    virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo : " + msg.getContent());
-                    System.exit(0);
+            case INVALID_SHIP:
+                virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo : " + msg.getContent());
+                System.exit(0);
 
 
-                    break;
+                break;
 
             case START_FLIGHT:
                 virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
                 break;
+
+
+            case NEW_ADVENTURE_DRAWN:
+                AdventureCardMessage ad = (AdventureCardMessage) msg;
+                virtualView.printCardAdventure(ad.getAdventure());
+                break;
+
 
 
         }
@@ -684,7 +696,7 @@ public class Client {
 
 
 
-    public static void manageAdventure(CardAdventure adventure) {
+    public static void manageAdventure(CardAdventure adventure) throws IOException{
 
         switch (adventure.getType()){
 
@@ -721,6 +733,9 @@ public class Client {
 
                 double power = ship.calculateEnginePower(battery_usage);
                 System.out.println("\n\n\nPOTENZA MOTORE " + power);
+
+                out.writeObject(new StandardMessageClient(MessageType.ADVENTURE_COMPLETED,String.valueOf(power),clientId));
+
                 break;
 
 

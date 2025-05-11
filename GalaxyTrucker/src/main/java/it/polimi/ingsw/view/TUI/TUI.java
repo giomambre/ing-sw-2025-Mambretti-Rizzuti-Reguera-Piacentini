@@ -510,6 +510,7 @@ public class TUI implements View {
         }
     }
 
+    @Override
     public void printCardAdventure(CardAdventure card) {
 
         switch (card.getType()) {
