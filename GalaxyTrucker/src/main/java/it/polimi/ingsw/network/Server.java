@@ -477,16 +477,21 @@ public class Server {
                             System.out.println("OpenSpace completato");
                             if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
 
-                                System.out.println("DA PESACARE UN ALTRA CARTA");
+                                 adventure = controller.getRandomAdventure();
+                                while(adventure.getType() != CardAdventureType.AbandonedStation){
+                                    adventure = controller.getRandomAdventure();
+                                }
+                                manageAdventure(adventure,controller);
 
 
                             }else {
-                                System.out.println("OpenSpace finite");
 
                                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
                             }
 
                             break;
+
+
 
 
 
@@ -517,7 +522,6 @@ public class Server {
 
 
             case OpenSpace :
-                OpenSpace openSpace = (OpenSpace) adventure;
 
                 controller.initializeAdventure(adventure);
 
@@ -528,6 +532,12 @@ public class Server {
             break;
 
 
+
+            case AbandonedStation:
+                controller.initializeAdventure(adventure);
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "",adventure));
+                break;
 
         }
 
