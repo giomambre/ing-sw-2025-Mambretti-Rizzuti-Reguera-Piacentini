@@ -16,7 +16,6 @@ import static it.polimi.ingsw.controller.GameState.SETTINGS;
 public class GameController {
 
 
-
     private CardAdventure adventure;
     private int adv_index = 0;
 
@@ -27,7 +26,7 @@ public class GameController {
     List<String> waiting_fly_players = new ArrayList<>();
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
-    List<String> build_order_players = new ArrayList<>();
+    List<Player> build_order_players = new ArrayList<>();
 
     Lobby lobby;
     GameState game_state;
@@ -46,9 +45,9 @@ public class GameController {
 
     }
 
-    public CardAdventure getCurrentAdventure(){
+    public CardAdventure getCurrentAdventure() {
 
-        return  adventure;
+        return adventure;
 
     }
 
@@ -60,16 +59,17 @@ public class GameController {
 
 
     }
-public List<Player> getAdventureOrder() {
-        return adventureOrder;
-}
 
-    public int getAdv_index(){
+    public List<Player> getAdventureOrder() {
+        return adventureOrder;
+    }
+
+    public int getAdv_index() {
         return adv_index;
     }
 
 
-    public String nextAdventurePlayer(){
+    public String nextAdventurePlayer() {
 
         Player player = adventureOrder.get(adv_index);
         adv_index++;
@@ -78,9 +78,9 @@ public List<Player> getAdventureOrder() {
 
     }
 
-    public void movePlayer(String nickname,int pos){
+    public void movePlayer(String nickname, int pos) {
         Player p = game.getPlayer(nickname);
-        game.getBoard().movePlayer(p,pos);
+        game.getBoard().movePlayer(p, pos);
 
     }
 
@@ -91,7 +91,15 @@ public List<Player> getAdventureOrder() {
 
 
     public void setBuild_order_players(List<String> players) {
-        this.build_order_players = players;
+
+        for (String nick : players) {
+
+            Player player = game.getPlayer(nick);
+            if (!build_order_players.contains(player)) {
+                build_order_players.add(player);
+            }
+        }
+
     }
 
     public void setGamestate(GameState game_state) {
@@ -108,13 +116,13 @@ public List<Player> getAdventureOrder() {
 
 
         return game.seeDecksOnBoard();
-}
+    }
 
 
-public void startFlight(){
-
+    public void startFlight() {
+        game.setActivePlayers(getBuild_order_players());
         game.startFlight();
-}
+    }
 
     public List<Player> getPlayers() {
         return game.getPlayers();
@@ -162,15 +170,17 @@ public void startFlight(){
     public List<String> getWaitingFlyPlayers() {
         return waiting_fly_players;
     }
-    public void finishSupplyPhase(String nickname){
+
+    public void finishSupplyPhase(String nickname) {
         Player p = game.getPlayer(nickname);
         finished_supply_players.add(p);
 
     }
 
-    public List<String> getBuild_order_players(){
+    public List<Player> getBuild_order_players() {
         return build_order_players;
     }
+
     public List<Player> getFinished_supply_players() {
         return finished_supply_players;
     }
@@ -180,8 +190,7 @@ public void startFlight(){
         game.getBoard().putPlayersOnBoard(players);
     }
 
-    public  List<Player> ordinaPlayers(List<Player> players, List<String> order) {
-
+    public List<Player> ordinaPlayers(List<Player> players, List<String> order) {
 
 
         Map<String, Player> playerMap = new HashMap<>();
@@ -198,8 +207,6 @@ public void startFlight(){
 
         return order_player;
     }
-
-
 
 
     public CardAdventure getRandomAdventure() {
@@ -259,8 +266,8 @@ public void startFlight(){
 
 
         try {
-            if(p.getShip().getExtra_components().size()<2)
-            p.secureComponent(card);
+            if (p.getShip().getExtra_components().size() < 2)
+                p.secureComponent(card);
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
@@ -304,7 +311,6 @@ public void startFlight(){
                 ((LivingUnit) card).addAlien(type);
 
 
-
             } else {
                 System.out.println("Alien Support not found.");
             }
@@ -334,20 +340,20 @@ public void startFlight(){
     }
 
 
-    public  List<Pair<Integer, Integer>> checkShipConnectors(String nickname) {
+    public List<Pair<Integer, Integer>> checkShipConnectors(String nickname) {
 
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
-       return ship.checkShipConnections();
+        return ship.checkShipConnections();
     }
 
-public void setShipPlance(String nickname, Ship ship) {
+    public void setShipPlance(String nickname, Ship ship) {
         Player p = game.getPlayer(nickname);
 
         p.setShip(ship);
-}
+    }
 
-    public List<List<Pair<Integer, Integer>>> getValidPieces(String nickname){
+    public List<List<Pair<Integer, Integer>>> getValidPieces(String nickname) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
@@ -367,7 +373,7 @@ public void setShipPlance(String nickname, Ship ship) {
 
     }
 
-    public CardComponent[][] choosePieces (int choice, String nickname) {
+    public CardComponent[][] choosePieces(int choice, String nickname) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
         ship.choosePiece(choice);
@@ -376,7 +382,7 @@ public void setShipPlance(String nickname, Ship ship) {
     }
 
     public CardComponent removeCardFacedUp(int index) {
-        return  game.getFacedUpCard(index);
+        return game.getFacedUpCard(index);
     }
 
     public List<CardComponent> getFacedUpCards() {
@@ -385,28 +391,26 @@ public void setShipPlance(String nickname, Ship ship) {
 
     public void addBuildPhasePlayer(String nickname) {
         Player p = game.getPlayer(nickname);
-        if(!game.getBuildPhasePlayers().contains(p)) {
+        if (!game.getBuildPhasePlayers().contains(p)) {
             game.addBuildPhasePlayer(p);
-        }
-        else throw new IllegalArgumentException("");
+        } else throw new IllegalArgumentException("");
     }
 
-    public void executeAbandonedShip(String nickname, Map<CardComponent,Integer> astronaut_losses, AbandonedShip abandonedShip) {
+    public void executeAbandonedShip(String nickname, Map<CardComponent, Integer> astronaut_losses, AbandonedShip abandonedShip) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
         int total_crewmates = 0;
 
-        for(int i = 0 ; i<ship.getROWS(); i++){
-            for(int j = 0 ; j<ship.getCOLS(); j++) {
-                if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit)
-                    total_crewmates+= ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates();
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == ComponentType.LivingUnit)
+                    total_crewmates += ((LivingUnit) ship.getComponent(i, j)).getNum_crewmates();
             }
         }
 
-        if(total_crewmates> abandonedShip.getCrewmates_loss()){
+        if (total_crewmates > abandonedShip.getCrewmates_loss()) {
             abandonedShip.execute(p, astronaut_losses);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
         }
 
@@ -416,7 +420,7 @@ public void setShipPlance(String nickname, Ship ship) {
         CardAdventureType type = cardAdventure.getType();
         switch (type) {
             case AbandonedStation -> {
-                return ((AbandonedStation)cardAdventure).getCargo();
+                return ((AbandonedStation) cardAdventure).getCargo();
             }
 
             default -> throw new IllegalArgumentException("err");
@@ -424,21 +428,20 @@ public void setShipPlance(String nickname, Ship ship) {
         }
     }
 
-    public void executeAbandonedStation(String nickname, Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions, AbandonedStation abandonedStation) {
+    public void executeAbandonedStation(String nickname, Map<CardComponent, Map<Cargo, Integer>> new_cargo_positions, AbandonedStation abandonedStation) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
         int total_crewmates = 0;
-        for(int i = 0 ; i<ship.getROWS(); i++){
-            for(int j = 0 ; j<ship.getCOLS(); j++) {
-                if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit)
-                    total_crewmates+= ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates();
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                if (ship.getComponent(i, j).getComponentType() == ComponentType.LivingUnit)
+                    total_crewmates += ((LivingUnit) ship.getComponent(i, j)).getNum_crewmates();
             }
         }
 
-        if (total_crewmates> abandonedStation.getNeeded_crewmates()){
-            abandonedStation.execute(p, new_cargo_positions );
-        }
-        else {
+        if (total_crewmates > abandonedStation.getNeeded_crewmates()) {
+            abandonedStation.execute(p, new_cargo_positions);
+        } else {
             throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
         }
     }
@@ -448,26 +451,26 @@ public void setShipPlance(String nickname, Ship ship) {
         return combatZone.getMeteors();
     }
 
-    public void executeMeteors(String nickname, CardAdventure meteor, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage){
+    public void executeMeteors(String nickname, CardAdventure meteor, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage) {
         Player p = game.getPlayer(nickname);
-        ((MeteorSwarm)meteor).execute(p,direction,meteor_type,shield_usage,battery,position,double_cannon_usage);
+        ((MeteorSwarm) meteor).execute(p, direction, meteor_type, shield_usage, battery, position, double_cannon_usage);
     }
 
-    public String calculateLessCrewmates(List<Player> players){
+    public String calculateLessCrewmates(List<Player> players) {
         String lessCrewmatesNickname = "";
         int lessCrewmates = 100;
         int total_crewmates = 0;
         Ship ship;
-        for(Player p : players){
+        for (Player p : players) {
             ship = p.getShip();
-            for(int i = 0 ; i<ship.getROWS(); i++){
-                for(int j = 0 ; j<ship.getCOLS(); j++) {
-                    if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit)
-                        total_crewmates+= ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates();
+            for (int i = 0; i < ship.getROWS(); i++) {
+                for (int j = 0; j < ship.getCOLS(); j++) {
+                    if (ship.getComponent(i, j).getComponentType() == ComponentType.LivingUnit)
+                        total_crewmates += ((LivingUnit) ship.getComponent(i, j)).getNum_crewmates();
                 }
             }
 
-            if(total_crewmates < lessCrewmates){
+            if (total_crewmates < lessCrewmates) {
                 lessCrewmatesNickname = p.getNickname();
                 lessCrewmates = total_crewmates;
             }
@@ -476,14 +479,14 @@ public void setShipPlance(String nickname, Ship ship) {
         return lessCrewmatesNickname;
     }
 
-    public double calculateEnginePower(String nickname, Map<CardComponent, Boolean> battery_usage){
+    public double calculateEnginePower(String nickname, Map<CardComponent, Boolean> battery_usage) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
         return ship.calculateEnginePower(battery_usage);
     }
 
-    public double calculateCannonPower(String nickname, Map<CardComponent, Boolean> battery_usage){
+    public double calculateCannonPower(String nickname, Map<CardComponent, Boolean> battery_usage) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
@@ -496,7 +499,7 @@ public void setShipPlance(String nickname, Ship ship) {
         combatZone.executeLessCrewmates1(p);
     }
 
-    public void executeLessEnginePower1(String nickname,Map<CardComponent,Integer> astronaut_losses, CombatZone combatZone) {
+    public void executeLessEnginePower1(String nickname, Map<CardComponent, Integer> astronaut_losses, CombatZone combatZone) {
         Player p = game.getPlayer(nickname);
         combatZone.executeLessEnginePower1(p, astronaut_losses);
     }
@@ -522,7 +525,7 @@ public void setShipPlance(String nickname, Ship ship) {
         return meteor.getMeteors();
     }
 
-    public void executeOpenSpace(List<Player> players, Map<Player,Map<CardComponent, Boolean>> battery_usage, OpenSpace openspace) {
+    public void executeOpenSpace(List<Player> players, Map<Player, Map<CardComponent, Boolean>> battery_usage, OpenSpace openspace) {
         openspace.execute(players, battery_usage);
     }
 
@@ -534,7 +537,7 @@ public void setShipPlance(String nickname, Ship ship) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
-        if (pirates.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+        if (pirates.getCannons_strenght() < ship.calculateCannonPower(battery_usage))
             return true;
 
         return false;
@@ -544,7 +547,7 @@ public void setShipPlance(String nickname, Ship ship) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
-        if (pirates.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+        if (pirates.getCannons_strenght() < ship.calculateCannonPower(battery_usage))
             pirates.executeWin(p);
     }
 
@@ -561,7 +564,7 @@ public void setShipPlance(String nickname, Ship ship) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
-        if (slavers.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+        if (slavers.getCannons_strenght() < ship.calculateCannonPower(battery_usage))
             return true;
 
         return false;
@@ -572,7 +575,7 @@ public void setShipPlance(String nickname, Ship ship) {
         slavers.executeWin(p);
     }
 
-    public void executeLossSlavers(String nickname, Map<CardComponent,Integer> astronaut_losses,Slavers slavers) {
+    public void executeLossSlavers(String nickname, Map<CardComponent, Integer> astronaut_losses, Slavers slavers) {
         Player p = game.getPlayer(nickname);
         slavers.executeLoss(p, astronaut_losses);
     }
@@ -581,18 +584,18 @@ public void setShipPlance(String nickname, Ship ship) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
-        if (smugglers.getCannons_strenght()<ship.calculateCannonPower(battery_usage))
+        if (smugglers.getCannons_strenght() < ship.calculateCannonPower(battery_usage))
             return true;
 
         return false;
     }
 
-    public void executeWinSmugglers(String nickname, Smugglers smugglers,Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
+    public void executeWinSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
         Player p = game.getPlayer(nickname);
         smugglers.executeWin(p, new_cargo_position, choice);
     }
 
-    public void executeLossSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> cargo_position){
+    public void executeLossSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
         Player p = game.getPlayer(nickname);
         smugglers.executeLoss(p, cargo_position);
     }

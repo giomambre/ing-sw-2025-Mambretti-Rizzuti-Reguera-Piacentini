@@ -29,6 +29,10 @@ public class TUI implements View {
     Map<Direction, List<CardAdventure>> local_adventure_deck;
     private Player player_local;
     private List<CardComponent> local_extra_components;
+
+    private Map<Integer,Player> local_board_positions;
+    private Map<Integer,Player> local_board_laps;
+
     private boolean isMenuOpen = false; // Variabile per tenere traccia dello stato del menu
     private String lastRequest = ""; // Variabile per memorizzare l'ultima richiesta
     private Board local_board;
@@ -107,8 +111,12 @@ public class TUI implements View {
         this.player_local = player;
     }
 
-    public void setLocal_board(Board local_board) {
-        this.local_board = local_board;
+    public void setLocal_board_position(Map<Integer,Player> local_board) {
+        this.local_board_positions = local_board;
+    }
+
+    public void setLocal_board_laps(Map<Integer,Player> local_board_laps) {
+        this.local_board_laps = local_board_laps;
     }
 
 
@@ -169,7 +177,7 @@ public class TUI implements View {
                 }
             }
 
-            case 3-> showBoard(local_board);
+            case 3-> showBoard(local_board_positions,local_board_laps);
 
             case 4 -> showAdventureDeck(local_adventure_deck);
 
@@ -1236,10 +1244,12 @@ return total;
         }
 
         // Stampa l'elenco numerato delle batterie
-        System.out.println("Seleziona una batteria:");
+        System.out.println("\nSeleziona una batteria (Riga ; Colonna) , (Dimensione ; Batterie Rimaste) :");
         for (int idx = 0; idx < batteryPositions.size(); idx++) {
             Pair<Integer, Integer> pos = batteryPositions.get(idx);
-            System.out.println("\n\t"+(idx + 1) + ". Batteria alla RIGA : " + pos.getKey() + ", COLONNA  : " + pos.getValue() );
+            Battery battery = (Battery) ship.getComponent( pos.getKey(), pos.getValue());
+
+            System.out.println("\n\t"+(idx + 1) + ". Batteria in  ( " + pos.getKey() + " ; " + pos.getValue() + " )  , " + " ( " + battery.getSize() + " ; " + battery.getStored() + " )" );
         }
 
         // Chiedi all'utente di scegliere un'opzione
@@ -1301,9 +1311,8 @@ return total;
 
 
     @Override
-    public void showBoard(Board b) {
-        Map<Integer, Player> positions = b.getBoard();
-        Map<Integer, Player> laps = b.getLaps();
+    public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps){
+
         final int BOARD_SIZE = 24;
         final int ROW_WIDTH = 6;
         final int CELL_WIDTH = 10; // Larghezza di ogni cella
