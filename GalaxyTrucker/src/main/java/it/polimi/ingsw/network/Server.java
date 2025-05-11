@@ -471,20 +471,23 @@ public class Server {
 
                         case OpenSpace :
 
+
                             int eng_power = Integer.parseInt( adv_msg.getContent());
                             controller.movePlayer(getNickname(adv_msg.getId_client()),eng_power);
                             sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
                                     + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power ,controller.getBoard()));
-
+                            System.out.println("OpenSpace completato");
                             if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
 
                                 System.out.println("DA PESACARE UN ALTRA CARTA");
 
 
                             }else {
+                                System.out.println("OpenSpace finite");
 
                                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
                             }
+
                             break;
 
 

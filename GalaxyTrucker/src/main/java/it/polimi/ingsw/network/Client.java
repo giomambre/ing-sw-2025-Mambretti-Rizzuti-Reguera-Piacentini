@@ -731,7 +731,7 @@ public class Client {
                     }
                 }
 
-                double power = ship.calculateEnginePower(battery_usage);
+                int power = ship.calculateEnginePower(battery_usage);
                 System.out.println("\n\n\nPOTENZA MOTORE " + power);
 
                 out.writeObject(new StandardMessageClient(MessageType.ADVENTURE_COMPLETED,String.valueOf(power),clientId));
