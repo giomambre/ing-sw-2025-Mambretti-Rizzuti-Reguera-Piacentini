@@ -248,6 +248,27 @@ public class Board implements Serializable {
         game.setActivePlayers(active_players);
     }
 
+
+    public Map<Integer, Player> copyPlayerPositions() {
+        Map<Integer, Player> copy = new HashMap<>();
+        for (Map.Entry<Integer, Player> entry : this.player_position.entrySet()) {
+            // Assumiamo che Player abbia un costruttore di copia
+            copy.put(entry.getKey(), entry.getValue().copyPlayer());
+        }
+        return copy;
+    }
+
+    public Map<Integer, Player> copyLaps() {
+        Map<Integer, Player> copy = new HashMap<>();
+        for (Map.Entry<Integer, Player> entry : this.player_position.entrySet()) {
+            Player originalPlayer = entry.getValue();
+            Player copiedPlayer = entry.getValue().copyPlayer(); // costruttore di copia
+            copiedPlayer.setNum_laps(originalPlayer.getNum_laps()); // assicurati che setNum_laps esista
+            copy.put(entry.getKey(), copiedPlayer);
+        }
+        return copy;
+    }
+
 }
 
 

@@ -41,7 +41,10 @@ public class Client {
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
     private static boolean forced_close = false;
-    private static Board localBoard;
+
+    private static Map<Integer,Player> local_board_positions;
+    private static Map<Integer,Player> local_board_laps;
+
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
@@ -649,11 +652,12 @@ public class Client {
 
             case UPDATE_BOARD:
                 BoardMessage bm = (BoardMessage) msg;
-                localBoard = bm.getBoard();
+                local_board_laps = bm.getLaps();
+                local_board_positions = bm.getPositions();
 
                 if (!bm.getContent().isEmpty()) {
                     virtualView.showMessage(bm.getContent());
-                    virtualView.showBoard(localBoard);
+                    virtualView.showBoard(local_board_positions,local_board_laps);
                     System.out.println("\n\n");
 
 
@@ -661,7 +665,9 @@ public class Client {
 
 
                 if (virtualViewType == VirtualViewType.TUI) {
-                    ((TUI) virtualView).setLocal_board(localBoard);
+                    ((TUI) virtualView).setLocal_board_position(local_board_positions);
+                    ((TUI) virtualView).setLocal_board_laps(local_board_positions);
+
 
 
                 }
@@ -715,7 +721,6 @@ public class Client {
 
                            battery =  virtualView.askEngine(new Pair<>(i,j));
                            if(battery.getKey() == -1 || battery.getValue() == -1){
-                               //didnt used battery
 
                                battery_usage.put(card,false);
 
@@ -724,6 +729,7 @@ public class Client {
 
 
                                battery_usage.put(card,true);
+                               //DA GESTIRE L UTILIZZO DI BATTERIE
                            }
 
                         }

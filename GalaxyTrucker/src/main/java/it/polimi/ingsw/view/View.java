@@ -66,7 +66,7 @@ public interface View {
 
     int showCard(CardComponent card);
 
-    void showBoard(Board board);
+    void showBoard( Map<Integer, Player> positions, Map<Integer, Player> laps);
 
     public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss);
 

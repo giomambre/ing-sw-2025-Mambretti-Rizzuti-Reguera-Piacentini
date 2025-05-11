@@ -348,7 +348,7 @@ public class Server {
 
 
                 controller.setBuild_order_players(lt.getFinishOrder());
-
+                System.out.println("FINISHED ORDER" + lt.getFinishOrder());
                 break;
 
 
@@ -446,9 +446,7 @@ public class Server {
                 controller = all_games.get(getLobbyId(start_msg.getId_client()));
                 controller.startFlight();
                 sendToAllClients(controller.getLobby(),new Message(START_FLIGHT, ""));
-                controller.putPlayersOnBoard(controller.ordinaPlayers(controller.getPlayers(),controller.getBuild_order_players()));
-                sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard()));
-                System.out.println(controller.ordinaPlayers(controller.getPlayers(),controller.getBuild_order_players()));
+                sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
                 while(adventure.getType() != CardAdventureType.OpenSpace){
@@ -475,7 +473,7 @@ public class Server {
                             int eng_power = Integer.parseInt( adv_msg.getContent());
                             controller.movePlayer(getNickname(adv_msg.getId_client()),eng_power);
                             sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
-                                    + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power ,controller.getBoard()));
+                                    + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
                             System.out.println("OpenSpace completato");
                             if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
 

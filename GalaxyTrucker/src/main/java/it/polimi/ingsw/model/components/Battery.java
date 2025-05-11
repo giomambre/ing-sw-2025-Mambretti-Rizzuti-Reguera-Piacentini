@@ -104,4 +104,9 @@ public class Battery extends CardComponent  implements Serializable {
          return copy;
      }
 
+
+     public int getSize() {
+        return size;
+     }
+
 }
