@@ -71,9 +71,13 @@ public class AbandonedStation extends  CardAdventure implements Serializable {
         return cargo_reward;
     }
 
+
+
     /**@return the number of crewmates required to use this card*/
     public int getNeeded_crewmates() {
         return needed_crewmates;
     }
-
+public void setNeeded_crewmates(int needed_crewmates) {
+        this.needed_crewmates = needed_crewmates;
+}
 }

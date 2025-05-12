@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.TUI;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Lobby;
@@ -521,6 +522,8 @@ public class TUI implements View {
     @Override
     public void printCardAdventure(CardAdventure card) {
 
+        System.out.println("\n----------------------------------------------------------------------\n");
+
         switch (card.getType()) {
 
             case OpenSpace: {
@@ -615,31 +618,50 @@ public class TUI implements View {
 
 
         }
+        System.out.println("\n----------------------------------------------------------------------\n");
+
     }
 
-    private void printCargo(List<Cargo> cargos) {
-        System.out.println("Il carico contiene le seguenti merci:");
+
+    @Override
+    public Boolean acceptAdventure() {
+        System.out.println("\nDESIDERI ACCETTARE LA CARTA?");
+        System.out.println("\t 1 : ACCETTA\n\t 2 : RIFIUTA");
+        int choice = readValidInt("Scelta ", 1,2,false);
+        return choice == 1;
+    }
+
+    @Override
+    public int askCargo(List<Cargo> cargos) {
+        printCargo(cargos);
+        return readValidInt("Scelta ", 0,cargos.size()-1,true);
+    }
+
+    @Override
+    public void printCargo(List<Cargo> cargos) {
         int i=0;
         for (Cargo cargo : cargos) {
-            System.out.println(i+": ");
+            System.out.print( "\t" + i+" : ");
             switch (cargo) {
                 case Blue:
-                    System.out.println("cargo blu");
+                    System.out.print("cargo blu");
                     break;
                 case Yellow:
-                    System.out.println("cargo giallo");
+                    System.out.print("cargo giallo");
                     break;
                 case Green:
-                    System.out.println("cargo verde");
+                    System.out.print("cargo verde");
                     break;
                 case Red:
-                    System.out.println("cargo rosso");
+                    System.out.print("cargo rosso");
                     break;
                 case Empty:
-                    System.out.println("cargo vuoto");
+                    System.out.print("spazio vuoto");
                     break;
             }
+            i++;
         }
+        System.out.println("\n");
     }
 
     private void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
@@ -1173,54 +1195,92 @@ return total;
     }
 
     @Override
-    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward){
-        Map<CardComponent, Map<Cargo,Integer>> cargos = new HashMap<>();
-        Map<Cargo, Integer> cargo = new HashMap<>();
-        int chooseCargo;
-        int choice;
-        for(int i = 0 ; i<ship.getROWS(); i++)
+    public Pair<Pair<Integer,Integer>, Integer> addCargo(Ship ship, Cargo cargo){
+        List<Pair<Integer,Integer>> red_storage = new ArrayList<>();
+        List<Pair<Integer,Integer>> other_storage = new ArrayList<>();
+        Pair<Pair<Integer,Integer>,Integer> final_value = null;
+        Pair<Integer,Integer> tmp_storage;
+
+        for(int i = 0 ; i<ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
-                printCargo(cargoReward);
-                System.out.println("Questa è la lista dei cargo che hai ricevuto! Premi: \n -1. per uscire \n altrimenti il numero del cargo che vuoi aggiungere ");
-                chooseCargo = readValidInt("Scelta:",0,cargoReward.size(),true);
 
-                if ((ship.getComponent(i, j).getComponentType() == BlueStorage || ship.getComponent(i, j).getComponentType() == RedStorage)&&chooseCargo!=-1) {
-                    if (ship.getComponent(i, j).getComponentType() == BlueStorage)
-                        System.out.println("BLU STORAGE alle coordinate x: " + i + " y:" + j);
-                    else
-                        System.out.println("RED STORAGE alle coordinate x: " + i + " y:" + j);
-                    System.out.println("Capienza: " + ((Storage) ship.getComponent(i, j)).getSize());
-                    printCargo(((Storage) ship.getComponent(i, j)).getCarried_cargos());
-                    System.out.println("Premi: \n 1. per aggiungere cargo \n 2. passare al prossimo storage ");
-                    choice=readValidInt("Scelta: ",1,2,false);
-                    if (choice == 1) {
-                        int remove = 0;
-                        while (remove != -1) {
-                            System.out.println("Premi: \n -1. per passare al prossimo cargo \n altrimenti il numero della stiva dove vuoi aggiungere/sostituire il cargo: ");
-                            printCargo(((Storage) ship.getComponent(i, j)).getCarried_cargos());
-                            System.out.println("");
-                            remove = readInt();
+                if (ship.getComponent(i, j).getComponentType() == RedStorage) {
 
-                            while (remove < -1 || remove > ((Storage) ship.getComponent(i, j)).getSize()) {
-                                System.out.println("Opzione non disponibile, reinserire:");
-                                remove = readInt();
-                            }
-                            if (remove >= 0 && remove <= ((Storage) ship.getComponent(i, j)).getSize()) {
-                                cargo.put(cargoReward.get(chooseCargo), remove);
-                                cargos.put(ship.getComponent(i, j), cargo);
-                                cargoReward.remove(chooseCargo);
-                            }
-                        }
+                    red_storage.add(new Pair<>(i, j));
+                    other_storage.add(new Pair<>(i, j));
 
-                    } else {
-                        break;
+
+                } else if (ship.getComponent(i, j).getComponentType() == BlueStorage) {
+
+                    other_storage.add(new Pair<>(i, j));
+                }
+            }
+        }
+int i = 0;
+
+            if(cargo == Cargo.Red) {
+                i = 0;
+                for (Pair<Integer, Integer> s : red_storage) {
+                    CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+
+                    System.out.println("\n-> [" + i + "] RED STORAGE in ( " + (s.getKey()) + " : " + s.getValue() + " )"
+                            + " contiene : ");
+                    printCargo(((Storage) card).getCarried_cargos());
+                    i++;
+                }
+
+                if(red_storage.isEmpty()){
+                    System.out.println("\nNON CI SONO RED STORAGE");
+                    return null;
+                }
+
+                int storage_scelto = readValidInt("Scelta ", red_storage.size()-1, i, true);
+                if(storage_scelto == -1 ) return null;
+                tmp_storage = red_storage.get(storage_scelto); //coordinate storage scelto
+                Storage s =(Storage) ship.getComponent(tmp_storage.getKey(), tmp_storage.getValue());
+                int scelta = askCargo(s.getCarried_cargos());
+
+                if (scelta != -1) {
+                    final_value = new Pair<>(tmp_storage,scelta);
+                }
+
+            }else{
+                for (Pair<Integer, Integer> s : other_storage) {
+
+                    CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+                    String tmp = "";
+                    switch (card.getComponentType()){
+
+                        case BlueStorage -> tmp = "BLUE STORAGE";
+                        case RedStorage -> tmp = "RED STORAGE";
                     }
 
 
+                    System.out.println("\n-> [" + i + "] " + tmp + " in ( " + (s.getKey()) + " : " + s.getValue() + " )"
+                            + " contiene :  ");
+                    printCargo(((Storage) card).getCarried_cargos());
+
+                    i++;
+                }
+
+                if(other_storage.isEmpty()){
+                    System.out.println("\nNON CI SONO STORAGE");
+                    return null;
+                }
+                int storage_scelto = readValidInt("Scelta ", 0, other_storage.size()-1, true);
+                if(storage_scelto == -1 ) return null;
+                tmp_storage = other_storage.get(storage_scelto); //coordinate storage scelto
+                Storage s =(Storage) ship.getComponent(tmp_storage.getKey(), tmp_storage.getValue());
+                int scelta = askCargo(s.getCarried_cargos());
+
+                if (scelta != -1) {
+                    final_value = new Pair<>(tmp_storage,scelta);
                 }
             }
 
-        return cargos;
+
+        return final_value;
     }
 
     @Override

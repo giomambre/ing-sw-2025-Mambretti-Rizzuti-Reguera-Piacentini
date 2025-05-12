@@ -367,14 +367,11 @@ public class GUI implements View {
         Map<CardComponent, Map<Cargo, Integer>> cargos = new HashMap<>();
 
         return cargos;
-    };
+    }
 
     @Override
-    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward){
-        Map<CardComponent, Map<Cargo,Integer>> cargos = new HashMap<>();
-        Map<Cargo, Integer> cargo = new HashMap<>();
-
-        return cargos;
+    public Pair<Pair<Integer, Integer>, Integer> addCargo(Ship ship, Cargo cargo) {
+        return null;
     }
 
     @Override
@@ -390,6 +387,16 @@ public class GUI implements View {
     @Override
     public int askFacedUpCard(List<CardComponent> cards) {
         return 0;
+    }
+
+    @Override
+    public void printCargo(List<Cargo> cargos) {
+
+    }
+
+    @Override
+    public Boolean acceptAdventure() {
+        return null;
     }
 
     @Override
@@ -422,6 +429,11 @@ public class GUI implements View {
     @Override
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
         return null;
+    }
+
+    @Override
+    public int askCargo(List<Cargo> cargos) {
+        return 0;
     }
 
 

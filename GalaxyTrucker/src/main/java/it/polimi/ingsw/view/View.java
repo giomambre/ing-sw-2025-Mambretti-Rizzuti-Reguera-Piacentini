@@ -62,6 +62,11 @@ public interface View {
 
     int askFacedUpCard(List<CardComponent> cards);
 
+     void printCargo(List<Cargo> cargos);
+
+
+        Boolean acceptAdventure();
+
     int askSecuredCard(List<CardComponent> cards);
 
     int showCard(CardComponent card);
@@ -72,7 +77,7 @@ public interface View {
 
     public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship);
 
-    public Map<CardComponent, Map<Cargo,Integer>> addCargo(Ship ship, List<Cargo> cargoReward);
+    public Pair<Pair<Integer,Integer>, Integer> addCargo(Ship ship, Cargo cargo);
 
     public Pair<Integer,Integer> useBattery(Ship ship);
 
@@ -85,4 +90,8 @@ public interface View {
     Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
 
     Pair<Integer,Integer> askEngine(Pair<Integer,Integer>  cannon);
+
+
+    int askCargo(List<Cargo> cargos);
+
 }

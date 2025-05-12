@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.AbandonedStation;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
@@ -449,7 +450,8 @@ public class Server {
                 sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                while(adventure.getType() != CardAdventureType.OpenSpace){
+                while(adventure.getType() != CardAdventureType.AbandonedStation){
+
                     adventure = controller.getRandomAdventure();
                 }
                 manageAdventure(adventure,controller);
@@ -483,24 +485,15 @@ public class Server {
                                 }
                                 manageAdventure(adventure,controller);
 
-
                             }else {
 
                                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
+
                             }
 
                             break;
 
-
-
-
-
-
                     }
-
-
-
-
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
@@ -535,7 +528,16 @@ public class Server {
 
             case AbandonedStation:
                 controller.initializeAdventure(adventure);
-                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+        sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+
+                if(controller.getAdventureOrder().isEmpty()){
+
+                    sendToAllClients(controller.getLobby(), new Message (ADVENTURE_SKIP,""));
+                    adventure = controller.getRandomAdventure();
+                    manageAdventure(adventure,controller);
+                    break;
+                }
+
                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "",adventure));
                 break;
 

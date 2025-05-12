@@ -3,10 +3,13 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.AbandonedStation;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
+import it.polimi.ingsw.model.components.Storage;
+import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
@@ -17,6 +20,7 @@ import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.network.messages.*;
 import javafx.application.Application;
 import javafx.util.Pair;
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -102,13 +106,13 @@ public class Client {
                         Message msg = (Message) in.readObject();
 
                         switch (msg.getType()) {
-                            case OPEN_SPACE,REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
+                            case ABANDONED_STATION,REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
                                  CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
                                  CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES, INVALID_CONNECTORS,SELECT_PIECE:
                                 inputQueue.put(msg);
                                 break;
 
-                            case NEW_ADVENTURE_DRAWN,UPDATE_BOARD,WAITING_FLIGHT,INVALID_SHIP, START_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
+                            case ADVENTURE_SKIP,NEW_ADVENTURE_DRAWN,UPDATE_BOARD,WAITING_FLIGHT,INVALID_SHIP, START_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -470,6 +474,7 @@ public class Client {
 
                     }
                 }
+                System.out.println("HO " + player_local.getShip().getNumOfCrewmates());
                 out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
 
 
@@ -584,6 +589,10 @@ public class Client {
                 break;
 
 
+
+            case ADVENTURE_SKIP:
+                virtualView.showMessage("\n----NESSUNO HA POTUTO PARTECIPARE A QUESTA AVVENTURA SI PASSA ALLA PROSSIMO----\n");
+                break;
             case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
@@ -689,8 +698,14 @@ public class Client {
             case NEW_ADVENTURE_DRAWN:
                 AdventureCardMessage ad = (AdventureCardMessage) msg;
                 virtualView.printCardAdventure(ad.getAdventure());
+                System.out.println();
                 break;
 
+
+            case OPEN_SPACE,ABANDONED_STATION:
+                AdventureCardMessage ac = (AdventureCardMessage) msg;
+                manageAdventure(ac.getAdventure());
+                break;
 
 
         }
@@ -746,14 +761,51 @@ public class Client {
 
 
 
-            case AbandonedStation:
+                    case AbandonedStation:
+
+                        Boolean choice = virtualView.acceptAdventure();
+                        AbandonedStation a_s = (AbandonedStation) adventure;
+                        Pair<Pair<Integer,Integer>,Integer> new_position;
+
+                        List<Cargo> cargos = a_s.getCargo();
+
+                        if(choice) {
+
+
+                            while (true) {
+
+                                int scelta = virtualView.askCargo(cargos);
+
+                                if (scelta == -1) {
+                                    break;
+                                }
+
+                                Cargo c = cargos.get(scelta);
+
+
+                                new_position = virtualView.addCargo(player_local.getShip(), c);
+                                if (new_position != null) {
+                                    ship = player_local.getShip();
+                                    cargos.remove(scelta);
+                                    Storage s = ((Storage) ship.getComponent(new_position.getKey().getKey(), new_position.getKey().getValue()));
+                                    s.addCargo(c, new_position.getValue());
+
+                                }
+                            }
+                        }
+                        else {
+                            System.out.println("é uscito");
+
+                        }
 
 
 
 
 
 
-        }
+
+
+                }
 
 
     }

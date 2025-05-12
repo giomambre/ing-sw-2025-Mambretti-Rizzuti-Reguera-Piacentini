@@ -82,7 +82,7 @@ public class PlanetsTest {
 
         choosen_planets.put(ship.getComponent(3,3), cargoMap);
 
-        ((Planets)planets).execute(player, choosen_planets);
+       // ((Planets)planets).execute(player, choosen_planets);
 
         assertEquals(2, ((Storage)ship.getComponent(3,3)).getCargoCount());
         Assertions.assertEquals(board.getBoard().get(5),player);

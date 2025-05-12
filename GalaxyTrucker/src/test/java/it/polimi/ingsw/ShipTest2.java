@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.*;
+import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import it.polimi.ingsw.model.enumerates.Gametype;
@@ -14,6 +15,7 @@ import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -342,7 +344,16 @@ public void testChoosePiece() {
     public  void  testPrintShipPlance() {
         View v= new TUI();
 
-        v.printShip(ship1.getShipBoard());
+        v.acceptAdventure();
+        List<Cargo> l1= new ArrayList<>();
+        l1.add(Cargo.Red);
+        l1.add(Cargo.Yellow);
+        l1.add(Cargo.Blue);
+        l1.add(Cargo.Green);
+
+        v.addCargo(ship1,l1.getFirst());
+
+
  }
 
 

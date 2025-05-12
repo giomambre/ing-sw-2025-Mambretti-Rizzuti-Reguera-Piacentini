@@ -66,6 +66,11 @@ public class Storage extends CardComponent  implements Serializable {
         }
     }
 
+
+    public void addCargo(Cargo cargo, int index){
+        carried_cargos.set(index, cargo);
+    }
+
     /** @return a full list of cargo currently stored in this component*/
     public List<Cargo> getCarried_cargos() {return carried_cargos;}
 

@@ -44,6 +44,7 @@ public enum MessageType {
     ADVENTURE_COMPLETED,
     NEW_ADVENTURE_DRAWN,
     ABANDONED_STATION,
+    ADVENTURE_SKIP,
 
 
 }

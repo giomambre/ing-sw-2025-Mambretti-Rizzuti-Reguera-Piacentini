@@ -55,8 +55,26 @@ public class GameController {
 
 
         this.adventure = adventure;
-        adventureOrder = game.getBoard().getRanking();
+        adventureOrder.clear();
+        switch (adventure.getType()) {
+            case OpenSpace :
+            adventureOrder = game.getBoard().getRanking();
+            break;
 
+            case AbandonedStation:
+                AbandonedStation abandonedStation = (AbandonedStation) adventure;
+                for(Player p : game.getBoard().getRanking()){
+
+                    if(p.getShip().getNumOfCrewmates() >= abandonedStation.getNeeded_crewmates() ){
+
+                        adventureOrder.add(p);
+                    }
+
+                }
+                break;
+
+
+        }
 
     }
 
@@ -428,6 +446,7 @@ public class GameController {
         }
     }
 
+/*
     public void executeAbandonedStation(String nickname, Map<CardComponent, Map<Cargo, Integer>> new_cargo_positions, AbandonedStation abandonedStation) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
@@ -445,6 +464,7 @@ public class GameController {
             throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
         }
     }
+*/
 
     //Serie di metodi di Combat Zone che vanno gestiti poi dal controller in base a quale id esce
     public List<Pair<MeteorType, Direction>> getCombatZoneMeteors(CombatZone combatZone) {
@@ -555,7 +575,7 @@ public class GameController {
         return planets.getCargos(choice);
     }
 
-    public void executePlanets(Planets planets, String nickname, Map<CardComponent, Map<Cargo, Integer>> cargos) {
+   public void executePlanets(Planets planets, String nickname, Map<CardComponent, Map<Cargo, Integer>> cargos) {
         Player p = game.getPlayer(nickname);
         planets.execute(p, cargos);
     }
@@ -590,10 +610,10 @@ public class GameController {
         return false;
     }
 
-    public void executeWinSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
+  /*  public void executeWinSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
         Player p = game.getPlayer(nickname);
         smugglers.executeWin(p, new_cargo_position, choice);
-    }
+    }*/
 
     public void executeLossSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
         Player p = game.getPlayer(nickname);
