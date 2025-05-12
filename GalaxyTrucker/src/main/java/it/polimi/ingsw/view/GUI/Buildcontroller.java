@@ -48,17 +48,31 @@ public class Buildcontroller {
                     cell.setStyle("-fx-background-color: lightyellow;");
                 }
                 if (i == 2 && j == 3) {
-                    if(gui.getClient().getPlayer_local().getColor()== Color.BLUE){
-                        //aggiungere qui
-                    }
-                    if(gui.getClient().getPlayer_local().getColor()== Color.RED){
+                    Color color = gui.getClient().getPlayer_local().getColor();
+                    String imagePath = null;
 
+                    switch (color) {
+                        case BLUE:
+                            imagePath = "/images/cardComponent/GT-mainUnitBlue.jpg";
+                            break;
+                        case RED:
+                            imagePath = "/images/cardComponent/GT-mainUnitRed.jpg";
+                            break;
+                        case GREEN:
+                            imagePath = "/images/cardComponent/GT-mainUnitGreen.jpg";
+                            break;
+                        case YELLOW:
+                            imagePath = "/images/cardComponent/GT-mainUnitYellow.jpg";
+                            break;
                     }
-                    if(gui.getClient().getPlayer_local().getColor()== Color.GREEN){
 
-                    }
-                    if(gui.getClient().getPlayer_local().getColor()== Color.YELLOW){
-
+                    if (imagePath != null) {
+                        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitWidth(48);
+                        imageView.setFitHeight(48);
+                        imageView.setPreserveRatio(true);
+                        cell.getChildren().add(imageView);
                     }
                 }
 
