@@ -1,5 +1,8 @@
 .root {
-    -fx-background-color: linear-gradient(to bottom, #000000, #0d1b2a);
+    -fx-background-image: url("images/backgrounds/bgNicknameScreen.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
 }
 
 .label {
