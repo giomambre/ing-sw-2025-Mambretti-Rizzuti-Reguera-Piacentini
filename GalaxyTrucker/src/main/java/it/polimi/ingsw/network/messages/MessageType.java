@@ -43,6 +43,7 @@ public enum MessageType {
     OPEN_SPACE,
     ADVENTURE_COMPLETED,
     NEW_ADVENTURE_DRAWN,
+    ABANDONED_STATION,
 
 
 }

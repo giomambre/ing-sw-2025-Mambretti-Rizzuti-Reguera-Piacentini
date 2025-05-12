@@ -1,17 +1,26 @@
 package it.polimi.ingsw.network.messages;
 
 import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Player;
+
+import java.util.Map;
 
 public class BoardMessage extends Message {
-    Board board;
+    Map<Integer, Player> positions;
+ Map<Integer, Player> laps;
 
-    public BoardMessage(MessageType type, String content, Board board) {
+    public BoardMessage(MessageType type, String content, Map<Integer, Player> positions, Map<Integer, Player> laps) {
         super(type, content);
-        this.board = board;
+        this.positions = positions;
+        this.laps = laps;
     }
 
-    public Board getBoard() {
-        return board;
+    public Map<Integer, Player> getPositions() {
+        return positions;
+    }
+
+    public Map<Integer, Player> getLaps() {
+        return laps;
     }
 
 }

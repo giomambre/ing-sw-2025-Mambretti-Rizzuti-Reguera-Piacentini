@@ -34,7 +34,7 @@
                   <Insets bottom="65.0" top="-100.0" />
                </VBox.margin>
             </ImageView>
-            <Label style="-fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-font-size: 28px; -fx-text-fill: #fef6d5;" text="Scegli il colore che preferisci:" />
+            <Label fx:id="stateLabel" style="-fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-font-size: 28px; -fx-text-fill: #fef6d5;" text="Scegli il colore che preferisci:" />
             <HBox alignment="CENTER" spacing="40.0">
                <children>
                   <Button fx:id="redRectangle" styleClass="color-button" mnemonicParsing="false" onAction="#redChosen" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: #FF0000;" />

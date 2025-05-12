@@ -403,9 +403,11 @@ public class GUI implements View {
     }
 
     @Override
-    public void showBoard(Board board) {
+    public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
 
     }
+
+
 
     @Override
     public Pair<Integer, Integer> askCoords(Ship ship) {
