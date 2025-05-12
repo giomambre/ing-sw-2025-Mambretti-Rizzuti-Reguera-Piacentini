@@ -29,6 +29,8 @@ import java.io.*;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
@@ -53,10 +55,18 @@ public class Client {
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
     private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
     private static List<Color> still_Available_colors = new ArrayList<>();
+    private static CompletableFuture<Void> otherPlayersReady = new CompletableFuture<>();
+
+    public static void setOtherPlayersLocal(List<Player> players) {
+        other_players_local = players;
+        otherPlayersReady.complete(null); // Sblocca l’attesa
+    }
 
     public static void setNickname(String nickname) {
         Client.nickname = nickname;
     }
+
+
 
     public static void main(String[] args) {
         try {
@@ -85,6 +95,7 @@ public class Client {
                 out.flush();
             }
             else {
+                GuiApplication.setClient(new Client());
                 new Thread(() -> Application.launch(GuiApplication.class)).start();
                 while (GuiApplication.getGui() == null) {
                     Thread.sleep(50);
@@ -310,7 +321,15 @@ public class Client {
                 break;
 
             case BUILD_START:
-                System.out.println("(testing)sono nella build start");
+                if(virtualViewType == VirtualViewType.GUI) {
+                    try {
+                        otherPlayersReady.get(); // Attende finché non è completa
+                        ((GUI) virtualView).createbuildscreen();
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                }
                 int deck_selected = virtualView.selectDeck();
 
                 if (deck_selected == 1) {
@@ -530,9 +549,6 @@ public class Client {
 
 
             case COLOR_SELECTED:
-                System.out.println("(testing)il server ha ricevuto il colore ora analizza che fare");
-                System.out.println(msg.getContent());
-                System.out.println(nickname);
                 gameState = GameState.BuildingPhase;
                 String[] parts = msg.getContent().split(" ");
                 try {
@@ -542,17 +558,14 @@ public class Client {
                     System.out.println("Errore: colore non valido " + parts[1]);
                 }
                 if (parts[0].equals(nickname)) {
-                    System.out.println("testing questo if funzione");
                     virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
                     /*if(virtualViewType==VirtualViewType.GUI){
                         elaborate(new Message(MessageType.BUILD_START,""));
                     }*/
                 } else {
                     // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
-                    System.out.println("sono nell'altro ramo");
                     if (virtualViewType == VirtualViewType.GUI) {
                         virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
-                        System.out.println(">>> [DEBUG] still_Available_colors: " + still_Available_colors);
                         ((GUI) virtualView).updateColors(still_Available_colors);
                         /* elaborate(new GameStartedMessage(MessageType.GAME_STARTED,"",still_Available_colors));*/
                         break;
@@ -580,7 +593,12 @@ public class Client {
                         other_players_local.add(p);
                     }
                 }
-
+                if(virtualViewType == VirtualViewType.GUI) {
+                    if (!Client.otherPlayersReady.isDone()) {
+                        Client.otherPlayersReady.complete(null);
+                        System.out.println(">>> [DEBUG] CompletableFuture completata con altri giocatori: " + other_players_local);
+                    }
+                }
                 if (virtualViewType == VirtualViewType.TUI) {
                     ((TUI) virtualView).setPlayer_local(player_local);
                     ((TUI) virtualView).setOther_players_local(other_players_local);
@@ -591,7 +609,7 @@ public class Client {
 
 
             case ADVENTURE_SKIP:
-                virtualView.showMessage("\n----NESSUNO HA POTUTO PARTECIPARE A QUESTA AVVENTURA SI PASSA ALLA PROSSIMO----\n");
+                virtualView.showMessage("\n----NESSUNO HA POTUTO PARTECIPARE A QUESTA AVVENTURA SI PASSA ALLA PROSSIMA----\n");
                 break;
             case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;

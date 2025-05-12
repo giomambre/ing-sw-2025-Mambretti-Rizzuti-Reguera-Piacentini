@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.enumerates.Cargo;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -34,6 +35,7 @@ public class GUI implements View {
     Numplayercontroller numplayercontroller;
     Guiselectcontroller guiselectcontroller;
     Choosecolorcontroller choosecolorcontroller;
+    Buildcontroller buildcontroller;
     Stage stage;
     private String nicknamescelto;
     @FXML
@@ -43,10 +45,17 @@ public class GUI implements View {
     private List<Integer> lobbies;
     private List<Color> colorsavailable;
     private boolean chooseColorScreenOpen = false;
+    private Client client;
 
 
     public Stage getStage(){
         return stage;
+    }
+    public void setClient(Client client){
+        this.client = client;
+    }
+    public Client getClient(){
+        return client;
     }
 
 
@@ -253,32 +262,25 @@ public class GUI implements View {
     }
     public void updateColors(List<Color> newColors) {
         Platform.runLater(() -> {
-            System.out.println(">>> [DEBUG] updateColors called with: " + newColors);
             this.colorsavailable = newColors;
             if (choosecolorcontroller != null) {
                 choosecolorcontroller.setActiveButton(newColors);
-                choosecolorcontroller.stateLabel.setText("Colori aggiornati!");
+                choosecolorcontroller.stateLabel.setText("Colori ancora disponibili:");
             }
         });
     }
-    /*public void createchoosecolorscreen(List<Color> colors) {
+
+    /*public void createbuildscreen() {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChooseColor.fxml"));
-                Parent root = loader.load();
-                Choosecolorcontroller controller = loader.getController(); // ✅ ottieni il controller FXML
-
+                Buildcontroller controller = new Buildcontroller();
                 controller.setGUI(this);
-                controller.setColorsavailable(colors); // imposta i colori disponibili
-                this.choosecolorcontroller = controller;
-                this.colorsavailable = colors;
-                setChooseColorScreenOpen(true);
-
-                controller.start(root); // adesso il controller si occupa di mostrare lo stage
-                future.complete(null);
+                System.out.println(">>> [DEBUG] Client settato"+client);
+                this.buildcontroller = controller;
+                controller.start(this.stage);
+                future.complete(null);  // Segnala che la GUI è pronta
             } catch (Exception ex) {
-                ex.printStackTrace();
                 future.completeExceptionally(ex);
             }
         });
@@ -288,6 +290,45 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }*/
+    public void createbuildscreen() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/BuildShip.fxml"));
+                Parent root = loader.load();
+
+                Buildcontroller controller = loader.getController(); // usa controller FXML
+                controller.setGUI(this); // passa la GUI, con il client corretto
+                this.buildcontroller = controller;
+
+                Scene scene = new Scene(root);
+                stage.setTitle("Build Ship");
+                stage.setScene(scene);
+                stage.centerOnScreen();
+                stage.show();
+
+                stage.setOnCloseRequest((event) -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+
+                // Dopo che tutto è pronto, setta i bottoni
+                controller.setupPlayerButtons(client.getOther_players_local());
+                controller.initializeShipBoard();
+
+                future.complete(null);  // GUI pronta
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                future.completeExceptionally(ex);
+            }
+        });
+
+        try {
+            future.get(); // aspetta la GUI
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
@@ -347,7 +388,12 @@ public class GUI implements View {
 
     @Override
     public int selectDeck() {
-        return 0;
+        try {
+            return buildcontroller.getAction().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     @Override

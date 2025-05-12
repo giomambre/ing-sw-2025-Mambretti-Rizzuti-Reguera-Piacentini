@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.View;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -30,6 +31,12 @@ public class GuiApplication extends Application  {
     @FXML
     public TextField nicknameField;
 
+    private static Client client;
+
+    public static void setClient(Client c) {
+        client = c;
+    }
+
     @Override
     public void start(Stage primaryStage) {
             GUI gui = new GUI(); // inizializza GUI qui
@@ -38,6 +45,8 @@ public class GuiApplication extends Application  {
             gui.setStage(primaryStage);
             this.stage = primaryStage;
             this.stage = primaryStage;
+            gui.setClient(client);
+            System.out.println(">>> [DEBUG] Client settato"+client);
             Platform.runLater(()->{
                 FXMLLoader loader= new FXMLLoader(getClass().getResource("/Startgui.fxml"));
                 Parent root = null;

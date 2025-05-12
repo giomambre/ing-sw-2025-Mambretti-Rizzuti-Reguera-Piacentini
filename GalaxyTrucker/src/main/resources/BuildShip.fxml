@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.polimi.ingsw.view.GUI.Buildcontroller"
+            prefHeight="600.0" prefWidth="800.0">
+
+    <VBox spacing="20"
+          AnchorPane.topAnchor="10.0"
+          AnchorPane.leftAnchor="10.0"
+          AnchorPane.rightAnchor="10.0"
+          AnchorPane.bottomAnchor="10.0"
+          alignment="TOP_CENTER">
+
+        <!-- Sezione con i bottoni dei giocatori -->
+        <HBox fx:id="playersButtonBox"
+              spacing="10"
+              alignment="CENTER_LEFT"/>
+
+        <!-- Bottone di fine assemblaggio -->
+        <Button fx:id="endbutton"
+                onAction="#setFour"
+                prefHeight="72.0"
+                prefWidth="232.0"
+                text="Termina Assemblaggio"/>
+
+        <!-- Griglia per la plancia della nave -->
+        <GridPane fx:id="shipGrid"
+                  hgap="2"
+                  vgap="2"
+                  alignment="CENTER">
+            <padding>
+                <Insets top="10" bottom="10" left="10" right="10"/>
+            </padding>
+        </GridPane>
+
+    </VBox>
+</AnchorPane>
