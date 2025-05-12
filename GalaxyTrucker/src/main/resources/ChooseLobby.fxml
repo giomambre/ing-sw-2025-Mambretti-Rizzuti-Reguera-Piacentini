@@ -24,28 +24,28 @@
       </ImageView>
       <VBox alignment="CENTER" spacing="30.0">
          <children>
-            <ImageView fitHeight="164.0" fitWidth="323.0" preserveRatio="true">
+            <ImageView fitHeight="175.0" fitWidth="338.0" preserveRatio="true">
                <image>
                   <Image url="@images/backgrounds/logo.png" />
                </image>
                <VBox.margin>
-                  <Insets bottom="150.0" top="-150.0" />
+                  <Insets bottom="100.0" />
                </VBox.margin>
             </ImageView>
 
                       <Label style="-fx-font-family: 'Verdana';                       -fx-font-size: 28px;                       -fx-font-weight: bold;                       -fx-text-fill: #fef6d5;" text="Seleziona una lobby disponibile:">
                <VBox.margin>
-                  <Insets top="10.0" />
+                  <Insets />
                </VBox.margin></Label>
 
-                      <ListView fx:id="lobbyListView" prefHeight="293.0" prefWidth="504.0">
+                      <ListView fx:id="lobbyListView">
                <VBox.margin>
                   <Insets left="500.0" right="500.0" />
                </VBox.margin>
             </ListView>
             <Button onAction="#handleSelect" styleClass="lobby-button" text="Entra">
                <VBox.margin>
-                  <Insets bottom="-50.0" />
+                  <Insets />
                </VBox.margin>
             </Button>
 
