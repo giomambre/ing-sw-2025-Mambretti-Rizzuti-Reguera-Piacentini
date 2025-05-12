@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,12 +13,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class Buildcontroller {
@@ -43,6 +47,21 @@ public class Buildcontroller {
                 } else {
                     cell.setStyle("-fx-background-color: lightyellow;");
                 }
+                if (i == 2 && j == 3) {
+                    if(gui.getClient().getPlayer_local().getColor()== Color.BLUE){
+                        //aggiungere qui
+                    }
+                    if(gui.getClient().getPlayer_local().getColor()== Color.RED){
+
+                    }
+                    if(gui.getClient().getPlayer_local().getColor()== Color.GREEN){
+
+                    }
+                    if(gui.getClient().getPlayer_local().getColor()== Color.YELLOW){
+
+                    }
+                }
+
 
                 shipGrid.add(cell, j, i);
             }
