@@ -38,14 +38,14 @@
                   <Insets />
                </VBox.margin></Label>
 
-                      <ListView fx:id="lobbyListView">
+                      <ListView fx:id="lobbyListView" prefHeight="279.0" prefWidth="536.0">
                <VBox.margin>
                   <Insets left="500.0" right="500.0" />
                </VBox.margin>
             </ListView>
             <Button onAction="#handleSelect" styleClass="lobby-button" text="Entra">
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="100.0" />
                </VBox.margin>
             </Button>
 
