@@ -450,7 +450,7 @@ public class Server {
                 sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                while(adventure.getType() != CardAdventureType.AbandonedStation){
+                while( adventure.getType() != CardAdventureType.AbandonedShip){
 
                     adventure = controller.getRandomAdventure();
                 }
@@ -480,9 +480,9 @@ public class Server {
                             if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
 
                                  adventure = controller.getRandomAdventure();
-                                while(adventure.getType() != CardAdventureType.AbandonedStation){
+                               /* while(adventure.getType() != CardAdventureType.AbandonedStation){
                                     adventure = controller.getRandomAdventure();
-                                }
+                                }*/
                                 manageAdventure(adventure,controller);
 
                             }else {
@@ -493,7 +493,71 @@ public class Server {
 
                             break;
 
-                    }
+
+                        case AbandonedStation:
+
+                            ShipClientMessage abandoned_msg = (ShipClientMessage) msg;
+
+                            if(abandoned_msg.getContent().isEmpty()){
+
+                                if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
+
+                                    adventure = controller.getRandomAdventure();
+                                    manageAdventure(adventure,controller);
+
+
+                                }else{
+
+                                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "", controller.getCurrentAdventure()));
+
+
+                                }
+
+                            }else{
+                                controller.movePlayer(getNickname(adv_msg.getId_client()),controller.getCurrentAdventure().getCost_of_days());
+
+                                sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
+                                        + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo" ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
+
+                                adventure = controller.getRandomAdventure();
+                                manageAdventure(adventure,controller);
+                            }
+
+                            break;
+
+
+
+                            case AbandonedShip:
+
+                                 abandoned_msg = (ShipClientMessage) msg;
+                                if(abandoned_msg.getContent().isEmpty()){
+
+                                    if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
+
+                                        adventure = controller.getRandomAdventure();
+                                        manageAdventure(adventure,controller);
+
+
+                                    }else{
+
+                                        sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "", controller.getCurrentAdventure()));
+
+
+                                    }
+
+                                }else{
+                                    controller.movePlayer(getNickname(adv_msg.getId_client()),controller.getCurrentAdventure().getCost_of_days());
+
+                                    sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
+                                            + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo"  ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
+
+                                    adventure = controller.getRandomAdventure();
+                                    manageAdventure(adventure,controller);
+
+
+                                }
+                                break;
+                                }
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
@@ -541,7 +605,30 @@ public class Server {
                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "",adventure));
                 break;
 
+
+
+            case AbandonedShip:
+
+
+                controller.initializeAdventure(adventure);
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+
+                if(controller.getAdventureOrder().isEmpty()){
+
+                    sendToAllClients(controller.getLobby(), new Message (ADVENTURE_SKIP,""));
+                    adventure = controller.getRandomAdventure();
+                    manageAdventure(adventure,controller);
+                    break;
+                }
+
+                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "",adventure));
+                break;
+
+
         }
+
+
+
 
 
     }

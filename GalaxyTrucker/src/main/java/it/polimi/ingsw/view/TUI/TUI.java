@@ -1032,49 +1032,40 @@ public class TUI implements View {
     }
 
     @Override
-    public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss){
-        Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
-        int totalAstronautsLosses = 0;
+    public Pair<Integer,Integer> chooseAstronautLosses(Ship ship){
+
+        List<Pair<Integer, Integer>> livingUnits = new ArrayList<>();
+
 
         int choice=0;
         int num;
-        while(totalAstronautsLosses == astronautLoss){
-            System.out.println("Devi rimuovere ancora "+astronaut_losses+"membri dell'equipaggiamento");
-            for(int i = 0 ; i<ship.getROWS(); i++){
-                for(int j = 0 ; j<ship.getCOLS(); j++) {
-                    if (ship.getComponent(i,j).getComponentType() == ComponentType.LivingUnit && ((LivingUnit)ship.getComponent(i,j)).getNum_crewmates() > 0) {
-                        System.out.println("LIVING UNIT alle coordinate: x: "+i+" y: "+j+"con "+((LivingUnit)ship.getComponent(i,j)).getNum_crewmates()+ " membri" );
-                        System.out.println("1. Per rimuovere membri da questa living unit \n 2. Per passare alla prossima living unit\n");
-                        while(choice != 1 && choice != 2){
-                            choice = readInt();
-                            if (choice != 1 && choice != 2) {
-                                System.out.println("Opzione non disponibile, reinserire:");
-                            } else if (choice == 1) {
-                                System.out.println("Inserisci il numero di membri dell'equipaggio che vuoi rimuovere: ");
-                                num = readInt();
-                                while ((num!=1 && num!=2) || num>astronautLoss ){
-
-                                    if((num==1 || num==2) && num>astronautLoss ){
-                                        System.out.println("Stai cercando di rimuovere più membri di quanti dovresti, reinserire: ");
-                                    }
-                                    else{
-                                        System.out.println("Valore non disponibile, reinserire: ");
-                                    }
-                                    num = readInt();
-                                }
-                                astronaut_losses.put(ship.getComponent(i,j), num);
-                                totalAstronautsLosses+=num;
-                                astronautLoss-=num;
-                            }
-                            else {
-                                break;
-                            }
-                        }
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent component = ship.getComponent(i, j);
+                if (component != null && component.getComponentType() == ComponentType.LivingUnit ||  component.getComponentType() == ComponentType.MainUnitRed
+                || component.getComponentType() == ComponentType.MainUnitYellow || component.getComponentType() == ComponentType.MainUnitGreen || component.getComponentType() == ComponentType.MainUnitBlue) {
+                    LivingUnit unit = (LivingUnit) component;
+                    if (unit.getNum_crewmates() > 0) {
+                        livingUnits.add(new Pair<>(i, j));
                     }
                 }
             }
         }
-        return astronaut_losses;
+        System.out.println("\n");
+        for (int idx = 0; idx < livingUnits.size(); idx++) {
+            Pair<Integer, Integer> pos = livingUnits.get(idx);
+            LivingUnit unit = (LivingUnit) ship.getComponent(pos.getKey(), pos.getValue());
+            System.out.println("\t" + (idx) + ". Living Unit in (" + pos.getKey() + ", " + pos.getValue() + ") - Membri: " + unit.getNum_crewmates());
+        }
+        int scelta = readValidInt("Scelta ", 0, livingUnits.size()-1,true);
+        if (scelta == -1 ) return  new Pair<>(-1,-1);
+
+        LivingUnit unit = (LivingUnit) ship.getComponent(livingUnits.get(scelta).getKey(),livingUnits.get(scelta).getValue());
+
+        unit.removeCrewmates(1);
+
+        return livingUnits.get(scelta);
+
     }
 
     @Override

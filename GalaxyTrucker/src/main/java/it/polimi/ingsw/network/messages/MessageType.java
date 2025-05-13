@@ -45,6 +45,6 @@ public enum MessageType {
     NEW_ADVENTURE_DRAWN,
     ABANDONED_STATION,
     ADVENTURE_SKIP,
-
+    ABANDONED_SHIP,
 
 }

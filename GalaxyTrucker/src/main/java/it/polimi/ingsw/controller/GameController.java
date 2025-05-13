@@ -74,6 +74,21 @@ public class GameController {
                 break;
 
 
+
+            case AbandonedShip:
+                AbandonedShip AbandonedShip = (AbandonedShip) adventure;
+                for(Player p : game.getBoard().getRanking()){
+
+                    if(p.getShip().getNumOfCrewmates() > AbandonedShip.getCrewmates_loss() ){
+
+                        adventureOrder.add(p);
+                    }
+
+                }
+                break;
+
+
+
         }
 
     }
