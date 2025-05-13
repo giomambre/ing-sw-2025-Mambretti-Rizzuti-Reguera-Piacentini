@@ -318,16 +318,21 @@ public class Client {
                 break;
 
             case BUILD_START:
+                int deck_selected;
                 if (virtualViewType == VirtualViewType.GUI) {
                     try {
                         otherPlayersReady.get(); // Attende finché non è completa
                         ((GUI) virtualView).createbuildscreen();
+                        deck_selected = virtualView.selectDeck();
                     } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
                         return;
                     }
                 }
-                int deck_selected = virtualView.selectDeck();
+                else {
+                    deck_selected = virtualView.selectDeck();
+                }
+
 
                 if (deck_selected == 1) {
                     out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));

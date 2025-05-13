@@ -33,6 +33,8 @@ public class Buildcontroller {
     private Button endbutton;
     @FXML
     private GridPane shipGrid;
+    @FXML
+    private Button randomCard;
 
 
     public void initializeShipBoard() {
