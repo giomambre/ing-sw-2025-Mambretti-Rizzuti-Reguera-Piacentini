@@ -47,6 +47,7 @@ public class GUI implements View {
     private List<Color> colorsavailable;
     private boolean chooseColorScreenOpen = false;
     private Client client;
+    private CardComponent actualcard;
 
     public Buildcontroller getBuildcontroller() {
         return buildcontroller;
@@ -342,14 +343,22 @@ public class GUI implements View {
         }
     }
 
-    public void createrandomcardcontroller(){
+    public CardComponent getActualcard() {
+        return actualcard;
+    }
+
+    public void createrandomcardcontroller(CardComponent card){
         CompletableFuture<Void> future = new CompletableFuture<>();
+        this.actualcard=card;
         Platform.runLater(() -> {
             try {
                 Randomcardcontroller controller = new Randomcardcontroller();
                 controller.setGui(this);
                 this.randomcardcontroller = controller;
                 controller.start(this.stage);
+
+                Platform.runLater(() -> {controller.showCardImage(actualcard);});
+
                 future.complete(null);  // Segnala che la GUI è pronta
             } catch (Exception ex) {
                 future.completeExceptionally(ex);

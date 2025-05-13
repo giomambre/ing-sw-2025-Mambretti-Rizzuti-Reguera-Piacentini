@@ -396,7 +396,7 @@ public class Client {
                 virtualView.showMessage("\nCarta disponibile");
                 int sel;
                 if (virtualViewType == VirtualViewType.GUI) {
-                        ((GUI) virtualView).createrandomcardcontroller();
+                        ((GUI) virtualView).createrandomcardcontroller(card_msg.getCardComponent());
                         sel= virtualView.showCard(card_msg.getCardComponent());
                     } else {
                         sel = virtualView.showCard(card_msg.getCardComponent());
