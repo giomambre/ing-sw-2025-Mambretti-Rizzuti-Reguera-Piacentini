@@ -34,6 +34,7 @@ public class Buildcontroller {
     @FXML
     private GridPane shipGrid;
 
+
     public void initializeShipBoard() {
         shipGrid.getChildren().clear(); // shipGrid è un GridPane definito in FXML
         CardComponent[][] shipboard=gui.getClient().getPlayer_local().getShip().getShipBoard();
@@ -101,7 +102,6 @@ public class Buildcontroller {
     }
 
 
-
     @FXML
     public void setFour(ActionEvent event) {
         action.complete(4);
@@ -125,4 +125,5 @@ public class Buildcontroller {
         }
         return action;
     }
+
 }

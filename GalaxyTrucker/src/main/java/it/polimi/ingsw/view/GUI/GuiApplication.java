@@ -46,7 +46,6 @@ public class GuiApplication extends Application  {
             this.stage = primaryStage;
             this.stage = primaryStage;
             gui.setClient(client);
-            System.out.println(">>> [DEBUG] Client settato"+client);
             Platform.runLater(()->{
                 FXMLLoader loader= new FXMLLoader(getClass().getResource("/Startgui.fxml"));
                 Parent root = null;

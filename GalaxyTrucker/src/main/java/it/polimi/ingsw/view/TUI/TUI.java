@@ -190,9 +190,7 @@ public class TUI implements View {
         isMenuOpen = false;
         out.println();
         out.print(lastRequest);
-
     }
-
 
     private void showExtraCard(){
         if (local_extra_components == null || local_extra_components.isEmpty()) {

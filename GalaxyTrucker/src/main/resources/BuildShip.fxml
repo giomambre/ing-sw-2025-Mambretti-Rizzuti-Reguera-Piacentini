@@ -7,6 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="it.polimi.ingsw.view.GUI.Buildcontroller"
@@ -40,6 +41,12 @@
                 <Insets top="10" bottom="10" left="10" right="10"/>
             </padding>
         </GridPane>
+        <Button fx:id="randomcard"
+                onAction="#setOne"
+                prefHeight="72.0"
+                prefWidth="232.0"
+                text="carta random"/>
 
     </VBox>
+
 </AnchorPane>

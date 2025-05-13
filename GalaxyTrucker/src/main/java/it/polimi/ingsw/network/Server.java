@@ -84,6 +84,7 @@ public class Server {
                 System.out.println("nick name inviato : " + requestedName);
                 if (connectedNames.contains(requestedName)) {
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Nome già in uso. Inserisci un altro nickname.", msgClient.getId_client()));
+
                 } else {
                     connectedNames.add(requestedName);
                     ClientHandler handler = clients.get(msgClient.getId_client());

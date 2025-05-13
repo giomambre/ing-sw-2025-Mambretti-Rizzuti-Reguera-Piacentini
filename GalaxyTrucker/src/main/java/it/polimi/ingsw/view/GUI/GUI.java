@@ -47,7 +47,9 @@ public class GUI implements View {
     private boolean chooseColorScreenOpen = false;
     private Client client;
 
-
+    public Buildcontroller getBuildcontroller() {
+        return buildcontroller;
+    }
     public Stage getStage(){
         return stage;
     }

@@ -14,12 +14,14 @@ import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.CrewmateType;
 import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.view.GUI.Buildcontroller;
 import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.GUI.GuiApplication;
 import it.polimi.ingsw.view.TUI.TUI;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.network.messages.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.util.Pair;
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 
@@ -91,8 +93,7 @@ public class Client {
             if (choice == 1) {
                 virtualView = new TUI();
                 virtualViewType = VirtualViewType.TUI;
-                out.writeObject(new StandardMessageClient(MessageType.INIT_VIEW, "TUI", clientId));
-                out.flush();
+
             } else {
                 GuiApplication.setClient(new Client());
                 new Thread(() -> Application.launch(GuiApplication.class)).start();
@@ -101,8 +102,7 @@ public class Client {
                 }
                 virtualView = GuiApplication.getGui();
                 virtualViewType = VirtualViewType.GUI;
-                out.writeObject(new StandardMessageClient(MessageType.INIT_VIEW, "GUI", clientId));
-                out.flush();
+
             }
             still_Available_colors.add(Color.BLUE);
             still_Available_colors.add(Color.RED);
@@ -179,11 +179,14 @@ public class Client {
         switch (msg.getType()) {
 
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
+
+                if (msg.getType()==MessageType.NAME_REJECTED){
+                    virtualView.showMessage("\n username già utilizzato.");
+            }
+
                 if (virtualViewType == VirtualViewType.GUI) {
-                    //System.out.println("Connesso con GUI");
                     ((GUI) virtualView).setClientCallback(nickname -> {
                         try {
-                            System.out.println(" (testing)Client Hai scelto: " + nickname);
                             setNickname(nickname);
                             out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
                             out.flush();
@@ -210,7 +213,6 @@ public class Client {
                 if (virtualViewType == VirtualViewType.GUI) {
                     ((GUI) virtualView).createjoingamecontroller();
                     join_or_create = virtualView.askCreateOrJoin();
-                    System.out.println("(testing)scelta" + join_or_create);
                 } else {
                     join_or_create = virtualView.askCreateOrJoin();
                 }
@@ -220,12 +222,10 @@ public class Client {
                     if (virtualViewType == VirtualViewType.GUI) {
                         ((GUI) virtualView).createnumplayerscontroller();
                         num = virtualView.askNumPlayers();
-                        System.out.println("(testing)scelta:" + num);
                     } else {
                         num = virtualView.askNumPlayers();
                     }
                     if (num == -1) {
-                        System.out.println("(testing)scelta:-1");
                         elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
                         break;
                     }
@@ -389,7 +389,11 @@ public class Client {
 
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");
-                int sel = virtualView.showCard(card_msg.getCardComponent());
+                int sel;
+                if (virtualViewType == VirtualViewType.GUI) {
+
+                }
+                sel = virtualView.showCard(card_msg.getCardComponent());
 
                 if (sel == 1) {
 
