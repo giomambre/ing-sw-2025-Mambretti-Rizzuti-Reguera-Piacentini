@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.AbandonedShip;
 import it.polimi.ingsw.model.adventures.AbandonedStation;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.adventures.OpenSpace;
@@ -48,12 +49,12 @@ public class Client {
     private static GameState gameState;
     private static boolean forced_close = false;
 
-    private static Map<Integer,Player> local_board_positions;
-    private static Map<Integer,Player> local_board_laps;
+    private static Map<Integer, Player> local_board_positions;
+    private static Map<Integer, Player> local_board_laps;
 
     private static Player player_local;
     private static List<CardComponent> facedUp_deck_local = new ArrayList<>();
-    private static Map<Direction,List<CardAdventure>> local_adventure_deck = new HashMap<>() ;
+    private static Map<Direction, List<CardAdventure>> local_adventure_deck = new HashMap<>();
     private static List<Color> still_Available_colors = new ArrayList<>();
     private static CompletableFuture<Void> otherPlayersReady = new CompletableFuture<>();
 
@@ -65,7 +66,6 @@ public class Client {
     public static void setNickname(String nickname) {
         Client.nickname = nickname;
     }
-
 
 
     public static void main(String[] args) {
@@ -86,22 +86,21 @@ public class Client {
                 System.out.println("Inserisci 1 per la TUI 2 per la GUI : ");
                 choice = scanner.nextInt();
 
-            }while (choice != 1 && choice != 2);
+            } while (choice != 1 && choice != 2);
 
-            if(choice == 1) {
+            if (choice == 1) {
                 virtualView = new TUI();
                 virtualViewType = VirtualViewType.TUI;
                 out.writeObject(new StandardMessageClient(MessageType.INIT_VIEW, "TUI", clientId));
                 out.flush();
-            }
-            else {
+            } else {
                 GuiApplication.setClient(new Client());
                 new Thread(() -> Application.launch(GuiApplication.class)).start();
                 while (GuiApplication.getGui() == null) {
                     Thread.sleep(50);
                 }
                 virtualView = GuiApplication.getGui();
-                virtualViewType=VirtualViewType.GUI;
+                virtualViewType = VirtualViewType.GUI;
                 out.writeObject(new StandardMessageClient(MessageType.INIT_VIEW, "GUI", clientId));
                 out.flush();
             }
@@ -117,13 +116,17 @@ public class Client {
                         Message msg = (Message) in.readObject();
 
                         switch (msg.getType()) {
-                            case ABANDONED_STATION,REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
-                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START , CARD_COMPONENT_RECEIVED,
-                                 CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES, INVALID_CONNECTORS,SELECT_PIECE:
+                            case ABANDONED_SHIP,ABANDONED_STATION, REQUEST_NAME, NAME_REJECTED, NAME_ACCEPTED,
+                                 CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
+                                 CARD_COMPONENT_RECEIVED,
+                                 CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES, INVALID_CONNECTORS, SELECT_PIECE:
                                 inputQueue.put(msg);
                                 break;
 
-                            case ADVENTURE_SKIP,NEW_ADVENTURE_DRAWN,UPDATE_BOARD,WAITING_FLIGHT,INVALID_SHIP, START_FLIGHT,FORCE_BUILD_PHASE_END,COLOR_SELECTED,DISMISSED_CARD,FACED_UP_CARD_UPDATED,UPDATED_SHIPS,DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE, BUILD_PHASE_ENDED:
+                            case ADVENTURE_SKIP, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT, INVALID_SHIP,
+                                 START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
+                                 FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
+                                 BUILD_PHASE_ENDED:
                                 notificationQueue.put(msg);
                                 break;
 
@@ -162,8 +165,6 @@ public class Client {
             }).start();
 
 
-
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -172,17 +173,15 @@ public class Client {
     }
 
 
-
-
     public static void elaborate(Message msg) throws IOException {
 
 
         switch (msg.getType()) {
 
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
-                if(virtualViewType == VirtualViewType.GUI) {
+                if (virtualViewType == VirtualViewType.GUI) {
                     //System.out.println("Connesso con GUI");
-                    ((GUI)virtualView).setClientCallback(nickname -> {
+                    ((GUI) virtualView).setClientCallback(nickname -> {
                         try {
                             System.out.println(" (testing)Client Hai scelto: " + nickname);
                             setNickname(nickname);
@@ -192,10 +191,9 @@ public class Client {
                             throw new RuntimeException(e);
                         }
                     });
-                    ((GUI)virtualView).createNicknamescreen();
+                    ((GUI) virtualView).createNicknamescreen();
 
-                }
-                else {
+                } else {
                     nickname = virtualView.askNickname();
 
                     try {
@@ -209,25 +207,24 @@ public class Client {
 
             case NAME_ACCEPTED:
                 int join_or_create;
-                if(virtualViewType == VirtualViewType.GUI) {
-                    ((GUI)virtualView).createjoingamecontroller();
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).createjoingamecontroller();
                     join_or_create = virtualView.askCreateOrJoin();
-                   System.out.println("(testing)scelta"+join_or_create);
-                }else {
+                    System.out.println("(testing)scelta" + join_or_create);
+                } else {
                     join_or_create = virtualView.askCreateOrJoin();
                 }
                 Message to_send;
                 if (join_or_create == 1) {
                     int num;
-                    if(virtualViewType == VirtualViewType.GUI) {
-                        ((GUI)virtualView).createnumplayerscontroller();
-                         num=virtualView.askNumPlayers();
-                         System.out.println("(testing)scelta:"+num);
-                    }
-                    else {
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        ((GUI) virtualView).createnumplayerscontroller();
+                        num = virtualView.askNumPlayers();
+                        System.out.println("(testing)scelta:" + num);
+                    } else {
                         num = virtualView.askNumPlayers();
                     }
-                    if(num ==-1){
+                    if (num == -1) {
                         System.out.println("(testing)scelta:-1");
                         elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
                         break;
@@ -278,11 +275,11 @@ public class Client {
                     break;
                 } else {
                     int lobby_index;
-                    if(virtualViewType == VirtualViewType.GUI) {
-                        ((GUI)virtualView).createselectlobbyscreen(l_msg.getLobbies());
-                        lobby_index=virtualView.showLobbies(l_msg.getLobbies());
-                        System.out.println("(testing) lobby scelta:"+lobby_index);
-                    }else {
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        ((GUI) virtualView).createselectlobbyscreen(l_msg.getLobbies());
+                        lobby_index = virtualView.showLobbies(l_msg.getLobbies());
+                        System.out.println("(testing) lobby scelta:" + lobby_index);
+                    } else {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
                     }
                     out.writeObject(new StandardMessageClient(MessageType.SELECT_LOBBY, "" + lobby_index, clientId));
@@ -308,12 +305,12 @@ public class Client {
                     virtualView.showMessage("\nPartita avviata!");
                 }
                 Color c;
-                if(virtualViewType == VirtualViewType.GUI) {
-                    ((GUI)virtualView).createchoosecolorscreen(still_Available_colors);
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).createchoosecolorscreen(still_Available_colors);
                     c = virtualView.askColor(still_Available_colors);
                     out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
-                    System.out.println("(testing) color chosen:"+c);
-                }else {
+                    System.out.println("(testing) color chosen:" + c);
+                } else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
                     out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 }
@@ -321,7 +318,7 @@ public class Client {
                 break;
 
             case BUILD_START:
-                if(virtualViewType == VirtualViewType.GUI) {
+                if (virtualViewType == VirtualViewType.GUI) {
                     try {
                         otherPlayersReady.get(); // Attende finché non è completa
                         ((GUI) virtualView).createbuildscreen();
@@ -372,8 +369,7 @@ public class Client {
                     }
 
 
-                }
-                else if (deck_selected == 4) {
+                } else if (deck_selected == 4) {
                     virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio!");
                     out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
@@ -387,7 +383,7 @@ public class Client {
 
             case UNAVAILABLE_PLACE:
                 virtualView.showMessage("\nNon puoi posizionare la carta in questa fase del gioco ! ");
-            break;
+                break;
 
             case CARD_COMPONENT_RECEIVED:
 
@@ -395,7 +391,7 @@ public class Client {
                 virtualView.showMessage("\nCarta disponibile");
                 int sel = virtualView.showCard(card_msg.getCardComponent());
 
-                if(sel == 1){
+                if (sel == 1) {
 
                     CardComponent card = card_msg.getCardComponent();
                     card.rotate();
@@ -426,7 +422,7 @@ public class Client {
                     } else {
 
                         out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
-                        player_local.addToShip(card_msg.getCardComponent(),coords.getKey(),coords.getValue());
+                        player_local.addToShip(card_msg.getCardComponent(), coords.getKey(), coords.getValue());
 
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         player_local.getShip().getExtra_components().remove(card_msg.getCardComponent());
@@ -437,17 +433,15 @@ public class Client {
                 }
                 if (sel == 4) {
 
-                    if(player_local.getShip().getExtra_components().size()==2) {
+                    if (player_local.getShip().getExtra_components().size() == 2) {
                         virtualView.showMessage("\nSpazio esaurito nelle carte prenotate");
 
-                    }else{
+                    } else {
                         virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");
 
                         player_local.getShip().getExtra_components().add(card_msg.getCardComponent());
 
                     }
-
-
 
 
                 }
@@ -458,31 +452,31 @@ public class Client {
 
             case ADD_CREWMATES:
                 inputQueue.clear();
-                CardComponent[][] plance = player_local.getShip().getShip_board() ;
+                CardComponent[][] plance = player_local.getShip().getShip_board();
                 Pair<Integer, Integer> coords;
-                for(int i = 0 ; i<player_local.getShip().getROWS(); i++){
-                    for(int j = 0 ; j<player_local.getShip().getCOLS(); j++){
-                  CardComponent component = plance[i][j];
-                  coords = new Pair<>(i,j);
+                for (int i = 0; i < player_local.getShip().getROWS(); i++) {
+                    for (int j = 0; j < player_local.getShip().getCOLS(); j++) {
+                        CardComponent component = plance[i][j];
+                        coords = new Pair<>(i, j);
                         if (component.getComponentType() == LivingUnit) {
 
                             CrewmateType type;
-                            int select =  virtualView.crewmateAction(coords);
+                            int select = virtualView.crewmateAction(coords);
 
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
-                                ((LivingUnit)component).addAstronauts();
+                                ((LivingUnit) component).addAstronauts();
 
                             } else if (select == 2) {
 
                                 type = CrewmateType.PinkAlien;
-                                ((LivingUnit)component).addAlien(CrewmateType.PinkAlien);
+                                ((LivingUnit) component).addAlien(CrewmateType.PinkAlien);
 
 
                             } else {
 
                                 type = CrewmateType.BrownAlien;
-                              ((LivingUnit)component).addAlien(CrewmateType.BrownAlien);
+                                ((LivingUnit) component).addAlien(CrewmateType.BrownAlien);
 
 
                             }
@@ -497,24 +491,18 @@ public class Client {
                 out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
 
 
-
-
-
-
-
-
                 break;
 
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
-                if(icm.getInvalids().isEmpty()){
+                if (icm.getInvalids().isEmpty()) {
 
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
-                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId,player_local.copyPlayer()));
+                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
 
-                }else{
+                } else {
                     player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
-                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId,player_local.copyPlayer()));
+                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
 
                 }
 
@@ -525,8 +513,8 @@ public class Client {
 
                 ShipPiecesMessage spm = (ShipPiecesMessage) msg;
                 List<List<Pair<Integer, Integer>>> pieces = spm.getPieces();
-               int piece = virtualView.askPiece(pieces,player_local.getShip().getShipBoard());
-                out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE,String.valueOf(piece),clientId));
+                int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE, String.valueOf(piece), clientId));
                 break;
 
 
@@ -538,11 +526,10 @@ public class Client {
         }
 
 
-
     }
 
 
-        public static void handleNotification(Message msg) throws IOException {
+    public static void handleNotification(Message msg) throws IOException {
 
 
         switch (msg.getType()) {
@@ -593,7 +580,7 @@ public class Client {
                         other_players_local.add(p);
                     }
                 }
-                if(virtualViewType == VirtualViewType.GUI) {
+                if (virtualViewType == VirtualViewType.GUI) {
                     if (!Client.otherPlayersReady.isDone()) {
                         Client.otherPlayersReady.complete(null);
                         System.out.println(">>> [DEBUG] CompletableFuture completata con altri giocatori: " + other_players_local);
@@ -605,7 +592,6 @@ public class Client {
                     ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
                 }
                 break;
-
 
 
             case ADVENTURE_SKIP:
@@ -684,7 +670,7 @@ public class Client {
 
                 if (!bm.getContent().isEmpty()) {
                     virtualView.showMessage(bm.getContent());
-                    virtualView.showBoard(local_board_positions,local_board_laps);
+                    virtualView.showBoard(local_board_positions, local_board_laps);
                     System.out.println("\n\n");
 
 
@@ -694,7 +680,6 @@ public class Client {
                 if (virtualViewType == VirtualViewType.TUI) {
                     ((TUI) virtualView).setLocal_board_position(local_board_positions);
                     ((TUI) virtualView).setLocal_board_laps(local_board_positions);
-
 
 
                 }
@@ -720,7 +705,7 @@ public class Client {
                 break;
 
 
-            case OPEN_SPACE,ABANDONED_STATION:
+            case OPEN_SPACE, ABANDONED_STATION:
                 AdventureCardMessage ac = (AdventureCardMessage) msg;
                 manageAdventure(ac.getAdventure());
                 break;
@@ -729,41 +714,36 @@ public class Client {
         }
 
 
-
-
     }
 
 
+    public static void manageAdventure(CardAdventure adventure) throws IOException {
 
-    public static void manageAdventure(CardAdventure adventure) throws IOException{
-
-        switch (adventure.getType()){
-
+        switch (adventure.getType()) {
 
 
-            case OpenSpace :
+            case OpenSpace:
                 OpenSpace openSpace = (OpenSpace) adventure;
                 Ship ship = player_local.getShip();
-                Map<CardComponent,Boolean> battery_usage = new HashMap<>();
-                Pair<Integer,Integer> battery;
-                for(int i = 0 ; i<ship.getROWS(); i++){
-                    for(int j = 0 ; j<ship.getCOLS(); j++) {
-                        CardComponent card = ship.getComponent(i,j);
+                Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+                Pair<Integer, Integer> battery;
+                for (int i = 0; i < ship.getROWS(); i++) {
+                    for (int j = 0; j < ship.getCOLS(); j++) {
+                        CardComponent card = ship.getComponent(i, j);
 
-                        if(card.getComponentType() == DoubleEngine){
+                        if (card.getComponentType() == DoubleEngine) {
 
-                           battery =  virtualView.askEngine(new Pair<>(i,j));
-                           if(battery.getKey() == -1 || battery.getValue() == -1){
+                            battery = virtualView.askEngine(new Pair<>(i, j));
+                            if (battery.getKey() == -1 || battery.getValue() == -1) {
 
-                               battery_usage.put(card,false);
+                                battery_usage.put(card, false);
 
-                           }else{
+                            } else {
 
 
-
-                               battery_usage.put(card,true);
-                               //DA GESTIRE L UTILIZZO DI BATTERIE
-                           }
+                                battery_usage.put(card, true);
+                                //DA GESTIRE L UTILIZZO DI BATTERIE
+                            }
 
                         }
 
@@ -773,71 +753,104 @@ public class Client {
                 int power = ship.calculateEnginePower(battery_usage);
                 System.out.println("\n\n\nPOTENZA MOTORE " + power);
 
-                out.writeObject(new StandardMessageClient(MessageType.ADVENTURE_COMPLETED,String.valueOf(power),clientId));
+                out.writeObject(new StandardMessageClient(MessageType.ADVENTURE_COMPLETED, String.valueOf(power), clientId));
 
                 break;
 
 
+            case AbandonedStation:
 
-                    case AbandonedStation:
+                Boolean choice = virtualView.acceptAdventure();
+                AbandonedStation a_s = (AbandonedStation) adventure;
+                Pair<Pair<Integer, Integer>, Integer> new_position;
 
-                        Boolean choice = virtualView.acceptAdventure();
-                        AbandonedStation a_s = (AbandonedStation) adventure;
-                        Pair<Pair<Integer,Integer>,Integer> new_position;
+                List<Cargo> cargos = a_s.getCargo();
 
-                        List<Cargo> cargos = a_s.getCargo();
-
-                        if(choice) {
-
-
-                            while (true) {
-
-                                int scelta = virtualView.askCargo(cargos);
-
-                                if (scelta == -1) {
-                                    break;
-                                }
-
-                                Cargo c = cargos.get(scelta);
+                if (choice) {
 
 
-                                new_position = virtualView.addCargo(player_local.getShip(), c);
-                                if (new_position != null) {
-                                    ship = player_local.getShip();
-                                    cargos.remove(scelta);
-                                    Storage s = ((Storage) ship.getComponent(new_position.getKey().getKey(), new_position.getKey().getValue()));
-                                    s.addCargo(c, new_position.getValue());
+                    while (true) {
 
-                                }
-                            }
-                        }
-                        else {
-                            System.out.println("é uscito");
+                        int scelta = virtualView.askCargo(cargos);
 
+                        if (scelta == -1) {
+                            break;
                         }
 
+                        Cargo c = cargos.get(scelta);
 
 
+                        new_position = virtualView.addCargo(player_local.getShip(), c);
+                        if (new_position != null) {
+                            ship = player_local.getShip();
+                            cargos.remove(scelta);
+                            Storage s = ((Storage) ship.getComponent(new_position.getKey().getKey(), new_position.getKey().getValue()));
+                            s.addCargo(c, new_position.getValue());
 
+                        }
+                    }
+                } else {
 
-
-
+                    out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local)));
 
                 }
 
+                out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local)));
+
+
+                break;
+
+
+            case AbandonedShip:
+
+                 choice = virtualView.acceptAdventure();
+                AbandonedShip ab_ship = (AbandonedShip) adventure;
+
+                if (choice) {
+
+                 int num_crew_mates =ab_ship.getCrewmates_loss();
+
+
+                 while(num_crew_mates != 0){
+
+                    Pair <Integer,Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
+                    if(lu.getValue() == -1 || lu.getKey() == -1) continue;
+                    else {
+                        num_crew_mates--;
+                        virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
+                    }
+
+
+                    }
+
+
+
+
+                } else {
+
+                    out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local)));
+
+                }
+
+                out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local)));
+
+
+
+        }
+
 
     }
 
 
-    public  ObjectInputStream getIn() {
+    public ObjectInputStream getIn() {
         return in;
     }
 
-    public  ObjectOutputStream getOut() {
+    public ObjectOutputStream getOut() {
         return out;
     }
 
-    public  String getNickname() {
+    public String getNickname() {
         return nickname;
     }
 
@@ -845,34 +858,35 @@ public class Client {
         return virtualView;
     }
 
-    public  UUID getClientId() {
+    public UUID getClientId() {
         return clientId;
     }
 
-    public  BlockingQueue<Message> getInputQueue() {
+    public BlockingQueue<Message> getInputQueue() {
         return inputQueue;
     }
 
-    public  BlockingQueue<Message> getNotificationQueue() {
+    public BlockingQueue<Message> getNotificationQueue() {
         return notificationQueue;
     }
 
-    public  List<Player> getOther_players_local() {
+    public List<Player> getOther_players_local() {
         return other_players_local;
     }
 
-    public  Player getPlayer_local() {
+    public Player getPlayer_local() {
         return player_local;
     }
 
-    public  List<CardComponent> getFacedUp_deck_local() {
+    public List<CardComponent> getFacedUp_deck_local() {
         return facedUp_deck_local;
     }
+
     public void setVirtualViewType(VirtualViewType virtualViewType) {
         this.virtualViewType = virtualViewType;
     }
 
-    public VirtualViewType getVirtualViewType(){
+    public VirtualViewType getVirtualViewType() {
         return virtualViewType;
     }
 

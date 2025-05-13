@@ -401,12 +401,6 @@ public class GUI implements View {
         return 0;
     }
 
-    @Override
-    public Map<CardComponent,Integer> chooseAstronautLosses(Ship ship, int astronautLoss){
-        Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
-
-        return astronaut_losses;
-    };
 
     @Override
     public Map<CardComponent,Map <Cargo, Integer>> manageCargo(Ship ship){
@@ -460,6 +454,10 @@ public class GUI implements View {
 
     }
 
+    @Override
+    public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
+        return null;
+    }
 
 
     @Override
