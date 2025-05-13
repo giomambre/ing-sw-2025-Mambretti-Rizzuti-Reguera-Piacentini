@@ -35,6 +35,31 @@ public class Buildcontroller {
     private GridPane shipGrid;
     @FXML
     private Button randomCard;
+    @FXML private Button reservedCardButton;
+    @FXML private HBox reservedCardPreview;
+
+
+    @FXML
+    public void showReservedCardPreview() {
+        reservedCardPreview.getChildren().clear();
+        List<CardComponent> reserved = gui.getClient().getPlayer_local().getShip().getExtra_components();
+
+        for (CardComponent card : reserved) {
+            ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath()))));
+            view.setFitWidth(60);
+            view.setPreserveRatio(true);
+            reservedCardPreview.getChildren().add(view);
+        }
+        reservedCardPreview.setVisible(true);
+        reservedCardPreview.setManaged(true);
+    }
+
+    @FXML
+    public void hideReservedCardPreview() {
+        reservedCardPreview.setVisible(false);
+        reservedCardPreview.setManaged(false);
+    }
+
 
 
     public void initializeShipBoard() {

@@ -404,6 +404,9 @@ public class Client {
                 if (sel == 1) {
 
                     CardComponent card = card_msg.getCardComponent();
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        card_msg.getCardComponent().addRotationAngle();
+                    }
                     card.rotate();
 
                     elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));

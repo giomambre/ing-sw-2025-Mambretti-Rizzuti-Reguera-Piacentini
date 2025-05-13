@@ -47,6 +47,16 @@
                 prefWidth="232.0"
                 text="carta random"/>
 
+        <Button fx:id="reservedCardButton"
+                text="Carte Prenotate"
+                onAction="#setThree"
+                onMouseEntered="#showReservedCardPreview"
+                onMouseExited="#hideReservedCardPreview"/>
+
+        <HBox fx:id="reservedCardPreview" visible="false" managed="false" spacing="10">
+            <!-- le carte verranno aggiunte dinamicamente -->
+        </HBox>
+
     </VBox>
 
 </AnchorPane>

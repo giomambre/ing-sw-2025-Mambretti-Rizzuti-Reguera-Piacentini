@@ -86,7 +86,7 @@ public class Randomcardcontroller {
 
         Image image = new Image(stream);
         cardImageView.setImage(image);
-        System.out.println(">> Immagine caricata correttamente.");
+        cardImageView.setRotate(card.getRotationAngle());
     }
 }
 
