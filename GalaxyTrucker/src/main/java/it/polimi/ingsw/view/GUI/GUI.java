@@ -36,6 +36,7 @@ public class GUI implements View {
     Guiselectcontroller guiselectcontroller;
     Choosecolorcontroller choosecolorcontroller;
     Buildcontroller buildcontroller;
+    Randomcardcontroller randomcardcontroller;
     Stage stage;
     private String nicknamescelto;
     @FXML
@@ -331,6 +332,44 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }
+    @Override
+    public int selectDeck() {
+        try {
+            return buildcontroller.getAction().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public void createrandomcardcontroller(){
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                Randomcardcontroller controller = new Randomcardcontroller();
+                controller.setGui(this);
+                this.randomcardcontroller = controller;
+                controller.start(this.stage);
+                future.complete(null);  // Segnala che la GUI è pronta
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+        try {
+            future.get(); // aspetta che la GUI venga inizializzata
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public int showCard(CardComponent card) {
+        try {
+            return randomcardcontroller.getAction().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 
 
 
@@ -388,15 +427,6 @@ public class GUI implements View {
 
     }
 
-    @Override
-    public int selectDeck() {
-        try {
-            return buildcontroller.getAction().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return -1;
-        }
-    }
 
     @Override
     public int crewmateAction(Pair<Integer,Integer> component) {
@@ -446,10 +476,6 @@ public class GUI implements View {
         return 0;
     }
 
-    @Override
-    public int showCard(CardComponent card) {
-        return 0;
-    }
 
     @Override
     public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
