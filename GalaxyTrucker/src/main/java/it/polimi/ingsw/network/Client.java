@@ -60,6 +60,7 @@ public class Client {
     private static List<Color> still_Available_colors = new ArrayList<>();
     private static CompletableFuture<Void> otherPlayersReady = new CompletableFuture<>();
 
+
     public static void setOtherPlayersLocal(List<Player> players) {
         other_players_local = players;
         otherPlayersReady.complete(null); // Sblocca l’attesa
@@ -321,7 +322,7 @@ public class Client {
                 int deck_selected;
                 if (virtualViewType == VirtualViewType.GUI) {
                     try {
-                        otherPlayersReady.get(); // Attende finché non è completa
+                        otherPlayersReady.get();
                         ((GUI) virtualView).createbuildscreen();
                         deck_selected = virtualView.selectDeck();
                     } catch (InterruptedException | ExecutionException e) {

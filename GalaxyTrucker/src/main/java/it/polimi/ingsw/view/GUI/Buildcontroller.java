@@ -189,6 +189,9 @@ public class Buildcontroller {
         int y = coords.getKey(); // RIGA
         int x = coords.getValue(); // COLONNA
         String imagePath = card.getImagePath();
+        System.out.println("percorso immagine"+imagePath);
+        System.out.println("coordinata y"+y);
+        System.out.println("coordinata x"+x);
 
         if (imagePath == null) return;
 
@@ -209,8 +212,11 @@ public class Buildcontroller {
 
             // Quando trovi la cella corretta (x, y), aggiungi l'ImageView
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                System.out.println("ho trovATO LA CELLA CORRETTA");
                 cell.getChildren().clear(); // Rimuovi eventuali carte precedenti
                 cell.getChildren().add(imageView); // Aggiungi la nuova carta
+                shipGrid.requestLayout();
+                shipGrid.layout();
                 break; // Esci dal ciclo appena trovata la cella
             }
         }
@@ -219,5 +225,6 @@ public class Buildcontroller {
         CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
         shipboard[y][x] = card;
     }
+
 
 }
