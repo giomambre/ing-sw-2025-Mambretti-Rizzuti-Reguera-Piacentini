@@ -430,6 +430,7 @@ public class Client {
                 if (sel == 2) {
 
                     Pair<Integer, Integer> coords = virtualView.askCoords(player_local.getShip());
+                    System.out.println("client,coordinate prese"+coords);
                     if (coords.getKey() == -1 || coords.getValue() == -1) {
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         break;

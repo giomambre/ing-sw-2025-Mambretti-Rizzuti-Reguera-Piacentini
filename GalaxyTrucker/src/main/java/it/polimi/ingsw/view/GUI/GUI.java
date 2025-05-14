@@ -381,7 +381,7 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }*/
-    public void createrandomcardcontroller(CardComponent card){
+    /*public void createrandomcardcontroller(CardComponent card){
         CompletableFuture<Void> future = new CompletableFuture<>();
         this.actualcard = card;
 
@@ -405,7 +405,49 @@ public class GUI implements View {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }*/
+
+    public void createrandomcardcontroller(CardComponent card) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        this.actualcard = card;
+
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
+                Parent root = loader.load();
+                Randomcardcontroller controller = loader.getController(); // usa questo
+
+                controller.setGui(this); // associa la GUI
+                controller.setStage(new Stage());
+                controller.setComboBox();
+                controller.showCardImage(card);
+
+                Stage stage = controller.getStage();
+                stage.setTitle("Random Card");
+                stage.setScene(new Scene(root));
+                stage.centerOnScreen();
+                stage.show();
+
+                stage.setOnCloseRequest(event -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+
+                this.randomcardcontroller = controller; // salva quello GIUSTO
+
+                future.complete(null); // GUI pronta
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+
+        try {
+            future.get(); // aspetta la GUI
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
+
     @Override
     public int showCard(CardComponent card) {
         try {
