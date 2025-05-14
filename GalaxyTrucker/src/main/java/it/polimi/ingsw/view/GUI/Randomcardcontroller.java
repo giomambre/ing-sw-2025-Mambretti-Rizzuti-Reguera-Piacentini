@@ -42,6 +42,10 @@ public class Randomcardcontroller {
     private ComboBox<Integer> xComboBox;
     @FXML
     private ComboBox<Integer> yComboBox;
+    @FXML
+    private Button confirmButton;
+
+    private Stage stage;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -49,12 +53,12 @@ public class Randomcardcontroller {
 
     public void setComboBox() {
         ObservableList<Integer> coordinateValuesy = FXCollections.observableArrayList();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 0; i <= 4; i++) {
             coordinateValuesy.add(i);
         }
         yComboBox.setItems(coordinateValuesy);
         ObservableList<Integer> coordinateValuesx = FXCollections.observableArrayList();
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 0; i <= 6; i++) {
             coordinateValuesx.add(i);
         }
         xComboBox.setItems(coordinateValuesx);
@@ -83,6 +87,7 @@ public class Randomcardcontroller {
         loader.setController(this);
         Parent root = loader.load();
         Stage randomCardStage = new Stage();  // Nuovo stage!
+        this.stage = randomCardStage;
         randomCardStage.setTitle("Random Card");
         randomCardStage.setScene(new Scene(root));
         randomCardStage.centerOnScreen();
@@ -156,6 +161,10 @@ public class Randomcardcontroller {
             // Nascondi o disabilita il box se vuoi
             coordinatesBox.setVisible(false);
             System.out.println("Coordinate confermate: " + x + ", " + y);
+        }
+        if(stage!=null) {
+            System.out.println("chiudo lo stage");
+            stage.close();
         }
     }
 }
