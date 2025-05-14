@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,10 +20,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
+import javafx.util.Pair;
+import javafx.scene.image.ImageView;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import javafx.scene.image.Image;
 
 public class Buildcontroller {
     private GUI gui;
@@ -60,7 +63,9 @@ public class Buildcontroller {
         reservedCardPreview.setManaged(false);
     }
 
-
+    public GridPane getShipGrid() {
+        return shipGrid;
+    }
 
     public void initializeShipBoard() {
         shipGrid.getChildren().clear(); // shipGrid è un GridPane definito in FXML
@@ -116,7 +121,6 @@ public class Buildcontroller {
 
 
     public void setupPlayerButtons(List<Player> otherPlayers) {
-        System.out.println("ALTRI GIOCATORI: " + otherPlayers);
         Platform.runLater(() -> {
             playersButtonBox.getChildren().clear(); // pulisci prima
             for (Player p : otherPlayers) {
@@ -151,6 +155,69 @@ public class Buildcontroller {
             action = new CompletableFuture<>();
         }
         return action;
+    }
+
+    /*public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
+        int y = coords.getKey(); // RIGA
+        int x = coords.getValue(); // COLONNA
+        String imagePath = card.getImagePath();
+
+        if (imagePath == null) return;
+
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(48);
+        imageView.setFitHeight(48);
+        imageView.setPreserveRatio(true);
+
+        // Cerca la cella corretta nella GridPane
+        for (Node node : shipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            // fallback nel caso siano null (succede se non impostati nel FXML)
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+        }
+
+        // Aggiorna il modello se necessario
+        CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
+        shipboard[y][x] = card;
+    }*/
+    public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
+        int y = coords.getKey(); // RIGA
+        int x = coords.getValue(); // COLONNA
+        String imagePath = card.getImagePath();
+
+        if (imagePath == null) return;
+
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(48);
+        imageView.setFitHeight(48);
+        imageView.setPreserveRatio(true);
+
+        // Cerca la cella corretta nella GridPane
+        for (Node node : shipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            // fallback nel caso siano null (succede se non impostati nel FXML)
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            // Quando trovi la cella corretta (x, y), aggiungi l'ImageView
+            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                cell.getChildren().clear(); // Rimuovi eventuali carte precedenti
+                cell.getChildren().add(imageView); // Aggiungi la nuova carta
+                break; // Esci dal ciclo appena trovata la cella
+            }
+        }
+
+        // Aggiorna il modello della nave con la carta piazzata (opzionale)
+        CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
+        shipboard[y][x] = card;
     }
 
 }

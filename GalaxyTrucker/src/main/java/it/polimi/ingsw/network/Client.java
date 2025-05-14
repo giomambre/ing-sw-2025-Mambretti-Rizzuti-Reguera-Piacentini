@@ -390,7 +390,7 @@ public class Client {
                 virtualView.showMessage("\nNon puoi posizionare la carta in questa fase del gioco ! ");
                 break;
 
-            case CARD_COMPONENT_RECEIVED:
+            case CARD_COMPONENT_RECEIVED: //sono nel pannello che apre quando prendo una carta random
 
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
                 virtualView.showMessage("\nCarta disponibile");

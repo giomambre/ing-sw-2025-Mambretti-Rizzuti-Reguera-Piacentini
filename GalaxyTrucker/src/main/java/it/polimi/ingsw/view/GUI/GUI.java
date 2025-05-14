@@ -380,6 +380,22 @@ public class GUI implements View {
         }
     }
 
+    @Override
+    public Pair<Integer, Integer> askCoords(Ship ship) {
+        try {
+            Pair<Integer,Integer> coords=randomcardcontroller.getCoords().get();
+            Platform.runLater(() -> {
+                CardComponent selectedCard = getActualcard();
+                System.out.println("ora aggiungo la carta selezionata"+selectedCard.getImagePath());
+                buildcontroller.placeCardOnShip(selectedCard, coords);
+            });
+            return coords;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 
@@ -497,10 +513,6 @@ public class GUI implements View {
     }
 
 
-    @Override
-    public Pair<Integer, Integer> askCoords(Ship ship) {
-        return null;
-    }
 
     @Override
     public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {

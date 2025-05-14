@@ -2,15 +2,20 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.components.CardComponent;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.InputStream;
 import java.util.Objects;
@@ -19,6 +24,8 @@ import java.util.concurrent.CompletableFuture;
 public class Randomcardcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
+    private CompletableFuture<Pair<Integer,Integer>> coords = new CompletableFuture<>();
+
     @FXML
     private Button rotateButton;
     @FXML
@@ -29,10 +36,31 @@ public class Randomcardcontroller {
     private Button bookButton;
     @FXML
     private ImageView cardImageView;
+    @FXML
+    private HBox coordinatesBox;
+    @FXML
+    private ComboBox<Integer> xComboBox;
+    @FXML
+    private ComboBox<Integer> yComboBox;
 
     public void setGui(GUI gui) {
         this.gui = gui;
     }
+
+    public void setComboBox() {
+        ObservableList<Integer> coordinateValuesy = FXCollections.observableArrayList();
+        for (int i = 1; i <= 5; i++) {
+            coordinateValuesy.add(i);
+        }
+        yComboBox.setItems(coordinateValuesy);
+        ObservableList<Integer> coordinateValuesx = FXCollections.observableArrayList();
+        for (int i = 1; i <= 7; i++) {
+            coordinateValuesx.add(i);
+        }
+        xComboBox.setItems(coordinateValuesx);
+
+    }
+
 
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
@@ -43,7 +71,8 @@ public class Randomcardcontroller {
         stage.setTitle("Random Card");
         stage.setScene(scene);
         stage.centerOnScreen();
-
+        setComboBox();
+        coordinatesBox.setVisible(false);
         stage.show();
         stage.setOnCloseRequest((event->{
             Platform.exit();
@@ -58,8 +87,10 @@ public class Randomcardcontroller {
     public void setThree(ActionEvent event) {
         action.complete(3);
     }
+    //posiziona
     @FXML
     public void setTwo(ActionEvent event) {
+        coordinatesBox.setVisible(true);
         action.complete(2);
     }
     @FXML
@@ -76,17 +107,38 @@ public class Randomcardcontroller {
 
     public void showCardImage(CardComponent card) {
         String imagePath = card.getImagePath();
-        System.out.println(">> Percorso immagine: " + imagePath);
-
         InputStream stream = getClass().getResourceAsStream(imagePath);
         if (stream == null) {
-            System.out.println(">> ERRORE: immagine non trovata nel path!");
-            return; // esce dal metodo, evitando crash
+            return;
         }
-
         Image image = new Image(stream);
         cardImageView.setImage(image);
         cardImageView.setRotate(card.getRotationAngle());
+    }
+    public CompletableFuture<Pair<Integer,Integer>> getCoords() {
+        if (coords == null) {
+            coords = new CompletableFuture<>();
+        }
+        return coords;
+    }
+    @FXML
+    public void confirmCoords(ActionEvent event) {
+        Integer x = xComboBox.getValue();
+        Integer y = yComboBox.getValue();
+
+        if (x == null || y == null) {
+            // Mostra errore o ignora l'input incompleto
+            System.out.println("Coordinate non selezionate");
+            return;
+        }
+
+        // Completa la future solo se non è già completata
+        if (!coords.isDone()) {
+            coords.complete(new Pair<>(x, y));
+            // Nascondi o disabilita il box se vuoi
+            coordinatesBox.setVisible(false);
+            System.out.println("Coordinate confermate: " + x + ", " + y);
+        }
     }
 }
 

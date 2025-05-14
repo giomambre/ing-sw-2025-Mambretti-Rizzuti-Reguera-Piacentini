@@ -41,7 +41,6 @@ public class Choosecolorcontroller{
 
 
     public void setActiveButton(List<Color> colors) {
-        System.out.println(">>> [DEBUG] setActiveButton called with: " + colors);
             if (colors.contains(Color.BLUE)) {
                 blueRectangle.setVisible(true);
             } else {
