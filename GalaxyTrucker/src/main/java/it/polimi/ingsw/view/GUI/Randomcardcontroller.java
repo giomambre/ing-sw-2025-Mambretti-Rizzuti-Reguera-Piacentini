@@ -62,22 +62,40 @@ public class Randomcardcontroller {
     }
 
 
-    public void start(Stage stage) throws Exception {
+    /*public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
         loader.setController(this);
         Parent root = loader.load();
-        gui.setStage(stage);
-        Scene scene = new Scene(root);
-        stage.setTitle("Random Card");
-        stage.setScene(scene);
-        stage.centerOnScreen();
+        Stage RandomCardStage = new Stage();
+        RandomCardStage.setTitle("Random Card");
+        RandomCardStage.setScene(new Scene(root));
+        RandomCardStage.centerOnScreen();
         setComboBox();
         coordinatesBox.setVisible(false);
-        stage.show();
+        RandomCardStage.show();
         stage.setOnCloseRequest((event->{
             Platform.exit();
             System.exit(0);
         }));
+    }*/
+    public void start(CardComponent card) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        Stage randomCardStage = new Stage();  // Nuovo stage!
+        randomCardStage.setTitle("Random Card");
+        randomCardStage.setScene(new Scene(root));
+        randomCardStage.centerOnScreen();
+        randomCardStage.show();
+        setComboBox();
+
+        showCardImage(card);
+
+        randomCardStage.setOnCloseRequest(event -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
     }
     @FXML
     public void setFour(ActionEvent event) {

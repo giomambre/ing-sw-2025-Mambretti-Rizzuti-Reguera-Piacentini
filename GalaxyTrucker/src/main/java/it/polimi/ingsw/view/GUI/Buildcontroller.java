@@ -157,34 +157,7 @@ public class Buildcontroller {
         return action;
     }
 
-    /*public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
-        int y = coords.getKey(); // RIGA
-        int x = coords.getValue(); // COLONNA
-        String imagePath = card.getImagePath();
 
-        if (imagePath == null) return;
-
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(48);
-        imageView.setFitHeight(48);
-        imageView.setPreserveRatio(true);
-
-        // Cerca la cella corretta nella GridPane
-        for (Node node : shipGrid.getChildren()) {
-            Integer colIndex = GridPane.getColumnIndex(node);
-            Integer rowIndex = GridPane.getRowIndex(node);
-
-            // fallback nel caso siano null (succede se non impostati nel FXML)
-            if (colIndex == null) colIndex = 0;
-            if (rowIndex == null) rowIndex = 0;
-
-        }
-
-        // Aggiorna il modello se necessario
-        CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
-        shipboard[y][x] = card;
-    }*/
     public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
         int y = coords.getKey(); // RIGA
         int x = coords.getValue(); // COLONNA
@@ -215,6 +188,7 @@ public class Buildcontroller {
                 System.out.println("ho trovATO LA CELLA CORRETTA");
                 cell.getChildren().clear(); // Rimuovi eventuali carte precedenti
                 cell.getChildren().add(imageView); // Aggiungi la nuova carta
+                System.out.println("AGGIUNTAAA!!!!");
                 shipGrid.requestLayout();
                 shipGrid.layout();
                 break; // Esci dal ciclo appena trovata la cella

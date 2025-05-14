@@ -48,6 +48,7 @@ public class GUI implements View {
     private boolean chooseColorScreenOpen = false;
     private Client client;
     private CardComponent actualcard;
+    private Boolean isbuildscreenactive=false;
 
     public Buildcontroller getBuildcontroller() {
         return buildcontroller;
@@ -295,6 +296,15 @@ public class GUI implements View {
         }
     }*/
     public void createbuildscreen() {
+        if (this.buildcontroller != null && isbuildscreenactive) {
+            System.out.println("oooooooooooo");
+            Platform.runLater(() -> {
+                    stage.toFront();
+                    stage.requestFocus();
+                    stage.show(); // riportala in primo piano
+            });
+            return;
+        }
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
             try {
@@ -310,6 +320,7 @@ public class GUI implements View {
                 stage.setScene(scene);
                 stage.centerOnScreen();
                 stage.show();
+                isbuildscreenactive = true;
 
                 stage.setOnCloseRequest((event) -> {
                     Platform.exit();
@@ -347,7 +358,7 @@ public class GUI implements View {
         return actualcard;
     }
 
-    public void createrandomcardcontroller(CardComponent card){
+    /*public void createrandomcardcontroller(CardComponent card){
         CompletableFuture<Void> future = new CompletableFuture<>();
         this.actualcard=card;
         Platform.runLater(() -> {
@@ -366,6 +377,31 @@ public class GUI implements View {
         });
         try {
             future.get(); // aspetta che la GUI venga inizializzata
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }*/
+    public void createrandomcardcontroller(CardComponent card){
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        this.actualcard = card;
+
+        Platform.runLater(() -> {
+            try {
+                // Crea un nuovo controller e un nuovo stage
+                Randomcardcontroller controller = new Randomcardcontroller();
+                controller.setGui(this);
+                this.randomcardcontroller = controller;
+
+                controller.start(card); // <-- passa stage e card
+
+                future.complete(null);  // GUI pronta
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+
+        try {
+            future.get(); // aspetta la GUI
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
