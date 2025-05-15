@@ -662,13 +662,36 @@ public class TUI implements View {
         System.out.println("\n");
     }
 
-    private void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
+    @Override
+    public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
+        switch (meteor.getKey()) {
+            case LargeMeteor -> System.out.print(" - Meteora grossa ");
+            case SmallMeteor -> System.out.print(" - Meteora piccola ");
+            case HeavyCannonFire -> System.out.print(" - Cannonata pesante ");
+            case LightCannonFire -> System.out.print(" - Cannonata leggera ");
+        }
+        switch (meteor.getValue()) {
+            case South -> System.out.print("da sud");
+            case East -> System.out.print("da est");
+            case West -> System.out.print("da ovest");
+            case North -> System.out.print("da nord");
+        }
+
+
+        System.out.println(" alla coordinata" + coord + "\n");
+
+
+
+    }
+
+    @Override
+    public void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
         for (Pair<MeteorType, Direction> meteor : meteors) {
             switch (meteor.getKey()) {
-                case LargeMeteor -> System.out.println("Meteora grossa");
-                case SmallMeteor -> System.out.println("Meteora piccola");
-                case HeavyCannonFire -> System.out.println("Cannonata pesante");
-                case LightCannonFire -> System.out.println("Cannonata leggera");
+                case LargeMeteor -> System.out.print(" - Meteora grossa ");
+                case SmallMeteor -> System.out.print(" - Meteora piccola ");
+                case HeavyCannonFire -> System.out.print(" - Cannonata pesante ");
+                case LightCannonFire -> System.out.print(" - Cannonata leggera ");
             }
             switch (meteor.getValue()) {
                 case South -> System.out.println("da sud");
@@ -678,6 +701,7 @@ public class TUI implements View {
             }
         }
     }
+
 
     @Override
     public int selectDeck() {

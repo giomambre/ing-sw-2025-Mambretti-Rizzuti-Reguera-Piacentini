@@ -8,10 +8,13 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.AbandonedStation;
 import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.MeteorSwarm;
 import it.polimi.ingsw.model.adventures.OpenSpace;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.CardAdventureType;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.MeteorType;
 import it.polimi.ingsw.network.messages.*;
 import javafx.util.Pair;
 
@@ -409,12 +412,25 @@ public class Server {
                 }
                 else if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() ==1){
 
+                     safePlayers = new ArrayList<>();
+                    for (Player p : controller.getPlayers()) {
+                        safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                    }
+                    sendToClient(update_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                     sendToClient(update_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
+                    controller.addWaitingFlyPlayer(getNickname(update_msg.getId_client()));
 
 
                 } else if (controller.getValidPieces(getNickname(update_msg.getId_client())).isEmpty()) {
                     sendToClient(update_msg.getId_client(), new Message(INVALID_SHIP, ""));
                     controller.removePlayerFromOrder(getNickname(update_msg.getId_client()));
+
+                }
+
+
+                if(controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
+
+                    handleMessage(new StandardMessageClient(START_FLIGHT, "",update_msg.getId_client()));
 
                 }
                 break;
@@ -451,7 +467,7 @@ public class Server {
                 sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                while( adventure.getType() != CardAdventureType.AbandonedShip){
+                while( adventure.getType() != CardAdventureType.OpenSpace){
 
                     adventure = controller.getRandomAdventure();
                 }
@@ -464,8 +480,15 @@ public class Server {
 
 
                 case ADVENTURE_COMPLETED:
-                    StandardMessageClient adv_msg = (StandardMessageClient) msg;
+                    ShipClientMessage adv_msg = (ShipClientMessage) msg;
                     controller = all_games.get(getLobbyId(adv_msg.getId_client()));
+                    Ship s = adv_msg.getPlayer().getShip();
+                    controller.setShipPlance(getNickname(adv_msg.getId_client()),s);
+                     safePlayers = new ArrayList<>();
+                    for (Player p : controller.getPlayers()) {
+                        safePlayers.add(p.copyPlayer());
+                    }
+                    sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
 
                     switch (controller.getCurrentAdventure().getType()){
 
@@ -515,7 +538,7 @@ public class Server {
                                 }
 
                             }else{
-                                controller.movePlayer(getNickname(adv_msg.getId_client()),controller.getCurrentAdventure().getCost_of_days());
+                                controller.movePlayer(getNickname(adv_msg.getId_client()),-controller.getCurrentAdventure().getCost_of_days());
 
                                 sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
                                         + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo" ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
@@ -547,7 +570,7 @@ public class Server {
                                     }
 
                                 }else{
-                                    controller.movePlayer(getNickname(adv_msg.getId_client()),controller.getCurrentAdventure().getCost_of_days());
+                                    controller.movePlayer(getNickname(adv_msg.getId_client()),-controller.getCurrentAdventure().getCost_of_days());
 
                                     sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
                                             + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo"  ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
@@ -624,6 +647,26 @@ public class Server {
 
                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "",adventure));
                 break;
+
+
+            case MeteorSwarm:
+                controller.initializeAdventure(adventure);
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+                MeteorSwarm ms = (MeteorSwarm) adventure;
+                StringBuilder coords_m = new StringBuilder();
+                for(int i = 0; i < ms.getMeteors().size(); i++){
+
+                    coords_m.append(controller.throwDice()).append(" ");
+
+                }
+
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage (METEOR_SWARM,coords_m.toString(),adventure));
+
+            break;
+
+
+
+
 
 
         }

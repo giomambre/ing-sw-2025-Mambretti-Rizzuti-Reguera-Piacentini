@@ -150,7 +150,7 @@ public class Ship implements Serializable {
             }
         }
 
-        //player.utilePerTestare();
+        player.utilePerTestare();
 
     }
 
@@ -827,7 +827,7 @@ public class Ship implements Serializable {
      * @param pos row or column to search along
      * @return the first component found in the given direction and position
      */
-    public CardComponent getFirstComponent(Direction dir, int pos) {
+    public Pair<Integer,Integer> getFirstComponent(Direction dir, int pos) {
 
 // ritorna un component NOT ACCESSIBLE se non ce nessun componente colpito
 
@@ -835,32 +835,32 @@ public class Ship implements Serializable {
             case North:
                 for (int i = 0; i < ROWS; i++) {
                     if (this.getComponent(i, pos - 4).getComponentType() != ComponentType.Empty && this.getComponent(i, pos - 4).getComponentType() != NotAccessible)
-                        return this.getComponent(i, pos - 4);
+                        return new Pair<>(i, pos - 4);
                 }
-                return this.getComponent(0, 0);
+                return new Pair<>(0, 0);
 
             case South:
                 for (int i = ROWS - 1; i >= 0; i--) {
                     if (this.getComponent(i, pos - 4).getComponentType() != ComponentType.Empty && this.getComponent(i, pos - 4).getComponentType() != NotAccessible)
-                        return this.getComponent(i, pos - 4);
+                        return new Pair<>(i, pos - 4);
                 }
-                return this.getComponent(0, 0);
+                return new Pair<>(0, 0);
 
             case West:
                 for (int i = 0; i < COLS; i++) {
                     if (this.getComponent(pos - 5, i).getComponentType() != ComponentType.Empty && this.getComponent(pos - 5, i).getComponentType() != NotAccessible)
-                        return this.getComponent(pos - 5, i);
+                        return new Pair<>(pos- 5, i);
                 }
-                return this.getComponent(0, 0);
+                return new Pair<>(0, 0);
 
             case East:
                 for (int i = COLS - 1; i >= 0; i--) {
                     if (this.getComponent(pos - 5, i).getComponentType() != ComponentType.Empty && this.getComponent(pos - 5, i).getComponentType() != NotAccessible)
-                        return this.getComponent(pos - 5, i);
+                        return new Pair<>(pos- 5, i);
                 }
-                return this.getComponent(0, 0);
+                return new Pair<>(0, 0);
         }
-        return this.getComponent(0, 0);
+        return new Pair<>(0, 0);
     }
 
     /**

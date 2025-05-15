@@ -64,7 +64,7 @@ public class MeteorSwarm extends CardAdventure implements Serializable {
      * @param position
      * @param double_cannon_usage true if the player is using a double cannon
      */
-    public void execute(Player player, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage) {
+    /*public void execute(Player player, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage) {
 
         if ((direction == Direction.North || direction == Direction.South) && (position < 4 || position > 10)) return;
         if ((direction == Direction.East || direction == Direction.West) && (position < 5 || position > 9)) return;
@@ -116,7 +116,7 @@ public class MeteorSwarm extends CardAdventure implements Serializable {
         }
 
 
-    }
+    }*/
 
     public List<Pair<MeteorType, Direction>> getMeteors() {
         return meteors;

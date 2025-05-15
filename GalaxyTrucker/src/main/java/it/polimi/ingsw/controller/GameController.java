@@ -57,7 +57,7 @@ public class GameController {
         this.adventure = adventure;
         adventureOrder.clear();
         switch (adventure.getType()) {
-            case OpenSpace :
+            case OpenSpace,MeteorSwarm :
             adventureOrder = game.getBoard().getRanking();
             break;
 
@@ -138,6 +138,14 @@ public class GameController {
     public void setGamestate(GameState game_state) {
         this.game_state = game_state;
     }
+
+    public int throwDice(){
+        Random dice1 = new Random();
+        Random dice2 = new Random();
+
+        return (dice1.nextInt(6)+1)+(dice2.nextInt(6)+1);
+    }
+
 
     public void startGame() {
         game_state = BUILD_PHASE;

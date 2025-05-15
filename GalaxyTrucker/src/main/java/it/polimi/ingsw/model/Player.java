@@ -311,7 +311,7 @@ public class Player implements Serializable {
         connectors.put(South, Single);
         connectors.put(West, Double);
 
-        ship.addComponent(new Battery(ComponentType.Battery, connectors,2 , ""), 1, 2);
+        ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors , ""), 1, 2);
 
 
         connectors.put(North, Universal);
@@ -361,10 +361,10 @@ public class Player implements Serializable {
 
         connectors.put(North, Single);
         connectors.put(East, Double);
-        connectors.put(South, Smooth);
+        connectors.put(South, Engine_Connector);
         connectors.put(West, Single);
 
-        ship.addComponent(new Battery(ComponentType.Battery, connectors,3, ""), 2, 2);
+        ship.addComponent(new CardComponent(DoubleEngine, connectors, ""), 2, 2);
 
         connectors.put(North, Single);
         connectors.put(East, Universal);

@@ -7,6 +7,8 @@ import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.Color;
+import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.MeteorType;
 import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.TUI.TUI;
 import javafx.util.Pair;
@@ -87,7 +89,12 @@ public interface View {
 
     Pair<Integer,Integer> askCoords(Ship ship);
 
-    Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
+     void printMeteors(List<Pair<MeteorType, Direction>> meteors) ;
+
+     void printMeteor(Pair<MeteorType, Direction> meteor,int coord);
+
+
+        Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
 
     Pair<Integer,Integer> askEngine(Pair<Integer,Integer>  cannon);
 
