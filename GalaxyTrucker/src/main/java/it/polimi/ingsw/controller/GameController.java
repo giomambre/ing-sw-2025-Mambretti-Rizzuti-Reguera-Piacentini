@@ -496,7 +496,7 @@ public class GameController {
 
     public void executeMeteors(String nickname, CardAdventure meteor, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage) {
         Player p = game.getPlayer(nickname);
-        ((MeteorSwarm) meteor).execute(p, direction, meteor_type, shield_usage, battery, position, double_cannon_usage);
+        //((MeteorSwarm) meteor).execute(p, direction, meteor_type, shield_usage, battery, position, double_cannon_usage);
     }
 
     public String calculateLessCrewmates(List<Player> players) {

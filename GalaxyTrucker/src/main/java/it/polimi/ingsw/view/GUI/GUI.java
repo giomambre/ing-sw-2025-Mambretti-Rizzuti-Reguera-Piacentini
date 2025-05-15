@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.enumerates.Cargo;
+import it.polimi.ingsw.model.enumerates.Direction;
+import it.polimi.ingsw.model.enumerates.MeteorType;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
 import javafx.application.Platform;
@@ -474,8 +476,15 @@ public class GUI implements View {
         }
     }
 
+    @Override
+    public void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
 
+    }
 
+    @Override
+    public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
+
+    }
 
 
     @Override
