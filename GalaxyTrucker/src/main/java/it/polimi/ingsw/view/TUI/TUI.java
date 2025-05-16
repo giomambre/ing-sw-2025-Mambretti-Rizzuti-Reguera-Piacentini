@@ -1,9 +1,6 @@
 package it.polimi.ingsw.view.TUI;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.*;
@@ -1330,6 +1327,108 @@ int i = 0;
 
         // Restituisce la posizione della batteria selezionata
         return batteryPositions.get(choice - 1);
+    }
+
+    @Override
+    public double declareCannonPower(Ship ship) {
+
+        Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+        List<Pair<Integer, Integer>> doubleCannonPositions = new ArrayList<>();
+
+        // Trova tutte le batterie con energia > 0
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent component = ship.getComponent(i, j);
+                if (component.getComponentType() == ComponentType.DoubleCannon) {
+                    doubleCannonPositions.add(new Pair<>(i, j));
+                }
+            }
+        }
+
+        // Se non ci sono batterie disponibili
+        if (doubleCannonPositions.isEmpty()) {
+            return ship.calculateCannonPower(battery_usage);
+        }
+
+        // Stampa l'elenco numerato delle batterie
+        System.out.println("\nSeleziona un doppio cannone (Riga ; Colonna) :");
+        for (int idx = 0; idx < doubleCannonPositions.size(); idx++) {
+            Pair<Integer, Integer> pos = doubleCannonPositions.get(idx);
+            CardComponent dbCannon = ship.getComponent( pos.getKey(), pos.getValue());
+
+            System.out.println("\n\t"+(idx + 1) + ". Doppio cannone in  ( " + pos.getKey() + " ; " + pos.getValue() + " ) ");
+        }
+
+        // Chiedi all'utente di scegliere un'opzione
+        int choice=0;
+        while (choice != -1) {
+            choice = readValidInt("\nInserisci il numero del doppio cannone da attivare", 1, doubleCannonPositions.size(), true);
+            if(choice!=-1){
+
+                Pair<Integer,Integer> b = useBattery(ship);
+                Battery battery = (Battery) ship.getComponent( b.getKey(), b.getValue());
+                battery.removeBattery();
+
+                Pair<Integer,Integer> p = doubleCannonPositions.get(choice-1);
+                doubleCannonPositions.remove(choice-1);
+                battery_usage.put(ship.getComponent(p.getKey(), p.getValue()), true);
+            }
+        }
+
+        return ship.calculateCannonPower(battery_usage);
+
+
+    }
+
+    @Override
+    public double declareEnginePower(Ship ship) {
+
+        Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+        List<Pair<Integer, Integer>> doubleEnginePositions = new ArrayList<>();
+
+        // Trova tutte le batterie con energia > 0
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent component = ship.getComponent(i, j);
+                if (component.getComponentType() == DoubleEngine) {
+                    doubleEnginePositions.add(new Pair<>(i, j));
+                }
+            }
+        }
+
+        // Se non ci sono batterie disponibili
+        if (doubleEnginePositions.isEmpty()) {
+            return ship.calculateEnginePower(battery_usage);
+        }
+
+        // Stampa l'elenco numerato delle batterie
+        System.out.println("\nSeleziona un doppio motore (Riga ; Colonna) :");
+        for (int idx = 0; idx < doubleEnginePositions.size(); idx++) {
+            Pair<Integer, Integer> pos = doubleEnginePositions.get(idx);
+            CardComponent dbCannon = ship.getComponent( pos.getKey(), pos.getValue());
+
+            System.out.println("\n\t"+(idx + 1) + ". Doppio motore in  ( " + pos.getKey() + " ; " + pos.getValue() + " ) ");
+        }
+
+        // Chiedi all'utente di scegliere un'opzione
+        int choice=0;
+        while (choice != -1) {
+            choice = readValidInt("\nInserisci il numero del doppio motore da attivare", 1, doubleEnginePositions.size(), true);
+            if(choice!=-1){
+
+                Pair<Integer,Integer> b = useBattery(ship);
+                Battery battery = (Battery) ship.getComponent( b.getKey(), b.getValue());
+                battery.removeBattery();
+
+                Pair<Integer,Integer> p = doubleEnginePositions.get(choice-1);
+                doubleEnginePositions.remove(choice-1);
+                battery_usage.put(ship.getComponent(p.getKey(), p.getValue()), true);
+            }
+        }
+
+        return ship.calculateEnginePower(battery_usage);
+
+
     }
 
 

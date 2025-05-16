@@ -486,6 +486,16 @@ public class GUI implements View {
 
     }
 
+    @Override
+    public double declareCannonPower(Ship ship) {
+        return 0;
+    }
+
+    @Override
+    public double declareEnginePower(Ship ship) {
+        return 0;
+    }
+
 
     @Override
     public String chooseConnection() {

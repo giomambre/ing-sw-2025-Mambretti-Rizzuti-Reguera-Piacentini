@@ -83,6 +83,10 @@ public interface View {
 
     public Pair<Integer,Integer> useBattery(Ship ship);
 
+    double declareCannonPower(Ship ship);
+
+    double declareEnginePower(Ship ship);
+
     public Map<CardComponent, Boolean> batteryUsage(Ship ship);
 
     public boolean useShield(Ship ship);
