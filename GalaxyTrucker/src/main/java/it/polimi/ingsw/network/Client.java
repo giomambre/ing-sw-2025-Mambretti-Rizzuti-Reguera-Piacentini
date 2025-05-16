@@ -917,25 +917,65 @@ public class Client {
 
                                     player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
 
-                                    player_local.getShip().findShipPieces();
-                                    //DA CONTINUARE QUA
-
-//non ha usato batteria / non ha potuto
+                                    List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+                                    if (pieces.size() == 0) {
+                                        //fuori dalla partita
+                                        // creare un tipo di messaggio apposta da mandare al server e di seguito buttare fuori il player
+                                    } else if (pieces.size()>1) {
+                                        int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                    }
 
 
                                 } else {
-
-
                                     card_battery = (Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
-
-
                                     card_battery.removeBattery();
-
-
                                 }
 
 
                             }
+                            else {
+                                player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+
+                                List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+                                if (pieces.size() == 0) {
+                                    //fuori dalla partita
+                                } else if (pieces.size()>1) {
+                                    int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                }
+                            }
+                            break;
+                            case LargeMeteor:
+                                if (hitted.getConnector(m.getValue()) == ConnectorType.Cannon_Connector) {
+                                    Pair<Integer, Integer> b = virtualView.useBattery(player_local.getShip());
+
+                                    if (b.getKey() == -1 || b.getValue() == -1) {
+
+                                        player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+
+                                        List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+                                        if (pieces.size() == 0) {
+                                            //fuori dalla partita
+                                        } else if (pieces.size()>1) {
+                                            int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                        }
+
+
+                                    } else {
+                                        card_battery = (Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
+                                        card_battery.removeBattery();
+                                    }
+                                }
+                                else {
+                                    player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+
+                                    List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+                                    if (pieces.size() == 0) {
+                                        //fuori dalla partita
+                                    } else if (pieces.size()>1) {
+                                        int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                    }
+                                }
+                                break;
 
 
                     }
@@ -944,6 +984,10 @@ public class Client {
 
 
                 }
+
+
+
+
 
 
         }
