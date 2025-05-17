@@ -45,7 +45,7 @@ public class Client {
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
     private static boolean forced_close = false;
-
+    private static boolean lock = true;
     private static Map<Integer, Player> local_board_positions;
     private static Map<Integer, Player> local_board_laps;
 
@@ -111,6 +111,7 @@ public class Client {
 
                         Message msg = (Message) in.readObject();
 
+
                         switch (msg.getType()) {
                             case ABANDONED_SHIP, OPEN_SPACE, ABANDONED_STATION, REQUEST_NAME, NAME_REJECTED,
                                  NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
@@ -119,7 +120,7 @@ public class Client {
                                 inputQueue.put(msg);
                                 break;
 
-                            case ADVENTURE_SKIP, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT, INVALID_SHIP,
+                            case END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT, INVALID_SHIP,
                                  START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
                                  FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
                                  BUILD_PHASE_ENDED:
@@ -128,8 +129,8 @@ public class Client {
 
 
                             default:
-                                // messaggi non previsti o debug
-                                System.out.println("Messaggio sconosciuto ricevuto: " + msg.getType());
+
+                                inputQueue.put(msg);
                         }
                     }
                 } catch (Exception e) {
@@ -140,7 +141,21 @@ public class Client {
             new Thread(() -> {
                 try {
                     while (true) {
+
+
+
                         Message msg = inputQueue.take();
+
+                        if (msg.getType() == MessageType.OPEN_SPACE || msg.getType() == MessageType.ABANDONED_SHIP
+                                || msg.getType() == MessageType.ABANDONED_STATION || msg.getType() == MessageType.METEOR_SWARM) {
+
+                            if (lock) {
+                                Thread.sleep(300); // aspetta che la notifica sia stampata
+                                inputQueue.put(msg);
+                                continue;
+                            }
+                        }
+
                         elaborate(msg); // funzione che chiede input e risponde al server
                     }
                 } catch (Exception e) {
@@ -153,7 +168,14 @@ public class Client {
                 try {
                     while (true) {
                         Message msg = notificationQueue.take();
-                        handleNotification(msg); // stampa messaggi agli altri giocatori
+                        handleNotification(msg);
+                        if (msg.getType() == MessageType.NEW_ADVENTURE_DRAWN) {
+                            Thread.sleep(10);
+                            lock = false;
+
+                        }
+
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -397,13 +419,16 @@ public class Client {
                     sel = virtualView.showCard(card_msg.getCardComponent());
                 }
                 if (sel == 1) {
-                    CardComponent card = card_msg.getCardComponent();
-                    card.rotate(); // ruota
-                    if (virtualViewType == VirtualViewType.GUI) {
-                        ((GUI)virtualView).setActualcard(card); // aggiorna anche actualcard!
+
+                    if (sel == 1) {
+                        CardComponent card = card_msg.getCardComponent();
+                        card.rotate(); // ruota
+                        if (virtualViewType == VirtualViewType.GUI) {
+                            ((GUI)virtualView).setActualcard(card); // aggiorna anche actualcard!
+                        }
+                        elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
+                        return;
                     }
-                    elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
-                    return;
                 }
 
                 if (sel == 3) {
@@ -524,19 +549,18 @@ public class Client {
                 out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE, String.valueOf(piece), clientId));
                 break;
 
-                case END_FLIGHT:
-                    Message end_msg = msg;
-                    virtualView.showMessage("Purtroppo non puoi più continuare la tua fase di volo");
-                    virtualView.earlyEndFlightResume(player_local);
-                    // da riveder messa qua giusto per avere un idea
-                    break;
-
+            case END_FLIGHT:
+                Message end_msg = msg;
+                virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
+                virtualView.earlyEndFlightResume(player_local);
+                // da riveder messa qua giusto per avere un idea
+                break;
 
 
             default:
 
                 AdventureCardMessage adv = (AdventureCardMessage) msg;
-                manageAdventure(adv.getAdventure(),adv.getContent());
+                manageAdventure(adv.getAdventure(), adv.getContent());
                 break;
         }
 
@@ -879,14 +903,18 @@ public class Client {
                     if (m.getValue() == Direction.North || m.getValue() == Direction.South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            break;
+                            int dummy = virtualView.nextMeteor();
+
+                            continue;
                         }
 
                     } else {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            break;
+                            int dummy = virtualView.nextMeteor();
+
+                            continue;
 
                         }
                     }
@@ -896,13 +924,17 @@ public class Client {
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
                         virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                        break;
+                        int dummy = virtualView.nextMeteor();
+
+                        continue;
 
 
                     }
 
 
                     CardComponent hitted = player_local.getShip().getComponent(pair.getKey(), pair.getValue());
+
+                    virtualView.showHittedCard(hitted, m.getValue());
 
                     switch (m.getKey()) {
 
@@ -913,8 +945,10 @@ public class Client {
 
 
                                 virtualView.showMessage("\nMeteorite rimbalza sul lato liscio \n");
+                                int dummy = virtualView.nextMeteor();
 
-                                break;
+                                continue;
+
                             } else if (player_local.getShip().isProtected(m.getValue())) {
 
                                 Pair<Integer, Integer> b = virtualView.useBattery(player_local.getShip());
@@ -924,9 +958,12 @@ public class Client {
                                     player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
 
                                     List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+
+                                    virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+
                                     if (pieces.size() == 0) {
                                         out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                                    } else if (pieces.size()>1) {
+                                    } else if (pieces.size() > 1) {
                                         int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
                                         player_local.getShip().choosePiece(piece);
                                     }
@@ -938,21 +975,25 @@ public class Client {
                                 }
 
 
-                            }
-                            else {
+                            } else {
                                 player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
 
                                 List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
-                                if (pieces.size() == 0) {
+                                if (pieces.isEmpty()) {
                                     out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                                } else if (pieces.size()>1) {
+                                } else if (pieces.size() > 1) {
                                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
                                     player_local.getShip().choosePiece(piece);
                                 }
                             }
                             break;
-                            case LargeMeteor:
-                                if (hitted.getConnector(m.getValue()) == ConnectorType.Cannon_Connector) {
+
+                        case LargeMeteor:
+
+
+                            if (hitted.getConnector(m.getValue()) == ConnectorType.Cannon_Connector) {
+
+                                if (hitted.getComponentType() == DoubleCannon) {
                                     Pair<Integer, Integer> b = virtualView.useBattery(player_local.getShip());
 
                                     if (b.getKey() == -1 || b.getValue() == -1) {
@@ -962,7 +1003,7 @@ public class Client {
                                         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
                                         if (pieces.size() == 0) {
                                             out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                                        } else if (pieces.size()>1) {
+                                        } else if (pieces.size() > 1) {
                                             int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
                                             player_local.getShip().choosePiece(piece);
                                         }
@@ -972,34 +1013,44 @@ public class Client {
                                         card_battery = (Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
                                         card_battery.removeBattery();
                                     }
-                                }
-                                else {
-                                    player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+                                } else {
 
-                                    List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
-                                    if (pieces.size() == 0) {
-                                        out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                                    } else if (pieces.size()>1) {
-                                        int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
-                                        player_local.getShip().choosePiece(piece);
-                                    }
+                                    virtualView.showMessage("\n\nMeteorite DISTRUTTO con cannone singolo!! (non serve batteria)");
+
                                 }
-                                break;
+
+                            } else {
+                                player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+                                virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+
+                                List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+                                if (pieces.isEmpty()) {
+                                    out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+                                } else if (pieces.size() > 1) {
+                                    int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                    player_local.getShip().choosePiece(piece);
+                                }
+                            }
+
+
+                            break;
 
 
                     }
 
                     i++;
-
+                    int dummy = virtualView.nextMeteor();
 
                 }
 
 
+                virtualView.showMessage("\n--- RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
 
-
-
+                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                break;
 
         }
+        lock  = false;
 
 
     }
