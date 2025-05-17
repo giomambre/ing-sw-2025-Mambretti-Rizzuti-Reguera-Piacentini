@@ -632,4 +632,7 @@ public class GUI implements View {
     }
 
 
+    public void setActualcard(CardComponent actualcard) {
+        this.actualcard = actualcard;
+    }
 }

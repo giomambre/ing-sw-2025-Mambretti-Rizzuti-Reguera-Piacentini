@@ -127,17 +127,25 @@ public class Randomcardcontroller {
     public void setOne(ActionEvent event) {
         currentRotation = (currentRotation + 90) % 360;
         cardImageView.setRotate(currentRotation);
-        gui.getActualcard().setRotationAngle(currentRotation); // AGGIORNA IL MODELLO
-        action.complete(1);
+        gui.getActualcard().setRotationAngle(currentRotation);
+
+        if (!action.isDone()) action.complete(1);
+        action = new CompletableFuture<>();
     }
 
     public CompletableFuture<Integer> getAction() {
-        if (action == null) {
+        if (action == null || action.isDone()) {
             action = new CompletableFuture<>();
         }
         return action;
     }
 
+    public CompletableFuture<Pair<Integer,Integer>> getCoords() {
+        if (coords == null || coords.isDone()) {
+            coords = new CompletableFuture<>();
+        }
+        return coords;
+    }
     public void showCardImage(CardComponent card) {
         String imagePath = card.getImagePath();
         InputStream stream = getClass().getResourceAsStream(imagePath);
@@ -148,12 +156,7 @@ public class Randomcardcontroller {
         cardImageView.setImage(image);
         cardImageView.setRotate(card.getRotationAngle());
     }
-    public CompletableFuture<Pair<Integer,Integer>> getCoords() {
-        if (coords == null) {
-            coords = new CompletableFuture<>();
-        }
-        return coords;
-    }
+
     @FXML
     public void confirmCoords(ActionEvent event) {
         Integer x = xComboBox.getValue();
@@ -168,6 +171,7 @@ public class Randomcardcontroller {
         // Completa la future solo se non è già completata
         if (!coords.isDone()) {
             coords.complete(new Pair<>(x, y));
+
             // Nascondi o disabilita il box se vuoi
             coordinatesBox.setVisible(false);
             System.out.println("Coordinate confermate: " + x + ", " + y);
