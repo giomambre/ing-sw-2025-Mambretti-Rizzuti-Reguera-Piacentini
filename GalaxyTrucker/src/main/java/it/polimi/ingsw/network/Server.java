@@ -582,6 +582,17 @@ public class Server {
                                 }
                                 break;
                                 }
+                                break;
+
+            case END_FLIGHT:
+                StandardMessageClient end_msg =(StandardMessageClient) msg;
+                controller =  all_games.get(getLobbyId(end_msg.getId_client()));
+                controller.removeFromAdventure(getNickname(end_msg.getId_client()));
+                sendToClient(end_msg.getId_client(),new Message(END_FLIGHT, ""));
+                break;
+
+
+
 
             default:
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());

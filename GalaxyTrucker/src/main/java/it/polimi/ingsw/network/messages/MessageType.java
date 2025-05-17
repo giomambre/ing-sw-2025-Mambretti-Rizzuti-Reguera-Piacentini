@@ -46,6 +46,7 @@ public enum MessageType {
     ABANDONED_STATION,
     ADVENTURE_SKIP,
     ABANDONED_SHIP,
-    METEOR_SWARM
+    METEOR_SWARM,
+    END_FLIGHT,
 
 }

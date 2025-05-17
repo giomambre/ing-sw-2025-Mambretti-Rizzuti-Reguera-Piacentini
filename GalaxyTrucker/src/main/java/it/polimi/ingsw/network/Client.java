@@ -526,6 +526,14 @@ public class Client {
                 out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE, String.valueOf(piece), clientId));
                 break;
 
+                case END_FLIGHT:
+                    Message end_msg = msg;
+                    virtualView.showMessage("Purtroppo non puoi più continuare la tua fase di volo");
+                    virtualView.earlyEndFlightResume(player_local);
+                    // da riveder messa qua giusto per avere un idea
+                    break;
+
+
 
             default:
 
@@ -919,10 +927,10 @@ public class Client {
 
                                     List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
                                     if (pieces.size() == 0) {
-                                        //fuori dalla partita
-                                        // creare un tipo di messaggio apposta da mandare al server e di seguito buttare fuori il player
+                                        out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                                     } else if (pieces.size()>1) {
                                         int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                        player_local.getShip().choosePiece(piece);
                                     }
 
 
@@ -938,9 +946,10 @@ public class Client {
 
                                 List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
                                 if (pieces.size() == 0) {
-                                    //fuori dalla partita
+                                    out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                                 } else if (pieces.size()>1) {
                                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                    player_local.getShip().choosePiece(piece);
                                 }
                             }
                             break;
@@ -954,9 +963,10 @@ public class Client {
 
                                         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
                                         if (pieces.size() == 0) {
-                                            //fuori dalla partita
+                                            out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                                         } else if (pieces.size()>1) {
                                             int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                            player_local.getShip().choosePiece(piece);
                                         }
 
 
@@ -970,9 +980,10 @@ public class Client {
 
                                     List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
                                     if (pieces.size() == 0) {
-                                        //fuori dalla partita
+                                        out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                                     } else if (pieces.size()>1) {
                                         int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                        player_local.getShip().choosePiece(piece);
                                     }
                                 }
                                 break;

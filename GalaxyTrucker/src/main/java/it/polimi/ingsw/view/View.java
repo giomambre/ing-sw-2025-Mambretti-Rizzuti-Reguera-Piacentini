@@ -52,6 +52,8 @@ public interface View {
 
     void printShip(CardComponent[][] ship);
 
+    void earlyEndFlightResume(Player player);
+
     void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
 
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);

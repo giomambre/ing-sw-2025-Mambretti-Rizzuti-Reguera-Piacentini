@@ -51,6 +51,11 @@ public class GameController {
 
     }
 
+    public void removeFromAdventure(String nickname) {
+        Player player = game.getPlayer(nickname);
+        adventureOrder.remove(player);
+    }
+
     public void initializeAdventure(CardAdventure adventure) {
 
 
