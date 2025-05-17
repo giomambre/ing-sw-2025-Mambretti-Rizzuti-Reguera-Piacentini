@@ -118,7 +118,7 @@ public class MeteorSwarm extends CardAdventure implements Serializable {
 
     }*/
     public List<Pair<MeteorType, Direction>> getMeteors() {
-        return null;
+        return meteors;
     }
 
     public void execute(Player p, Direction direction, MeteorType meteorType, Boolean shieldUsage, CardComponent battery, int position, Boolean doubleCannonUsage) {

@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.*;
-import it.polimi.ingsw.model.components.Battery;
-import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.components.LivingUnit;
-import it.polimi.ingsw.model.components.Storage;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.view.View;
 import javafx.util.Pair;
@@ -658,7 +655,7 @@ public class TUI implements View {
                     System.out.print("cargo rosso");
                     break;
                 case Empty:
-                    System.out.print("spazio vuoto");
+                    System.out.print("vuoto");
                     break;
             }
             i++;
@@ -668,25 +665,127 @@ public class TUI implements View {
 
     @Override
     public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
+        StringBuilder meteorStr = new StringBuilder();
         switch (meteor.getKey()) {
-            case LargeMeteor -> System.out.print(" - Meteora grossa ");
-            case SmallMeteor -> System.out.print(" - Meteora piccola ");
-            case HeavyCannonFire -> System.out.print(" - Cannonata pesante ");
-            case LightCannonFire -> System.out.print(" - Cannonata leggera ");
+            case LargeMeteor -> meteorStr.append(" - METEORA GROSSA " );
+            case SmallMeteor -> meteorStr.append(" - METEORA PICCOLA ");
+            case HeavyCannonFire -> meteorStr.append(" - CANNONATA PESANTE ");
+            case LightCannonFire -> meteorStr.append(" - CANNONATA LEGGERA ");
         }
+        meteorStr.append(" in arrivo ");
         switch (meteor.getValue()) {
-            case South -> System.out.print("da sud");
-            case East -> System.out.print("da est");
-            case West -> System.out.print("da ovest");
-            case North -> System.out.print("da nord");
+            case South -> meteorStr.append("da SUD");
+            case East -> meteorStr.append("da EST");
+            case West -> meteorStr.append("da OVEST");
+            case North -> meteorStr.append("da NORD");
         }
 
 
-        System.out.println(" alla coordinata" + coord + "\n");
+        meteorStr.append(" alla coordinata : ").append(coord);
+        String content = meteorStr.toString();
+        int length = content.length();
+        String border = "═".repeat(length + 4);
+
+        System.out.println();
+        System.out.println("╔" + border + "╗");
+        System.out.println("║  " + content + "  ║");
+        System.out.println("╚" + border + "╝");
+        System.out.println();
+
+
+    }
+
+
+    @Override
+    public int nextMeteor() {
+
+        System.out.println("\n PREMERE : \n" +
+                " 1 : per continuare \n");
+        int choice = readValidInt("Scelta ", 1,1,false);
+return choice;
+    }
+
+    @Override
+    public void showHittedCard(CardComponent card, Direction direction) {
+        int CELL_WIDTH = 11;
+
+        System.out.println("CARTA COLPITA : ");
+
+        // Componenti centrali
+        String topStr = center(printConnector(card.getConnector_type(Direction.North), Direction.North), CELL_WIDTH);
+        String cardStr = printCard(card.getComponentType());
+        String midStr = center(
+                printConnector(card.getConnector_type(Direction.West), Direction.West)
+                        + cardStr +
+                        printConnector(card.getConnector_type(Direction.East), Direction.East),
+                CELL_WIDTH
+        );
+        String botStr = center(printConnector(card.getConnector_type(Direction.South), Direction.South), CELL_WIDTH);
+
+        // Riga extra sopra/sotto per freccia verticale
+        String arrowTop = " ".repeat(CELL_WIDTH);
+        String arrowBot = " ".repeat(CELL_WIDTH);
+
+        // Frecce laterali
+        String sideLeft = "  ";
+        String sideRight = "  ";
+
+        switch (direction) {
+            case North:
+                arrowTop = center("↓", CELL_WIDTH);
+                break;
+            case South:
+                arrowBot = center("↑", CELL_WIDTH);
+                break;
+            case West:
+                sideLeft = "→ ";
+                break;
+            case East:
+                sideRight = " ←";
+                break;
+        }
+
+        // Stampa finale
+        System.out.println();
+        System.out.println("TIPO : " + card.getComponentType());
+        System.out.println(arrowTop);
+        System.out.println("  " + topStr);
+        System.out.println(sideLeft + midStr + sideRight);
+        System.out.println("  " + botStr);
+        System.out.println(arrowBot);
+
+        if(card.getComponentType() == BlueStorage || card.getComponentType() == RedStorage){
+
+            System.out.println("\n LISTA DI CARGO : \n");
+            printCargo(((Storage)card).getCarried_cargos());
+            System.out.println();
+
+
+        }
+
+        if(card.getComponentType() == Battery ){
+
+            System.out.println("\n BATTERIE : \n");
+            System.out.println(" Dim : " + ((Battery)card).getSize() + " Immagazzinate : "+ ((Battery)card).getStored());
+
+            System.out.println();
+
+
+        }
+
+        if(card.getComponentType() == LivingUnit || card.getComponentType() == MainUnitGreen || card.getComponentType() == MainUnitBlue || card.getComponentType() == MainUnitRed || card.getComponentType() == MainUnitYellow  ){
+
+            System.out.println("\n EQUIPAGGIO : \n");
+            System.out.println(" Tipo : " +   " Numero : "+ ((LivingUnit)card).getNum_crewmates());
+            System.out.println();
+
+
+        }
 
 
 
     }
+
 
     @Override
     public void printMeteors(List<Pair<MeteorType, Direction>> meteors) {

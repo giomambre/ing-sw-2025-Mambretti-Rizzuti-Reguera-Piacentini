@@ -550,6 +550,16 @@ public class GUI implements View {
     }
 
     @Override
+    public int nextMeteor() {
+        return 0;
+    }
+
+    @Override
+    public void showHittedCard(CardComponent card, Direction direction) {
+
+    }
+
+    @Override
     public void printCardAdventure(CardAdventure adventure) {
 
     }

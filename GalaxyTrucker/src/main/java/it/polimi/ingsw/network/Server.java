@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static it.polimi.ingsw.controller.GameState.*;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.network.messages.MessageType.*;
 
 public class Server {
@@ -467,11 +468,14 @@ public class Server {
                 sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                while( adventure.getType() != CardAdventureType.OpenSpace){
-
-                    adventure = controller.getRandomAdventure();
-                }
-                manageAdventure(adventure,controller);
+                CardAdventure temp_card =  new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
+                        List.of(
+                                new Pair<>(MeteorType.LargeMeteor, North),
+                                new Pair<>(MeteorType.SmallMeteor, East),
+                                new Pair<>(MeteorType.SmallMeteor, West)
+                        )
+                );
+                manageAdventure(temp_card,controller);
 
 
 
@@ -581,6 +585,24 @@ public class Server {
 
                                 }
                                 break;
+
+
+
+
+
+                        case MeteorSwarm:
+                            ShipClientMessage meteor_msg = (ShipClientMessage) msg;
+
+                            controller.removeFromAdventure(getNickname(meteor_msg.getId_client()));
+
+
+                            if(controller.getAdventureOrder().isEmpty()){
+                                adventure = controller.getRandomAdventure();
+                                manageAdventure(adventure,controller);
+                            }
+
+
+
                                 }
                                 break;
 
@@ -588,6 +610,7 @@ public class Server {
                 StandardMessageClient end_msg =(StandardMessageClient) msg;
                 controller =  all_games.get(getLobbyId(end_msg.getId_client()));
                 controller.removeFromAdventure(getNickname(end_msg.getId_client()));
+                controller.removeFromActivePlayers(getNickname(end_msg.getId_client()));
                 sendToClient(end_msg.getId_client(),new Message(END_FLIGHT, ""));
                 break;
 

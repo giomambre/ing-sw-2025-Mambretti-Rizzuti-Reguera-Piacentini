@@ -51,6 +51,13 @@ public class GameController {
 
     }
 
+    public void removeFromActivePlayers(String nickname){
+        Player player = game.getPlayer(nickname);
+
+        game.removePlayer(player);
+
+    }
+
     public void removeFromAdventure(String nickname) {
         Player player = game.getPlayer(nickname);
         adventureOrder.remove(player);
@@ -158,10 +165,21 @@ public class GameController {
 
     }
 
+
+
+
+
     public Map<Direction, List<CardAdventure>> seeDecksOnBoard() {
 
 
         return game.seeDecksOnBoard();
+    }
+
+
+
+
+    public List<Player> getActivePlayers() {
+        return game.getActivePlayers();
     }
 
 

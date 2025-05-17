@@ -58,6 +58,10 @@ public interface View {
 
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship);
 
+    int nextMeteor();
+
+    void showHittedCard(CardComponent card, Direction direction);
+
     void printCardAdventure(CardAdventure adventure);
 
     int selectDeck();
