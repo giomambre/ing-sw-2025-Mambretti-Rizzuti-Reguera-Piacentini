@@ -535,6 +535,11 @@ public class GUI implements View {
     }
 
     @Override
+    public void earlyEndFlightResume(Player player) {
+
+    }
+
+    @Override
     public void printShipPieces(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
 
     }

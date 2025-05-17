@@ -56,10 +56,10 @@ public class MeteorSwarm extends CardAdventure implements Serializable {
      *     <li>HeavyCannonFire: the component is always removed.</li>
      * </ul>
      *
-     * @param player whose ship is being hit
-     * @param direction from which the meteor arrives
+     * @param player              whose ship is being hit
+     * @param direction           from which the meteor arrives
      * @param meteor_type
-     * @param shield_usage true if the player is using a shield to block the hit
+     * @param shield_usage        true if the player is using a shield to block the hit
      * @param battery
      * @param position
      * @param double_cannon_usage true if the player is using a double cannon
@@ -117,8 +117,10 @@ public class MeteorSwarm extends CardAdventure implements Serializable {
 
 
     }*/
-
     public List<Pair<MeteorType, Direction>> getMeteors() {
-        return meteors;
+        return null;
+    }
+
+    public void execute(Player p, Direction direction, MeteorType meteorType, Boolean shieldUsage, CardComponent battery, int position, Boolean doubleCannonUsage) {
     }
 }

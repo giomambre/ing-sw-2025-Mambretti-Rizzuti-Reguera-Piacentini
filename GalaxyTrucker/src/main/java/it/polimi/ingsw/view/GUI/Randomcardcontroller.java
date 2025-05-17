@@ -25,6 +25,7 @@ public class Randomcardcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
     private CompletableFuture<Pair<Integer,Integer>> coords = new CompletableFuture<>();
+    private int currentRotation = 0;
 
     @FXML
     private Button rotateButton;
@@ -124,6 +125,9 @@ public class Randomcardcontroller {
     }
     @FXML
     public void setOne(ActionEvent event) {
+        currentRotation = (currentRotation + 90) % 360;
+        cardImageView.setRotate(currentRotation);
+        gui.getActualcard().setRotationAngle(currentRotation); // AGGIORNA IL MODELLO
         action.complete(1);
     }
 

@@ -32,6 +32,10 @@ public class CardComponent implements Serializable {
     public int getRotationAngle(){
         return rotationAngle;
     }
+
+    public void setRotationAngle(int angle) {
+        this.rotationAngle = angle;
+    }
     public void addRotationAngle(){
         rotationAngle+=90;
     }

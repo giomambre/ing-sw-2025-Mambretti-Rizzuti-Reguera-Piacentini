@@ -174,6 +174,8 @@ public class Buildcontroller {
         imageView.setFitHeight(48);
         imageView.setPreserveRatio(true);
 
+        imageView.setRotate(card.getRotationAngle());
+
         // Cerca la cella corretta nella GridPane
         for (Node node : shipGrid.getChildren()) {
             Integer colIndex = GridPane.getColumnIndex(node);
