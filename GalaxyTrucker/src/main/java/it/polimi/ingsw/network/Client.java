@@ -397,13 +397,11 @@ public class Client {
                     sel = virtualView.showCard(card_msg.getCardComponent());
                 }
                 if (sel == 1) {
-
                     CardComponent card = card_msg.getCardComponent();
+                    card.rotate(); // ruota
                     if (virtualViewType == VirtualViewType.GUI) {
-                        card_msg.getCardComponent().addRotationAngle();
+                        ((GUI)virtualView).setActualcard(card); // aggiorna anche actualcard!
                     }
-                    card.rotate();
-
                     elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
                     return;
                 }
