@@ -150,7 +150,7 @@ public class Ship implements Serializable {
             }
         }
 
-        player.utilePerTestare();
+       // player.utilePerTestare();
 
     }
 
@@ -477,11 +477,12 @@ public class Ship implements Serializable {
      * @return boolean
      */
     public boolean isProtected(Direction direction) {
+
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 if (ship_board[row][col].getComponentType() == Shield) {
                     Shield shieldObject = (Shield) ship_board[row][col];
-                    if (shieldObject.getCoveredSides().get(direction) == Boolean.TRUE) {
+                    if (shieldObject.getCoveredSides().get(direction)) {
                         return true;
                     }
                 }

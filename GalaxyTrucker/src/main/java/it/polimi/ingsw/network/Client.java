@@ -113,7 +113,7 @@ public class Client {
 
 
                         switch (msg.getType()) {
-                            case ABANDONED_SHIP, OPEN_SPACE, ABANDONED_STATION, REQUEST_NAME, NAME_REJECTED,
+                            case PLANETS,METEOR_SWARM,ABANDONED_SHIP, OPEN_SPACE, ABANDONED_STATION, REQUEST_NAME, NAME_REJECTED,
                                  NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
                                  CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
                                  INVALID_CONNECTORS, SELECT_PIECE:
@@ -957,11 +957,16 @@ public class Client {
 
                                     player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
 
+                                    virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+                                    virtualView.printShip(player_local.getShip().getShipBoard());
+
+
+
                                     List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
 
-                                    virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
 
-                                    if (pieces.size() == 0) {
+                                    if (pieces.isEmpty()) {
+                                        virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! ---- ");
                                         out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                                     } else if (pieces.size() > 1) {
                                         int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
@@ -976,7 +981,10 @@ public class Client {
 
 
                             } else {
+
                                 player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+                                virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+                                virtualView.printShip(player_local.getShip().getShipBoard());
 
                                 List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
                                 if (pieces.isEmpty()) {
@@ -999,9 +1007,11 @@ public class Client {
                                     if (b.getKey() == -1 || b.getValue() == -1) {
 
                                         player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+                                        virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+                                        virtualView.printShip(player_local.getShip().getShipBoard());
 
                                         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
-                                        if (pieces.size() == 0) {
+                                        if (pieces.isEmpty()) {
                                             out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                                         } else if (pieces.size() > 1) {
                                             int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
@@ -1022,6 +1032,7 @@ public class Client {
                             } else {
                                 player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
                                 virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+                                virtualView.printShip(player_local.getShip().getShipBoard());
 
                                 List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
                                 if (pieces.isEmpty()) {
@@ -1037,7 +1048,6 @@ public class Client {
 
 
                     }
-
                     i++;
                     int dummy = virtualView.nextMeteor();
 
@@ -1049,8 +1059,42 @@ public class Client {
                 out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
                 break;
 
+
+
+
+            case Planets:
+                Planets planets = (Planets) adventure;
+                List<List<Cargo>> planet_list = planets.getCargo_reward();
+                String[] parts;
+                if(!content.isEmpty()) {
+
+                    parts = content.split(" ");
+
+
+                }
+
+
+
+
+
+
+
+
+
         }
+
+
+
+
+
+
         lock  = false;
+
+
+
+
+
+
 
 
     }

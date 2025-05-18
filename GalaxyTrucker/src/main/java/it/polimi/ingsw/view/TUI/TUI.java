@@ -74,11 +74,13 @@ public class TUI implements View {
      * @param minVal Valore minimo accettato (incluso)
      * @param maxVal Valore massimo accettato (incluso)
      * @param allowExit Se true, permette di inserire -1 come valore di uscita
+     * @param excludedValues Valori che non si possono selezionare
      * @return Il valore letto oppure -1 se allowExit è true e si vuole uscire
      */
-    private int readValidInt(String prompt, int minVal, int maxVal, boolean allowExit) {
+    private int readValidInt(String prompt, int minVal, int maxVal, boolean allowExit, Set<Integer> excludedValues) {
         int value;
         String fullPrompt = prompt + (allowExit ? " (-1 per uscire)" : "") + ": ";
+
         do {
             System.out.print(fullPrompt);
             String input = readLine().trim();
@@ -91,15 +93,25 @@ public class TUI implements View {
                 value = Integer.parseInt(input);
                 if (value < minVal || value > maxVal) {
                     System.out.println(RED + "Errore: il valore deve essere compreso tra " + minVal + " e " + maxVal + "." + RESET);
+                    value = Integer.MIN_VALUE;
+                } else if (excludedValues.contains(value)) {
+                    System.out.println(RED + "Errore: il valore " + value + " non è selezionabile." + RESET);
+                    value = Integer.MIN_VALUE;
                 }
             } catch (NumberFormatException e) {
                 System.out.println(RED + "Errore: inserisci un numero valido." + RESET);
-                value = Integer.MIN_VALUE; // forza il ciclo a ripetere
+                value = Integer.MIN_VALUE;
             }
-        } while (value < minVal || value > maxVal);
+
+        } while (value == Integer.MIN_VALUE);
 
         return value;
     }
+
+    private int readValidInt(String prompt, int minVal, int maxVal, boolean allowExit) {
+        return readValidInt(prompt, minVal, maxVal, allowExit, Collections.emptySet());
+    }
+
 
     public void setPlayer_local(Player player) {
 
@@ -425,6 +437,7 @@ public class TUI implements View {
             System.out.println(center(String.valueOf(r), CELL_WIDTH) + mid);
             System.out.println(" ".repeat(CELL_WIDTH) + bot);
             System.out.println(" ".repeat(CELL_WIDTH) + "-".repeat(cols * CELL_WIDTH));
+            System.out.println("\n");
         }
     }
 
@@ -623,6 +636,18 @@ public class TUI implements View {
 
 
     @Override
+    public int askPlanet(List<List<Cargo>> planets) {
+        System.out.println("\n====== LISTA PIANETI DISPONIBILI ======\n");
+        for (int i = 0; i < planets.size(); i++) {
+            System.out.println("Pianeta " + i + ":");
+            printCargo(planets.get(i));
+        }
+        return readValidInt("Seleziona il numero del pianeta", 0, planets.size() - 1, true, Set.of());
+    }
+
+
+
+    @Override
     public Boolean acceptAdventure() {
         System.out.println("\nDESIDERI ACCETTARE LA CARTA?");
         System.out.println("\t 1 : ACCETTA\n\t 2 : RIFIUTA");
@@ -635,32 +660,22 @@ public class TUI implements View {
         printCargo(cargos);
         return readValidInt("Scelta ", 0,cargos.size()-1,true);
     }
-
-    @Override
     public void printCargo(List<Cargo> cargos) {
-        int i=0;
-        for (Cargo cargo : cargos) {
-            System.out.print( "\t" + i+" : ");
-            switch (cargo) {
-                case Blue:
-                    System.out.print("cargo blu");
-                    break;
-                case Yellow:
-                    System.out.print("cargo giallo");
-                    break;
-                case Green:
-                    System.out.print("cargo verde");
-                    break;
-                case Red:
-                    System.out.print("cargo rosso");
-                    break;
-                case Empty:
-                    System.out.print("vuoto");
-                    break;
+        // Intestazione compatta
+        System.out.println("  Posizione   Colore");
+        System.out.println("  ---------  ----------------");
+        for (int i = 0; i < cargos.size(); i++) {
+            String label;
+            switch (cargos.get(i)) {
+                case Blue:   label = "🔵  Blu";   break;
+                case Yellow: label = "\uD83D\uDFE1  Giallo"; break;
+                case Green:  label = "\uD83D\uDFE2  Verde";  break;
+                case Red:    label = "🔴  Rosso";  break;
+                default:     label = "⚪ Vuoto";        break;
             }
-            i++;
+            System.out.printf("    %2d       %s%n", i, label);
         }
-        System.out.println("\n");
+        System.out.println();
     }
 
     @Override
@@ -687,13 +702,21 @@ public class TUI implements View {
         String border = "═".repeat(length + 4);
 
         System.out.println();
-        System.out.println("╔" + border + "╗");
-        System.out.println("║  " + content + "  ║");
-        System.out.println("╚" + border + "╝");
+        printBorder(content);
         System.out.println();
 
 
     }
+public void printBorder(String content) {
+    int length = content.length();
+
+    String border = "═".repeat(length + 4);
+    System.out.println("╔" + border + "╗");
+    System.out.println("║  " + content + "  ║");
+    System.out.println("╚" + border + "╝");
+
+
+}
 
 
     @Override
@@ -887,7 +910,6 @@ return choice;
         top.append(center(topStr, CELL_WIDTH));
         mid.append(center(midStr, CELL_WIDTH));
         bot.append(center(botStr, CELL_WIDTH));
-        System.out.println();
 
         System.out.println("TIPO : " + card.getComponentType());
 
@@ -1429,7 +1451,8 @@ int i = 0;
         }
 
         // Chiedi all'utente di scegliere un'opzione
-        int choice = readValidInt("\nInserisci il numero della batteria da utilizzare", 1, batteryPositions.size(), false);
+        int choice = readValidInt("\nInserisci il numero della batteria da utilizzare", 1, batteryPositions.size(), true);
+        if (choice == -1)  return new Pair<>(-1, -1);
 
         // Restituisce la posizione della batteria selezionata
         return batteryPositions.get(choice - 1);

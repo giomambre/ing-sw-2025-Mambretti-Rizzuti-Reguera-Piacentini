@@ -3,22 +3,17 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.Planets;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.*;
-import it.polimi.ingsw.model.enumerates.Cargo;
-import it.polimi.ingsw.model.enumerates.ConnectorType;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.enumerates.Gametype;
+import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.view.TUI.TUI;
 import it.polimi.ingsw.view.View;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static it.polimi.ingsw.model.enumerates.CrewmateType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
@@ -343,8 +338,15 @@ public void testChoosePiece() {
  @Test
     public  void  testPrintShipPlance() {
         View v= new TUI();
-
-        v.acceptAdventure();
+     Planets p = new Planets(1, 3, CardAdventureType.Planets,
+             Arrays.asList(
+                     Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                     Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
+                     Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                     Arrays.asList(Cargo.Red, Cargo.Green)
+             )
+     );
+        v.askPlanet(p.getCargo_reward());
         List<Cargo> l1= new ArrayList<>();
         l1.add(Cargo.Red);
         l1.add(Cargo.Yellow);

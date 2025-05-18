@@ -336,11 +336,6 @@ public class Player implements Serializable {
 
         ship.addComponent(new Shield(ComponentType.Shield, connectors, ""), 1, 5);
 
-        Map<Direction,Boolean> covered_sides = new HashMap<>();
-        covered_sides.put(North, true);
-        covered_sides.put(East, false);
-        covered_sides.put(South, false);
-        covered_sides.put(West, true);
 
 
         connectors.put(North, Smooth);

@@ -79,6 +79,8 @@ public interface View {
 
     int showCard(CardComponent card);
 
+    int askPlanet(List<List<Cargo>> planets);
+
     void showBoard( Map<Integer, Player> positions, Map<Integer, Player> laps);
 
     public Pair<Integer,Integer> chooseAstronautLosses(Ship ship);

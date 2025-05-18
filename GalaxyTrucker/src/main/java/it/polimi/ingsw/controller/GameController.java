@@ -65,14 +65,10 @@ public class GameController {
 
     public void initializeAdventure(CardAdventure adventure) {
 
-
+        adv_index = 0;
         this.adventure = adventure;
         adventureOrder.clear();
         switch (adventure.getType()) {
-            case OpenSpace,MeteorSwarm :
-            adventureOrder = game.getBoard().getRanking();
-            break;
-
             case AbandonedStation:
                 AbandonedStation abandonedStation = (AbandonedStation) adventure;
                 for(Player p : game.getBoard().getRanking()){
@@ -100,6 +96,9 @@ public class GameController {
                 break;
 
 
+            default:
+                adventureOrder = game.getBoard().getRanking();
+                break;
 
         }
 
@@ -415,6 +414,7 @@ public class GameController {
         Player p = game.getPlayer(nickname);
 
         p.setShip(ship);
+        System.out.println("SETTATA");
     }
 
     public List<List<Pair<Integer, Integer>>> getValidPieces(String nickname) {

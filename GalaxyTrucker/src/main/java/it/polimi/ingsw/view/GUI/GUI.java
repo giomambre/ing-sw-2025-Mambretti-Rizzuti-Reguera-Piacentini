@@ -461,6 +461,11 @@ public class GUI implements View {
     }
 
     @Override
+    public int askPlanet(List<List<Cargo>> planets) {
+        return 0;
+    }
+
+    @Override
     public Pair<Integer, Integer> askCoords(Ship ship) {
         try {
             Pair<Integer,Integer> coords=randomcardcontroller.getCoords().get();

@@ -181,7 +181,7 @@ public class Server {
 
 
                         controller.startGame();
-                        LobbyTimer lt = new LobbyTimer(controller.getLobby().getLimit(),controller.getLobby());
+                        LobbyTimer lt = new LobbyTimer(controller.getLobby().getLimit(), controller.getLobby());
 
                         lobbyTimers.put(controller.getLobby().getLobbyId(), lt);
 
@@ -349,7 +349,6 @@ public class Server {
                         }
 
 
-
                 );
 
 
@@ -404,16 +403,15 @@ public class Server {
                     safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
                 }
                 sendToClient(update_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
-                System.out.println(getNickname(update_msg.getId_client()) + " " + controller.getValidPieces(getNickname(update_msg.getId_client())).size() );
+                System.out.println(getNickname(update_msg.getId_client()) + " " + controller.getValidPieces(getNickname(update_msg.getId_client())).size());
 
-                if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() > 1){
+                if (controller.getValidPieces(getNickname(update_msg.getId_client())).size() > 1) {
 
                     List<List<Pair<Integer, Integer>>> pieces = controller.getValidPieces(getNickname(update_msg.getId_client()));
-                    sendToClient(update_msg.getId_client(),new ShipPiecesMessage(SELECT_PIECE,"",pieces));
-                }
-                else if(controller.getValidPieces(getNickname(update_msg.getId_client())).size() ==1){
+                    sendToClient(update_msg.getId_client(), new ShipPiecesMessage(SELECT_PIECE, "", pieces));
+                } else if (controller.getValidPieces(getNickname(update_msg.getId_client())).size() == 1) {
 
-                     safePlayers = new ArrayList<>();
+                    safePlayers = new ArrayList<>();
                     for (Player p : controller.getPlayers()) {
                         safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
                     }
@@ -429,9 +427,9 @@ public class Server {
                 }
 
 
-                if(controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
+                if (controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
 
-                    handleMessage(new StandardMessageClient(START_FLIGHT, "",update_msg.getId_client()));
+                    handleMessage(new StandardMessageClient(START_FLIGHT, "", update_msg.getId_client()));
 
                 }
                 break;
@@ -439,7 +437,7 @@ public class Server {
 
             case SELECT_PIECE:
                 StandardMessageClient select_msg = (StandardMessageClient) msg;
-                int piece_chosen = Integer.parseInt( select_msg.getContent());
+                int piece_chosen = Integer.parseInt(select_msg.getContent());
                 controller = all_games.get(getLobbyId(select_msg.getId_client()));
                 controller.choosePieces(piece_chosen, getNickname(select_msg.getId_client()));
                 safePlayers = new ArrayList<>();
@@ -451,9 +449,9 @@ public class Server {
                 sendToClient(select_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
                 controller.addWaitingFlyPlayer(getNickname(select_msg.getId_client()));
 
-                if(controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
+                if (controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
 
-                    handleMessage(new StandardMessageClient(START_FLIGHT, "",select_msg.getId_client()));
+                    handleMessage(new StandardMessageClient(START_FLIGHT, "", select_msg.getId_client()));
 
                 }
 
@@ -464,157 +462,155 @@ public class Server {
                 StandardMessageClient start_msg = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(start_msg.getId_client()));
                 controller.startFlight();
-                sendToAllClients(controller.getLobby(),new Message(START_FLIGHT, ""));
-                sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "",controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
+                sendToAllClients(controller.getLobby(), new Message(START_FLIGHT, ""));
+                sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                CardAdventure temp_card =  new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
+                CardAdventure temp_card = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(
                                 new Pair<>(MeteorType.LargeMeteor, North),
                                 new Pair<>(MeteorType.SmallMeteor, East),
                                 new Pair<>(MeteorType.SmallMeteor, West)
                         )
                 );
-                manageAdventure(temp_card,controller);
-
-
+                manageAdventure(temp_card, controller);
 
 
                 break;
 
 
-                case ADVENTURE_COMPLETED:
-                    ShipClientMessage adv_msg = (ShipClientMessage) msg;
-                    controller = all_games.get(getLobbyId(adv_msg.getId_client()));
-                    Ship s = adv_msg.getPlayer().getShip();
-                    controller.setShipPlance(getNickname(adv_msg.getId_client()),s);
-                     safePlayers = new ArrayList<>();
-                    for (Player p : controller.getPlayers()) {
-                        safePlayers.add(p.copyPlayer());
-                    }
-                    sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+            case ADVENTURE_COMPLETED:
+                ShipClientMessage adv_msg = (ShipClientMessage) msg;
+                controller = all_games.get(getLobbyId(adv_msg.getId_client()));
+                Ship s = adv_msg.getPlayer().getShip();
+                controller.setShipPlance(getNickname(adv_msg.getId_client()), s);
+                safePlayers = new ArrayList<>();
+                for (Player p : controller.getPlayers()) {
+                    safePlayers.add(p.copyPlayer());
+                }
+                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
 
-                    switch (controller.getCurrentAdventure().getType()){
-
-
-                        case OpenSpace :
+                switch (controller.getCurrentAdventure().getType()) {
 
 
-                            int eng_power = Integer.parseInt( adv_msg.getContent());
-                            controller.movePlayer(getNickname(adv_msg.getId_client()),eng_power);
-                            sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
-                                    + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
-                            System.out.println("OpenSpace completato");
-                            if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
+                    case OpenSpace:
 
-                                 adventure = controller.getRandomAdventure();
+
+                        int eng_power = Integer.parseInt(adv_msg.getContent());
+                        controller.movePlayer(getNickname(adv_msg.getId_client()), eng_power);
+                        sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
+                                + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power, controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+                        System.out.println("OpenSpace completato");
+                        if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
+
+                            adventure = controller.getRandomAdventure();
                                /* while(adventure.getType() != CardAdventureType.AbandonedStation){
                                     adventure = controller.getRandomAdventure();
                                 }*/
-                                manageAdventure(adventure,controller);
+                            manageAdventure(adventure, controller);
 
-                            }else {
+                        } else {
 
-                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
+                            sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
 
-                            }
+                        }
 
-                            break;
-
-
-                        case AbandonedStation:
-
-                            ShipClientMessage abandoned_msg = (ShipClientMessage) msg;
-
-                            if(abandoned_msg.getContent().isEmpty()){
-
-                                if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
-
-                                    adventure = controller.getRandomAdventure();
-                                    manageAdventure(adventure,controller);
+                        break;
 
 
-                                }else{
+                    case AbandonedStation:
 
-                                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "", controller.getCurrentAdventure()));
+                        ShipClientMessage abandoned_msg = (ShipClientMessage) msg;
 
+                        if (abandoned_msg.getContent().isEmpty()) {
 
-                                }
-
-                            }else{
-                                controller.movePlayer(getNickname(adv_msg.getId_client()),-controller.getCurrentAdventure().getCost_of_days());
-
-                                sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
-                                        + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo" ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
+                            if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
                                 adventure = controller.getRandomAdventure();
-                                manageAdventure(adventure,controller);
+                                manageAdventure(adventure, controller);
+
+
+                            } else {
+
+                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "", controller.getCurrentAdventure()));
+
+
                             }
 
-                            break;
+                        } else {
+                            controller.movePlayer(getNickname(adv_msg.getId_client()), -controller.getCurrentAdventure().getCost_of_days());
+
+                            sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
+                                    + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+
+                            adventure = controller.getRandomAdventure();
+                            manageAdventure(adventure, controller);
+                        }
+
+                        break;
 
 
+                    case AbandonedShip:
 
-                            case AbandonedShip:
+                        abandoned_msg = (ShipClientMessage) msg;
+                        if (abandoned_msg.getContent().isEmpty()) {
 
-                                 abandoned_msg = (ShipClientMessage) msg;
-                                if(abandoned_msg.getContent().isEmpty()){
+                            if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
-                                    if(controller.getAdv_index() >= controller.getAdventureOrder().size()){
-
-                                        adventure = controller.getRandomAdventure();
-                                        manageAdventure(adventure,controller);
-
-
-                                    }else{
-
-                                        sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "", controller.getCurrentAdventure()));
-
-
-                                    }
-
-                                }else{
-                                    controller.movePlayer(getNickname(adv_msg.getId_client()),-controller.getCurrentAdventure().getCost_of_days());
-
-                                    sendToAllClients(controller.getLobby(),new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
-                                            + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo"  ,controller.getBoard().copyPlayerPositions(),controller.getBoard().copyLaps()));
-
-                                    adventure = controller.getRandomAdventure();
-                                    manageAdventure(adventure,controller);
-
-
-                                }
-                                break;
-
-
-
-
-
-                        case MeteorSwarm:
-                            ShipClientMessage meteor_msg = (ShipClientMessage) msg;
-
-                            controller.removeFromAdventure(getNickname(meteor_msg.getId_client()));
-
-
-                            if(controller.getAdventureOrder().isEmpty()){
                                 adventure = controller.getRandomAdventure();
-                                manageAdventure(adventure,controller);
+                                manageAdventure(adventure, controller);
+
+
+                            } else {
+
+                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "", controller.getCurrentAdventure()));
+
+
                             }
 
+                        } else {
+                            controller.movePlayer(getNickname(adv_msg.getId_client()), -controller.getCurrentAdventure().getCost_of_days());
+
+                            sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
+                                    + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+
+                            adventure = controller.getRandomAdventure();
+                            manageAdventure(adventure, controller);
 
 
-                                }
-                                break;
+                        }
+                        break;
 
-            case END_FLIGHT:
-                StandardMessageClient end_msg =(StandardMessageClient) msg;
-                controller =  all_games.get(getLobbyId(end_msg.getId_client()));
-                controller.removeFromAdventure(getNickname(end_msg.getId_client()));
-                controller.removeFromActivePlayers(getNickname(end_msg.getId_client()));
-                sendToClient(end_msg.getId_client(),new Message(END_FLIGHT, ""));
+
+                    case MeteorSwarm:
+                        ShipClientMessage meteor_msg = (ShipClientMessage) msg;
+
+                        controller.removeFromAdventure(getNickname(meteor_msg.getId_client()));
+
+                        if (controller.getActivePlayers().size() <= 1) {
+
+                            //GIOCO FINITO da gestire
+
+                        }
+
+
+                        if (controller.getAdventureOrder().isEmpty()) {
+                            adventure = controller.getRandomAdventure();
+                            manageAdventure(adventure, controller);
+                        }
+
+                        break;
+
+                }
                 break;
 
-
+            case END_FLIGHT:
+                StandardMessageClient end_msg = (StandardMessageClient) msg;
+                controller = all_games.get(getLobbyId(end_msg.getId_client()));
+                controller.removeFromAdventure(getNickname(end_msg.getId_client()));
+                controller.removeFromActivePlayers(getNickname(end_msg.getId_client()));
+                sendToClient(end_msg.getId_client(), new Message(END_FLIGHT, ""));
+                break;
 
 
             default:
@@ -625,89 +621,83 @@ public class Server {
         }
 
 
-
     }
-
 
 
     public void manageAdventure(CardAdventure adventure, GameController controller) {
 
-        switch (adventure.getType()){
+        switch (adventure.getType()) {
 
 
-
-            case OpenSpace :
+            case OpenSpace:
 
                 controller.initializeAdventure(adventure);
 
-                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
 
-                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "",adventure));
+                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", adventure));
 
-            break;
-
+                break;
 
 
             case AbandonedStation:
                 controller.initializeAdventure(adventure);
-        sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
 
-                if(controller.getAdventureOrder().isEmpty()){
+                if (controller.getAdventureOrder().isEmpty()) {
 
-                    sendToAllClients(controller.getLobby(), new Message (ADVENTURE_SKIP,""));
+                    sendToAllClients(controller.getLobby(), new Message(ADVENTURE_SKIP, ""));
                     adventure = controller.getRandomAdventure();
-                    manageAdventure(adventure,controller);
+                    manageAdventure(adventure, controller);
                     break;
                 }
 
-                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "",adventure));
+                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "", adventure));
                 break;
-
 
 
             case AbandonedShip:
 
 
                 controller.initializeAdventure(adventure);
-                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
 
-                if(controller.getAdventureOrder().isEmpty()){
+                if (controller.getAdventureOrder().isEmpty()) {
 
-                    sendToAllClients(controller.getLobby(), new Message (ADVENTURE_SKIP,""));
+                    sendToAllClients(controller.getLobby(), new Message(ADVENTURE_SKIP, ""));
                     adventure = controller.getRandomAdventure();
-                    manageAdventure(adventure,controller);
+                    manageAdventure(adventure, controller);
                     break;
                 }
 
-                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "",adventure));
+                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "", adventure));
                 break;
 
 
             case MeteorSwarm:
                 controller.initializeAdventure(adventure);
-                sendToAllClients(controller.getLobby(), new AdventureCardMessage (NEW_ADVENTURE_DRAWN,"",adventure));
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 MeteorSwarm ms = (MeteorSwarm) adventure;
                 StringBuilder coords_m = new StringBuilder();
-                for(int i = 0; i < ms.getMeteors().size(); i++){
+                for (int i = 0; i < ms.getMeteors().size(); i++) {
 
                     coords_m.append(controller.throwDice()).append(" ");
 
                 }
 
-                sendToAllClients(controller.getLobby(), new AdventureCardMessage (METEOR_SWARM,coords_m.toString(),adventure));
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(METEOR_SWARM, coords_m.toString(), adventure));
 
-            break;
+                break;
 
+            case Planets:
 
-
-
-
+                controller.initializeAdventure(adventure);
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
+                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, "", adventure));
+                break;
 
 
         }
-
-
-
 
 
     }
