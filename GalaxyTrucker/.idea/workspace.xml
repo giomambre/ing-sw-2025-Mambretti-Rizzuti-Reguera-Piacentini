@@ -4,26 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="pianeti">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Iniziata zona di guerra">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/BuildShip.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/BuildShip.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/View.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -267,8 +263,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ShipTest2.testPrintShipPlance" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="JUnit.ShipTest2.testPrintShipPlance" />
         <item itemvalue="JUnit.GameControllerTest.testsecureComponent" />
         <item itemvalue="JUnit.GameControllerTest.testAddComponent" />
         <item itemvalue="JUnit.GameControllerTest.testEndPlayerBuildPhase" />
@@ -412,23 +408,8 @@
       <workItem from="1747602223131" duration="25000" />
       <workItem from="1747645530011" duration="5463000" />
       <workItem from="1747670135316" duration="1961000" />
-      <workItem from="1747678944248" duration="3970000" />
-    </task>
-    <task id="LOCAL-00060" summary="network capendo come fare">
-      <option name="closed" value="true" />
-      <created>1743528170302</created>
-      <option name="number" value="00060" />
-      <option name="presentableId" value="LOCAL-00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1743528170302</updated>
-    </task>
-    <task id="LOCAL-00061" summary="network capendo come fare">
-      <option name="closed" value="true" />
-      <created>1743606801607</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1743606801607</updated>
+      <workItem from="1747678944248" duration="4163000" />
+      <workItem from="1747684020738" duration="749000" />
     </task>
     <task id="LOCAL-00062" summary="network capendo come fare">
       <option name="closed" value="true" />
@@ -806,7 +787,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747651010454</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="Iniziata zona di guerra">
+      <option name="closed" value="true" />
+      <created>1747683378834</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1747683378834</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Iniziata zona di guerra">
+      <option name="closed" value="true" />
+      <created>1747683487711</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1747683487712</updated>
+    </task>
+    <option name="localTasksCounter" value="111" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -846,7 +843,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="big test on ship and some changes" />
     <MESSAGE value="messo un esempio banale di socket da avere da riferimento" />
     <MESSAGE value="tolto il network" />
     <MESSAGE value="controller" />
@@ -871,7 +867,8 @@
     <MESSAGE value="FINITO METERO SWARM, che fatica" />
     <MESSAGE value="PROBLEMINI NEL SERVER fixo doma" />
     <MESSAGE value="pianeti" />
-    <option name="LAST_COMMIT_MESSAGE" value="pianeti" />
+    <MESSAGE value="Iniziata zona di guerra" />
+    <option name="LAST_COMMIT_MESSAGE" value="Iniziata zona di guerra" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

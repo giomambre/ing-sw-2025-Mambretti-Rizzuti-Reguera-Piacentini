@@ -864,18 +864,18 @@ return choice;
         CardComponent component = ship[coords.getKey()][coords.getValue()];
         List<CrewmateType> crewmateType = player_local.getShip().checkAlienSupport(component);
 
-        System.out.println("STAI RIMEPIENDO LA LIVING UNIT IN RIGA: " +
-                coords.getKey() + " COLONNA: " + coords.getValue());
+        System.out.println("\nSTAI RIMEPIENDO LA LIVING UNIT IN RIGA: " +
+                coords.getKey() + " COLONNA: " + coords.getValue() + "\n");
 
         String prompt;
         int choice;
 
         if (crewmateType.contains(CrewmateType.BrownAlien) && crewmateType.contains(CrewmateType.PinkAlien)) {
             prompt = """
-                Premi:
+                \nPremi:
                  1: per aggiungere un astronauta
                  2: per aggiungere un alieno rosa
-                 3: per aggiungere un alieno marrone""";
+                 3: per aggiungere un alieno marrone\n""";
             System.out.println(prompt);
             choice = readValidInt("Scelta", 1, 3,false);
 
@@ -1368,12 +1368,12 @@ return total;
 int i = 0;
 
             if(cargo == Cargo.Red) {
-                i = 0;
+
                 for (Pair<Integer, Integer> s : red_storage) {
                     CardComponent card = ship.getComponent(s.getKey(), s.getValue());
 
 
-                    System.out.println("\n-> [" + i + "] RED STORAGE in ( " + (s.getKey()) + " : " + s.getValue() + " )"
+                    System.out.println("\n-> " + i + " RED STORAGE in ( " + (s.getKey()) + " : " + s.getValue() + " )"
                             + " contiene : ");
                     printCargo(((Storage) card).getCarried_cargos());
                     i++;
@@ -1384,7 +1384,7 @@ int i = 0;
                     return null;
                 }
 
-                int storage_scelto = readValidInt("Scelta ", red_storage.size()-1, i, true);
+                int storage_scelto = readValidInt("Scelta ", 0, red_storage.size()-1, true);
                 if(storage_scelto == -1 ) return null;
                 tmp_storage = red_storage.get(storage_scelto); //coordinate storage scelto
                 Storage s =(Storage) ship.getComponent(tmp_storage.getKey(), tmp_storage.getValue());
@@ -1406,7 +1406,7 @@ int i = 0;
                     }
 
 
-                    System.out.println("\n-> [" + i + "] " + tmp + " in ( " + (s.getKey()) + " : " + s.getValue() + " )"
+                    System.out.println("\n-> " + i + " " + tmp + " in ( " + (s.getKey()) + " : " + s.getValue() + " )"
                             + " contiene :  ");
                     printCargo(((Storage) card).getCarried_cargos());
 

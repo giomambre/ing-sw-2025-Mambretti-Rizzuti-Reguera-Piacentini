@@ -405,7 +405,6 @@ public class Client {
 
 
                 } else if (deck_selected == 4) {
-                    virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio!");
                     out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
 
@@ -699,6 +698,9 @@ public class Client {
                         break;
                 }
 
+                virtualView.showMessage("\n-------------------------------------------");
+
+
 
                 break;
 
@@ -732,6 +734,7 @@ public class Client {
 
 
                 }
+                int dummy = virtualView.nextMeteor();
                 break;
 
 

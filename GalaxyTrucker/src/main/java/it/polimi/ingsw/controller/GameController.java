@@ -88,7 +88,8 @@ public class GameController {
 
         adv_index = 0;
         this.adventure = adventure;
-        adventureOrder.clear();
+
+        adventureOrder = new ArrayList<>();
         switch (adventure.getType()) {
             case AbandonedStation:
                 AbandonedStation abandonedStation = (AbandonedStation) adventure;

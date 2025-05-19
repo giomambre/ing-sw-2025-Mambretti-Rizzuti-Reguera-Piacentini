@@ -460,16 +460,18 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                CardAdventure temp_card = new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
-                        List.of(
-                                new Pair<>(MeteorType.LightCannonFire, South),
-                                new Pair<>(MeteorType.HeavyCannonFire, South)
+                CardAdventure temp_card = new Planets(1, 3, CardAdventureType.Planets,
+                        Arrays.asList(
+                                Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                                Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
+                                Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                                Arrays.asList(Cargo.Red, Cargo.Green)
                         )
                 );
 
                 adventure = controller.getRandomAdventure();
 
-                manageAdventure(adventure, controller);
+                manageAdventure(temp_card, controller);
 
 
                 break;
