@@ -192,7 +192,7 @@ public class Client {
     }
 
 
-    public static void elaborate(Message msg) throws IOException {
+    public static void elaborate(Message msg) throws IOException, ExecutionException, InterruptedException {
 
 
         switch (msg.getType()) {
@@ -322,7 +322,7 @@ public class Client {
                 GameStartedMessage gs_msg = (GameStartedMessage) msg;
                 if (gs_msg.getContent().isEmpty()) {
                     virtualView.showMessage("\n----- PARTITA AVVIATA -----");
-                }else{
+                } else {
 
                     virtualView.showMessage("\n" + gs_msg.getContent());
 
@@ -379,6 +379,14 @@ public class Client {
                     }
                 } else if (deck_selected == 3) {  //carte prenotate
 
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        CompletableFuture<Integer> futureIndex = ((GUI) virtualView).getBuildcontroller().getReservedCardIndexFuture();
+                        int index = futureIndex.get(); // attendi scelta utente (click su carta prenotata)
+                        System.out.println("client,indice carta " + index);
+                        ((GUI) virtualView).getBuildcontroller().resetReservedCardIndex(); // opzionale
+
+                    }
+
                     if (player_local.getShip().getExtra_components().isEmpty()) {
                         virtualView.showMessage("\nNon ci sono carte prenotate!");
                         elaborate(new Message(MessageType.BUILD_START, ""));
@@ -415,7 +423,7 @@ public class Client {
             case CARD_COMPONENT_RECEIVED: //sono nel pannello che apre quando prendo una carta random
 
                 CardComponentMessage card_msg = (CardComponentMessage) msg;
-                virtualView.showMessage("\nCarta disponibile");
+                //virtualView.showMessage("\nCarta disponibile");
                 int sel;
                 if (virtualViewType == VirtualViewType.GUI) {
                     ((GUI) virtualView).createrandomcardcontroller(card_msg.getCardComponent());
@@ -423,18 +431,17 @@ public class Client {
                 } else {
                     sel = virtualView.showCard(card_msg.getCardComponent());
                 }
-                if (sel == 1) {
 
-                    if (sel == 1) {
-                        CardComponent card = card_msg.getCardComponent();
-                        card.rotate(); // ruota
-                        if (virtualViewType == VirtualViewType.GUI) {
-                            ((GUI)virtualView).setActualcard(card); // aggiorna anche actualcard!
-                        }
-                        elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
-                        return;
+                if (sel == 1) {
+                    CardComponent card = card_msg.getCardComponent();
+                    card.rotate();
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        ((GUI) virtualView).setActualcard(card);
                     }
+                    elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
+                    return;
                 }
+
 
                 if (sel == 3) {
 
@@ -452,7 +459,6 @@ public class Client {
                 if (sel == 2) {
 
                     Pair<Integer, Integer> coords = virtualView.askCoords(player_local.getShip());
-                    System.out.println("client,coordinate prese" + coords);
                     if (coords.getKey() == -1 || coords.getValue() == -1) {
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         break;
@@ -573,7 +579,7 @@ public class Client {
     }
 
 
-    public static void handleNotification(Message msg) throws IOException {
+    public static void handleNotification(Message msg) throws IOException, ExecutionException, InterruptedException {
 
 
         switch (msg.getType()) {
