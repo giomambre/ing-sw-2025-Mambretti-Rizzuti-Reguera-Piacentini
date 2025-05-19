@@ -22,6 +22,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import javafx.scene.image.ImageView;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -30,6 +32,7 @@ import javafx.scene.image.Image;
 public class Buildcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
+    private List<Pair<Integer,Integer>> pickedcoords = new ArrayList<>();
     @FXML
     private HBox playersButtonBox;
     @FXML
@@ -38,12 +41,58 @@ public class Buildcontroller {
     private GridPane shipGrid;
     @FXML
     private Button randomCard;
-    @FXML private Button reservedCardButton;
+
     @FXML private HBox reservedCardPreview;
+
+    private final List<CardComponent> reservedCards = new ArrayList<>();
+
+    private CompletableFuture<Integer> reservedCardIndex = new CompletableFuture<>();
+
+
+    public CompletableFuture<Integer> getReservedCardIndexFuture() {
+        return reservedCardIndex;
+    }
+
+    public void resetReservedCardIndex() {
+        reservedCardIndex = new CompletableFuture<>();
+    }
+
+    public void resetCoords() {
+        reservedCardIndex = new CompletableFuture<>();
+    }
 
     public void resetAction() {
         action = new CompletableFuture<>();
     }
+
+    public void addReservedCard(CardComponent card) {
+        if (reservedCards.size() >= 2) return;
+
+        reservedCards.add(card);
+
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
+        ImageView cardImage = new ImageView(image);
+        cardImage.setFitWidth(100);
+        cardImage.setPreserveRatio(true);
+
+        int index = reservedCards.size() - 1;
+
+        cardImage.setOnMouseClicked(e -> {
+            if (!reservedCardIndex.isDone()) {
+                reservedCardIndex.complete(index); // indice carta
+            }
+            if (!action.isDone()) {
+                action.complete(3);
+                System.out.println("on action completatooooooooooo");
+            }
+        });
+
+        reservedCardPreview.getChildren().add(cardImage);
+        reservedCardPreview.setVisible(true);
+        reservedCardPreview.setManaged(true);
+    }
+
+
 
 
     @FXML
@@ -165,10 +214,16 @@ public class Buildcontroller {
     public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
         int y = coords.getKey(); // RIGA
         int x = coords.getValue(); // COLONNA
+        if((y==0&x==0)||(y==1&x==0)||(y==0&x==1)||(y==0&x==3)||(y==1&x==6)||(y==0&x==5)||(y==0&x==6)){
+            gui.showMessage("Posizione non valida!");
+            return;
+        }
+        if(pickedcoords.contains(coords)){
+            gui.showMessage("Posizione già presa!");
+            return;
+        }
+        pickedcoords.add(coords);
         String imagePath = card.getImagePath();
-        System.out.println("percorso immagine"+imagePath);
-        System.out.println("coordinata y"+y);
-        System.out.println("coordinata x"+x);
 
         if (imagePath == null) return;
 

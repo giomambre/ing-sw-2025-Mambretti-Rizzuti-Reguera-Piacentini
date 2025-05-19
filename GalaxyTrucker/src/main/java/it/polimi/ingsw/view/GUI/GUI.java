@@ -400,15 +400,27 @@ public class GUI implements View {
     public Pair<Integer, Integer> askCoords(Ship ship) {
         try {
             Pair<Integer,Integer> coords=randomcardcontroller.getCoords().get();
+            buildcontroller.resetCoords();
             Platform.runLater(() -> {
                 CardComponent selectedCard = getActualcard();
-                System.out.println("ora aggiungo la carta selezionata"+selectedCard.getImagePath());
                 buildcontroller.placeCardOnShip(selectedCard, coords);
             });
             return coords;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public int askSecuredCard(List<CardComponent> securedCards) {
+        try {
+            return buildcontroller.getReservedCardIndexFuture().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        } finally {
+            buildcontroller.resetReservedCardIndex();
         }
     }
 
@@ -544,10 +556,7 @@ public class GUI implements View {
         return null;
     }
 
-    @Override
-    public int askSecuredCard(List<CardComponent> cards) {
-        return 0;
-    }
+
 
 
     @Override

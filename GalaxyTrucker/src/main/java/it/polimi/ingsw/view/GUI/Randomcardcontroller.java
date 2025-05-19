@@ -90,9 +90,23 @@ public class Randomcardcontroller {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    /*@FXML
+    public void setFour(ActionEvent event) {
+        gui.getBuildcontroller().addReservedCard(gui.getActualcard());
+        action.complete(4);
+    }*/
     @FXML
     public void setFour(ActionEvent event) {
-        action.complete(4);
+        gui.getBuildcontroller().addReservedCard(gui.getActualcard());
+
+        if (!action.isDone()) {
+            action.complete(4);
+        }
+
+        // Chiudi la finestra della carta random
+        if (stage != null) {
+            stage.close();
+        }
     }
     @FXML
     public void setThree(ActionEvent event) {
@@ -166,5 +180,6 @@ public class Randomcardcontroller {
     public Stage getStage() {
         return stage;
     }
+
 }
 
