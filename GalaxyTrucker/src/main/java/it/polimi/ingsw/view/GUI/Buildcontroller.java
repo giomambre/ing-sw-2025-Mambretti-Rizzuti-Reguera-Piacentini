@@ -41,6 +41,10 @@ public class Buildcontroller {
     @FXML private Button reservedCardButton;
     @FXML private HBox reservedCardPreview;
 
+    public void resetAction() {
+        action = new CompletableFuture<>();
+    }
+
 
     @FXML
     public void showReservedCardPreview() {

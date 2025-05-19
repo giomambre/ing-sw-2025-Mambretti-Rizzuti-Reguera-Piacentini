@@ -426,9 +426,9 @@ public class Client {
 
                     if (sel == 1) {
                         CardComponent card = card_msg.getCardComponent();
-                        card.rotate(); // ruota
+                        card.rotate();
                         if (virtualViewType == VirtualViewType.GUI) {
-                            ((GUI)virtualView).setActualcard(card); // aggiorna anche actualcard!
+                            ((GUI)virtualView).setActualcard(card);
                         }
                         elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
                         return;
@@ -451,7 +451,6 @@ public class Client {
                 if (sel == 2) {
 
                     Pair<Integer, Integer> coords = virtualView.askCoords(player_local.getShip());
-                    System.out.println("client,coordinate prese" + coords);
                     if (coords.getKey() == -1 || coords.getValue() == -1) {
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         break;

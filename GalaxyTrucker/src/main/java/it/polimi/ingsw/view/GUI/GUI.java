@@ -274,26 +274,7 @@ public class GUI implements View {
         });
     }
 
-    /*public void createbuildscreen() {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        Platform.runLater(() -> {
-            try {
-                Buildcontroller controller = new Buildcontroller();
-                controller.setGUI(this);
-                System.out.println(">>> [DEBUG] Client settato"+client);
-                this.buildcontroller = controller;
-                controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
-            } catch (Exception ex) {
-                future.completeExceptionally(ex);
-            }
-        });
-        try {
-            future.get(); // aspetta che la GUI venga inizializzata
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }*/
+
     public void createbuildscreen() {
         if (this.buildcontroller != null && isbuildscreenactive) {
             System.out.println("oooooooooooo");
@@ -346,7 +327,9 @@ public class GUI implements View {
     @Override
     public int selectDeck() {
         try {
-            return buildcontroller.getAction().get();
+            int selection=buildcontroller.getAction().get();
+            buildcontroller.resetAction();
+            return selection;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return -1;
@@ -356,55 +339,6 @@ public class GUI implements View {
     public CardComponent getActualcard() {
         return actualcard;
     }
-
-    /*public void createrandomcardcontroller(CardComponent card){
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        this.actualcard=card;
-        Platform.runLater(() -> {
-            try {
-                Randomcardcontroller controller = new Randomcardcontroller();
-                controller.setGui(this);
-                this.randomcardcontroller = controller;
-                controller.start(this.stage);
-
-                Platform.runLater(() -> {controller.showCardImage(actualcard);});
-
-                future.complete(null);  // Segnala che la GUI è pronta
-            } catch (Exception ex) {
-                future.completeExceptionally(ex);
-            }
-        });
-        try {
-            future.get(); // aspetta che la GUI venga inizializzata
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }*/
-    /*public void createrandomcardcontroller(CardComponent card){
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        this.actualcard = card;
-
-        Platform.runLater(() -> {
-            try {
-                // Crea un nuovo controller e un nuovo stage
-                Randomcardcontroller controller = new Randomcardcontroller();
-                controller.setGui(this);
-                this.randomcardcontroller = controller;
-
-                controller.start(card); // <-- passa stage e card
-
-                future.complete(null);  // GUI pronta
-            } catch (Exception ex) {
-                future.completeExceptionally(ex);
-            }
-        });
-
-        try {
-            future.get(); // aspetta la GUI
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     public void createrandomcardcontroller(CardComponent card) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -427,10 +361,10 @@ public class GUI implements View {
                 stage.centerOnScreen();
                 stage.show();
 
-                stage.setOnCloseRequest(event -> {
+                /*stage.setOnCloseRequest(event -> {
                     Platform.exit();
                     System.exit(0);
-                });
+                });*/
 
                 this.randomcardcontroller = controller; // salva quello GIUSTO
 
