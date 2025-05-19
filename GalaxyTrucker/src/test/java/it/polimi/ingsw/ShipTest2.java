@@ -346,7 +346,7 @@ public void testChoosePiece() {
                      Arrays.asList(Cargo.Red, Cargo.Green)
              )
      );
-        v.askPlanet(p.getCargo_reward());
+        v.askPlanet(p.getCargo_reward(),Set.of(2,4));
         List<Cargo> l1= new ArrayList<>();
         l1.add(Cargo.Red);
         l1.add(Cargo.Yellow);

@@ -23,10 +23,7 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -461,7 +458,7 @@ public class GUI implements View {
     }
 
     @Override
-    public int askPlanet(List<List<Cargo>> planets) {
+    public int askPlanet(List<List<Cargo>> planets, Set<Integer> planets_taken) {
         return 0;
     }
 

@@ -391,12 +391,7 @@ public class Player implements Serializable {
 
 
 
-        connectors.put(North, Smooth);
-        connectors.put(East, Universal);
-        connectors.put(South, Single);
-        connectors.put(West, Smooth);
 
-        ship.addComponent(new LivingUnit(LivingUnit, connectors, ""), 3, 2);
 
 
 

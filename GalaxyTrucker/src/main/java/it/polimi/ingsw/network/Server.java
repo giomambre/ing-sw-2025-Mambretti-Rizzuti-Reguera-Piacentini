@@ -6,15 +6,9 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
-import it.polimi.ingsw.model.adventures.AbandonedStation;
-import it.polimi.ingsw.model.adventures.CardAdventure;
-import it.polimi.ingsw.model.adventures.MeteorSwarm;
-import it.polimi.ingsw.model.adventures.OpenSpace;
+import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.CardAdventureType;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.enumerates.MeteorType;
+import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.network.messages.*;
 import javafx.util.Pair;
 
@@ -170,7 +164,7 @@ public class Server {
 
                     } else {
 
-                        sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, "", controller.getAvailable_colors()));
+                        sendToClient(msgClient.getId_client(), new GameStartedMessage(MessageType.GAME_STARTED, " COLORE GIA PRESO", controller.getAvailable_colors()));
 
                     }
 
@@ -466,13 +460,14 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                CardAdventure temp_card = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
-                        List.of(
-                                new Pair<>(MeteorType.LargeMeteor, North),
-                                new Pair<>(MeteorType.SmallMeteor, East),
-                                new Pair<>(MeteorType.SmallMeteor, West)
-                        )
-                );
+                CardAdventure  temp_card = new Planets(1, 3, CardAdventureType.Planets,
+                    Arrays.asList(
+                            Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                            Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
+                            Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                            Arrays.asList(Cargo.Red, Cargo.Green)
+                    )
+            );
                 manageAdventure(temp_card, controller);
 
 
@@ -599,6 +594,47 @@ public class Server {
                             manageAdventure(adventure, controller);
                         }
 
+                        break;
+
+
+                    case Planets:
+                        ShipClientMessage planet_msg = (ShipClientMessage) msg;
+                        if (planet_msg.getContent().isEmpty()) {
+
+                            if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
+
+                                adventure = controller.getRandomAdventure();
+                                manageAdventure(adventure, controller);
+
+
+                            } else {
+
+                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
+
+                            }
+
+                        } else {
+
+                            controller.movePlayer(getNickname(adv_msg.getId_client()), -controller.getCurrentAdventure().getCost_of_days());
+                            controller.addPlanetTaken(planet_msg.getContent());
+                            sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
+                                    + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+
+
+                            if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
+
+                                adventure = controller.getRandomAdventure();
+                                manageAdventure(adventure, controller);
+                            }else {
+
+                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
+
+                            }
+
+
+
+
+                        }
                         break;
 
                 }

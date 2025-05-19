@@ -15,6 +15,7 @@ import javafx.util.Pair;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Abstract base class representing the view of a client-side application.
@@ -79,7 +80,7 @@ public interface View {
 
     int showCard(CardComponent card);
 
-    int askPlanet(List<List<Cargo>> planets);
+    public int askPlanet(List<List<Cargo>> planets, Set<Integer> planet_taken) ;
 
     void showBoard( Map<Integer, Player> positions, Map<Integer, Player> laps);
 

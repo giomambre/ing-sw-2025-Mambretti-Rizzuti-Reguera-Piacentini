@@ -146,7 +146,7 @@ public class Client {
 
                         Message msg = inputQueue.take();
 
-                        if (msg.getType() == MessageType.OPEN_SPACE || msg.getType() == MessageType.ABANDONED_SHIP
+                        if (msg.getType() == MessageType.PLANETS || msg.getType() == MessageType.OPEN_SPACE || msg.getType() == MessageType.ABANDONED_SHIP
                                 || msg.getType() == MessageType.ABANDONED_STATION || msg.getType() == MessageType.METEOR_SWARM) {
 
                             if (lock) {
@@ -170,7 +170,7 @@ public class Client {
                         Message msg = notificationQueue.take();
                         handleNotification(msg);
                         if (msg.getType() == MessageType.NEW_ADVENTURE_DRAWN) {
-                            Thread.sleep(10);
+                            Thread.sleep(50);
                             lock = false;
 
                         }
@@ -320,19 +320,23 @@ public class Client {
             case GAME_STARTED:
                 GameStartedMessage gs_msg = (GameStartedMessage) msg;
                 if (gs_msg.getContent().isEmpty()) {
-                    virtualView.showMessage("\nPartita avviata!");
+                    virtualView.showMessage("\n----- PARTITA AVVIATA -----");
+                }else{
+
+                    virtualView.showMessage("\n" + gs_msg.getContent());
+
                 }
+
                 Color c;
+
                 if (virtualViewType == VirtualViewType.GUI) {
                     ((GUI) virtualView).createchoosecolorscreen(still_Available_colors);
                     c = virtualView.askColor(still_Available_colors);
                     out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
-                    System.out.println("(testing) color chosen:" + c);
                 } else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
                     out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 }
-                //out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 break;
 
             case BUILD_START:
@@ -810,7 +814,7 @@ public class Client {
                 AbandonedStation a_s = (AbandonedStation) adventure;
                 Pair<Pair<Integer, Integer>, Integer> new_position;
 
-                List<Cargo> cargos = a_s.getCargo();
+                List<Cargo> cargos = new ArrayList<>(a_s.getCargo());
 
                 if (choice) {
 
@@ -1066,12 +1070,51 @@ public class Client {
                 Planets planets = (Planets) adventure;
                 List<List<Cargo>> planet_list = planets.getCargo_reward();
                 String[] parts;
+                Set<Integer> planets_taken = new HashSet<>();
                 if(!content.isEmpty()) {
 
-                    parts = content.split(" ");
-
-
+                    parts = content.trim().split("\\s+");
+                    for (String part : parts) {
+                        try {
+                            Integer id = Integer.parseInt(part);
+                            planets_taken.add(id);
+                        } catch (NumberFormatException _) {
+                        }
+                    }
                 }
+                int planet = virtualView.askPlanet(planet_list, planets_taken);
+                if(planet ==-1){
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+
+                    virtualView.showMessage("\n--- HAI DECISO DI NON PRENDERE NESSUN PIANETA,  RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
+
+                    break;
+                }
+                List<Cargo> planet_cargos = new ArrayList<>(planet_list.get(planet));
+                while (true) {
+
+                    int scelta = virtualView.askCargo(planet_cargos);
+
+                    if (scelta == -1) {
+                        break;
+                    }
+
+                    Cargo c = planet_cargos.get(scelta);
+
+
+                    new_position = virtualView.addCargo(player_local.getShip(), c);
+                    if (new_position != null) {
+                        ship = player_local.getShip();
+                        planet_cargos.remove(scelta);
+                        Storage s = ((Storage) ship.getComponent(new_position.getKey().getKey(), new_position.getKey().getValue()));
+                        s.addCargo(c, new_position.getValue());
+
+                    }
+                }
+                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(planet), clientId, player_local));
+                virtualView.showMessage("\n--- AVVENTURA COMPLETATA, RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
+
+                break;
 
 
 

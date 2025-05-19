@@ -19,7 +19,7 @@ public class GameController {
     private CardAdventure adventure;
     private int adv_index = 0;
 
-
+    String planets = "";
     List<Player> finishedAdventure = new ArrayList<>();
     List<Player> adventureOrder = new ArrayList<>();
     List<Player> finished_supply_players = new ArrayList<>();
@@ -94,6 +94,9 @@ public class GameController {
 
                 }
                 break;
+            case Planets:
+                planets = "";
+                adventureOrder = game.getBoard().getRanking();
 
 
             default:
@@ -102,6 +105,18 @@ public class GameController {
 
         }
 
+    }
+
+    public String getPlanets() {
+        return planets;
+    }
+    public void addPlanetTaken(String planet) {
+        if(planet.isEmpty()){
+            planets = planet;
+        }
+        else{
+            planets = planets + " " + planet;
+        }
     }
 
     public List<Player> getAdventureOrder() {

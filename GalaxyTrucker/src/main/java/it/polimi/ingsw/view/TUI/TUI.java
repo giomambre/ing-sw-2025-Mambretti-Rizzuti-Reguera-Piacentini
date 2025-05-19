@@ -288,7 +288,7 @@ public class TUI implements View {
 
     @Override
     public String askNickname() {
-        out.println("Enter your nickname: ");
+        out.println("INSERISCI IL TUO NICKNAME : ");
         return readLine();
 
     }
@@ -354,23 +354,29 @@ public class TUI implements View {
         while (true) {
             lastRequest = "\nScegli il colore : ";
             System.out.println("\nScegli il colore che preferisci tra i seguenti disponibili:\n");
+            int i = 0;
             for (Color c : colors) {
-                System.out.print("- " + c.name().toLowerCase() + "  ");
+                System.out.println( " " +  i+ " - " + c.name().toLowerCase() + "  ");
+                i++;
             }
             System.out.println();
 
-            String input;
-            do {
-                input = readLine().trim();
-            } while (input.isEmpty());
-
+            int scelta = readValidInt("Scelta ",0,3,false);
             try {
-                Color selected = Color.valueOf(input.toUpperCase());
-                if (colors.contains(selected)) {
-                    return selected;
-                } else {
-                    System.out.println("Il colore scelto non è tra quelli disponibili. Riprova.");
+                Color selected;
+
+                switch (scelta){
+
+                    case 1: selected = Color.GREEN; break;
+                    case 2: selected = Color.YELLOW; break;
+                    case 3: selected = Color.BLUE; break;
+                    default: selected = Color.RED; break;
+
                 }
+
+
+                    return selected;
+
             } catch (IllegalArgumentException e) {
                 System.out.println("Input non valido. Assicurati di scrivere correttamente il nome di un colore.");
             }
@@ -636,13 +642,18 @@ public class TUI implements View {
 
 
     @Override
-    public int askPlanet(List<List<Cargo>> planets) {
+    public int askPlanet(List<List<Cargo>> planets, Set<Integer> planets_taken) {
         System.out.println("\n====== LISTA PIANETI DISPONIBILI ======\n");
         for (int i = 0; i < planets.size(); i++) {
-            System.out.println("Pianeta " + i + ":");
+            System.out.print("Pianeta " + i + " : ");
+            if(planets_taken.contains(i)){
+                System.out.println(RED + " PIANETA PRESO " + RESET);
+            }else {
+                System.out.println(GREEN + " PIANETA DISPONIBILE " + RESET);
+            }
             printCargo(planets.get(i));
         }
-        return readValidInt("Seleziona il numero del pianeta", 0, planets.size() - 1, true, Set.of());
+        return readValidInt("Seleziona il numero del pianeta", 0, planets.size() - 1, true, planets_taken);
     }
 
 
