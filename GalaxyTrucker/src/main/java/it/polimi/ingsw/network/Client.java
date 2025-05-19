@@ -169,12 +169,13 @@ public class Client {
                     while (true) {
                         Message msg = notificationQueue.take();
                         handleNotification(msg);
-                        if (msg.getType() == MessageType.NEW_ADVENTURE_DRAWN) {
+                        if (msg.getType() == MessageType.NEW_ADVENTURE_DRAWN || msg.getType() == MessageType.UPDATE_BOARD) {
                             Thread.sleep(50);
                             lock = false;
 
+                        }else{
+                            lock = true;
                         }
-
 
                     }
                 } catch (Exception e) {
@@ -801,7 +802,7 @@ public class Client {
                 }
 
                 int power = ship.calculateEnginePower(battery_usage);
-                System.out.println("\n\n\nPOTENZA MOTORE " + power);
+                System.out.println("\n\n\nPOTENZA MOTORE " + power + "\n");
 
                 out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power), clientId, player_local));
 
@@ -1115,6 +1116,61 @@ public class Client {
                 virtualView.showMessage("\n--- AVVENTURA COMPLETATA, RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
 
                 break;
+
+
+            case CombatZone:
+
+
+                    switch (content){
+
+
+
+                        case "engine" :
+
+                            virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA MOTORE PER LA CARTA ZONA DI GUERRA : \n");
+
+                            battery_usage = new HashMap<>();
+                            battery = new Pair<>(-1,-1);
+                            ship = player_local.getShip();
+
+
+                            for ( int k = 0; k < ship.getROWS(); k++) {
+                                for (int  j = 0; j < ship.getCOLS(); j++) {
+                                    CardComponent card = ship.getComponent(k, j);
+
+                                    if (card.getComponentType() == DoubleEngine) {
+
+                                        battery = virtualView.askEngine(new Pair<>(k, j));
+                                        if (battery.getKey() == -1 || battery.getValue() == -1) {
+
+                                            battery_usage.put(card, false);
+
+                                        } else {
+
+                                            battery_usage.put(card, true);
+                                            card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
+
+                                            card_battery.removeBattery();
+
+                                        }
+
+                                    }
+
+                                }
+                            }
+
+                            power = ship.calculateEnginePower(battery_usage);
+
+
+                            System.out.println("\n\n\nPOTENZA MOTORE :  " + power);
+
+                            out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng " + String.valueOf(power), clientId, player_local));
+
+
+
+
+
+                }
 
 
 

@@ -48,6 +48,7 @@ public enum MessageType {
     ABANDONED_SHIP,
     METEOR_SWARM,
     END_FLIGHT,
-    PLANETS
+    PLANETS,
+    COMBAT_ZONE
 
 }

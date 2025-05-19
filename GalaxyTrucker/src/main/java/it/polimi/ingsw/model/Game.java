@@ -132,7 +132,7 @@ public class Game extends BaseGame {
                         Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue)
                 )
         ));
-        deck_adventure_liv1.add(new CombatZone(1, 3, CardAdventureType.CombatZone, 2, 0, 0,
+        deck_adventure_liv1.add(new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, South),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
@@ -227,7 +227,7 @@ public class Game extends BaseGame {
                         Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue, Cargo.Blue)
                 )
         ));
-        deck_adventure_liv2.add(new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 3, 3,
+        deck_adventure_liv2.add(new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, North),
                         new Pair<>(MeteorType.LightCannonFire, West),
