@@ -23,9 +23,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 import javafx.scene.image.ImageView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import javafx.scene.image.Image;
 
@@ -215,7 +213,7 @@ public class Buildcontroller {
             playersButtonBox.getChildren().clear(); // pulisci prima
             for (Player p : otherPlayers) {
                 Button playerButton = new Button(p.getNickname());
-                //playerButton.setOnAction(e -> showShipForPlayer(p.getId()));
+                playerButton.setOnAction(e -> showShipForPlayer(p.getNickname()));
                 //playerButton.getStyleClass().add("player-button"); // se vuoi uno stile CSS
                 playersButtonBox.getChildren().add(playerButton);
             }
@@ -294,6 +292,38 @@ public class Buildcontroller {
         CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
         shipboard[y][x] = card;
     }
+
+    public void showShipForPlayer(String nickname) {
+        Optional<Player> optionalPlayer = gui.getClient().getOther_players_local().stream()
+                .filter(p -> p.getNickname().equals(nickname))
+                .findFirst();
+
+        if (optionalPlayer.isEmpty()) {
+            gui.showMessage("Giocatore non trovato!");
+            return;
+        }
+
+        Player player = optionalPlayer.get();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlayerShipView.fxml"));
+            Parent root = loader.load();
+
+            PlayerShipController controller = loader.getController();
+            System.out.println("debug,nave di:"+player.getNickname());
+            System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
+            controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
+
+            Stage stage = new Stage();
+            stage.setTitle("Nave di " + player.getNickname());
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            gui.showMessage("Errore nel caricamento della schermata nave.");
+        }
+    }
+
 
 
 }

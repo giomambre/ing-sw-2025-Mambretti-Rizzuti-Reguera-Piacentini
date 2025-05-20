@@ -185,5 +185,19 @@ public class Randomcardcontroller {
         return stage;
     }
 
+    public void updateImage(CardComponent card) {
+            String imagePath = card.getImagePath();
+            InputStream stream = getClass().getResourceAsStream(imagePath);
+            if (stream == null) {
+                System.err.println("Immagine non trovata per il path: " + imagePath);
+                return;
+            }
+            Image image = new Image(stream);
+            cardImageView.setImage(image);
+            cardImageView.setRotate(card.getRotationAngle());
+    }
+
+
+
 }
 

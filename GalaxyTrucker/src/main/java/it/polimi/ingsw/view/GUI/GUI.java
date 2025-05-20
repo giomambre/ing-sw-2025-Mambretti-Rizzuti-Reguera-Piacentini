@@ -79,6 +79,9 @@ public class GUI implements View {
 
     public GUI() {
     }
+    public Randomcardcontroller getRandomcardcontroller() {
+        return randomcardcontroller;
+    }
 
     public void setGuiApplication(GuiApplication application) {
         this.application = application;
