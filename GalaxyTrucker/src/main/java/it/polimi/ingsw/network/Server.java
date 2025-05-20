@@ -460,14 +460,17 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                CardAdventure  temp_card = new Planets(1, 3, CardAdventureType.Planets,
-                    Arrays.asList(
-                            Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
-                            Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
-                            Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
-                            Arrays.asList(Cargo.Red, Cargo.Green)
-                    )
-            );
+                CardAdventure temp_card = new Planets(1, 3, CardAdventureType.Planets,
+                        Arrays.asList(
+                                Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                                Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
+                                Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
+                                Arrays.asList(Cargo.Red, Cargo.Green)
+                        )
+                );
+
+                adventure = controller.getRandomAdventure();
+
                 manageAdventure(temp_card, controller);
 
 
@@ -625,17 +628,48 @@ public class Server {
 
                                 adventure = controller.getRandomAdventure();
                                 manageAdventure(adventure, controller);
-                            }else {
+                            } else {
 
                                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
 
                             }
 
 
+                        }
+                        break;
+
+                    case CombatZone:
+                        String[] type = msg.getContent().split(" ");
+                        CombatZone combatZone = (CombatZone) controller.getCurrentAdventure();
+                        StandardMessageClient cbz_msg = (StandardMessageClient) msg;
+
+
+                        if (combatZone.getId() == 1) {
+
+                            switch (type[0]) {
+
+                                case "eng":
+                                    int power = Integer.parseInt(type[1]);
+                                    controller.addEngineValue(getNickname(cbz_msg.getId_client()), power);
+                                    break;
+
+                                case "can":
+                                    break;
+
+
+                            }
+
+                            if(controller.getEngineValues().size() == controller.getActivePlayers().size()) {
+
+
+                                String less_engine = controller.getLeastEngineValue();
+
+
+
+                            }
 
 
                         }
-                        break;
 
                 }
                 break;
@@ -661,6 +695,18 @@ public class Server {
 
 
     public void manageAdventure(CardAdventure adventure, GameController controller) {
+
+
+        for (Player p : controller.getPlayers()) { //kick dei i giocatori doppiati
+
+            if (!controller.getActivePlayers().contains(p)) {
+
+                sendToClient(getId_client(p.getNickname()), new Message(END_FLIGHT, ""));
+
+            }
+
+        }
+
 
         switch (adventure.getType()) {
 
@@ -731,6 +777,27 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, "", adventure));
                 break;
+
+
+            case CombatZone:
+                CombatZone combatZone = (CombatZone) adventure;
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
+                if (combatZone.getId() == 1) {
+
+
+                    String nick_less_cw = controller.calculateLessCrewmates();
+
+                    controller.movePlayer(getNickname(getId_client(nick_less_cw)), -controller.getCurrentAdventure().getCost_of_days());
+
+                    sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "\nIL PLAYER " + nick_less_cw
+                            + " HA PAGATO  per avere il MINOR NUMERO DI ASTRONAUTI , ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo" + "\n", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+
+                    controller.initializeAdventure(adventure);
+                    //gestione potenza di fuoco
+                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(METEOR_SWARM, "engine", adventure));
+
+
+                }
 
 
         }
