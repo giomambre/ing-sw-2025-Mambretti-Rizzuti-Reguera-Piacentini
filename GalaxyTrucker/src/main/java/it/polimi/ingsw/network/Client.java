@@ -26,10 +26,7 @@ import java.net.Socket;
 import java.io.*;
 
 import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
@@ -45,7 +42,7 @@ public class Client {
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
     private static boolean forced_close = false;
-    private static boolean lock = true;
+    private static CountDownLatch adventureLatch = new CountDownLatch(0);
     private static Map<Integer, Player> local_board_positions;
     private static Map<Integer, Player> local_board_laps;
 
@@ -113,14 +110,14 @@ public class Client {
 
 
                         switch (msg.getType()) {
-                            case PLANETS,METEOR_SWARM,ABANDONED_SHIP, OPEN_SPACE, ABANDONED_STATION, REQUEST_NAME, NAME_REJECTED,
+                            case ENGINE_POWER_RANK,PLANETS,METEOR_SWARM,ABANDONED_SHIP, OPEN_SPACE, ABANDONED_STATION, REQUEST_NAME, NAME_REJECTED,
                                  NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
                                  CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
                                  INVALID_CONNECTORS, SELECT_PIECE:
                                 inputQueue.put(msg);
                                 break;
 
-                            case END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT, INVALID_SHIP,
+                            case  ENGINE_POWER,END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT, INVALID_SHIP,
                                  START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
                                  FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
                                  BUILD_PHASE_ENDED:
@@ -149,14 +146,10 @@ public class Client {
                         if (msg.getType() == MessageType.PLANETS || msg.getType() == MessageType.OPEN_SPACE || msg.getType() == MessageType.ABANDONED_SHIP
                                 || msg.getType() == MessageType.ABANDONED_STATION || msg.getType() == MessageType.METEOR_SWARM) {
 
-                            if (lock) {
-                                Thread.sleep(300); // aspetta che la notifica sia stampata
-                                inputQueue.put(msg);
-                                continue;
-                            }
+                            adventureLatch.await();
                         }
 
-                        elaborate(msg); // funzione che chiede input e risponde al server
+                        elaborate(msg);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -170,11 +163,10 @@ public class Client {
                         Message msg = notificationQueue.take();
                         handleNotification(msg);
                         if (msg.getType() == MessageType.NEW_ADVENTURE_DRAWN || msg.getType() == MessageType.UPDATE_BOARD) {
+                            adventureLatch = new CountDownLatch(1);
                             Thread.sleep(50);
-                            lock = false;
 
-                        }else{
-                            lock = true;
+                            adventureLatch.countDown();
                         }
 
                     }
@@ -439,7 +431,6 @@ public class Client {
                 //virtualView.showMessage("\nCarta disponibile");
                 int sel;
                 if (virtualViewType == VirtualViewType.GUI) {
-                    System.out.println("io vengo eseguitaaaaa");
                     ((GUI) virtualView).createrandomcardcontroller(card_msg.getCardComponent());
                     sel = virtualView.showCard(card_msg.getCardComponent());
                 } else {
@@ -492,6 +483,8 @@ public class Client {
 
                     if (player_local.getShip().getExtra_components().size() == 2) {
                         virtualView.showMessage("\nSpazio esaurito nelle carte prenotate");
+                        out.writeObject(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
+                        elaborate(new Message(MessageType.BUILD_START, ""));
 
                     } else {
                         virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");
@@ -544,7 +537,6 @@ public class Client {
 
                     }
                 }
-                System.out.println("HO " + player_local.getShip().getNumOfCrewmates());
                 out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
 
 
@@ -777,6 +769,32 @@ public class Client {
                 manageAdventure(ac.getAdventure(), ac.getContent());
                 break;
 
+            case ENGINE_POWER:
+                String[] enginePower = msg.getContent().split("\\s+");
+                if(!enginePower[0].equals(nickname)) {
+
+                    virtualView.showMessage("IL PLAYER " + enginePower[0] + " ha una potenza motore di : " + enginePower[1]);
+
+
+                }
+                break;
+
+            case ENGINE_POWER_RANK:
+                RankingMessage rank = (RankingMessage) msg;
+
+                String less_engine = rank.getWeakerPlayer();
+
+                virtualView.ShowRanking(rank.getRanks(), "POTENZA MOTORI ");
+
+                if(less_engine.equals(nickname)) {
+                    elaborate(new Message(MessageType.ASTRONAUT_LOSS,""));
+                    break;
+                }else{
+
+                    virtualView.showMessage(" --- RIMANI IN ATTESA CHE IL PLAYER FINISCA LA PENITENZA ---");
+
+                }
+
 
         }
 
@@ -826,7 +844,7 @@ public class Client {
                 }
 
                 int power = ship.calculateEnginePower(battery_usage);
-                System.out.println("\n\n\nPOTENZA MOTORE " + power + "\n");
+                virtualView.showMessage("\n\nPOTENZA MOTORE : " + power);
 
                 out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power), clientId, player_local));
 
@@ -914,7 +932,7 @@ public class Client {
             case MeteorSwarm:
                 MeteorSwarm meteor = (MeteorSwarm) adventure;
                 List<Pair<MeteorType, Direction>> meteors = meteor.getMeteors();
-                String[] meteor_coords = content.split(" ");
+                String[] meteor_coords = content.split("\\s+");
                 List<Integer> coordList = new ArrayList<>();
                 Pair<Integer, Integer> pair;
                 for (int i = 0; i < meteor_coords.length; i++) {
@@ -1186,10 +1204,10 @@ public class Client {
                             power = ship.calculateEnginePower(battery_usage);
 
 
-                            System.out.println("\n\n\nPOTENZA MOTORE :  " + power);
+                            virtualView.showMessage("\n\nPOTENZA MOTORE : " + power);
 
                             out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng " + String.valueOf(power), clientId, player_local));
-
+                            break;
 
 
 
@@ -1208,10 +1226,6 @@ public class Client {
 
 
 
-
-
-
-        lock  = false;
 
 
 

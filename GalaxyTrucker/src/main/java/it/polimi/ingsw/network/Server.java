@@ -651,6 +651,7 @@ public class Server {
                                 case "eng":
                                     int power = Integer.parseInt(type[1]);
                                     controller.addEngineValue(getNickname(cbz_msg.getId_client()), power);
+                                    sendToAllClients(controller.getLobby(),new Message(ENGINE_POWER ,  getNickname(cbz_msg.getId_client()) +" " +  power));
                                     break;
 
                                 case "can":
@@ -661,9 +662,7 @@ public class Server {
 
                             if(controller.getEngineValues().size() == controller.getActivePlayers().size()) {
 
-
-                                String less_engine = controller.getLeastEngineValue();
-
+                                sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK,"",controller.getEngineValues()));
 
 
                             }

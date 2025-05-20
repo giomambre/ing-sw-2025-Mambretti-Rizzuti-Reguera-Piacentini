@@ -568,6 +568,11 @@ public class GUI implements View {
     }
 
     @Override
+    public void ShowRanking(Map<String, Integer> rank, String type) {
+
+    }
+
+    @Override
     public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
         return null;
     }

@@ -335,6 +335,23 @@ public void testChoosePiece() {
 
 
 }
+    public String getWeakerPlayer(){
+        Map<String,Integer> ranks = new HashMap<>();
+        ranks.put("isa " , 2);
+        ranks.put("raffa " , 3);
+        ranks.put("yellow " , 2);
+        int less = 100;
+        String player = "";
+        for(Map.Entry<String,Integer> entry : ranks.entrySet()){
+            if(entry.getValue() < less){
+                less = entry.getValue();
+                player = entry.getKey();
+            }
+        }
+        return player;
+
+
+    }
  @Test
     public  void  testPrintShipPlance() {
         View v= new TUI();
@@ -346,14 +363,13 @@ public void testChoosePiece() {
                      Arrays.asList(Cargo.Red, Cargo.Green)
              )
      );
-        v.askPlanet(p.getCargo_reward(),Set.of(2,4));
-        List<Cargo> l1= new ArrayList<>();
-        l1.add(Cargo.Red);
-        l1.add(Cargo.Yellow);
-        l1.add(Cargo.Blue);
-        l1.add(Cargo.Green);
 
-        v.addCargo(ship1,l1.getFirst());
+     Map<String,Integer> rank = new HashMap<>();
+     rank.put("isa " , 2);
+     rank.put("raffa " , 3);
+     rank.put("yellow " , 2);
+      v.ShowRanking(rank, "POTENZA MOTORI");
+     System.out.println(getWeakerPlayer());
 
 
  }

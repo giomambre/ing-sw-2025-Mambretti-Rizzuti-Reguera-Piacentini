@@ -49,6 +49,9 @@ public enum MessageType {
     METEOR_SWARM,
     END_FLIGHT,
     PLANETS,
-    COMBAT_ZONE
+    COMBAT_ZONE,
+    ASTRONAUT_LOSS,
+    ENGINE_POWER_RANK,
+    ENGINE_POWER
 
 }

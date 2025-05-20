@@ -986,6 +986,40 @@ return choice;
         }
     }
 
+
+
+
+    @Override
+    public void ShowRanking(Map<String, Integer> rank, String type) {
+        System.out.println("\n Lista di " + type + ":\n");
+
+        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(rank.entrySet());
+
+        sorted.sort(Comparator.comparing(Map.Entry<String, Integer>::getValue).reversed());
+
+        int minValue = sorted.stream()
+                .map(Map.Entry::getValue)
+                .min(Integer::compare)
+                .orElse(Integer.MIN_VALUE);
+
+        String firstMinKey = null;
+        for (Map.Entry<String, Integer> entry : rank.entrySet()) {
+            if (entry.getValue() == minValue) {
+                firstMinKey = entry.getKey();
+                break;
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : sorted) {
+            String name = entry.getKey();
+            int value = entry.getValue();
+            String color = name.equals(firstMinKey) && value == minValue ? RED : "";
+            String symbol = name.equals(firstMinKey) && value == minValue ? "  <- DEVE PAGARE LA PENITENZA" : "";
+            System.out.println(color + "- " + name + ": " + value +  symbol +  RESET );
+        }
+    }
+
+
     @Override
     public int showCard(CardComponent card) {
 

@@ -84,6 +84,8 @@ public interface View {
 
     void showBoard( Map<Integer, Player> positions, Map<Integer, Player> laps);
 
+    public void ShowRanking(Map<String,Integer> rank , String type);
+
     public Pair<Integer,Integer> chooseAstronautLosses(Ship ship);
 
     public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship);
