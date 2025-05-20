@@ -43,20 +43,27 @@ public class Buildcontroller {
     private Button randomCard;
 
     @FXML private HBox reservedCardPreview;
+    @FXML private HBox faceupCardPreview;
 
     private final List<CardComponent> reservedCards = new ArrayList<>();
-
+    private final List<CardComponent> facedupCards = new ArrayList<>();
 
 
     private CompletableFuture<Integer> reservedCardIndex = new CompletableFuture<>();
-
+    private CompletableFuture<Integer> faceupCardIndex = new CompletableFuture<>();
 
     public CompletableFuture<Integer> getReservedCardIndexFuture() {
         return reservedCardIndex;
     }
+    public CompletableFuture<Integer> getFaceupCardIndexFuture() {
+        return faceupCardIndex;
+    }
 
     public void resetReservedCardIndex() {
         reservedCardIndex = new CompletableFuture<>();
+    }
+    public void resetfaceupCardIndex() {
+        faceupCardIndex = new CompletableFuture<>();
     }
 
     public void resetCoords() {
@@ -93,6 +100,33 @@ public class Buildcontroller {
         reservedCardPreview.getChildren().add(cardImage);
         reservedCardPreview.setVisible(true);
         reservedCardPreview.setManaged(true);
+    }
+
+    public void addFaceUpCard(CardComponent card) {
+
+        facedupCards.add(card);
+
+        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
+        ImageView cardImage = new ImageView(image);
+        cardImage.setFitWidth(100);
+        cardImage.setPreserveRatio(true);
+
+        int index = facedupCards.size() - 1;
+
+        cardImage.setOnMouseClicked(e -> {
+            if (!faceupCardIndex.isDone()) {
+                faceupCardPreview.getChildren().remove(cardImage);
+                faceupCardIndex.complete(index);
+                facedupCards.remove(index);
+            }
+            if (!action.isDone()) {
+                action.complete(2);
+            }
+        });
+
+        faceupCardPreview.getChildren().add(cardImage);
+        faceupCardPreview.setVisible(true);
+        faceupCardPreview.setManaged(true);
     }
 
 

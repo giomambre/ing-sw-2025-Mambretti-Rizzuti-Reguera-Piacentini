@@ -358,6 +358,19 @@ public class Client {
                     out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));
 
                 } else if (deck_selected == 2) {
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        CompletableFuture<Integer> futureIndex = ((GUI) virtualView).getBuildcontroller().getFaceupCardIndexFuture();
+                        int index = futureIndex.get();
+                        System.out.println("clientttt indice carta scartata"+index);
+                        ((GUI) virtualView).getBuildcontroller().resetfaceupCardIndex(); // opzionale
+                        if (index == -1) {
+                            elaborate(new Message(MessageType.BUILD_START, ""));
+                            break;
+                        }
+                        UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
+                        out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
+
+                    }else {
 
                     if (facedUp_deck_local.isEmpty()) {
                         virtualView.showMessage("\nNon ci sono carte a faccia in alto!\n");
@@ -372,7 +385,7 @@ public class Client {
                         }
                         UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
                         out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
-
+                    }
 
                     }
                 } else if (deck_selected == 3) {  //carte prenotate
