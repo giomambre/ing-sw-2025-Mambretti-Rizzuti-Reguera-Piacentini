@@ -46,6 +46,8 @@ public class Buildcontroller {
 
     private final List<CardComponent> reservedCards = new ArrayList<>();
 
+
+
     private CompletableFuture<Integer> reservedCardIndex = new CompletableFuture<>();
 
 
@@ -79,11 +81,12 @@ public class Buildcontroller {
 
         cardImage.setOnMouseClicked(e -> {
             if (!reservedCardIndex.isDone()) {
-                reservedCardIndex.complete(index); // indice carta
+                reservedCardPreview.getChildren().remove(cardImage);
+                reservedCardIndex.complete(index);
+                reservedCards.remove(index);
             }
             if (!action.isDone()) {
                 action.complete(3);
-                System.out.println("on action completatooooooooooo");
             }
         });
 
@@ -240,19 +243,16 @@ public class Buildcontroller {
             Integer colIndex = GridPane.getColumnIndex(node);
             Integer rowIndex = GridPane.getRowIndex(node);
 
-            // fallback nel caso siano null (succede se non impostati nel FXML)
+
             if (colIndex == null) colIndex = 0;
             if (rowIndex == null) rowIndex = 0;
 
-            // Quando trovi la cella corretta (x, y), aggiungi l'ImageView
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                System.out.println("ho trovATO LA CELLA CORRETTA");
-                cell.getChildren().clear(); // Rimuovi eventuali carte precedenti
-                cell.getChildren().add(imageView); // Aggiungi la nuova carta
-                System.out.println("AGGIUNTAAA!!!!");
+                cell.getChildren().clear();
+                cell.getChildren().add(imageView);
                 shipGrid.requestLayout();
                 shipGrid.layout();
-                break; // Esci dal ciclo appena trovata la cella
+                break;
             }
         }
 
