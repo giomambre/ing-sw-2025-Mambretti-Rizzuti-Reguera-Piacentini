@@ -268,7 +268,7 @@ public class Client {
                 break;
 
             case CREATE_LOBBY:
-                System.out.println("(testing)sono nella creazione della lobby");
+                //System.out.println("(testing)sono nella creazione della lobby");
                 if (msg.getContent().isEmpty()) {
                     virtualView.showGenericError("Errore nella creazione della lobby, riprovare\n");
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
@@ -280,7 +280,7 @@ public class Client {
                 break;
 
             case SEE_LOBBIES:
-                System.out.println("(testing)ora guardo le lobby cge ci sono");
+                //System.out.println("(testing)ora guardo le lobby cge ci sono");
                 AvaiableLobbiesMessage l_msg = (AvaiableLobbiesMessage) msg;
 
                 if (!msg.getContent().isEmpty()) {
@@ -297,7 +297,7 @@ public class Client {
                     if (virtualViewType == VirtualViewType.GUI) {
                         ((GUI) virtualView).createselectlobbyscreen(l_msg.getLobbies());
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
-                        System.out.println("(testing) lobby scelta:" + lobby_index);
+                        //System.out.println("(testing) lobby scelta:" + lobby_index);
                     } else {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
                     }

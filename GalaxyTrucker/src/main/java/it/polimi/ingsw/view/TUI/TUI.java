@@ -1634,6 +1634,9 @@ int i = 0;
         // Inserisci i dati dei giocatori
         for (Map.Entry<Integer, Player> entry : positions.entrySet()) {
             int pos = entry.getKey();
+            if (pos == 24) {
+                pos = 0;
+            }
             Player p = entry.getValue();
             String nome = p.getNickname().length() > 6 ?
                     p.getNickname().substring(0, 6) :
