@@ -566,12 +566,28 @@ public class Client {
                 out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE, String.valueOf(piece), clientId));
                 break;
 
+
+            case ASTRONAUT_LOSS:
+                plance = player_local.getShip().getShip_board();
+                Pair<Integer, Integer> lu_coord;
+                int removed = 0;
+                while(removed != 2 ){
+
+                        lu_coord = virtualView.askLivingUnit(player_local.getShip());
+                        LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu_coord.getKey(),lu_coord.getValue());
+                        l.removeCrewmates(1);
+                        removed++;
+                    }
+    break;
+
+
             case END_FLIGHT:
                 Message end_msg = msg;
                 virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
                 virtualView.earlyEndFlightResume(player_local);
                 // da riveder messa qua giusto per avere un idea
                 break;
+
 
 
             default:
@@ -710,6 +726,8 @@ public class Client {
 
 
                 break;
+
+
 
 
             case WAITING_FLIGHT:

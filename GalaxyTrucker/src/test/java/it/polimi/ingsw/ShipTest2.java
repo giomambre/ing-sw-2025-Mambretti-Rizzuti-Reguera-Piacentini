@@ -364,12 +364,6 @@ public void testChoosePiece() {
              )
      );
 
-     Map<String,Integer> rank = new HashMap<>();
-     rank.put("isa " , 2);
-     rank.put("raffa " , 3);
-     rank.put("yellow " , 2);
-      v.ShowRanking(rank, "POTENZA MOTORI");
-     System.out.println(getWeakerPlayer());
 
 
  }

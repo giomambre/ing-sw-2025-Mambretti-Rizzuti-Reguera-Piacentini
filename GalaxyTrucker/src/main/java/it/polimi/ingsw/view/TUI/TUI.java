@@ -1021,6 +1021,44 @@ return choice;
 
 
     @Override
+    public Pair<Integer, Integer> askLivingUnit(Ship ship) {
+
+        CardComponent[][] plance = player_local.getShip().getShipBoard();
+        List<CardComponent> list_lu = new ArrayList<>();
+        for(int i = 0 ; i < ship.getROWS() ; i++) {
+
+
+            for(int j = 0 ; j < ship.getCOLS() ; j++) {
+
+                CardComponent card = plance[i][j];
+
+                if(card.getComponentType() == MainUnitGreen || card.getComponentType() == MainUnitRed
+                || card.getComponentType() == MainUnitBlue || card.getComponentType() == MainUnitYellow || card.getComponentType() == LivingUnit) {
+                    LivingUnit lu = (LivingUnit) card;
+                    if(lu.getNum_crewmates() > 0)  list_lu.add(card);
+
+                }
+
+
+            }
+
+
+        }
+        System.out.println("SCEGLI DOVE VUOI TOGLIERE 1 CREWMATE : ");
+        int i = 0;
+        for( CardComponent card : list_lu ) {
+            Pair<Integer,Integer> coord = ship.getCoords(card);
+            System.out.println(" " + i + " -  RIGA " +coord.getKey() + " COLONNA " + coord.getValue() );
+
+        }
+
+        int scelta = readValidInt("\nSCELTA " ,0,list_lu.size()-1,false  );
+        return ship.getCoords(list_lu.get(scelta));
+
+
+    }
+
+    @Override
     public int showCard(CardComponent card) {
 
 
