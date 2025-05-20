@@ -448,7 +448,7 @@ public class GameController {
         Player p = game.getPlayer(nickname);
 
         p.setShip(ship);
-        System.out.println("SETTATA");
+
     }
 
     public List<List<Pair<Integer, Integer>>> getValidPieces(String nickname) {

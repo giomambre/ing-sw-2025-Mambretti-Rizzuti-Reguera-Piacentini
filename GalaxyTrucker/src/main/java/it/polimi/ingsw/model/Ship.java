@@ -108,10 +108,10 @@ public class Ship implements Serializable {
         };
 
         String image_path = switch (player.getColor()) {
-            case RED -> "images/cardComponent/GT-mainUnitRed.jpg";
-            case YELLOW -> "images/cardComponent/GT-mainUnitYellow.jpg";
-            case GREEN -> "images/cardComponent/GT-mainUnitGreen.jpg";
-            default -> "images/cardComponent/GT-mainUnitBlue.jpg";
+            case RED -> "/images/cardComponent/GT-mainUnitRed.jpg";
+            case YELLOW -> "/images/cardComponent/GT-mainUnitYellow.jpg";
+            case GREEN -> "/images/cardComponent/GT-mainUnitGreen.jpg";
+            default -> "/images/cardComponent/GT-mainUnitBlue.jpg";
 
 
         };
