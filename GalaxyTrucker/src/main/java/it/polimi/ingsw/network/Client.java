@@ -380,28 +380,33 @@ public class Client {
 
                     if (virtualViewType == VirtualViewType.GUI) {
                         CompletableFuture<Integer> futureIndex = ((GUI) virtualView).getBuildcontroller().getReservedCardIndexFuture();
-                        int index = futureIndex.get(); // attendi scelta utente (click su carta prenotata)
+                        int index = futureIndex.get();
                         System.out.println("client,indice carta " + index);
                         ((GUI) virtualView).getBuildcontroller().resetReservedCardIndex(); // opzionale
-
-                    }
-
-                    if (player_local.getShip().getExtra_components().isEmpty()) {
-                        virtualView.showMessage("\nNon ci sono carte prenotate!");
-                        elaborate(new Message(MessageType.BUILD_START, ""));
-                        break;
-                    } else {
-
-
-                        int index = virtualView.askSecuredCard(player_local.getShip().getExtra_components());
                         if (index == -1) {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                         } else if (index >= 0 && index < player_local.getShip().getExtra_components().size()) {
+                            System.out.println("clientttttt,indice carta " + index);
                             elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, player_local.getShip().getExtra_components().get(index)));
                         }
 
-                    }
+                    }else {
 
+                        if (player_local.getShip().getExtra_components().isEmpty()) {
+                            virtualView.showMessage("\nNon ci sono carte prenotate!");
+                            elaborate(new Message(MessageType.BUILD_START, ""));
+                            break;
+                        } else {
+
+                            int index = virtualView.askSecuredCard(player_local.getShip().getExtra_components());
+                            if (index == -1) {
+                                elaborate(new Message(MessageType.BUILD_START, ""));
+                            } else if (index >= 0 && index < player_local.getShip().getExtra_components().size()) {
+                                elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, player_local.getShip().getExtra_components().get(index)));
+                            }
+
+                        }
+                    }
 
                 } else if (deck_selected == 4) {
                     virtualView.showMessage("\nHai dichiarato di aver terminato l'assemblaggio!");
@@ -425,6 +430,7 @@ public class Client {
                 //virtualView.showMessage("\nCarta disponibile");
                 int sel;
                 if (virtualViewType == VirtualViewType.GUI) {
+                    System.out.println("io vengo eseguitaaaaa");
                     ((GUI) virtualView).createrandomcardcontroller(card_msg.getCardComponent());
                     sel = virtualView.showCard(card_msg.getCardComponent());
                 } else {
