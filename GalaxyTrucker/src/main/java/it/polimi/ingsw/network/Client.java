@@ -42,7 +42,10 @@ public class Client {
     private static List<Player> other_players_local = new ArrayList<>();
     private static GameState gameState;
     private static boolean forced_close = false;
-    private static CountDownLatch adventureLatch = new CountDownLatch(0);
+    private static CountDownLatch adventureLatch = new CountDownLatch(1);
+    private static CountDownLatch boardLatch = new CountDownLatch(1);
+
+
     private static Map<Integer, Player> local_board_positions;
     private static Map<Integer, Player> local_board_laps;
 
@@ -110,7 +113,7 @@ public class Client {
 
 
                         switch (msg.getType()) {
-                            case ENGINE_POWER_RANK,PLANETS,METEOR_SWARM,ABANDONED_SHIP, OPEN_SPACE, ABANDONED_STATION, REQUEST_NAME, NAME_REJECTED,
+                            case  ENGINE_POWER_RANK, REQUEST_NAME, NAME_REJECTED,
                                  NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
                                  CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
                                  INVALID_CONNECTORS, SELECT_PIECE:
@@ -127,7 +130,7 @@ public class Client {
 
                             default:
 
-                                inputQueue.put(msg);
+                                notificationQueue.put(msg);
                         }
                     }
                 } catch (Exception e) {
@@ -143,11 +146,6 @@ public class Client {
 
                         Message msg = inputQueue.take();
 
-                        if (msg.getType() == MessageType.PLANETS || msg.getType() == MessageType.OPEN_SPACE || msg.getType() == MessageType.ABANDONED_SHIP
-                                || msg.getType() == MessageType.ABANDONED_STATION || msg.getType() == MessageType.METEOR_SWARM) {
-
-                            adventureLatch.await();
-                        }
 
                         elaborate(msg);
                     }
@@ -162,12 +160,21 @@ public class Client {
                     while (true) {
                         Message msg = notificationQueue.take();
                         handleNotification(msg);
-                        if (msg.getType() == MessageType.NEW_ADVENTURE_DRAWN || msg.getType() == MessageType.UPDATE_BOARD) {
+                        if (msg.getType() == MessageType.NEW_ADVENTURE_DRAWN ) {
                             adventureLatch = new CountDownLatch(1);
                             Thread.sleep(50);
 
                             adventureLatch.countDown();
                         }
+                        if(msg.getType() == MessageType.UPDATE_BOARD && !msg.getContent().isEmpty()){
+
+                            boardLatch = new CountDownLatch(1);
+
+
+
+
+                        }
+
 
                     }
                 } catch (Exception e) {
@@ -590,11 +597,7 @@ public class Client {
 
 
 
-            default:
 
-                AdventureCardMessage adv = (AdventureCardMessage) msg;
-                manageAdventure(adv.getAdventure(), adv.getContent());
-                break;
         }
 
 
@@ -721,17 +724,16 @@ public class Client {
                         break;
                 }
 
-                virtualView.showMessage("\n-------------------------------------------");
-
-
 
                 break;
 
 
-
-
             case WAITING_FLIGHT:
-                virtualView.showMessage("\nHai completato la fase di controllo ora rimani in attesa degli altri giocatori.\n" + "Questa è la tua nave.\n ");
+                virtualView.showMessage("""
+                        
+                        Hai completato la fase di controllo ora rimani in attesa degli altri giocatori.
+                        Questa è la tua nave.
+                        \s""");
 
                 virtualView.printShip(player_local.getShip().getShipBoard());
 
@@ -745,10 +747,13 @@ public class Client {
                 local_board_positions = bm.getPositions();
 
                 if (!bm.getContent().isEmpty()) {
+                    System.out.println();
                     virtualView.showMessage(bm.getContent());
-                    virtualView.showBoard(local_board_positions, local_board_laps);
-                    System.out.println("\n\n");
+                    virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
+                }else{
+                    System.out.println();
+                    virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
                 }
 
@@ -760,6 +765,9 @@ public class Client {
 
                 }
                 int dummy = virtualView.nextMeteor();
+                boardLatch.countDown();
+
+
                 break;
 
 
@@ -770,6 +778,7 @@ public class Client {
 
                 break;
 
+
             case START_FLIGHT:
                 virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
                 break;
@@ -778,11 +787,10 @@ public class Client {
             case NEW_ADVENTURE_DRAWN:
                 AdventureCardMessage ad = (AdventureCardMessage) msg;
                 virtualView.printCardAdventure(ad.getAdventure());
-                System.out.println();
                 break;
 
 
-            case OPEN_SPACE, ABANDONED_STATION, ABANDONED_SHIP, METEOR_SWARM:
+            case OPEN_SPACE, ABANDONED_STATION, ABANDONED_SHIP, METEOR_SWARM, COMBAT_ZONE, PLANETS:
                 AdventureCardMessage ac = (AdventureCardMessage) msg;
                 manageAdventure(ac.getAdventure(), ac.getContent());
                 break;
@@ -813,7 +821,13 @@ public class Client {
 
                 }
 
+break;
 
+            default:
+
+                AdventureCardMessage adv = (AdventureCardMessage) msg;
+                manageAdventure(adv.getAdventure(), adv.getContent());
+                break;
         }
 
 
@@ -1235,7 +1249,7 @@ public class Client {
 
 
 
-
+break;
 
 
 

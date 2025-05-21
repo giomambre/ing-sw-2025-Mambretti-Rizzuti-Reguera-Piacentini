@@ -734,9 +734,9 @@ public void printBorder(String content) {
     public int nextMeteor() {
 
         System.out.println("\n PREMERE : \n" +
-                " 1 : per continuare \n");
+                " 1 - per continuare / rimanere in attesa \n");
         int choice = readValidInt("Scelta ", 1,1,false);
-return choice;
+            return choice;
     }
 
     @Override
@@ -1683,6 +1683,32 @@ int i = 0;
             }
         }
         return false;
+    }
+
+
+@Override
+    public void showBasicBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
+        final int BOARD_SIZE = 24;
+
+        for (Map.Entry<Integer, Player> entry : positions.entrySet()) {
+            int pos = entry.getKey() % BOARD_SIZE; // assicura che sia nel range 0–23
+            Player p = entry.getValue();
+
+            String name = p.getNickname();
+            if (name.length() > 6) {
+                name = name.substring(0, 6);
+            }
+
+            int lap = 0;
+            for (Map.Entry<Integer, Player> lapEntry : laps.entrySet()) {
+                if (lapEntry.getValue().equals(p)) {
+                    lap = lapEntry.getValue().getNum_laps();
+                    break;
+                }
+            }
+
+            System.out.printf("Pos %02d: %s (Lap %d)%n", pos, name, lap);
+        }
     }
 
 

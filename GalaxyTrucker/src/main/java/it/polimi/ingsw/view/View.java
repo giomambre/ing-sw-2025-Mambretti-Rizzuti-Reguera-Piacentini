@@ -86,7 +86,10 @@ public interface View {
 
     public Pair<Integer,Integer> askLivingUnit(Ship ship);
 
-    public void ShowRanking(Map<String,Integer> rank , String type);
+    public void showBasicBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) ;
+
+
+        public void ShowRanking(Map<String,Integer> rank , String type);
 
     public Pair<Integer,Integer> chooseAstronautLosses(Ship ship);
 

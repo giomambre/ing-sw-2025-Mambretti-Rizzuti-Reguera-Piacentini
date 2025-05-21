@@ -86,6 +86,9 @@ public class GameController {
 
     public void initializeAdventure(CardAdventure adventure) {
 
+
+
+
         adv_index = 0;
         this.adventure = adventure;
 

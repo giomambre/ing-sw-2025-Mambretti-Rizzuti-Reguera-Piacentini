@@ -568,6 +568,16 @@ public class GUI implements View {
     }
 
     @Override
+    public Pair<Integer, Integer> askLivingUnit(Ship ship) {
+        return null;
+    }
+
+    @Override
+    public void showBasicBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
+
+    }
+
+    @Override
     public void ShowRanking(Map<String, Integer> rank, String type) {
 
     }

@@ -460,12 +460,10 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                CardAdventure temp_card = new Planets(1, 3, CardAdventureType.Planets,
-                        Arrays.asList(
-                                Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
-                                Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
-                                Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
-                                Arrays.asList(Cargo.Red, Cargo.Green)
+                CardAdventure temp_card = new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
+                        List.of(
+                                new Pair<>(MeteorType.LightCannonFire, South),
+                                new Pair<>(MeteorType.HeavyCannonFire, South)
                         )
                 );
 
@@ -780,6 +778,8 @@ public class Server {
 
             case CombatZone:
                 CombatZone combatZone = (CombatZone) adventure;
+                controller.initializeAdventure(adventure);
+
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 if (combatZone.getId() == 1) {
 
@@ -793,7 +793,7 @@ public class Server {
 
                     controller.initializeAdventure(adventure);
                     //gestione potenza di fuoco
-                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(METEOR_SWARM, "engine", adventure));
+                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "engine", adventure));
 
 
                 }
