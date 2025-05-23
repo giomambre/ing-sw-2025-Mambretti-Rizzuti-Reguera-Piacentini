@@ -27,7 +27,9 @@ public class GameController {
     List<Player> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
     List<Player> build_order_players = new ArrayList<>();
-    Map<String, Integer> list_engine_power = new HashMap<>();
+    Map<String, Double> list_engine_power = new HashMap<>();
+    Map<String, Double> list_cannon_power = new HashMap<>();
+
     Lobby lobby;
     GameState game_state;
     BaseGame game;
@@ -58,15 +60,24 @@ public class GameController {
 
     }
 
-    public void addEngineValue(String name, int value) {
+    public void addCannonValue(String name, double value) {
+
+        list_cannon_power.put(name, value);
+    }
+
+    public void addEngineValue(String name, Double value) {
 
         list_engine_power.put(name, value);
     }
 
+
+    public Map<String, Double> getListCannonPower() {
+        return list_cannon_power;
+    }
     public String getLeastEngineValue() {
         String result = "";
-        int min = Integer.MAX_VALUE;
-        for (Map.Entry<String , Integer> entry : list_engine_power.entrySet()) {
+        Double min = Double.MAX_VALUE;
+        for (Map.Entry<String , Double> entry : list_engine_power.entrySet()) {
             if (entry.getValue() < min) {
                 min = entry.getValue();
                 result = entry.getKey();
@@ -75,7 +86,7 @@ public class GameController {
         return result;
     }
 
-    public Map<String,Integer> getEngineValues() {
+    public Map<String,Double> getEngineValues() {
         return list_engine_power;
     }
 

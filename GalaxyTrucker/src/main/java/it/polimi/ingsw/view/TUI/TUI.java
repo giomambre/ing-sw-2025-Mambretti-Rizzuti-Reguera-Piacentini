@@ -990,29 +990,29 @@ public void printBorder(String content) {
 
 
     @Override
-    public void ShowRanking(Map<String, Integer> rank, String type) {
+    public void ShowRanking(Map<String, Double> rank, String type) {
         System.out.println("\n Lista di " + type + ":\n");
 
-        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(rank.entrySet());
+        List<Map.Entry<String, Double>> sorted = new ArrayList<>(rank.entrySet());
 
-        sorted.sort(Comparator.comparing(Map.Entry<String, Integer>::getValue).reversed());
+        sorted.sort(Comparator.comparing(Map.Entry<String, Double>::getValue).reversed());
 
-        int minValue = sorted.stream()
+        Double minValue = sorted.stream()
                 .map(Map.Entry::getValue)
-                .min(Integer::compare)
-                .orElse(Integer.MIN_VALUE);
+                .min(Double::compare)
+                .orElse(Double.MIN_VALUE);
 
         String firstMinKey = null;
-        for (Map.Entry<String, Integer> entry : rank.entrySet()) {
+        for (Map.Entry<String, Double> entry : rank.entrySet()) {
             if (entry.getValue() == minValue) {
                 firstMinKey = entry.getKey();
                 break;
             }
         }
 
-        for (Map.Entry<String, Integer> entry : sorted) {
+        for (Map.Entry<String, Double> entry : sorted) {
             String name = entry.getKey();
-            int value = entry.getValue();
+            Double value = entry.getValue();
             String color = name.equals(firstMinKey) && value == minValue ? RED : "";
             String symbol = name.equals(firstMinKey) && value == minValue ? "  <- DEVE PAGARE LA PENITENZA" : "";
             System.out.println(color + "- " + name + ": " + value +  symbol +  RESET );
@@ -1299,10 +1299,10 @@ public void printBorder(String content) {
     }
 
     @Override
-    public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
+    public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> engine) {
 
 
-        System.out.println("\nCannone doppio trovato a RIGA : " + cannon.getKey()  + " COLONNA : " + cannon.getValue());
+        System.out.println( GREEN + "\nMOTORE DOPPIO" + RESET + " trovato a RIGA : " + engine.getKey()  + " COLONNA : " + engine.getValue());
 
         System.out.println("Premere :\n1 : usare batteria\n2 : NON usare batteria");
         int choice = readValidInt("Scelta " , 1, 2, false);
@@ -1314,7 +1314,19 @@ public void printBorder(String content) {
 
     }
 
-   /*
+    @Override
+    public Pair<Integer, Integer> askCannon(Pair<Integer, Integer> cannon) {
+        System.out.println( GREEN + "\nCANNONE DOPPIO" + RESET + " trovato a RIGA : " + cannon.getKey()  + " COLONNA : " + cannon.getValue());
+
+        System.out.println("\nPremere :\n1 : usare batteria\n2 : NON usare batteria");
+        int choice = readValidInt("Scelta " , 1, 2, false);
+
+        if(choice == 2)return new Pair<>(-1,-1);
+
+        else return  useBattery(player_local.getShip());
+    }
+
+    /*
     @Override
     public List<Pair<Integer,Integer>> askCannon() {
         Ship ship = player_local.getShip();

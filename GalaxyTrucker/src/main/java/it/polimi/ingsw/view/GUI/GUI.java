@@ -578,7 +578,7 @@ public class GUI implements View {
     }
 
     @Override
-    public void ShowRanking(Map<String, Integer> rank, String type) {
+    public void ShowRanking(Map<String, Double> rank, String type) {
 
     }
 
@@ -596,6 +596,11 @@ public class GUI implements View {
 
     @Override
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
+        return null;
+    }
+
+    @Override
+    public Pair<Integer, Integer> askCannon(Pair<Integer, Integer> cannon) {
         return null;
     }
 

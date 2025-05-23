@@ -329,8 +329,8 @@ public class Ship implements Serializable {
      * @param battery_usage the batteries used by the player in case he decides to activate the double engine
      * @return power
      */
-    public int calculateEnginePower(Map<CardComponent, Boolean> battery_usage) { //after the validity check
-        int power = 0;
+    public double calculateEnginePower(Map<CardComponent, Boolean> battery_usage) { //after the validity check
+        double power = 0;
         CardComponent tmp;
 
         for (int row = 0; row < ROWS; row++) {

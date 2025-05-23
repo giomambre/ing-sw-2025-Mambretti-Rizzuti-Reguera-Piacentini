@@ -647,12 +647,20 @@ public class Server {
                             switch (type[0]) {
 
                                 case "eng":
-                                    int power = Integer.parseInt(type[1]);
+                                    Double power = Double.parseDouble(type[1]);
                                     controller.addEngineValue(getNickname(cbz_msg.getId_client()), power);
                                     sendToAllClients(controller.getLobby(),new Message(ENGINE_POWER ,  getNickname(cbz_msg.getId_client()) +" " +  power));
+                                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "engine", controller.getCurrentAdventure()));
+
                                     break;
 
                                 case "can":
+
+                                     power = Double.parseDouble(type[1]);
+                                    controller.addCannonValue(getNickname(cbz_msg.getId_client()), power);
+                                    sendToAllClients(controller.getLobby(),new Message(CANNON_POWER ,  getNickname(cbz_msg.getId_client()) +" " +  power));
+                                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
+
                                     break;
 
 
@@ -660,10 +668,21 @@ public class Server {
 
                             if(controller.getEngineValues().size() == controller.getActivePlayers().size()) {
 
-                                sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK,"",controller.getEngineValues()));
+                                sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK,"1",controller.getEngineValues()));
+                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
+                                controller.initializeAdventure(controller.getCurrentAdventure());
+                                controller.getEngineValues().clear();
 
 
                             }
+                            if(controller.getEngineValues().size() == controller.getActivePlayers().size()) {
+
+                                sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK,"1",controller.getEngineValues()));
+                                controller.getListCannonPower().clear();
+
+
+                            }
+
 
 
                         }
@@ -794,6 +813,9 @@ public class Server {
                     controller.initializeAdventure(adventure);
                     //gestione potenza di fuoco
                     sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "engine", adventure));
+
+
+
 
 
                 }

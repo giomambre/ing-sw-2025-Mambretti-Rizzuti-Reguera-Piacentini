@@ -89,7 +89,7 @@ public interface View {
     public void showBasicBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) ;
 
 
-        public void ShowRanking(Map<String,Integer> rank , String type);
+        public void ShowRanking(Map<String,Double> rank , String type);
 
     public Pair<Integer,Integer> chooseAstronautLosses(Ship ship);
 
@@ -116,7 +116,8 @@ public interface View {
 
         Ship  removeInvalidsConnections(Ship ship,List<Pair<Integer,Integer>> connectors);
 
-    Pair<Integer,Integer> askEngine(Pair<Integer,Integer>  cannon);
+    Pair<Integer,Integer> askEngine(Pair<Integer,Integer>  engine);
+    Pair<Integer,Integer> askCannon(Pair<Integer,Integer>  cannon);
 
 
     int askCargo(List<Cargo> cargos);

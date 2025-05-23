@@ -52,6 +52,8 @@ public enum MessageType {
     COMBAT_ZONE,
     ASTRONAUT_LOSS,
     ENGINE_POWER_RANK,
-    ENGINE_POWER
+    ENGINE_POWER,
+    CANNON_POWER_RANK,
+    CANNON_POWER
 
 }

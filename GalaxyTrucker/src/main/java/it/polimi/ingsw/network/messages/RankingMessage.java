@@ -4,21 +4,21 @@ import java.util.Map;
 
 public class RankingMessage extends Message {
 
-    Map<String,Integer> ranks;
-    public RankingMessage(MessageType type, String content, Map<String,Integer> ranks) {
+    Map<String,Double> ranks;
+    public RankingMessage(MessageType type, String content, Map<String,Double> ranks) {
         super(type, content);
         this.ranks = ranks;
     }
-    public Map<String,Integer> getRanks(){
+    public Map<String,Double> getRanks(){
 
         return ranks;
     }
 
     public String getWeakerPlayer(){
 
-        int less = 100;
+        Double less = 100.0;
         String player = "";
-        for(Map.Entry<String,Integer> entry : ranks.entrySet()){
+        for(Map.Entry<String,Double> entry : ranks.entrySet()){
             if(entry.getValue() < less){
                 less = entry.getValue();
                 player = entry.getKey();
