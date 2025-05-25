@@ -633,7 +633,7 @@ public class GameController {
 
     public void executeEpidemic(String nickname, Epidemic epidemic) {
         Player p = game.getPlayer(nickname);
-        epidemic.execute(p);
+        epidemic.execute(p.getShip());
     }
 
     public List<Pair<MeteorType, Direction>> getMeteorSwarmMeteors(MeteorSwarm meteor) {

@@ -40,10 +40,10 @@ public class Epidemic extends CardAdventure implements Serializable {
      * it checks the four adjacent components (up, down, left, right).
      * If both components in a pair are occupied and connected, one crewmate is removed from each.
      *
-     * @param player
+     * @param ship
      */
-    public void execute(Player player) {
-        Ship ship = player.getShip();
+    public void execute(Ship ship) {
+
         ComponentType mainUnit = ship.getComponent(2, 3).getComponentType();
 
         for (int row = 0; row < ROWS; row++) {

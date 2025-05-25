@@ -120,6 +120,9 @@ public interface View {
     Pair<Integer,Integer> askCannon(Pair<Integer,Integer>  cannon);
 
 
+    void executeEpidemic(Ship ship);
+
+
     int askCargo(List<Cargo> cargos);
 
 }

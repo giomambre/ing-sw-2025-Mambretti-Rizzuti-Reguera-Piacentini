@@ -77,7 +77,7 @@ public class EpidemicTest {
         ship.addComponent(new LivingUnit(ComponentType.LivingUnit, connectors,""),2,5);
         ((LivingUnit)ship.getComponent(2,5)).addAstronauts();
 
-        ((Epidemic)epidemic).execute(player);
+        ((Epidemic)epidemic).execute(player.getShip());
 
         assertEquals(1,((LivingUnit)ship.getComponent(3,1)).getNum_crewmates());
         assertEquals(0,((LivingUnit)ship.getComponent(3,2)).getNum_crewmates());

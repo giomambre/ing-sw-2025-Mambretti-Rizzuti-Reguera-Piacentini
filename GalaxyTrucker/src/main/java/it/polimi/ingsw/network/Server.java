@@ -460,20 +460,28 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
                 CardAdventure adventure = controller.getRandomAdventure();
-                CardAdventure temp_card = new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
-                        List.of(
-                                new Pair<>(MeteorType.LightCannonFire, South),
-                                new Pair<>(MeteorType.HeavyCannonFire, South)
-                        )
-                );
 
-                adventure = controller.getRandomAdventure();
 
-                manageAdventure(temp_card, controller);
+
+
+                manageAdventure(adventure, controller);
 
 
                 break;
 
+
+
+            case ASTRONAUT_LOSS:
+                StandardMessageClient str_msg = (StandardMessageClient) msg;
+
+                controller = all_games.get(getLobbyId(str_msg.getId_client()));
+
+                String curr_nick = controller.nextAdventurePlayer();
+                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
+
+                sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
+                controller.getEngineValues().clear();
+                break;
 
             case ADVENTURE_COMPLETED:
                 ShipClientMessage adv_msg = (ShipClientMessage) msg;
@@ -492,7 +500,8 @@ public class Server {
                     case OpenSpace:
 
 
-                        int eng_power = Integer.parseInt(adv_msg.getContent());
+                        int eng_power = (int) Double.parseDouble(adv_msg.getContent());
+
                         controller.movePlayer(getNickname(adv_msg.getId_client()), eng_power);
                         sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
                                 + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power, controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
@@ -585,7 +594,8 @@ public class Server {
 
                         if (controller.getActivePlayers().size() <= 1) {
 
-                            //GIOCO FINITO da gestire
+
+                            System.out.println("GIOCO FINITO DA GESTIRE!!!");
 
                         }
 
@@ -649,40 +659,47 @@ public class Server {
                                 case "eng":
                                     Double power = Double.parseDouble(type[1]);
                                     controller.addEngineValue(getNickname(cbz_msg.getId_client()), power);
-                                    sendToAllClients(controller.getLobby(),new Message(ENGINE_POWER ,  getNickname(cbz_msg.getId_client()) +" " +  power));
-                                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "engine", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new Message(ENGINE_POWER, getNickname(cbz_msg.getId_client()) + " " + power));
+
+                                    if (controller.getEngineValues().size() == controller.getActivePlayers().size()) {
+                                        controller.initializeAdventure(controller.getCurrentAdventure());
+
+                                        sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK, "1", controller.getEngineValues()));
+
+                                        break;
+
+                                    }
+
+
+                                     curr_nick = controller.nextAdventurePlayer();
+                                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
 
                                     break;
 
                                 case "can":
 
-                                     power = Double.parseDouble(type[1]);
+                                    power = Double.parseDouble(type[1]);
                                     controller.addCannonValue(getNickname(cbz_msg.getId_client()), power);
-                                    sendToAllClients(controller.getLobby(),new Message(CANNON_POWER ,  getNickname(cbz_msg.getId_client()) +" " +  power));
-                                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new Message(CANNON_POWER, getNickname(cbz_msg.getId_client()) + " " + power));
+
+                                    if (controller.getListCannonPower().size() == controller.getActivePlayers().size()) {
+
+                                        sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "1", controller.getEngineValues()));
+                                        controller.getListCannonPower().clear();
+                                        break;
+
+                                    }
+
+                                    curr_nick = controller.nextAdventurePlayer();
+                                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
+
 
                                     break;
 
 
                             }
-
-                            if(controller.getEngineValues().size() == controller.getActivePlayers().size()) {
-
-                                sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK,"1",controller.getEngineValues()));
-                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
-                                controller.initializeAdventure(controller.getCurrentAdventure());
-                                controller.getEngineValues().clear();
-
-
-                            }
-                            if(controller.getEngineValues().size() == controller.getActivePlayers().size()) {
-
-                                sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK,"1",controller.getEngineValues()));
-                                controller.getListCannonPower().clear();
-
-
-                            }
-
 
 
                         }
@@ -812,10 +829,9 @@ public class Server {
 
                     controller.initializeAdventure(adventure);
                     //gestione potenza di fuoco
-                    sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(COMBAT_ZONE, "engine", adventure));
-
-
-
+                    String curr_nick = controller.nextAdventurePlayer();
+                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", adventure));
+                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
 
 
                 }

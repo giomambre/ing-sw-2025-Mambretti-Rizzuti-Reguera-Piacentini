@@ -605,6 +605,11 @@ public class GUI implements View {
     }
 
     @Override
+    public void executeEpidemic(Ship ship) {
+
+    }
+
+    @Override
     public int askCargo(List<Cargo> cargos) {
         return 0;
     }

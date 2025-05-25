@@ -668,6 +668,9 @@ public class TUI implements View {
 
     @Override
     public int askCargo(List<Cargo> cargos) {
+
+        System.out.println("\nScegli quale cargo vuoi Posizionare : \n");
+
         printCargo(cargos);
         return readValidInt("Scelta ", 0,cargos.size()-1,true);
     }
@@ -718,16 +721,29 @@ public class TUI implements View {
 
 
     }
-public void printBorder(String content) {
-    int length = content.length();
 
-    String border = "═".repeat(length + 4);
-    System.out.println("╔" + border + "╗");
-    System.out.println("║  " + content + "  ║");
-    System.out.println("╚" + border + "╝");
+    public void printBorder(String content) {
+
+        String[] lines = content.split("\\R");
+        int maxLength = 0;
+
+        for (String line : lines) {
+            if (line.length() > maxLength) {
+                maxLength = line.length();
+            }
+        }
 
 
-}
+        String border = "═".repeat(maxLength + 4);
+        System.out.println("╔" + border + "╗");
+
+        for (String line : lines) {
+
+            System.out.printf("║  %-" + maxLength + "s  ║%n", line);
+        }
+
+        System.out.println("╚" + border + "╝");
+    }
 
 
     @Override
@@ -1266,6 +1282,7 @@ public void printBorder(String content) {
 
         List<Pair<Integer, Integer>> livingUnits = new ArrayList<>();
 
+        System.out.println("\nScegli la living Unit dove perdere 1 membro dell'equipaggio : ");
 
         int choice=0;
         int num;
@@ -1281,13 +1298,13 @@ public void printBorder(String content) {
                 }
             }
         }
-        System.out.println("\n");
+
         for (int idx = 0; idx < livingUnits.size(); idx++) {
             Pair<Integer, Integer> pos = livingUnits.get(idx);
             LivingUnit unit = (LivingUnit) ship.getComponent(pos.getKey(), pos.getValue());
             System.out.println("\t" + (idx) + ". Living Unit in (" + pos.getKey() + ", " + pos.getValue() + ") - Membri: " + unit.getNum_crewmates());
         }
-        int scelta = readValidInt("Scelta ", 0, livingUnits.size()-1,true);
+        int scelta = readValidInt("\nScelta ", 0, livingUnits.size()-1,true);
         if (scelta == -1 ) return  new Pair<>(-1,-1);
 
         LivingUnit unit = (LivingUnit) ship.getComponent(livingUnits.get(scelta).getKey(),livingUnits.get(scelta).getValue());
@@ -1698,30 +1715,79 @@ int i = 0;
     }
 
 
-@Override
-    public void showBasicBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
-        final int BOARD_SIZE = 24;
+    @Override
+    public void executeEpidemic(Ship ship) {
 
-        for (Map.Entry<Integer, Player> entry : positions.entrySet()) {
-            int pos = entry.getKey() % BOARD_SIZE; // assicura che sia nel range 0–23
-            Player p = entry.getValue();
+        Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic);
 
-            String name = p.getNickname();
-            if (name.length() > 6) {
-                name = name.substring(0, 6);
-            }
+        epidemic.execute(ship);
 
-            int lap = 0;
-            for (Map.Entry<Integer, Player> lapEntry : laps.entrySet()) {
-                if (lapEntry.getValue().equals(p)) {
-                    lap = lapEntry.getValue().getNum_laps();
-                    break;
+        StringBuilder outputContent = new StringBuilder();
+        List<CardComponent> list_lu = new ArrayList<>();
+
+        outputContent.append("sono stati RIMOSSI 1 ASTRONAUTA per ogni Living Unit ADIACENTE");
+        CardComponent[][] plance = ship.getShipBoard();
+
+
+
+        for(int i = 0 ; i < ship.getROWS() ; i++) {
+            for(int j = 0 ; j < ship.getCOLS() ; j++) {
+                CardComponent card = plance[i][j];
+
+                if(card.getComponentType().equals(MainUnitGreen) ||
+                        card.getComponentType().equals(MainUnitRed) ||
+                        card.getComponentType().equals(MainUnitBlue) ||
+                        card.getComponentType().equals(MainUnitYellow) ||
+                        card.getComponentType().equals(LivingUnit)) {
+                    LivingUnit lu = (LivingUnit) card;
+                    if(lu.getNum_crewmates() > 0) {
+                        list_lu.add(card);
+                    }
                 }
             }
-
-            System.out.printf("Pos %02d: %s (Lap %d)%n", pos, name, lap);
         }
+
+        outputContent.append("\nLISTA AGGIORNATA :\n");
+        int i = 0;
+        for( CardComponent card : list_lu ) {
+            Pair<Integer,Integer> coord = ship.getCoords(card);
+            LivingUnit lu = (LivingUnit) card;
+            outputContent.append(String.format(" %d -  RIGA %d COLONNA %d  n. astronauti : %d%n", i, coord.getKey(), coord.getValue(),lu.getNum_crewmates()));
+            i++;
+        }
+
+        printBorder(outputContent.toString());
     }
+
+
+
+
+    @Override
+public void showBasicBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
+    final int BOARD_SIZE = 24;
+    StringBuilder boardContent = new StringBuilder();
+
+    for (Map.Entry<Integer, Player> entry : positions.entrySet()) {
+        int pos = entry.getKey() % BOARD_SIZE;
+        Player p = entry.getValue();
+
+        String name = p.getNickname();
+        if (name.length() > 6) {
+            name = name.substring(0, 6);
+        }
+
+        int lap = 0;
+        for (Map.Entry<Integer, Player> lapEntry : laps.entrySet()) {
+            if (lapEntry.getValue().equals(p)) {
+                lap = lapEntry.getValue().getNum_laps();
+                break;
+            }
+        }
+        boardContent.append(String.format("Pos %02d: %s (Lap %d)%n", pos, name, lap));
+    }
+
+    printBorder(boardContent.toString());
+}
 
 
     @Override

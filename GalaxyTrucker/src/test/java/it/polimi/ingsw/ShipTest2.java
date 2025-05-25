@@ -365,6 +365,9 @@ public void testChoosePiece() {
      );
 
 
+     v.executeEpidemic(ship1);
+
+
 
  }
 
