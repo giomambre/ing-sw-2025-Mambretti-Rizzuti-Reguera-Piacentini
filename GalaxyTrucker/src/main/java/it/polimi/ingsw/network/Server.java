@@ -462,7 +462,14 @@ public class Server {
                 CardAdventure adventure = controller.getRandomAdventure();
 
 
-
+                adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+                        List.of(
+                                new Pair<>(MeteorType.LightCannonFire, North),
+                                new Pair<>(MeteorType.LightCannonFire, West),
+                                new Pair<>(MeteorType.LightCannonFire, East),
+                                new Pair<>(MeteorType.HeavyCannonFire, South)
+                        )
+                );
 
                 manageAdventure(adventure, controller);
 
@@ -714,7 +721,7 @@ public class Server {
 
                                     if (controller.getListCannonPower().size() == controller.getActivePlayers().size()) {
 
-                                        sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "0", controller.getEngineValues()));
+                                        sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "0", controller.getListCannonPower()));
                                         controller.getListCannonPower().clear();
                                         break;
 

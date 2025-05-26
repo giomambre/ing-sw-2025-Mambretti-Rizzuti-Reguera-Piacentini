@@ -67,14 +67,15 @@ public class Storage extends CardComponent  implements Serializable {
     }
 
 
-    public void removeCargo(Cargo cargo){
+    public boolean removeCargo(Cargo cargo){
 
         for (int i = 0; i < carried_cargos.size(); i++) {
-            if (carried_cargos.get(i) == cargo) {
-                carried_cargos.remove(i);
-                return;
+            if (carried_cargos.get(i).equals(cargo)) {
+                carried_cargos.set(i, Cargo.Empty);
+                return true;
             }
         }
+        return false;
 
     }
 

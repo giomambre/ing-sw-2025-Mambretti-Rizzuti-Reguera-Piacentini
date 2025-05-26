@@ -1475,20 +1475,20 @@ return total;
 
 
 
-
         for(int i = 0 ; i<ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent card = ship.getComponent(i, j);
 
-                if (ship.getComponent(i, j).getComponentType() == RedStorage && ((Storage)ship.getComponent(i,j)).containsCargo(Cargo.Red)) {
+                if (card.getComponentType() == RedStorage && ((Storage)card).containsCargo(Cargo.Red)  ) {
 
-                    storage_with_red.add(new Pair<>(i, j));
+                    storage_with_red.add(new Pair<>(i,j));
                     other_storage.add(new Pair<>(i, j));
 
 
-                } else if (ship.getComponent(i, j).getComponentType() == BlueStorage) {
+                } else if ((card.getComponentType() == BlueStorage || card.getComponentType() == RedStorage) && (((Storage)card).getCargoCount() > 0 )) {
 
                     other_storage.add(new Pair<>(i, j));
-                } else if (ship.getComponent(i, j).getComponentType() == Battery && ((Battery)ship.getComponent(i,j)).getStored() > 0) {
+                } else if (card.getComponentType() == Battery && ((Battery)card).getStored() > 0) {
 
                     batteries.add(new Pair<>(i, j));
 
@@ -1498,43 +1498,94 @@ return total;
 
 
         if(!storage_with_red.isEmpty()){
-            int i = 0;
             for (Pair<Integer, Integer> s : storage_with_red) {
                 CardComponent card = ship.getComponent(s.getKey(), s.getValue());
 
+                if(((Storage)card).removeCargo(Cargo.Red)){
 
-                System.out.println("\n-> " + i + " RED STORAGE in ( " + (s.getKey()) + " : " + s.getValue() + " )"
-                        + " contiene : ");
-                printCargo(((Storage) card).getCarried_cargos());
-                i++;
+                    printBorder("HAI PERSO UN CARGO "+RED+" ROSSO" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
             }
 
-            int scelta = readValidInt("Scegli da quale Storage rimuovere il"+ RED + " cargo rosso "+ RESET,0,storage_with_red.size()-1,false);
-            choice_final = storage_with_red.get(scelta);
-
-            Storage storage = (Storage) ship.getComponent(choice_final.getKey(),choice_final.getValue());
-            storage.removeCargo(Cargo.Red);
 
         } else if (!other_storage.isEmpty()) {
 
-            int i = 0;
+
             for (Pair<Integer, Integer> s : other_storage) {
                 CardComponent card = ship.getComponent(s.getKey(), s.getValue());
 
+                if(((Storage)card).removeCargo(Cargo.Yellow)){
 
-                System.out.println("\n-> " + i + " RED STORAGE in ( " + (s.getKey()) + " : " + s.getValue() + " )"
-                        + " contiene : ");
-                printCargo(((Storage) card).getCarried_cargos());
-                i++;
+                    printBorder("HAI PERSO UN CARGO "+YELLOW+" GIALLO" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
             }
 
-            int scelta = readValidInt("Scegli da quale Storage rimuovere 1 cargo  ",0,other_storage.size()-1,false);
-            choice_final = other_storage.get(scelta);
-            Storage storage = (Storage) ship.getComponent(choice_final.getKey(),choice_final.getValue());
-            storage.removeCargo(Cargo.Red);
+
+            for (Pair<Integer, Integer> s : other_storage) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Storage)card).removeCargo(Cargo.Green)){
+
+                    printBorder("HAI PERSO UN CARGO "+GREEN+" VERDE" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+
+
+            }
+
+
+            for (Pair<Integer, Integer> s : other_storage) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Storage)card).removeCargo(Cargo.Blue)){
+
+                    printBorder("HAI PERSO UN CARGO "+BLUE+" BLU" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+
+
+            }
+
+
+
+        }else{
+
+
+            for (Pair<Integer, Integer> s : batteries) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Battery)card).getStored() > 0) {
+
+                    printBorder("HAI PERSO UNA "+GREEN+" BATTERIA" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+
+
+            }
 
 
         }
+
+
+        printBorder("NON HAI PERSO NIENTE!!! non avevi cargo o batterie! " );
+        System.out.println();
 
 
     }

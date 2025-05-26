@@ -355,17 +355,10 @@ public void testChoosePiece() {
  @Test
     public  void  testPrintShipPlance() {
         View v= new TUI();
-     Planets p = new Planets(1, 3, CardAdventureType.Planets,
-             Arrays.asList(
-                     Arrays.asList(Cargo.Red, Cargo.Green, Cargo.Blue, Cargo.Blue, Cargo.Blue),
-                     Arrays.asList(Cargo.Red, Cargo.Yellow, Cargo.Blue),
-                     Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue, Cargo.Blue),
-                     Arrays.asList(Cargo.Red, Cargo.Green)
-             )
-     );
 
 
-     v.executeEpidemic(ship1);
+
+     v.removeCargo(ship1);
 
 
 
