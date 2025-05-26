@@ -11,5 +11,6 @@
     <VBox spacing="10" alignment="CENTER">
         <Label fx:id="playerNameLabel" text="Nave di ..." />
         <GridPane fx:id="shipGrid" hgap="2" vgap="2" />
+        <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeStage" prefHeight="26.0" prefWidth="89.0" text="CHIUDI" />
     </VBox>
 </AnchorPane>

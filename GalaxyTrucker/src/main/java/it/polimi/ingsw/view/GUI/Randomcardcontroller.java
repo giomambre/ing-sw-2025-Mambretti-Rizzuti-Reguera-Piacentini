@@ -127,14 +127,19 @@ public class Randomcardcontroller {
             stage.close();
         }
     }
+
     @FXML
-    public void setOne(ActionEvent event) {
+    public void setOne(ActionEvent event) throws Exception {
+        //gui.getBuildcontroller().resetAction();
+        // Ruota solo l'immagine nella finestra corrente
+        currentRotation = gui.getActualcard().getRotationAngle();
         currentRotation = (currentRotation + 90) % 360;
         cardImageView.setRotate(currentRotation);
         gui.getActualcard().setRotationAngle(currentRotation);
 
         if (!action.isDone()) action.complete(1);
         action = new CompletableFuture<>();
+        stage.close();
     }
 
     public CompletableFuture<Integer> getAction() {

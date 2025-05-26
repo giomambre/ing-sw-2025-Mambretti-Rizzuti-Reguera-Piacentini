@@ -363,6 +363,7 @@ public class GameController {
 
             p.getShip().getExtra_components().remove(card);
             System.out.println("Added component!");
+            System.out.println(card);
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
