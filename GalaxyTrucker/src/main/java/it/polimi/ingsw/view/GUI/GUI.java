@@ -595,6 +595,11 @@ public class GUI implements View {
     }
 
     @Override
+    public void removeCargo(Ship ship) {
+
+    }
+
+    @Override
     public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
         return null;
     }

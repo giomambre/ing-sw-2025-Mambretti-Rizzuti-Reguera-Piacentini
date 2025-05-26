@@ -1,78 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.polimi.ingsw.view.GUI.Buildcontroller"
-            prefHeight="600.0" prefWidth="800.0">
+<?import java.net.URL?>
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.Buildcontroller">
+    <stylesheets>
+        <URL value="@BuildShip.css" />
+    </stylesheets>
+    <children>
+      <ImageView>
+         <image>
+            <Image url="@images/backgrounds/bgBuildShip.jpeg" />
+         </image>
+      </ImageView>
+   
+          <VBox alignment="TOP_CENTER" spacing="20" StackPane.alignment="CENTER">
+   
+              <!-- Sezione con i bottoni dei giocatori -->
+           <HBox fx:id="playersButtonBox" alignment="CENTER_LEFT" spacing="10" />
+           <HBox fx:id="crewmateButtonBox" alignment="CENTER_LEFT" spacing="10" />
+   
+      
+              <!-- Bottone di fine assemblaggio -->
+           <Button fx:id="endbutton" onAction="#setFour" styleClass="ship-button" text="Termina Assemblaggio" />
 
-    <VBox spacing="20"
-          AnchorPane.topAnchor="10.0"
-          AnchorPane.leftAnchor="10.0"
-          AnchorPane.rightAnchor="10.0"
-          AnchorPane.bottomAnchor="10.0"
-          alignment="TOP_CENTER">
-
-        <!-- Sezione con i bottoni dei giocatori -->
-        <HBox fx:id="playersButtonBox"
-              spacing="10"
-              alignment="CENTER_LEFT"/>
-        <HBox fx:id="crewmateButtonBox"
-              spacing="10"
-              alignment="CENTER_LEFT"/>
-
-
-        <!-- Bottone di fine assemblaggio -->
-        <Button fx:id="endbutton"
-                onAction="#setFour"
-                prefHeight="72.0"
-                prefWidth="232.0"
-                text="Termina Assemblaggio"/>
-
-        <!-- Griglia per la plancia della nave -->
-        <GridPane fx:id="shipGrid"
-                  hgap="2"
-                  vgap="2"
-                  alignment="CENTER">
-            <padding>
-                <Insets top="10" bottom="10" left="10" right="10"/>
-            </padding>
-        </GridPane>
-
-        <!-- Bottone per pescare carta random -->
-        <Button fx:id="randomcard"
-                onAction="#setOne"
-                prefHeight="72.0"
-                prefWidth="232.0"
-                text="carta random"/>
-
-        <!-- Contenitore per carte prenotate -->
-        <VBox spacing="5" alignment="CENTER">
-            <Label text="Carte Prenotate" />
-            <HBox fx:id="reservedCardPreview"
-                  visible="false"
-                  managed="false"
-                  spacing="10"
-                  alignment="CENTER"/>
-        </VBox>
-
-        <!-- Contenitore per carte scartate -->
-        <VBox spacing="5" alignment="CENTER">
-            <Label text="Carte Scartate (Face-Up)" />
-            <HBox fx:id="faceupCardPreview"
-                  visible="false"
-                  managed="false"
-                  spacing="10"
-                  alignment="CENTER"/>
-        </VBox>
-
-    </VBox>
-</AnchorPane>
-
+              <!-- Griglia per la plancia della nave -->
+              <GridPane fx:id="shipGrid" alignment="CENTER" hgap="2" vgap="2">
+                  <padding>
+                      <Insets bottom="10" left="10" right="10" top="10" />
+                  </padding>
+              </GridPane>
+   
+      
+              <!-- Bottone per pescare carta random -->
+           <Button fx:id="randomcard" onAction="#setOne" styleClass="ship-button" text="carta random" />
+   
+              <!-- Contenitore per carte prenotate -->
+           <VBox alignment="CENTER" spacing="5">
+               <Label style="-fx-font-family: 'Verdana'; -fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: #fef6d5;" text="Carte Prenotate" />
+               <HBox fx:id="reservedCardPreview" alignment="CENTER" managed="false" spacing="10" visible="false" />
+           </VBox>
+   
+              <!-- Contenitore per carte scartate -->
+           <VBox alignment="CENTER" spacing="5">
+               <Label style="-fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-text-fill: #fef6d5; -fx-font-size: 15;" text="Carte Scartate (Face-Up)" />
+               <HBox fx:id="faceupCardPreview" alignment="CENTER" managed="false" spacing="10" visible="false" />
+           </VBox>
+   
+          </VBox>
+   </children>
+</StackPane>
