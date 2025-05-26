@@ -852,15 +852,26 @@ public class Client {
                 System.out.println(rank.getWeakerPlayer());
 
                 virtualView.ShowRanking(rank.getRanks(), "POTENZA MOTORI ");
+                String combat_zone_id = rank.getContent();
 
-                if (less_engine.equals(nickname)) {
-                    elaborate(new Message(MessageType.ASTRONAUT_LOSS, ""));
-                    break;
-                } else {
 
-                    virtualView.showMessage("\n --- il PLAYER "+ less_engine  + " sta pagando la penitenza ---\n");
+                    if (less_engine.equals(nickname)) {
 
-                }
+                        if (combat_zone_id.equals("1")) {
+                            elaborate(new Message(MessageType.ASTRONAUT_LOSS, ""));
+                            break;
+                        } else {
+
+                            elaborate(new Message(MessageType.CARGO_LOSS, ""));
+                            break;
+                        }
+
+                    }   else {
+
+                        virtualView.showMessage("\n --- il PLAYER " + less_engine + " sta pagando la penitenza ---\n");
+
+                    }
+
 
                 break;
 
@@ -890,15 +901,37 @@ public class Client {
                                 ), coords_m.toString());
 
 
+                    }else{
+                        elaborate(new Message(MessageType.CARGO_LOSS, "2"));
+                        break;
                     }
+
+
                         break;
                 } else {
 
-                    virtualView.showMessage(" --- RIMANI IN ATTESA CHE IL PLAYER FINISCA LA PENITENZA ---");
+                    virtualView.showMessage("\n --- il PLAYER " + less_cannon + " sta pagando la penitenza ---\n");
 
                 }
 
                 break;
+
+
+
+            case CARGO_LOSS:
+                int num_cargo_loss = Integer.parseInt(msg.getContent());
+
+                while(num_cargo_loss > 0){
+
+
+
+
+
+                    num_cargo_loss--;
+                }
+
+
+
 
             default:
 

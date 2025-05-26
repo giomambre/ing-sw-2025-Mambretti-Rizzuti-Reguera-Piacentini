@@ -67,6 +67,17 @@ public class Storage extends CardComponent  implements Serializable {
     }
 
 
+    public void removeCargo(Cargo cargo){
+
+        for (int i = 0; i < carried_cargos.size(); i++) {
+            if (carried_cargos.get(i) == cargo) {
+                carried_cargos.remove(i);
+                return;
+            }
+        }
+
+    }
+
     public void addCargo(Cargo cargo, int index){
         carried_cargos.set(index, cargo);
     }
@@ -101,6 +112,11 @@ public class Storage extends CardComponent  implements Serializable {
         }
         return cargo_count;
 
+    }
+
+    public boolean containsCargo(Cargo cargo){
+
+        return carried_cargos.contains(cargo);
     }
 
     /**

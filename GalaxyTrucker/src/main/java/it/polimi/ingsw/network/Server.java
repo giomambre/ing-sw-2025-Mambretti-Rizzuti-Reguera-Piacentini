@@ -665,6 +665,7 @@ public class Server {
                                         controller.initializeAdventure(controller.getCurrentAdventure());
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK, "1", controller.getEngineValues()));
+                                        controller.getEngineValues().clear();
 
                                         break;
 
@@ -699,6 +700,32 @@ public class Server {
                                     break;
 
 
+                            }
+
+
+                        }else if(combatZone.getId() == 0){
+                            switch (type[0]) {
+
+                                case "can":
+
+                                    double power = Double.parseDouble(type[1]);
+                                    controller.addCannonValue(getNickname(cbz_msg.getId_client()), power);
+                                    sendToAllClients(controller.getLobby(), new Message(CANNON_POWER, getNickname(cbz_msg.getId_client()) + " " + power));
+
+                                    if (controller.getListCannonPower().size() == controller.getActivePlayers().size()) {
+
+                                        sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "0", controller.getEngineValues()));
+                                        controller.getListCannonPower().clear();
+                                        break;
+
+                                    }
+
+                                    curr_nick = controller.nextAdventurePlayer();
+                                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
+
+
+                                    break;
                             }
 
 
@@ -831,6 +858,15 @@ public class Server {
                     //gestione potenza di fuoco
                     String curr_nick = controller.nextAdventurePlayer();
                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", adventure));
+                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
+
+
+                }else if (combatZone.getId() == 0) {
+
+                    controller.initializeAdventure(adventure);
+                    String curr_nick = controller.nextAdventurePlayer();
+
+                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", adventure));
                     sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
 
 

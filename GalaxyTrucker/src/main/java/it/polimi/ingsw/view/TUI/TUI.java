@@ -673,11 +673,33 @@ public class TUI implements View {
 
         printCargo(cargos);
         return readValidInt("Scelta ", 0,cargos.size()-1,true);
+
     }
+
+    public void printNonEmptyCargos(List<Cargo> cargos){
+        // Intestazione compatta
+        System.out.println("\n  Posizione   Colore");
+        System.out.println("  ---------  --------------");
+        for (int i = 0; i < cargos.size(); i++) {
+            String label;
+            if(cargos.get(i)!=Cargo.Empty){
+            switch (cargos.get(i)) {
+                case Blue:   label = "🔵  Blu";   break;
+                case Yellow: label = "\uD83D\uDFE1  Giallo"; break;
+                case Green:  label = "\uD83D\uDFE2  Verde";  break;
+                case Red:    label = "🔴  Rosso";  break;
+                default:     label = "⚪ Vuoto";        break;
+            }
+            System.out.printf("    %2d       %s%n", i, label);
+        }
+        }
+        System.out.println();
+    }
+
     public void printCargo(List<Cargo> cargos) {
         // Intestazione compatta
-        System.out.println("  Posizione   Colore");
-        System.out.println("  ---------  ----------------");
+        System.out.println("\n  Posizione   Colore");
+        System.out.println("  ---------  --------------");
         for (int i = 0; i < cargos.size(); i++) {
             String label;
             switch (cargos.get(i)) {
@@ -1442,6 +1464,79 @@ return total;
         }
 
         return cargos;
+    }
+
+    @Override
+    public void removeCargo(Ship ship) {
+        List<Pair<Integer,Integer>> storage_with_red = new ArrayList<>();
+        List<Pair<Integer,Integer>> other_storage = new ArrayList<>();
+        List<Pair<Integer,Integer>> batteries = new ArrayList<>();
+        Pair<Integer,Integer> choice_final;
+
+
+
+
+        for(int i = 0 ; i<ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+
+                if (ship.getComponent(i, j).getComponentType() == RedStorage && ((Storage)ship.getComponent(i,j)).containsCargo(Cargo.Red)) {
+
+                    storage_with_red.add(new Pair<>(i, j));
+                    other_storage.add(new Pair<>(i, j));
+
+
+                } else if (ship.getComponent(i, j).getComponentType() == BlueStorage) {
+
+                    other_storage.add(new Pair<>(i, j));
+                } else if (ship.getComponent(i, j).getComponentType() == Battery && ((Battery)ship.getComponent(i,j)).getStored() > 0) {
+
+                    batteries.add(new Pair<>(i, j));
+
+                }
+            }
+        }
+
+
+        if(!storage_with_red.isEmpty()){
+            int i = 0;
+            for (Pair<Integer, Integer> s : storage_with_red) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+
+                System.out.println("\n-> " + i + " RED STORAGE in ( " + (s.getKey()) + " : " + s.getValue() + " )"
+                        + " contiene : ");
+                printCargo(((Storage) card).getCarried_cargos());
+                i++;
+            }
+
+            int scelta = readValidInt("Scegli da quale Storage rimuovere il"+ RED + " cargo rosso "+ RESET,0,storage_with_red.size()-1,false);
+            choice_final = storage_with_red.get(scelta);
+
+            Storage storage = (Storage) ship.getComponent(choice_final.getKey(),choice_final.getValue());
+            storage.removeCargo(Cargo.Red);
+
+        } else if (!other_storage.isEmpty()) {
+
+            int i = 0;
+            for (Pair<Integer, Integer> s : other_storage) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+
+                System.out.println("\n-> " + i + " RED STORAGE in ( " + (s.getKey()) + " : " + s.getValue() + " )"
+                        + " contiene : ");
+                printCargo(((Storage) card).getCarried_cargos());
+                i++;
+            }
+
+            int scelta = readValidInt("Scegli da quale Storage rimuovere 1 cargo  ",0,other_storage.size()-1,false);
+            choice_final = other_storage.get(scelta);
+            Storage storage = (Storage) ship.getComponent(choice_final.getKey(),choice_final.getValue());
+            storage.removeCargo(Cargo.Red);
+
+
+        }
+
+
     }
 
     @Override

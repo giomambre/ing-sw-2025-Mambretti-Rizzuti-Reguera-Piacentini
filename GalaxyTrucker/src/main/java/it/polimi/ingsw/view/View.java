@@ -91,6 +91,8 @@ public interface View {
 
         public void ShowRanking(Map<String,Double> rank , String type);
 
+        public void removeCargo(Ship ship);
+
     public Pair<Integer,Integer> chooseAstronautLosses(Ship ship);
 
     public Map<CardComponent, Map<Cargo, Integer>> manageCargo(Ship ship);
