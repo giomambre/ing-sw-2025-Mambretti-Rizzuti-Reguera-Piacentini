@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
-import it.polimi.ingsw.model.enumerates.Cargo;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.enumerates.MeteorType;
+import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
 import javafx.application.Platform;
@@ -18,7 +16,6 @@ import javafx.stage.Stage;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -437,6 +434,14 @@ public class GUI implements View {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    public List<CrewmateType> getCrewmates(Pair<Integer,Integer> coords) {
+        CardComponent[][] ship = client.getPlayer_local().getShip().getShipBoard();
+        CardComponent component = ship[coords.getKey()][coords.getValue()];
+        List<CrewmateType> crewmateType = client.getPlayer_local().getShip().checkAlienSupport(component);
+        crewmateType.add(CrewmateType.Astronaut);
+        return crewmateType;
     }
 
     @Override
