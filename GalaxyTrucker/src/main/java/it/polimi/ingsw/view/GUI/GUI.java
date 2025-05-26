@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
-import it.polimi.ingsw.model.enumerates.Cargo;
-import it.polimi.ingsw.model.enumerates.Direction;
-import it.polimi.ingsw.model.enumerates.MeteorType;
+import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
 import javafx.application.Platform;
@@ -18,7 +16,6 @@ import javafx.stage.Stage;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -280,11 +277,11 @@ public class GUI implements View {
 
     public void createbuildscreen() {
         if (this.buildcontroller != null && isbuildscreenactive) {
-            System.out.println("oooooooooooo");
             Platform.runLater(() -> {
                     stage.toFront();
                     stage.requestFocus();
                     stage.show(); // riportala in primo piano
+                    buildcontroller.updateFaceUpCardsDisplay();
             });
             return;
         }
@@ -313,6 +310,8 @@ public class GUI implements View {
                 // Dopo che tutto è pronto, setta i bottoni
                 controller.setupPlayerButtons(client.getOther_players_local());
                 controller.initializeShipBoard();
+
+                controller.updateFaceUpCardsDisplay();
 
                 future.complete(null);  // GUI pronta
             } catch (Exception ex) {
@@ -428,6 +427,24 @@ public class GUI implements View {
     }
 
     @Override
+    public int crewmateAction(Pair<Integer,Integer> component) {
+        try {
+            return buildcontroller.getCrewmate().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public List<CrewmateType> getCrewmates(Pair<Integer,Integer> coords) {
+        CardComponent[][] ship = client.getPlayer_local().getShip().getShipBoard();
+        CardComponent component = ship[coords.getKey()][coords.getValue()];
+        List<CrewmateType> crewmateType = client.getPlayer_local().getShip().checkAlienSupport(component);
+        crewmateType.add(CrewmateType.Astronaut);
+        return crewmateType;
+    }
+
+    @Override
     public void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
 
     }
@@ -515,11 +532,6 @@ public class GUI implements View {
 
     }
 
-
-    @Override
-    public int crewmateAction(Pair<Integer,Integer> component) {
-        return 0;
-    }
 
 
     @Override

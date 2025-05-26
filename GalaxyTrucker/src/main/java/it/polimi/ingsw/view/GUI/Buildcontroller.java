@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.Color;
 import it.polimi.ingsw.model.enumerates.ComponentType;
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,9 +31,14 @@ import javafx.scene.image.Image;
 public class Buildcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
+    private CompletableFuture<Integer> crewmate = new CompletableFuture<>();
     private List<Pair<Integer,Integer>> pickedcoords = new ArrayList<>();
+
     @FXML
     private HBox playersButtonBox;
+    @FXML
+    private HBox crewmateButtonBox;
+
     @FXML
     private Button endbutton;
     @FXML
@@ -44,7 +50,7 @@ public class Buildcontroller {
     @FXML private HBox faceupCardPreview;
 
     private final List<CardComponent> reservedCards = new ArrayList<>();
-    private final List<CardComponent> facedupCards = new ArrayList<>();
+
 
     private CompletableFuture<Pair<Integer,Integer>> coords = new CompletableFuture<>();
 
@@ -53,6 +59,40 @@ public class Buildcontroller {
     private CompletableFuture<Integer> faceupCardIndex = new CompletableFuture<>();
 
     private Stage playerStage;
+
+    // Metodo aggiornato per sincronizzare con facedUp_deck_local del Client
+    public void updateFaceUpCardsDisplay() {
+        Platform.runLater(() -> {
+            faceupCardPreview.getChildren().clear();
+
+            List<CardComponent> faceUpCards = gui.getClient().getFacedUp_deck_local();
+
+            for (int i = 0; i < faceUpCards.size(); i++) {
+                CardComponent card = faceUpCards.get(i);
+
+                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
+                ImageView cardImage = new ImageView(image);
+                cardImage.setFitWidth(100);
+                cardImage.setPreserveRatio(true);
+
+                final int index = i;
+
+                cardImage.setOnMouseClicked(e -> {
+                    if (!faceupCardIndex.isDone()) {
+                        faceupCardIndex.complete(index);
+                    }
+                    if (!action.isDone()) {
+                        action.complete(2);
+                    }
+                });
+
+                faceupCardPreview.getChildren().add(cardImage);
+            }
+
+            faceupCardPreview.setVisible(!faceUpCards.isEmpty());
+            faceupCardPreview.setManaged(!faceUpCards.isEmpty());
+        });
+    }
 
     public void setPlayerStage(Stage playerStage) {
         this.playerStage = playerStage;
@@ -110,35 +150,6 @@ public class Buildcontroller {
         reservedCardPreview.setVisible(true);
         reservedCardPreview.setManaged(true);
     }
-
-    public void addFaceUpCard(CardComponent card) {
-
-        facedupCards.add(card);
-
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
-        ImageView cardImage = new ImageView(image);
-        cardImage.setFitWidth(100);
-        cardImage.setPreserveRatio(true);
-
-        int index = facedupCards.size() - 1;
-
-        cardImage.setOnMouseClicked(e -> {
-            if (!faceupCardIndex.isDone()) {
-                faceupCardPreview.getChildren().remove(cardImage);
-                faceupCardIndex.complete(index);
-                facedupCards.remove(index);
-            }
-            if (!action.isDone()) {
-                action.complete(2);
-            }
-        });
-
-        faceupCardPreview.getChildren().add(cardImage);
-        faceupCardPreview.setVisible(true);
-        faceupCardPreview.setManaged(true);
-    }
-
-
 
 
     @FXML
@@ -249,6 +260,26 @@ public class Buildcontroller {
         });
     }
 
+    public void setupCrewmatesButtons(List<CrewmateType> crewmateTypes) {
+        Platform.runLater(() -> {
+            crewmateButtonBox.getChildren().clear();
+            for (CrewmateType c : crewmateTypes) {
+                Button crewmateButton = new Button(c.name());
+                crewmateButton.setOnAction(e -> {
+                    if(c==CrewmateType.PinkAlien){
+                        crewmate.complete(2);
+                    }
+                    if(c==CrewmateType.BrownAlien){
+                        crewmate.complete(3);
+                    }
+                    if(c==CrewmateType.Astronaut){
+                        crewmate.complete(1);
+                    }
+                });
+                crewmateButtonBox.getChildren().add(crewmateButton);
+            }
+        });
+    }
 
     @FXML
     public void setFour(ActionEvent event) {
@@ -272,6 +303,13 @@ public class Buildcontroller {
             action = new CompletableFuture<>();
         }
         return action;
+    }
+
+    public CompletableFuture<Integer> getCrewmate() {
+        if (crewmate == null) {
+            crewmate = new CompletableFuture<>();
+        }
+        return crewmate;
     }
 
 

@@ -24,6 +24,10 @@
         <HBox fx:id="playersButtonBox"
               spacing="10"
               alignment="CENTER_LEFT"/>
+        <HBox fx:id="crewmateButtonBox"
+              spacing="10"
+              alignment="CENTER_LEFT"/>
+
 
         <!-- Bottone di fine assemblaggio -->
         <Button fx:id="endbutton"

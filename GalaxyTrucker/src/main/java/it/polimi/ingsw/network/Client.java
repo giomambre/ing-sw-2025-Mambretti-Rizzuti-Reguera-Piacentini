@@ -523,13 +523,18 @@ public class Client {
                         CardComponent component = plance[i][j];
                         coords = new Pair<>(i, j);
                         if (component.getComponentType() == LivingUnit) {
-
+                            System.out.println("(testing)Trovata LivingUnit in [" + i + "," + j + "]");
+                            if(virtualViewType == VirtualViewType.GUI) {
+                                List<CrewmateType> crewmates=((GUI)virtualView).getCrewmates(coords);
+                                ((GUI) virtualView).getBuildcontroller().setupCrewmatesButtons(crewmates);
+                            }
                             CrewmateType type;
                             int select = virtualView.crewmateAction(coords);
 
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
                                 ((LivingUnit) component).addAstronauts();
+                                System.out.println("(testing) ho aggiunto astronauta");
 
                             } else if (select == 2) {
 
@@ -690,10 +695,10 @@ public class Client {
 
                 } else {
                     facedUp_deck_local.remove(cpm.getCardComponent());
-
-
                 }
-
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+                }
                 break;
 
             case FORCE_BUILD_PHASE_END:
