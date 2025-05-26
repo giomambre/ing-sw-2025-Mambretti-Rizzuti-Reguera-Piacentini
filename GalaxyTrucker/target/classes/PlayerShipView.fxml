@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.polimi.ingsw.view.GUI.PlayerShipController"
+            prefWidth="400" prefHeight="300">
+
+    <VBox spacing="10" alignment="CENTER">
+        <Label fx:id="playerNameLabel" text="Nave di ..." />
+        <GridPane fx:id="shipGrid" hgap="2" vgap="2" />
+        <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeStage" prefHeight="26.0" prefWidth="89.0" text="CHIUDI" />
+    </VBox>
+</AnchorPane>
