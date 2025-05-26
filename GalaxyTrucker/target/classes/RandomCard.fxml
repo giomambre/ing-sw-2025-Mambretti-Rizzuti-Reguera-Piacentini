@@ -37,7 +37,6 @@
                                  <ComboBox fx:id="yComboBox" prefWidth="60.0" promptText="Y" />
                               </children>
                            </HBox>
-                           <Button fx:id="confirmButton" text="CONFERMA" onAction="#confirmCoords" prefWidth="120.0" />
                         </children>
                      </VBox>
                   </children>
