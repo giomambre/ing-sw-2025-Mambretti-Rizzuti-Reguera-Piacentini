@@ -316,8 +316,9 @@ public class Client {
                     elaborate(new Message(MessageType.SEE_LOBBIES, ""));
                     break;
                 } else {
-
-                    virtualView.showMessage("\nSei entrato nella lobby" + msg.getContent());
+                    if (virtualViewType == VirtualViewType.TUI) {
+                        virtualView.showMessage("\nSei entrato nella lobby" + msg.getContent());
+                    }
 
                 }
                 break;
@@ -325,7 +326,10 @@ public class Client {
             case GAME_STARTED:
                 GameStartedMessage gs_msg = (GameStartedMessage) msg;
                 if (gs_msg.getContent().isEmpty()) {
-                    virtualView.showMessage("\n----- PARTITA AVVIATA -----");
+                    if (virtualViewType == VirtualViewType.TUI) {
+                        virtualView.showMessage ("\n----- PARTITA AVVIATA -----");
+                    }
+
                 } else {
 
                     virtualView.showMessage("\n" + gs_msg.getContent());
@@ -635,14 +639,13 @@ public class Client {
                     System.out.println("Errore: colore non valido " + parts[1]);
                 }
                 if (parts[0].equals(nickname)) {
+                    if (virtualViewType == VirtualViewType.TUI){
                     virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
-                    /*if(virtualViewType==VirtualViewType.GUI){
-                        elaborate(new Message(MessageType.BUILD_START,""));
-                    }*/
+                    }
                 } else {
                     // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
                     if (virtualViewType == VirtualViewType.GUI) {
-                        virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
+                        //virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
                         ((GUI) virtualView).updateColors(still_Available_colors);
                         /* elaborate(new GameStartedMessage(MessageType.GAME_STARTED,"",still_Available_colors));*/
                         break;
