@@ -46,9 +46,20 @@ public class Buildcontroller {
     private final List<CardComponent> reservedCards = new ArrayList<>();
     private final List<CardComponent> facedupCards = new ArrayList<>();
 
+    private CompletableFuture<Pair<Integer,Integer>> coords = new CompletableFuture<>();
+
 
     private CompletableFuture<Integer> reservedCardIndex = new CompletableFuture<>();
     private CompletableFuture<Integer> faceupCardIndex = new CompletableFuture<>();
+
+    private Stage playerStage;
+
+    public void setPlayerStage(Stage playerStage) {
+        this.playerStage = playerStage;
+    }
+    public Stage getPlayerStage() {
+        return playerStage;
+    }
 
     public CompletableFuture<Integer> getReservedCardIndexFuture() {
         return reservedCardIndex;
@@ -166,7 +177,19 @@ public class Buildcontroller {
                 if (shipboard[i][j].getComponentType()== ComponentType.NotAccessible) {
                     cell.setStyle("-fx-border-color: black; -fx-background-color: lightgray;");
                 } else {
-                    cell.setStyle("-fx-background-color: lightyellow;");
+                    if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
+                        cell.setStyle("-fx-background-color: lightyellow;");
+                        final int a = i;
+                        final int b = j;
+                        cell.setOnMouseClicked(e -> {
+                            coords.complete(new Pair<>(a, b));
+                            if (gui.getRandomcardcontroller().getStage() != null) {
+                                System.out.println("chiudo lo stage");
+                                gui.getRandomcardcontroller().getStage().close();
+                            }
+                        });
+                    }
+
                 }
                 if (i == 2 && j == 3) {
                     Color color = gui.getClient().getPlayer_local().getColor();
@@ -197,10 +220,16 @@ public class Buildcontroller {
                     }
                 }
 
-
                 shipGrid.add(cell, j, i);
             }
         }
+    }
+
+    public CompletableFuture<Pair<Integer,Integer>> getCoords() {
+        if (coords == null || coords.isDone()) {
+            coords = new CompletableFuture<>();
+        }
+        return coords;
     }
 
     public void setGUI(GUI gui) {
@@ -210,7 +239,7 @@ public class Buildcontroller {
 
     public void setupPlayerButtons(List<Player> otherPlayers) {
         Platform.runLater(() -> {
-            playersButtonBox.getChildren().clear(); // pulisci prima
+            playersButtonBox.getChildren().clear();
             for (Player p : otherPlayers) {
                 Button playerButton = new Button(p.getNickname());
                 playerButton.setOnAction(e -> showShipForPlayer(p.getNickname()));
@@ -310,6 +339,8 @@ public class Buildcontroller {
             Parent root = loader.load();
 
             PlayerShipController controller = loader.getController();
+            controller.setBuildcontroller(this);
+
             System.out.println("debug,nave di:"+player.getNickname());
             System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
             controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
@@ -317,7 +348,10 @@ public class Buildcontroller {
             Stage stage = new Stage();
             stage.setTitle("Nave di " + player.getNickname());
             stage.setScene(new Scene(root));
+            setPlayerStage(stage);
             stage.show();
+
+
         } catch (Exception e) {
             e.printStackTrace();
             gui.showMessage("Errore nel caricamento della schermata nave.");

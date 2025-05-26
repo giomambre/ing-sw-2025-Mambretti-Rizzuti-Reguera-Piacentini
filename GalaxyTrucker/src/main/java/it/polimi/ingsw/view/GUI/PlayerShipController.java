@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.ComponentType;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,6 +17,14 @@ public class PlayerShipController {
     private Label playerNameLabel;
     @FXML
     private GridPane shipGrid;
+    @FXML
+    private Button closeButton;
+
+    private Buildcontroller buildcontroller;
+
+    public void setBuildcontroller(Buildcontroller buildcontroller) {
+        this.buildcontroller = buildcontroller;
+    }
 
     public void setPlayerShip(String nickname, CardComponent[][] shipBoard) {
 
@@ -48,5 +57,9 @@ public class PlayerShipController {
                 shipGrid.add(cell, j, i);
             }
         }
+    }
+
+    public void closeStage(){
+        buildcontroller.getPlayerStage().close();
     }
 }

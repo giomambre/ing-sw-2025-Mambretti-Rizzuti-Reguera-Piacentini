@@ -355,7 +355,7 @@ public class GUI implements View {
 
                 controller.setGui(this); // associa la GUI
                 controller.setStage(new Stage());
-                controller.setComboBox();
+                //controller.setComboBox();
                 controller.showCardImage(card);
 
                 Stage stage = controller.getStage();
@@ -402,7 +402,7 @@ public class GUI implements View {
     @Override
     public Pair<Integer, Integer> askCoords(Ship ship) {
         try {
-            Pair<Integer,Integer> coords=randomcardcontroller.getCoords().get();
+            Pair<Integer,Integer> coords=buildcontroller.getCoords().get();
             buildcontroller.resetCoords();
             Platform.runLater(() -> {
                 CardComponent selectedCard = getActualcard();

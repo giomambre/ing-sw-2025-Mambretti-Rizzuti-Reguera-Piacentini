@@ -52,7 +52,7 @@ public class Randomcardcontroller {
         this.gui = gui;
     }
 
-    public void setComboBox() {
+    /*public void setComboBox() {
         ObservableList<Integer> coordinateValuesy = FXCollections.observableArrayList();
         for (int i = 0; i <= 4; i++) {
             coordinateValuesy.add(i);
@@ -64,7 +64,7 @@ public class Randomcardcontroller {
         }
         xComboBox.setItems(coordinateValuesx);
 
-    }
+    }*/
 
     public void start(CardComponent card) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
@@ -77,7 +77,7 @@ public class Randomcardcontroller {
         randomCardStage.setScene(new Scene(root));
         randomCardStage.centerOnScreen();
         randomCardStage.show();
-        controller.setComboBox();
+        //controller.setComboBox();
 
         controller.showCardImage(card);
 
@@ -122,6 +122,10 @@ public class Randomcardcontroller {
     public void setTwo(ActionEvent event) {
         coordinatesBox.setVisible(true);
         action.complete(2);
+        if(stage!=null) {
+            System.out.println("chiudo lo stage");
+            stage.close();
+        }
     }
     @FXML
     public void setOne(ActionEvent event) {
@@ -140,12 +144,12 @@ public class Randomcardcontroller {
         return action;
     }
 
-    public CompletableFuture<Pair<Integer,Integer>> getCoords() {
+   /* public CompletableFuture<Pair<Integer,Integer>> getCoords() {
         if (coords == null || coords.isDone()) {
             coords = new CompletableFuture<>();
         }
         return coords;
-    }
+    }*/
     public void showCardImage(CardComponent card) {
         String imagePath = card.getImagePath();
         InputStream stream = getClass().getResourceAsStream(imagePath);
