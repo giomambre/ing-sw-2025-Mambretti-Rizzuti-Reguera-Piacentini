@@ -44,7 +44,7 @@ public class Buildcontroller {
     @FXML private HBox faceupCardPreview;
 
     private final List<CardComponent> reservedCards = new ArrayList<>();
-    private final List<CardComponent> facedupCards = new ArrayList<>();
+    //private final List<CardComponent> facedupCards = new ArrayList<>();
 
     private CompletableFuture<Pair<Integer,Integer>> coords = new CompletableFuture<>();
 
@@ -53,6 +53,40 @@ public class Buildcontroller {
     private CompletableFuture<Integer> faceupCardIndex = new CompletableFuture<>();
 
     private Stage playerStage;
+
+    // Metodo aggiornato per sincronizzare con facedUp_deck_local del Client
+    public void updateFaceUpCardsDisplay() {
+        Platform.runLater(() -> {
+            faceupCardPreview.getChildren().clear();
+
+            List<CardComponent> faceUpCards = gui.getClient().getFacedUp_deck_local();
+
+            for (int i = 0; i < faceUpCards.size(); i++) {
+                CardComponent card = faceUpCards.get(i);
+
+                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
+                ImageView cardImage = new ImageView(image);
+                cardImage.setFitWidth(100);
+                cardImage.setPreserveRatio(true);
+
+                final int index = i;
+
+                cardImage.setOnMouseClicked(e -> {
+                    if (!faceupCardIndex.isDone()) {
+                        faceupCardIndex.complete(index);
+                    }
+                    if (!action.isDone()) {
+                        action.complete(2);
+                    }
+                });
+
+                faceupCardPreview.getChildren().add(cardImage);
+            }
+
+            faceupCardPreview.setVisible(!faceUpCards.isEmpty());
+            faceupCardPreview.setManaged(!faceUpCards.isEmpty());
+        });
+    }
 
     public void setPlayerStage(Stage playerStage) {
         this.playerStage = playerStage;
@@ -111,7 +145,7 @@ public class Buildcontroller {
         reservedCardPreview.setManaged(true);
     }
 
-    public void addFaceUpCard(CardComponent card) {
+   /* public void addFaceUpCard(CardComponent card) {
 
         facedupCards.add(card);
 
@@ -136,7 +170,7 @@ public class Buildcontroller {
         faceupCardPreview.getChildren().add(cardImage);
         faceupCardPreview.setVisible(true);
         faceupCardPreview.setManaged(true);
-    }
+    }*/
 
 
 

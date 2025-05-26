@@ -690,10 +690,10 @@ public class Client {
 
                 } else {
                     facedUp_deck_local.remove(cpm.getCardComponent());
-
-
                 }
-
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+                }
                 break;
 
             case FORCE_BUILD_PHASE_END:

@@ -280,11 +280,11 @@ public class GUI implements View {
 
     public void createbuildscreen() {
         if (this.buildcontroller != null && isbuildscreenactive) {
-            System.out.println("oooooooooooo");
             Platform.runLater(() -> {
                     stage.toFront();
                     stage.requestFocus();
                     stage.show(); // riportala in primo piano
+                    buildcontroller.updateFaceUpCardsDisplay();
             });
             return;
         }
@@ -313,6 +313,8 @@ public class GUI implements View {
                 // Dopo che tutto è pronto, setta i bottoni
                 controller.setupPlayerButtons(client.getOther_players_local());
                 controller.initializeShipBoard();
+
+                controller.updateFaceUpCardsDisplay();
 
                 future.complete(null);  // GUI pronta
             } catch (Exception ex) {

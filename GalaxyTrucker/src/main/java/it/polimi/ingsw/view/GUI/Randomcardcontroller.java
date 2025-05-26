@@ -104,7 +104,7 @@ public class Randomcardcontroller {
             stage.close();
         }
     }
-    @FXML
+    /*@FXML
     public void setThree(ActionEvent event) {
         gui.getBuildcontroller().addFaceUpCard(gui.getActualcard());
 
@@ -116,7 +116,23 @@ public class Randomcardcontroller {
         if (stage != null) {
             stage.close();
         }
+    }*/
+    @FXML
+    public void setThree(ActionEvent event) {
+        // Non aggiungiamo più direttamente alla GUI locale
+        // La carta verrà scartata e il server invierà un messaggio FACED_UP_CARD_UPDATED
+        // che aggiornerà automaticamente tutte le GUI dei client
+
+        if (!action.isDone()) {
+            action.complete(3);
+        }
+
+        // Chiudi la finestra della carta random
+        if (stage != null) {
+            stage.close();
+        }
     }
+
 
     @FXML
     public void setTwo(ActionEvent event) {
