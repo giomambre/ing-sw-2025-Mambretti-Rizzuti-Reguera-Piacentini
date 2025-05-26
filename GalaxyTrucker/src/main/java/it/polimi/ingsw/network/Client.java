@@ -518,18 +518,26 @@ public class Client {
                 inputQueue.clear();
                 CardComponent[][] plance = player_local.getShip().getShip_board();
                 Pair<Integer, Integer> coords;
+                ArrayList<CrewmateType> crewmates = new ArrayList<>();
+                crewmates.add(CrewmateType.PinkAlien);
+                crewmates.add(CrewmateType.BrownAlien);
+                crewmates.add(CrewmateType.Astronaut);
                 for (int i = 0; i < player_local.getShip().getROWS(); i++) {
                     for (int j = 0; j < player_local.getShip().getCOLS(); j++) {
                         CardComponent component = plance[i][j];
                         coords = new Pair<>(i, j);
                         if (component.getComponentType() == LivingUnit) {
-
+                            System.out.println("Trovata LivingUnit in [" + i + "," + j + "]");
+                            if(virtualViewType == VirtualViewType.GUI) {
+                                ((GUI) virtualView).getBuildcontroller().setupCrewmatesButtons(crewmates);
+                            }
                             CrewmateType type;
                             int select = virtualView.crewmateAction(coords);
 
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
                                 ((LivingUnit) component).addAstronauts();
+                                System.out.println("eeeee ho aggiunto astronauta");
 
                             } else if (select == 2) {
 

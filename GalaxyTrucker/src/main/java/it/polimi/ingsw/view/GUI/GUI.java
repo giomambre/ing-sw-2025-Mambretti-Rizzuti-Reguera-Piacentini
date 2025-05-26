@@ -430,6 +430,16 @@ public class GUI implements View {
     }
 
     @Override
+    public int crewmateAction(Pair<Integer,Integer> component) {
+        try {
+            return buildcontroller.getCrewmate().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
     public void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
 
     }
@@ -517,11 +527,6 @@ public class GUI implements View {
 
     }
 
-
-    @Override
-    public int crewmateAction(Pair<Integer,Integer> component) {
-        return 0;
-    }
 
 
     @Override
