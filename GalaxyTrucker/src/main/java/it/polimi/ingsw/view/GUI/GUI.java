@@ -548,7 +548,23 @@ public class GUI implements View {
 
     @Override
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
-        return 0;
+        CompletableFuture<Integer> result = new CompletableFuture<>();
+
+        Platform.runLater(() -> {
+            SelectedPieceController controller = new SelectedPieceController();
+            controller.setData(pieces, ship);
+            Stage stage = new Stage();
+            controller.show(stage);
+            controller.getSelectedPieceFuture().thenAccept(result::complete);
+        });
+
+        // Aspetta che l'utente selezioni il pezzo
+        try {
+            return result.get(); // blocca fino a quando viene completato
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1; // fallback in caso di errore
+        }
     }
 
     @Override

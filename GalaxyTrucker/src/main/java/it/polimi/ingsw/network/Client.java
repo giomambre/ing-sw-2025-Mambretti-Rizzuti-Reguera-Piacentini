@@ -538,7 +538,7 @@ public class Client {
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
                                 ((LivingUnit) component).addAstronauts();
-                                System.out.println("(testing) ho aggiunto astronauta");
+
 
                             } else if (select == 2) {
 
