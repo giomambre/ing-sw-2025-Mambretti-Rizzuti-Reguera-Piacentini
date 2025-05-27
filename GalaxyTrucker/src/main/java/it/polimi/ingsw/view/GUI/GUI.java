@@ -33,6 +33,7 @@ public class GUI implements View {
     Choosecolorcontroller choosecolorcontroller;
     Buildcontroller buildcontroller;
     Randomcardcontroller randomcardcontroller;
+    CrewmateSelectionController crewmateSelectionController;
     Stage stage;
     private String nicknamescelto;
     @FXML
@@ -383,6 +384,39 @@ public class GUI implements View {
         }
     }
 
+    public void createCrewmateSelectionController(Pair<Integer, Integer> coords, List<CrewmateType> supportedCrewmates) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/CrewmateSelection.fxml"));
+                Parent root = loader.load();
+                CrewmateSelectionController controller = loader.getController();
+
+                controller.setCardWithSupportedCrewmates(coords, supportedCrewmates); // usa il metodo alternativo
+                controller.setStage(new Stage());
+
+                Stage stage = controller.getStage();
+                stage.setTitle("Crewmate Selection");
+                stage.setScene(new Scene(root));
+                stage.centerOnScreen();
+                stage.show();
+
+                this.crewmateSelectionController = controller;
+
+                future.complete(null);
+            } catch (Exception ex) {
+                future.completeExceptionally(ex);
+            }
+        });
+
+        try {
+            future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public int showCard(CardComponent card) {
         try {
@@ -429,7 +463,7 @@ public class GUI implements View {
     @Override
     public int crewmateAction(Pair<Integer,Integer> component) {
         try {
-            return buildcontroller.getCrewmate().get();
+            return crewmateSelectionController.getCrewmate().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return -1;

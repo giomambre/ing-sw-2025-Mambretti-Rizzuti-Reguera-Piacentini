@@ -530,7 +530,7 @@ public class Client {
                             System.out.println("(testing)Trovata LivingUnit in [" + i + "," + j + "]");
                             if(virtualViewType == VirtualViewType.GUI) {
                                 List<CrewmateType> crewmates=((GUI)virtualView).getCrewmates(coords);
-                                ((GUI) virtualView).getBuildcontroller().setupCrewmatesButtons(crewmates);
+                                ((GUI) virtualView).createCrewmateSelectionController(coords, crewmates);
                             }
                             CrewmateType type;
                             int select = virtualView.crewmateAction(coords);

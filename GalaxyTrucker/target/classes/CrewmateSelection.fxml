@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.CrewmateSelectionController">
+    <children>
+        <VBox alignment="CENTER" spacing="30.0" style="-fx-padding: 30;">
+            <children>
+                <!-- Info Label - Ingrandita e più prominente -->
+                <Label fx:id="cardInfoLabel" text="Seleziona il crewmate per questa Living Unit:" textAlignment="CENTER" wrapText="true" style="-fx-padding: 20;">
+                    <font>
+                        <Font name="System Bold" size="20.0" />
+                    </font>
+                </Label>
+
+                <!-- Buttons Container -->
+                <VBox alignment="CENTER" spacing="20.0" style="-fx-padding: 20 0 0 0;">
+                    <children>
+                        <!-- Astronaut Button -->
+                        <Button fx:id="astronautButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #4A90E2; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;" text="Astronaut">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Button>
+
+                        <!-- Pink Alien Button -->
+                        <Button fx:id="pinkAlienButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #E24A90; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;" text="Pink Alien">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Button>
+
+                        <!-- Brown Alien Button -->
+                        <Button fx:id="brownAlienButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #8B4513; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;" text="Brown Alien">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>
