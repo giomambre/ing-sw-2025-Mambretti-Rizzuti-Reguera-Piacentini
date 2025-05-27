@@ -178,18 +178,26 @@ public class Buildcontroller {
     }
 
     public void initializeShipBoard() {
-        shipGrid.getChildren().clear(); // shipGrid è un GridPane definito in FXML
+        shipGrid.getChildren().clear();
+        shipGrid.setPrefSize(432, 309);
+        shipGrid.setMinSize(432, 309);
+        shipGrid.setMaxSize(432, 309);
+
         CardComponent[][] shipboard=gui.getClient().getPlayer_local().getShip().getShipBoard();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(50, 50);
+
+                cell.setPrefSize(62, 62);
+                cell.setMinSize(62, 62);
+                cell.setMaxSize(62, 62);
 
                 if (shipboard[i][j].getComponentType()== ComponentType.NotAccessible) {
-                    cell.setStyle("-fx-border-color: black; -fx-background-color: lightgray;");
+                    cell.setStyle("-fx-background-color: transparent;");
                 } else {
                     if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
-                        cell.setStyle("-fx-background-color: lightyellow;");
+                        cell.setPrefSize(62,62);
+                        cell.setStyle("-fx-background-color: transparent;");
                         final int a = i;
                         final int b = j;
                         cell.setOnMouseClicked(e -> {
@@ -224,9 +232,9 @@ public class Buildcontroller {
                     if (imagePath != null) {
                         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
                         ImageView imageView = new ImageView(image);
-                        imageView.setFitWidth(48);
-                        imageView.setFitHeight(48);
-                        imageView.setPreserveRatio(true);
+                        imageView.setFitWidth(62);
+                        imageView.setFitHeight(62);
+                        imageView.setPreserveRatio(false);
                         cell.getChildren().add(imageView);
                     }
                 }
@@ -331,9 +339,9 @@ public class Buildcontroller {
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(48);
-        imageView.setFitHeight(48);
-        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(62);
+        imageView.setFitHeight(62);
+        imageView.setPreserveRatio(false);
 
         imageView.setRotate(card.getRotationAngle());
 

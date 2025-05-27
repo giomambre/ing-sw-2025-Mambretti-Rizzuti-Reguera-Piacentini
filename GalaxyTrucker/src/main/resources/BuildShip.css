@@ -1,23 +1,27 @@
 .ship-button {
-    -fx-background-color: rgba(142, 68, 173, 0.7); /* viola con trasparenza */
+    -fx-background-color: rgba(142, 68, 173, 0.4); /* Più trasparente */
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.6); /* Bordo bianco trasparente */
+    -fx-border-width: 2px;
     -fx-font-size: 15px;
     -fx-font-family: "Verdana";
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-padding: 10 25 10 25;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0.1, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.2), 4, 0.1, 0, 0); /* Glow chiaro */
     -fx-cursor: hand;
 }
 
 .ship-button:hover {
-    -fx-background-color: rgba(155, 89, 182, 0.8); /* viola chiaro più visibile */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0.3, 0, 2);
+    -fx-background-color: rgba(155, 89, 182, 0.6);
+    -fx-border-color: rgba(255, 255, 255, 0.8);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.4), 6, 0.3, 0, 0);
 }
 
 .ship-button:pressed {
-    -fx-background-color: rgba(123, 36, 159, 0.9); /* viola più scuro */
+    -fx-background-color: rgba(123, 36, 159, 0.7);
+    -fx-border-color: rgba(255, 255, 255, 1);
     -fx-translate-y: 1;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 2, 0.2, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.6), 3, 0.2, 0, 0);
 }
