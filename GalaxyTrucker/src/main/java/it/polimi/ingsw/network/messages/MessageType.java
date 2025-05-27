@@ -55,6 +55,7 @@ public enum MessageType {
     ENGINE_POWER_RANK,
     ENGINE_POWER,
     CANNON_POWER_RANK,
-    CANNON_POWER
+    CANNON_POWER,
+    CARGO_LOSS
 
 }

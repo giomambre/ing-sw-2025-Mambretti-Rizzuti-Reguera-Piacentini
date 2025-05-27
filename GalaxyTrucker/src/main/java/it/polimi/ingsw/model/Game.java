@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
@@ -661,7 +662,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_1.jpg"));
+        deck_components.add(new LivingUnit (LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -669,7 +670,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_2.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_2.jpg"));
 
 
         connectors.put(North, Single);
@@ -677,7 +678,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_3.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -685,7 +686,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_4.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_4.jpg"));
 
 
         connectors.put(North, Double);
@@ -693,7 +694,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_5.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_5.jpg"));
 
 
         connectors.put(North, Double);
@@ -701,7 +702,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_6.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -709,7 +710,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_7.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_7.jpg"));
 
 
         connectors.put(North, Single);
@@ -717,7 +718,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_8.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_8.jpg"));
 
 
         connectors.put(North, Double);
@@ -725,7 +726,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_9.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_9.jpg"));
 
 
         connectors.put(North, Universal);
@@ -733,7 +734,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_10.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_10.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -741,7 +742,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_11.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_11.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -749,7 +750,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_12.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_12.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -757,7 +758,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_13.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_13.jpg"));
 
 
         connectors.put(North, Single);
@@ -765,7 +766,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_14.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_14.jpg"));
 
 
         connectors.put(North, Single);
@@ -773,7 +774,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_15.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_15.jpg"));
 
 
         connectors.put(North, Double);
@@ -781,7 +782,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_16.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_16.jpg"));
 
 
         connectors.put(North, Double);
@@ -789,7 +790,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_17.jpg"));
+        deck_components.add(new LivingUnit(LivingUnit, connectors, "/images/cardComponent/GT-livingUnit_17.jpg"));
 
 
         connectors.put(North, Universal);

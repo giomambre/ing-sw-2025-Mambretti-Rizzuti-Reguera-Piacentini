@@ -673,11 +673,33 @@ public class TUI implements View {
 
         printCargo(cargos);
         return readValidInt("Scelta ", 0,cargos.size()-1,true);
+
     }
+
+    public void printNonEmptyCargos(List<Cargo> cargos){
+        // Intestazione compatta
+        System.out.println("\n  Posizione   Colore");
+        System.out.println("  ---------  --------------");
+        for (int i = 0; i < cargos.size(); i++) {
+            String label;
+            if(cargos.get(i)!=Cargo.Empty){
+            switch (cargos.get(i)) {
+                case Blue:   label = "🔵  Blu";   break;
+                case Yellow: label = "\uD83D\uDFE1  Giallo"; break;
+                case Green:  label = "\uD83D\uDFE2  Verde";  break;
+                case Red:    label = "🔴  Rosso";  break;
+                default:     label = "⚪ Vuoto";        break;
+            }
+            System.out.printf("    %2d       %s%n", i, label);
+        }
+        }
+        System.out.println();
+    }
+
     public void printCargo(List<Cargo> cargos) {
         // Intestazione compatta
-        System.out.println("  Posizione   Colore");
-        System.out.println("  ---------  ----------------");
+        System.out.println("\n  Posizione   Colore");
+        System.out.println("  ---------  --------------");
         for (int i = 0; i < cargos.size(); i++) {
             String label;
             switch (cargos.get(i)) {
@@ -1442,6 +1464,130 @@ return total;
         }
 
         return cargos;
+    }
+
+    @Override
+    public void removeCargo(Ship ship) {
+        List<Pair<Integer,Integer>> storage_with_red = new ArrayList<>();
+        List<Pair<Integer,Integer>> other_storage = new ArrayList<>();
+        List<Pair<Integer,Integer>> batteries = new ArrayList<>();
+        Pair<Integer,Integer> choice_final;
+
+
+
+        for(int i = 0 ; i<ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent card = ship.getComponent(i, j);
+
+                if (card.getComponentType() == RedStorage && ((Storage)card).containsCargo(Cargo.Red)  ) {
+
+                    storage_with_red.add(new Pair<>(i,j));
+                    other_storage.add(new Pair<>(i, j));
+
+
+                } else if ((card.getComponentType() == BlueStorage || card.getComponentType() == RedStorage) && (((Storage)card).getCargoCount() > 0 )) {
+
+                    other_storage.add(new Pair<>(i, j));
+                } else if (card.getComponentType() == Battery && ((Battery)card).getStored() > 0) {
+
+                    batteries.add(new Pair<>(i, j));
+
+                }
+            }
+        }
+
+
+        if(!storage_with_red.isEmpty()){
+            for (Pair<Integer, Integer> s : storage_with_red) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Storage)card).removeCargo(Cargo.Red)){
+
+                    printBorder("HAI PERSO UN CARGO "+RED+" ROSSO" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+            }
+
+
+        } else if (!other_storage.isEmpty()) {
+
+
+            for (Pair<Integer, Integer> s : other_storage) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Storage)card).removeCargo(Cargo.Yellow)){
+
+                    printBorder("HAI PERSO UN CARGO "+YELLOW+" GIALLO" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+            }
+
+
+            for (Pair<Integer, Integer> s : other_storage) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Storage)card).removeCargo(Cargo.Green)){
+
+                    printBorder("HAI PERSO UN CARGO "+GREEN+" VERDE" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+
+
+            }
+
+
+            for (Pair<Integer, Integer> s : other_storage) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Storage)card).removeCargo(Cargo.Blue)){
+
+                    printBorder("HAI PERSO UN CARGO "+BLUE+" BLU" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+
+
+            }
+
+
+
+        }else{
+
+
+            for (Pair<Integer, Integer> s : batteries) {
+                CardComponent card = ship.getComponent(s.getKey(), s.getValue());
+
+                if(((Battery)card).getStored() > 0) {
+
+                    printBorder("HAI PERSO UNA "+GREEN+" BATTERIA" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    System.out.println();
+                    return;
+                }
+
+
+
+
+            }
+
+
+        }
+
+
+        printBorder("NON HAI PERSO NIENTE!!! non avevi cargo o batterie! " );
+        System.out.println();
+
+
     }
 
     @Override

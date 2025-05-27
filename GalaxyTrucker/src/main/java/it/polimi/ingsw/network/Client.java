@@ -316,8 +316,9 @@ public class Client {
                     elaborate(new Message(MessageType.SEE_LOBBIES, ""));
                     break;
                 } else {
-
-                    virtualView.showMessage("\nSei entrato nella lobby" + msg.getContent());
+                    if (virtualViewType == VirtualViewType.TUI) {
+                        virtualView.showMessage("\nSei entrato nella lobby" + msg.getContent());
+                    }
 
                 }
                 break;
@@ -325,7 +326,10 @@ public class Client {
             case GAME_STARTED:
                 GameStartedMessage gs_msg = (GameStartedMessage) msg;
                 if (gs_msg.getContent().isEmpty()) {
-                    virtualView.showMessage("\n----- PARTITA AVVIATA -----");
+                    if (virtualViewType == VirtualViewType.TUI) {
+                        virtualView.showMessage ("\n----- PARTITA AVVIATA -----");
+                    }
+
                 } else {
 
                     virtualView.showMessage("\n" + gs_msg.getContent());
@@ -523,13 +527,18 @@ public class Client {
                         CardComponent component = plance[i][j];
                         coords = new Pair<>(i, j);
                         if (component.getComponentType() == LivingUnit) {
-
+                            System.out.println("(testing)Trovata LivingUnit in [" + i + "," + j + "]");
+                            if(virtualViewType == VirtualViewType.GUI) {
+                                List<CrewmateType> crewmates=((GUI)virtualView).getCrewmates(coords);
+                                ((GUI) virtualView).getBuildcontroller().setupCrewmatesButtons(crewmates);
+                            }
                             CrewmateType type;
                             int select = virtualView.crewmateAction(coords);
 
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
                                 ((LivingUnit) component).addAstronauts();
+                                System.out.println("(testing) ho aggiunto astronauta");
 
                             } else if (select == 2) {
 
@@ -630,14 +639,13 @@ public class Client {
                     System.out.println("Errore: colore non valido " + parts[1]);
                 }
                 if (parts[0].equals(nickname)) {
+                    if (virtualViewType == VirtualViewType.TUI){
                     virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
-                    /*if(virtualViewType==VirtualViewType.GUI){
-                        elaborate(new Message(MessageType.BUILD_START,""));
-                    }*/
+                    }
                 } else {
                     // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
                     if (virtualViewType == VirtualViewType.GUI) {
-                        virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
+                        //virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
                         ((GUI) virtualView).updateColors(still_Available_colors);
                         /* elaborate(new GameStartedMessage(MessageType.GAME_STARTED,"",still_Available_colors));*/
                         break;
@@ -690,10 +698,10 @@ public class Client {
 
                 } else {
                     facedUp_deck_local.remove(cpm.getCardComponent());
-
-
                 }
-
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+                }
                 break;
 
             case FORCE_BUILD_PHASE_END:
@@ -847,15 +855,26 @@ public class Client {
                 System.out.println(rank.getWeakerPlayer());
 
                 virtualView.ShowRanking(rank.getRanks(), "POTENZA MOTORI ");
+                String combat_zone_id = rank.getContent();
 
-                if (less_engine.equals(nickname)) {
-                    elaborate(new Message(MessageType.ASTRONAUT_LOSS, ""));
-                    break;
-                } else {
 
-                    virtualView.showMessage("\n --- il PLAYER "+ less_engine  + " sta pagando la penitenza ---\n");
+                    if (less_engine.equals(nickname)) {
 
-                }
+                        if (combat_zone_id.equals("1")) {
+                            elaborate(new Message(MessageType.ASTRONAUT_LOSS, ""));
+                            break;
+                        } else {
+
+                            elaborate(new Message(MessageType.CARGO_LOSS, ""));
+                            break;
+                        }
+
+                    }   else {
+
+                        virtualView.showMessage("\n --- il PLAYER " + less_engine + " sta pagando la penitenza ---\n");
+
+                    }
+
 
                 break;
 
@@ -885,15 +904,37 @@ public class Client {
                                 ), coords_m.toString());
 
 
+                    }else{
+                        elaborate(new Message(MessageType.CARGO_LOSS, "2"));
+                        break;
                     }
+
+
                         break;
                 } else {
 
-                    virtualView.showMessage(" --- RIMANI IN ATTESA CHE IL PLAYER FINISCA LA PENITENZA ---");
+                    virtualView.showMessage("\n --- il PLAYER " + less_cannon + " sta pagando la penitenza ---\n");
 
                 }
 
                 break;
+
+
+
+            case CARGO_LOSS:
+                int num_cargo_loss = Integer.parseInt(msg.getContent());
+
+                while(num_cargo_loss > 0){
+
+
+
+
+
+                    num_cargo_loss--;
+                }
+
+
+
 
             default:
 
