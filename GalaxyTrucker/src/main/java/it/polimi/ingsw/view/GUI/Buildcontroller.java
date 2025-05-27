@@ -312,6 +312,46 @@ public class Buildcontroller {
         return crewmate;
     }
 
+    public void highlightCell(Pair<Integer, Integer> coords) {
+        int y = coords.getKey();
+        int x = coords.getValue();
+
+        for (Node node : shipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                // Applica solo uno stile temporaneo per evidenziare questa cella
+                cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
+                return; // Esci subito dopo aver trovato e modificato la cella
+            }
+        }
+    }
+
+    public void resetHighlights(Pair<Integer, Integer> coords) {
+        int y = coords.getKey();
+        int x = coords.getValue();
+
+        for (Node node : shipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                // Applica solo uno stile temporaneo per evidenziare questa cella
+                cell.setStyle("-fx-background-color: lightyellow;");
+                return; // Esci subito dopo aver trovato e modificato la cella
+            }
+        }
+    }
+
+
+
 
     public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
         int y = coords.getKey(); // RIGA

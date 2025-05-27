@@ -528,12 +528,20 @@ public class Client {
                         coords = new Pair<>(i, j);
                         if (component.getComponentType() == LivingUnit) {
                             System.out.println("(testing)Trovata LivingUnit in [" + i + "," + j + "]");
+                            int select;
                             if(virtualViewType == VirtualViewType.GUI) {
                                 List<CrewmateType> crewmates=((GUI)virtualView).getCrewmates(coords);
+                                ((GUI) virtualView).getBuildcontroller().highlightCell(coords);
                                 ((GUI) virtualView).createCrewmateSelectionController(coords, crewmates);
+                                select = virtualView.crewmateAction(coords);
+                                ((GUI) virtualView).getBuildcontroller().resetHighlights(coords);
+
+                            }
+                            else {
+                                select = virtualView.crewmateAction(coords);
                             }
                             CrewmateType type;
-                            int select = virtualView.crewmateAction(coords);
+
 
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
