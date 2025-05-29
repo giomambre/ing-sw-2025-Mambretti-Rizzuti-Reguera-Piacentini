@@ -383,6 +383,7 @@ public class Server {
 
             case FIXED_SHIP_CONNECTORS:
                 ShipClientMessage update_msg = (ShipClientMessage) msg;
+                System.out.println("Inizia fase di controllo delle navi");
                 Ship ship = update_msg.getPlayer().getShip();
                 controller = all_games.get(getLobbyId(update_msg.getId_client()));
 
@@ -450,6 +451,7 @@ public class Server {
                 }
 
                 break;
+
 
 
             case START_FLIGHT:
