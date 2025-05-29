@@ -534,6 +534,7 @@ public class Client {
                                 ((GUI) virtualView).getBuildcontroller().highlightCell(coords);
                                 ((GUI) virtualView).createCrewmateSelectionController(coords, crewmates);
                                 select = virtualView.crewmateAction(coords);
+                                System.out.println("(testing)select: "+select);
                                 ((GUI) virtualView).getBuildcontroller().resetHighlights(coords);
 
                             }
@@ -581,6 +582,9 @@ public class Client {
                     out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
 
                 } else {
+                    if(virtualViewType == VirtualViewType.GUI) {
+                        ((GUI)virtualView).getBuildcontroller().printShip(player_local.getShip(),icm.getInvalids());
+                    }
                     player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
                     out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
 
