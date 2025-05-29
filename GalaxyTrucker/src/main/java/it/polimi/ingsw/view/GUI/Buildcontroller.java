@@ -332,9 +332,14 @@ public class Buildcontroller {
             if (rowIndex == null) rowIndex = 0;
 
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                // Applica solo uno stile temporaneo per evidenziare questa cella
-                cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
-                return; // Esci subito dopo aver trovato e modificato la cella
+                // Se la cella contiene un'immagine, applica il bordo all'immagine
+                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
+                    imageView.setStyle("-fx-effect: dropshadow(gaussian, gold, 5, 0.8, 0, 0); -fx-border-color: gold; -fx-border-width: 3px;");
+                } else {
+                    // Se la cella è vuota, applica il bordo alla StackPane
+                    cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
+                }
+                return;
             }
         }
     }
@@ -351,11 +356,17 @@ public class Buildcontroller {
             if (rowIndex == null) rowIndex = 0;
 
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                // Applica solo uno stile temporaneo per evidenziare questa cella
-                cell.setStyle("-fx-background-color: lightyellow;");
-                return; // Esci subito dopo aver trovato e modificato la cella
+                // Se la cella contiene un'immagine, rimuovi gli effetti dall'immagine
+                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
+                    imageView.setStyle(""); // Rimuovi tutti gli stili
+                } else {
+                    // Se la cella è vuota, rimuovi il bordo dalla StackPane
+                    cell.setStyle("-fx-background-color: lightyellow;");
+                }
+                return;
             }
         }
+
     }
 
 
