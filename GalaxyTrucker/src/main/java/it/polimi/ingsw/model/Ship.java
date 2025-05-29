@@ -150,7 +150,7 @@ public class Ship implements Serializable {
             }
         }
 
-        //player.utilePerTestare();
+        player.utilePerTestare();
 
     }
 
@@ -160,7 +160,7 @@ public class Ship implements Serializable {
      * @param battery_usage the batteries used by the player in case he decides to activate the double cannon
      * @return power
      */
-    public double calculateCannonPower(Map<CardComponent, Boolean> battery_usage) { //after the validity check , get battery_usage from controller i think
+    public double calculateCannonPower(Map<Pair<Integer,Integer>, Boolean> battery_usage) { //after the validity check , get battery_usage from controller i think
         double power = 0;
         CardComponent tmp;
         for (int row = 0; row < ROWS; row++) {
@@ -177,7 +177,7 @@ public class Ship implements Serializable {
 
                     case DoubleCannon:
                         double local_power = 0; //
-                        boolean useBattery = battery_usage.getOrDefault(tmp, false);
+                        boolean useBattery = battery_usage.getOrDefault(new Pair<>(row,col), false);
 
                         if (tmp.getConnector(North) == Cannon_Connector) local_power++;
 
@@ -329,7 +329,7 @@ public class Ship implements Serializable {
      * @param battery_usage the batteries used by the player in case he decides to activate the double engine
      * @return power
      */
-    public double calculateEnginePower(Map<CardComponent, Boolean> battery_usage) { //after the validity check
+    public double calculateEnginePower(Map<Pair<Integer,Integer>, Boolean> battery_usage) { //after the validity check
         double power = 0;
         CardComponent tmp;
 
@@ -347,7 +347,7 @@ public class Ship implements Serializable {
 
                     case DoubleEngine:
 
-                        boolean useBattery = battery_usage.getOrDefault(tmp, false);
+                        boolean useBattery = battery_usage.getOrDefault(new Pair<>(row,col), false);
 
                         if (useBattery) power += 2;
                         else power += 1;

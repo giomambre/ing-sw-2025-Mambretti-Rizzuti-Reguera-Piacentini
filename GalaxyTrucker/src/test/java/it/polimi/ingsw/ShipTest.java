@@ -100,9 +100,9 @@ public class ShipTest {
         player1.getShip().addComponent(new CardComponent(DoubleEngine, connectors,""), 3, 2);
         player1.getShip().addComponent(new CardComponent(Engine, connectors,""), 4, 1);
 
-        Map<CardComponent, Boolean> player1BatteryUsage = new HashMap<>();
-        player1BatteryUsage.put(player1.getShip().getComponent(3, 2), true);
-        player1BatteryUsage.put(player1.getShip().getComponent(4, 1), false);
+        Map<Pair<Integer,Integer>, Boolean> player1BatteryUsage = new HashMap<>();
+        player1BatteryUsage.put(new Pair<>(3, 2), true);
+        player1BatteryUsage.put(new Pair<>(4, 1), false);
 
 
         player2.getShip().addComponent(new CardComponent(DoubleEngine, connectors,""), 3, 1);
@@ -110,9 +110,9 @@ public class ShipTest {
         player2.getShip().addComponent(new CardComponent(Engine, connectors,""), 3, 3);
         player2.getShip().addComponent(new CardComponent(DoubleEngine, connectors,""), 3, 4);
 
-        Map<CardComponent, Boolean> player2BatteryUsage = new HashMap<>();
+        Map<Pair<Integer,Integer>, Boolean> player2BatteryUsage = new HashMap<>();
 
-        player2BatteryUsage.put(player2.getShip().getComponent(3, 1), true);
+        player2BatteryUsage.put(new Pair<>(3, 1), true);
 
 
         assertEquals(3, player1.getShip().calculateEnginePower(player1BatteryUsage));

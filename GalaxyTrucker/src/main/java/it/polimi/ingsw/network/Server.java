@@ -722,7 +722,17 @@ public class Server {
                                     if (controller.getListCannonPower().size() == controller.getActivePlayers().size()) {
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "0", controller.getListCannonPower()));
+                                        controller.movePlayer(controller.getLeastCannon(),- controller.getCurrentAdventure().getCost_of_days());
+
+                                        sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + controller.getLeastCannon()
+                                                + " HA pagato la penitenza , ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
                                         controller.getListCannonPower().clear();
+                                        controller.initializeAdventure(controller.getCurrentAdventure());
+                                        curr_nick = controller.nextAdventurePlayer();
+                                        sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", controller.getCurrentAdventure()));
+                                        sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motori ! \n", curr_nick));
+
+
                                         break;
 
                                     }
@@ -733,6 +743,31 @@ public class Server {
 
 
                                     break;
+
+
+                                case "eng":
+
+                                    power = Double.parseDouble(type[1]);
+                                    controller.addEngineValue(getNickname(cbz_msg.getId_client()), power);
+                                    sendToAllClients(controller.getLobby(), new Message(ENGINE_POWER, getNickname(cbz_msg.getId_client()) + " " + power));
+
+                                    if (controller.getEngineValues().size() == controller.getActivePlayers().size()) {
+
+                                        sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK, "0", controller.getEngineValues()));
+                                        controller.getEngineValues().clear();
+                                        adventure = controller.getRandomAdventure();
+                                        manageAdventure(adventure,controller);
+
+                                        break;
+
+                                    }
+
+
+                                    curr_nick = controller.nextAdventurePlayer();
+                                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
+
+                                    break;
                             }
 
 
@@ -740,6 +775,19 @@ public class Server {
 
                 }
                 break;
+
+            case CARGO_LOSS:
+                String[] type = msg.getContent().split("\\s+");
+
+                if(type[0].equals("cz")){
+
+
+
+
+                }
+
+
+
 
             case END_FLIGHT:
                 StandardMessageClient end_msg = (StandardMessageClient) msg;
@@ -874,7 +922,7 @@ public class Server {
                     String curr_nick = controller.nextAdventurePlayer();
 
                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", adventure));
-                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
+                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
 
 
                 }

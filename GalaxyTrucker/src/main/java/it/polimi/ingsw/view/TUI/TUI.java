@@ -746,7 +746,9 @@ public class TUI implements View {
 
     public void printBorder(String content) {
 
-        String[] lines = content.split("\\R");
+        String contentWithoutAnsi = content.replaceAll("\u001B\\[[;\\d]*m", "");
+
+        String[] lines = contentWithoutAnsi.split("\\R");
         int maxLength = 0;
 
         for (String line : lines) {
@@ -755,17 +757,19 @@ public class TUI implements View {
             }
         }
 
-
         String border = "═".repeat(maxLength + 4);
         System.out.println("╔" + border + "╗");
 
-        for (String line : lines) {
+
+        String[] originalLines = content.split("\\R");
+        for (String line : originalLines) {
 
             System.out.printf("║  %-" + maxLength + "s  ║%n", line);
         }
 
         System.out.println("╚" + border + "╝");
     }
+
 
 
     @Override
@@ -1503,7 +1507,7 @@ return total;
 
                 if(((Storage)card).removeCargo(Cargo.Red)){
 
-                    printBorder("HAI PERSO UN CARGO "+RED+" ROSSO" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    printBorder("HAI PERSO UN CARGO "+RED+" ROSSO" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue());
                     System.out.println();
                     return;
                 }
@@ -1718,7 +1722,7 @@ int i = 0;
 
     @Override
     public double declareCannonPower(Ship ship) {
-        Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+       /* Map<CardComponent, Boolean> battery_usage = new HashMap<>();
         List<Pair<Integer, Integer>> doubleCannonPositions = new ArrayList<>();
 
         // Trova tutti i doppi cannoni
@@ -1760,12 +1764,13 @@ int i = 0;
             }
         }
 
-        return ship.calculateCannonPower(battery_usage);
+        return ship.calculateCannonPower(battery_usage);*/
+        return 2.0;
     }
 
     @Override
     public double declareEnginePower(Ship ship) {
-        Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+       /* Map<CardComponent, Boolean> battery_usage = new HashMap<>();
         List<Pair<Integer, Integer>> doubleEnginePositions = new ArrayList<>();
 
         // Trova tutti i doppi motori
@@ -1807,7 +1812,8 @@ int i = 0;
             }
         }
 
-        return ship.calculateEnginePower(battery_usage);
+        return ship.calculateEnginePower(battery_usage);*/
+        return 2.0;
     }
 
 

@@ -873,7 +873,7 @@ public class Client {
                             break;
                         } else {
 
-                            elaborate(new Message(MessageType.CARGO_LOSS, ""));
+                            handleNotification(new Message(MessageType.CARGO_LOSS, ""));
                             break;
                         }
 
@@ -913,16 +913,23 @@ public class Client {
 
 
                     }else{
-                        elaborate(new Message(MessageType.CARGO_LOSS, "2"));
+                        virtualView.showMessage("HAI PERSO 4 GIORNI DI VOLO : ");
+
                         break;
                     }
 
 
                         break;
                 } else {
+                    if(msg.getContent().equals("1")) {
 
-                    virtualView.showMessage("\n --- il PLAYER " + less_cannon + " sta pagando la penitenza ---\n");
+                        virtualView.showMessage("\n --- il PLAYER " + less_cannon + " sta pagando la penitenza di 2 CANNONATE ---\n");
+                    }else{
+                        virtualView.showMessage("\n --- il PLAYER " + less_cannon + " HA pagato la penitenza di 4 GIORNI DI VOLO ---\n");
+                        virtualView.showBasicBoard(local_board_positions,local_board_laps);
 
+
+                    }
                 }
 
                 break;
@@ -936,12 +943,13 @@ public class Client {
 
 
 
-
+                    virtualView.removeCargo(player_local.getShip());
 
                     num_cargo_loss--;
                 }
+                out.writeObject(new StandardMessageClient(MessageType.CARGO_LOSS,"cz",clientId));
 
-
+                break;
 
 
             default:
@@ -963,7 +971,7 @@ public class Client {
             case OpenSpace:
                 OpenSpace openSpace = (OpenSpace) adventure;
                 Ship ship = player_local.getShip();
-                Map<CardComponent, Boolean> battery_usage = new HashMap<>();
+                Map<Pair<Integer,Integer>, Boolean> battery_usage = new HashMap<>();
                 Pair<Integer, Integer> battery;
                 Battery card_battery;
 
@@ -975,14 +983,15 @@ public class Client {
                         if (card.getComponentType() == DoubleEngine) {
 
                             battery = virtualView.askEngine(new Pair<>(i, j));
+
                             if (battery.getKey() == -1 || battery.getValue() == -1) {
 
-                                battery_usage.put(card, false);
+                                battery_usage.put(new Pair<>(i, j), false);
 
                             } else {
 
 
-                                battery_usage.put(card, true);
+                                battery_usage.put(new Pair<>(i, j), true);
                                 card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
 
 
@@ -1417,14 +1426,18 @@ break;
 
                                 if (card.getComponentType() == DoubleEngine) {
 
+                                    System.out.println("\nPOTENZA ATTUALE  :" + player_local.getShip().calculateEnginePower(battery_usage) );
+
+
+
                                     battery = virtualView.askEngine(new Pair<>(k, j));
                                     if (battery.getKey() == -1 || battery.getValue() == -1) {
 
-                                        battery_usage.put(card, false);
+                                        battery_usage.put(new Pair<>(k, j), false);
 
                                     } else {
 
-                                        battery_usage.put(card, true);
+                                        battery_usage.put(new Pair<>(k, j), true);
                                         card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
 
                                         card_battery.removeBattery();
@@ -1456,14 +1469,23 @@ break;
 
                                 if (card.getComponentType() == DoubleEngine) {
 
+
+                                    if(virtualViewType == VirtualViewType.TUI){
+
+                                        System.out.println("\nPOTENZA ATTUALE  :" + player_local.getShip().calculateCannonPower(battery_usage) +  " \n");
+
+
+                                    }
+
+
                                     battery = virtualView.askCannon(new Pair<>(k, j));
                                     if (battery.getKey() == -1 || battery.getValue() == -1) {
 
-                                        battery_usage.put(card, false);
+                                        battery_usage.put(new Pair<>(k, j), false);
 
                                     } else {
 
-                                        battery_usage.put(card, true);
+                                        battery_usage.put(new Pair<>(k, j), true);
                                         card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
 
                                         card_battery.removeBattery();
