@@ -77,7 +77,8 @@ public class Buildcontroller {
 
                 Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardImage = new ImageView(image);
-                cardImage.setFitWidth(100);
+                cardImage.setFitWidth(62);
+                cardImage.setFitHeight(62);
                 cardImage.setPreserveRatio(true);
 
                 final int index = i;
@@ -137,7 +138,8 @@ public class Buildcontroller {
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
         ImageView cardImage = new ImageView(image);
-        cardImage.setFitWidth(100);
+        cardImage.setFitWidth(62);
+        cardImage.setFitHeight(62);
         cardImage.setPreserveRatio(true);
 
         int index = reservedCards.size() - 1;
@@ -166,7 +168,8 @@ public class Buildcontroller {
 
         for (CardComponent card : reserved) {
             ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath()))));
-            view.setFitWidth(60);
+            view.setFitWidth(62);
+            view.setFitHeight(62);
             view.setPreserveRatio(true);
             reservedCardPreview.getChildren().add(view);
         }
@@ -466,8 +469,8 @@ public class Buildcontroller {
                         } else {
                             Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                             ImageView iv = new ImageView(img);
-                            iv.setFitWidth(38);
-                            iv.setFitHeight(38);
+                            iv.setFitWidth(62);
+                            iv.setFitHeight(62);
                             iv.setPreserveRatio(true);
                             iv.setRotate(component.getRotationAngle());
                             cell.getChildren().add(iv);
