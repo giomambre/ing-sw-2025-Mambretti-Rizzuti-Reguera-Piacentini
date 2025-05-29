@@ -21,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
 import javafx.util.Pair;
 import javafx.scene.image.ImageView;
 
@@ -45,6 +46,8 @@ public class Buildcontroller {
     private GridPane shipGrid;
     @FXML
     private Button randomCard;
+
+    @FXML private ScrollPane faceUpScrollPane;
 
     @FXML private HBox reservedCardPreview;
     @FXML private HBox faceupCardPreview;
@@ -89,8 +92,10 @@ public class Buildcontroller {
                 faceupCardPreview.getChildren().add(cardImage);
             }
 
-            faceupCardPreview.setVisible(!faceUpCards.isEmpty());
-            faceupCardPreview.setManaged(!faceUpCards.isEmpty());
+            if (faceUpScrollPane != null) {
+                faceUpScrollPane.setVisible(!faceUpCards.isEmpty());
+                faceUpScrollPane.setManaged(!faceUpCards.isEmpty());
+            }
         });
     }
 

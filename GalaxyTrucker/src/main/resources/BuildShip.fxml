@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
 
 <StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.Buildcontroller">
     <stylesheets>
@@ -32,7 +33,7 @@
             <Insets top="130.0" />
          </StackPane.margin>
         </ImageView>
-   
+
           <VBox alignment="TOP_CENTER" spacing="20" StackPane.alignment="CENTER">
 
            <HBox fx:id="playersButtonBox" alignment="CENTER_LEFT" spacing="10" />
@@ -54,11 +55,16 @@
                <HBox fx:id="reservedCardPreview" alignment="CENTER" managed="false" spacing="10" visible="false" />
            </VBox>
 
-           <VBox alignment="CENTER" spacing="5">
-               <Label style="-fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-text-fill: #fef6d5; -fx-font-size: 15;" text="Carte Scartate (Face-Up)" />
-               <HBox fx:id="faceupCardPreview" alignment="CENTER" managed="false" spacing="10" visible="false" />
-           </VBox>
-   
+              <VBox alignment="CENTER" spacing="5">
+                  <Label style="-fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-text-fill: #fef6d5; -fx-font-size: 15;" text="Carte Scartate (Face-Up)" />
+                  <ScrollPane fx:id="faceUpScrollPane" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" fitToHeight="true"
+                              managed="false" visible="false" prefHeight="130">
+                      <content>
+                          <HBox fx:id="faceupCardPreview" alignment="CENTER_LEFT" spacing="10" pickOnBounds="false" />
+                      </content>
+                  </ScrollPane>
+              </VBox>
+
           </VBox>
    </children>
 </StackPane>
