@@ -139,7 +139,7 @@ public class Buildcontroller {
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
         ImageView cardImage = new ImageView(image);
         cardImage.setFitWidth(62);
-        cardImage.setFitHeight(62);
+        cardImage.setFitHeight(61);
         cardImage.setPreserveRatio(true);
 
         int index = reservedCards.size() - 1;
