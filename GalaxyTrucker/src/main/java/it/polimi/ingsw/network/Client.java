@@ -587,7 +587,7 @@ public class Client {
 
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
-                        ((GUI)virtualView).getBuildcontroller().printShip(player_local.getShip(),icm.getInvalids());
+                        ((GUI)virtualView).getBuildcontroller().printInvalidsConnector(player_local.getShip(),icm.getInvalids());
                     }
                     player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
                     out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));

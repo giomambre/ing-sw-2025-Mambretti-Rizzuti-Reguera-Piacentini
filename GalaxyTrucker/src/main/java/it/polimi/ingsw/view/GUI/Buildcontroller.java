@@ -466,7 +466,7 @@ public class Buildcontroller {
 
 
 
-    public void printShip(Ship ship, List<Pair<Integer, Integer>> connectors) {
+    public void printInvalidsConnector(Ship ship, List<Pair<Integer, Integer>> connectors) {
         this.invalidConnectors = connectors;
         while(!connectors.isEmpty()) {
             Platform.runLater(() -> {
@@ -488,13 +488,13 @@ public class Buildcontroller {
                             }
                             cell.setStyle("-fx-background-color: lightgray;");
                         } else {
-                            Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
+                           /* Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                             ImageView iv = new ImageView(img);
                             iv.setFitWidth(62);
                             iv.setFitHeight(62);
                             iv.setPreserveRatio(true);
                             iv.setRotate(component.getRotationAngle());
-                            cell.getChildren().add(iv);
+                            cell.getChildren().add(iv);*/
                         }
 
                         if (connectors.contains(currentCoords)) {
