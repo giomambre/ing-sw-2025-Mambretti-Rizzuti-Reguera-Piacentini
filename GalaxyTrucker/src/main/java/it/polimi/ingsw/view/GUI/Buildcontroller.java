@@ -468,7 +468,7 @@ public class Buildcontroller {
 
     public void printInvalidsConnector(Ship ship, List<Pair<Integer, Integer>> connectors) {
         this.invalidConnectors = connectors;
-        while(!connectors.isEmpty()) {
+
             Platform.runLater(() -> {
                 shipGrid.getChildren().clear();
 
@@ -482,11 +482,12 @@ public class Buildcontroller {
                         final int col = j;
                         Pair<Integer, Integer> currentCoords = new Pair<>(row, col);
 
-                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty) {
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty ) {
                             if (component == null) {
                                 System.out.println("DEBUG: shipBoard[" + i + "][" + j + "] is null");
                             }
                             cell.setStyle("-fx-background-color: lightgray;");
+                            cell.setOnMouseClicked(null);
                         } else {
                            /* Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                             ImageView iv = new ImageView(img);
@@ -495,6 +496,7 @@ public class Buildcontroller {
                             iv.setPreserveRatio(true);
                             iv.setRotate(component.getRotationAngle());
                             cell.getChildren().add(iv);*/
+
                         }
 
                         if (connectors.contains(currentCoords)) {
@@ -503,12 +505,8 @@ public class Buildcontroller {
                                 ship.removeComponent(row, col);
                                 removeImage(row, col);
                                 connectors.remove(currentCoords);
-                                if (invalidConnectors.isEmpty()) {
-                                    gui.showMessage("Tutti i connettori invalidi sono stati rimossi!");
-                                    if (shipUpdateFuture != null && !shipUpdateFuture.isDone()) {
-                                        shipUpdateFuture.complete(ship);
-                                    }
-                                }
+                                cell.setOnMouseClicked(null);
+
                             });
                             // Cambia il cursore per indicare che è cliccabile
                             cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
@@ -523,7 +521,7 @@ public class Buildcontroller {
                     gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
                 }
             });
-        }
+
     }
 
     public void removeImage(int i, int j) {

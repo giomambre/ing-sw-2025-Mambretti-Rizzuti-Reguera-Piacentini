@@ -71,7 +71,7 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("localhost", 12345);
+            Socket socket = new Socket("4.tcp.eu.ngrok.io", 12723);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
@@ -587,9 +587,20 @@ public class Client {
 
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
-                        ((GUI)virtualView).getBuildcontroller().printInvalidsConnector(player_local.getShip(),icm.getInvalids());
+
+
+                        while(icm.getInvalids().isEmpty()) {
+
+                            ((GUI)virtualView).getBuildcontroller().printInvalidsConnector(player_local.getShip(),icm.getInvalids());
+
+
+
+                        }
+
+                    }else {
+                        player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
+
                     }
-                    player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
                     out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
 
                 }
