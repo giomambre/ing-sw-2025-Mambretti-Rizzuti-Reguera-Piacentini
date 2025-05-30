@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.CrewmateType;
+import it.polimi.ingsw.model.enumerates.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +26,10 @@ import javafx.scene.image.ImageView;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import javafx.scene.image.Image;
+
+import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.Direction.West;
 
 public class Buildcontroller {
     private GUI gui;
@@ -196,6 +198,7 @@ public class Buildcontroller {
         CardComponent[][] shipboard=gui.getClient().getPlayer_local().getShip().getShipBoard();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
+
                 StackPane cell = new StackPane();
 
                 cell.setPrefSize(62, 62);
@@ -212,6 +215,7 @@ public class Buildcontroller {
                         final int b = j;
                         cell.setOnMouseClicked(e -> {
                             coords.complete(new Pair<>(a, b));
+
                             if (gui.getRandomcardcontroller().getStage() != null) {
                                 gui.getRandomcardcontroller().getStage().close();
                             }
@@ -223,18 +227,34 @@ public class Buildcontroller {
                     Color color = gui.getClient().getPlayer_local().getColor();
                     String imagePath = null;
 
+
+                    Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
+                    connectors.put(North, Empty_Connector);
+                    connectors.put(South, Empty_Connector);
+                    connectors.put(East, Empty_Connector);
+                    connectors.put(West, Empty_Connector);
+
+
                     switch (color) {
                         case BLUE:
                             imagePath = "/images/cardComponent/GT-mainUnitBlue.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitBlue,connectors,imagePath);
+
                             break;
                         case RED:
                             imagePath = "/images/cardComponent/GT-mainUnitRed.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitRed,connectors,imagePath);
+
                             break;
                         case GREEN:
                             imagePath = "/images/cardComponent/GT-mainUnitGreen.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitGreen,connectors,imagePath);
+
                             break;
                         case YELLOW:
                             imagePath = "/images/cardComponent/GT-mainUnitYellow.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitYellow,connectors,imagePath);
+
                             break;
                     }
 
@@ -359,21 +379,21 @@ public class Buildcontroller {
     }
 
 
-    public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
+    public int placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
         int y = coords.getKey(); // RIGA
         int x = coords.getValue(); // COLONNA
         if((y==0&x==0)||(y==1&x==0)||(y==0&x==1)||(y==0&x==3)||(y==1&x==6)||(y==0&x==5)||(y==0&x==6)){
             gui.showMessage("Posizione non valida!");
-            return;
+            return 0 ;
         }
         if(pickedcoords.contains(coords)){
             gui.showMessage("Posizione già presa!");
-            return;
+            return 0 ;
         }
         pickedcoords.add(coords);
         String imagePath = card.getImagePath();
 
-        if (imagePath == null) return;
+        if (imagePath == null) return 0;
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         ImageView imageView = new ImageView(image);
@@ -404,6 +424,7 @@ public class Buildcontroller {
         // Aggiorna il modello della nave con la carta piazzata (opzionale)
         CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
         shipboard[y][x] = card;
+        return 1;
     }
 
     public void showShipForPlayer(String nickname) {

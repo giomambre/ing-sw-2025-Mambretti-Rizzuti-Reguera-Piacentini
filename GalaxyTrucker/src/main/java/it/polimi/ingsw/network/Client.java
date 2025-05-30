@@ -482,12 +482,16 @@ public class Client {
                 if (sel == 2) {
 
                     Pair<Integer, Integer> coords = virtualView.askCoords(player_local.getShip());
+
+
                     if (coords.getKey() == -1 || coords.getValue() == -1) {
-                        elaborate(new Message(MessageType.BUILD_START, ""));
+                        elaborate(card_msg);
                         break;
                     } else {
 
+
                         out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
+
                         player_local.addToShip(card_msg.getCardComponent(), coords.getKey(), coords.getValue());
 
                         elaborate(new Message(MessageType.BUILD_START, ""));

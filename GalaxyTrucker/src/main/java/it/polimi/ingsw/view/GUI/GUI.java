@@ -436,6 +436,12 @@ public class GUI implements View {
     public Pair<Integer, Integer> askCoords(Ship ship) {
         try {
             Pair<Integer,Integer> coords=buildcontroller.getCoords().get();
+
+            if(client.getPlayer_local().getShip().getComponent(coords.getKey(),coords.getValue()).getComponentType() != ComponentType.Empty){
+
+                return new Pair<>(-1,-1);
+
+            }
             buildcontroller.resetCoords();
             Platform.runLater(() -> {
                 CardComponent selectedCard = getActualcard();
