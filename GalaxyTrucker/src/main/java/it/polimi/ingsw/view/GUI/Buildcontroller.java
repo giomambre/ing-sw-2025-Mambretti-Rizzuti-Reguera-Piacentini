@@ -466,70 +466,68 @@ public class Buildcontroller {
 
 
     public void printInvalidsConnector(Ship ship, List<Pair<Integer, Integer>> connectors) {
-        this.invalidConnectors = connectors; // Aggiorna la lista locale di connettori invalidi
+        this.invalidConnectors = connectors;
 
         Platform.runLater(() -> {
-            shipGrid.getChildren().clear();
-
+            // Fase 1: Reset di tutte le celle esistenti
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
-                    StackPane cell = new StackPane();
-                    cell.setPrefSize(40, 40);
+                    StackPane cell = (StackPane) shipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
 
-                    CardComponent component = ship.getShip_board()[i][j];
-                    final int row = i;
-                    final int col = j;
-                    Pair<Integer, Integer> currentCoords = new Pair<>(row, col);
-
-                    if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty ) {
-                        if (component == null) {
-                            System.out.println("DEBUG: shipBoard[" + i + "][" + j + "] is null");
-                        }
-                        cell.setStyle("-fx-background-color: lightgray;");
-                        cell.setOnMouseClicked(null); // Non cliccabile
-                    } else {
-                        // ... (codice per visualizzare l'immagine se necessario)
-                    }
-
-                    if (connectors.contains(currentCoords)) {
-                        highlightCell(currentCoords);
-                        cell.setOnMouseClicked(e -> {
-                            ship.removeComponent(row, col);
-                            removeImage(row, col);
-
-                            connectors.remove(currentCoords);
-                            this.invalidConnectors.remove(currentCoords);
-
-                            cell.setOnMouseClicked(null);
+                    if (cell != null) {
+                        cell.setStyle("");
+                        cell.setOnMouseClicked(null);
+                        CardComponent component = ship.getShip_board()[i][j];
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty) {
                             cell.setStyle("-fx-background-color: lightgray;");
-
-                            if (this.invalidConnectors.isEmpty()) {
-                                gui.showMessage("Tutti i connettori invalidi sono stati rimossi!");
-
-                                try {
-
-                                    System.out.println("DEBUG: Tutti i connettori rimossi. Invia messaggio al server.");
-                                    if (shipUpdateFuture != null && !shipUpdateFuture.isDone()) {
-                                        shipUpdateFuture.complete(ship); // Completa la Future
-                                    }
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
-                        });
-                        cell.setStyle(cell.getStyle() + " -fx-cursor: hand;"); // Cambia cursore
-                    } else {
-                        // Assicurati che le celle non evidenziate abbiano il cursore predefinito
+                        }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
                     }
-
-                    shipGrid.add(cell, j, i);
                 }
             }
 
-            // Mostra messaggio all'utente se ci sono connettori invalidi
+            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
+            for (Pair<Integer, Integer> currentCoords : connectors) {
+                int row = currentCoords.getKey();
+                int col = currentCoords.getValue();
+
+                StackPane cell = (StackPane) shipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+
+                if (cell != null) {
+                    highlightCell(currentCoords);
+                    cell.setOnMouseClicked(e -> {
+                        // Logica di rimozione della carta
+                        ship.removeComponent(row, col);
+                        removeImage(row, col);
+
+                        // Non rimuovere da 'connectors' o 'this.invalidConnectors' qui.
+                        // Verranno aggiornate dalla successiva chiamata a printInvalidsConnector.
+
+                        // Ricalcola i connettori invalidi dopo la rimozione
+                        List<Pair<Integer, Integer>> updatedInvalids = ship.checkShipConnections();
+
+                        if (updatedInvalids.isEmpty()) {
+                            gui.showMessage("Tutti i connettori invalidi sono stati rimossi!");
+                            System.out.println("DEBUG: Tutti i connettori rimossi. Invia messaggio al server.");
+                            if (shipUpdateFuture != null && !shipUpdateFuture.isDone()) {
+                                shipUpdateFuture.complete(ship);
+                            }
+                        } else {
+                            // Richiama la stessa funzione con la lista aggiornata
+                            printInvalidsConnector(ship, updatedInvalids);
+                        }
+                    });
+                    cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+                }
+            }
+
             if (!connectors.isEmpty()) {
                 gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
+            } else {
+                // Se la lista passata è già vuota all'inizio (es. dopo l'ultimo clic)
+                // Assicurati che il messaggio di successo sia comunque mostrato.
+                // Questa parte potrebbe essere ridondante se la logica di 'if (updatedInvalids.isEmpty())' è sempre raggiunta.
+                // Potrebbe essere utile se la funzione viene chiamata con una lista vuota dall'esterno.
             }
         });
     }
