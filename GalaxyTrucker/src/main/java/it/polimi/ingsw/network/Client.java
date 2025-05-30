@@ -581,32 +581,28 @@ public class Client {
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if (icm.getInvalids().isEmpty()) {
-
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
                     out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
-
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
 
+                        ((GUI)virtualView).getBuildcontroller().printInvalidsConnector(player_local.getShip(), icm.getInvalids());
 
-                        while(icm.getInvalids().isEmpty()) {
+                        try {
 
-                            ((GUI)virtualView).getBuildcontroller().printInvalidsConnector(player_local.getShip(),icm.getInvalids());
-
-
-
+                            Ship updatedShip = ((GUI)virtualView).getBuildcontroller().getUpdatedShip().get();
+                            out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
                         }
 
-                    }else {
+                    } else {
+
                         player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
-
+                        out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                     }
-                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
-
                 }
-
                 break;
-
 
             case SELECT_PIECE:
 
