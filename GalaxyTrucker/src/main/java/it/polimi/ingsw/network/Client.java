@@ -823,7 +823,13 @@ public class Client {
 
 
             case START_FLIGHT:
-                virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
+                if (virtualViewType == VirtualViewType.GUI) {
+                        Board b = player_local.getGame().getBoard();
+                        ((GUI) virtualView).createFlyghtScreen(b.getBoard(), b.getLaps());
+                }
+                else if (virtualViewType == VirtualViewType.TUI) {
+                    virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
+                }
                 break;
 
 

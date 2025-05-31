@@ -60,7 +60,8 @@ public class GUI implements View {
         return client;
     }
 
-
+    private FlyghtController flyghtController;
+    private boolean isFlyghtScreenActive = false;
 
     public void setClientCallback(ClientCallBack callback) {
         this.clientCallback = callback;
@@ -327,6 +328,68 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }
+
+    public void createFlyghtScreen(Map<Integer, Player> positions, Map<Integer, Player> laps) {
+        if (this.flyghtController != null && isFlyghtScreenActive) {
+            Platform.runLater(() -> {
+                stage.toFront();
+                stage.requestFocus();
+                stage.show(); // riportala in primo piano
+                flyghtController.updatePlayerShip();
+            });
+            return;
+        }
+
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlyghtBoard.fxml"));
+                Parent root = loader.load();
+
+                FlyghtController controller = loader.getController(); // usa controller FXML
+                controller.setGUI(this); // passa la GUI, con il client corretto
+                this.flyghtController = controller;
+
+                Scene scene = new Scene(root);
+                stage.setTitle("Flyght Game Board");
+                stage.setScene(scene);
+                stage.centerOnScreen();
+                stage.show();
+                isFlyghtScreenActive = true;
+
+                stage.setOnCloseRequest((event) -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+
+                // Dopo che tutto è pronto, inizializza i componenti
+                controller.updatePlayerShip();
+
+                // Se ci sono già posizioni dei giocatori, aggiornale
+                if (client != null && client.getOther_players_local() != null) {
+
+                     controller.updatePlayerPositions(positions, laps);
+                }
+
+                // Aggiorna il giocatore corrente se disponibile
+                if (client != null && client.getPlayer_local() != null) {
+                    controller.updateCurrentPlayer(client.getPlayer_local().getNickname());
+                }
+
+                future.complete(null);  // GUI pronta
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                future.completeExceptionally(ex);
+            }
+        });
+
+        try {
+            future.get(); // aspetta la GUI
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public int selectDeck() {
         try {
@@ -642,7 +705,8 @@ public class GUI implements View {
 
     @Override
     public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
-
+        FlyghtController controller = new FlyghtController();
+        controller.updatePlayerPositions(positions, laps);
     }
 
     @Override

@@ -1,0 +1,542 @@
+package it.polimi.ingsw.view.GUI;
+
+import it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.enumerates.*;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import javafx.util.Pair;
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+
+public class FlyghtController {
+    private GUI gui;
+    private CompletableFuture<Integer> adventureCardAction = new CompletableFuture<>();
+    private List<Player> players = new ArrayList<>();
+    private Map<String, ImageView> playerPawns = new HashMap<>();
+    private Map<Integer, Player> playerPositions = new HashMap<>(); // posizione -> Player
+    private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
+
+    // FXML Components
+    @FXML
+    private GridPane boardGrid; // Board centrale 5x5
+
+    @FXML
+    private GridPane playerShipGrid; // Nave del player (basso a destra)
+
+    @FXML
+    private VBox adventureCardArea; // Area carte avventura (alto a destra)
+
+    @FXML
+    private HBox playersInfoBox; // Info giocatori
+
+    @FXML
+    private Label currentPlayerLabel;
+
+    @FXML
+    private Button endTurnButton;
+
+    @FXML
+    private Button drawAdventureCardButton;
+
+    // Dimensioni della board
+    private static final int BOARD_SIZE = 5;
+    private static final int CELL_SIZE = 80;
+    private static final int SHIP_CELL_SIZE = 40;
+
+    /**
+     * Inizializza il controller
+     */
+    public void initialize() {
+        setupBoardGrid();
+        setupPlayerShipGrid();
+        setupAdventureCardArea();
+    }
+
+    /**
+     * Imposta la GUI di riferimento
+     */
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
+
+    /**
+     * Configura la griglia della board centrale (5x5)
+     */
+    private void setupBoardGrid() {
+        boardGrid.getChildren().clear();
+        boardGrid.setPrefSize(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
+        boardGrid.setMinSize(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
+        boardGrid.setMaxSize(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
+
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                StackPane cell = createBoardCell(i, j);
+                boardGrid.add(cell, j, i);
+            }
+        }
+    }
+
+    /**
+     * Crea una singola cella della board (non cliccabile, solo visualizzazione)
+     */
+    private StackPane createBoardCell(int row, int col) {
+        StackPane cell = new StackPane();
+        cell.setPrefSize(CELL_SIZE, CELL_SIZE);
+        cell.setMinSize(CELL_SIZE, CELL_SIZE);
+        cell.setMaxSize(CELL_SIZE, CELL_SIZE);
+
+        // Stile della cella (non cliccabile)
+        cell.setStyle("-fx-border-color: black; -fx-border-width: 1px; " +
+                "-fx-background-color: lightblue;");
+
+        return cell;
+    }
+
+    /**
+     * Configura la griglia della nave del player (basso a destra)
+     */
+    private void setupPlayerShipGrid() {
+        playerShipGrid.getChildren().clear();
+        playerShipGrid.setPrefSize(7 * SHIP_CELL_SIZE, 5 * SHIP_CELL_SIZE);
+        playerShipGrid.setMinSize(7 * SHIP_CELL_SIZE, 5 * SHIP_CELL_SIZE);
+        playerShipGrid.setMaxSize(7 * SHIP_CELL_SIZE, 5 * SHIP_CELL_SIZE);
+
+        // Inizializza la griglia della nave (7x5 come nel Buildcontroller)
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                StackPane cell = createShipCell(i, j);
+                playerShipGrid.add(cell, j, i);
+            }
+        }
+    }
+
+    /**
+     * Crea una singola cella della nave
+     */
+    private StackPane createShipCell(int row, int col) {
+        StackPane cell = new StackPane();
+        cell.setPrefSize(SHIP_CELL_SIZE, SHIP_CELL_SIZE);
+        cell.setMinSize(SHIP_CELL_SIZE, SHIP_CELL_SIZE);
+        cell.setMaxSize(SHIP_CELL_SIZE, SHIP_CELL_SIZE);
+
+        // Posizioni non accessibili (come nel Buildcontroller)
+        if ((row == 0 && col == 0) || (row == 1 && col == 0) ||
+                (row == 0 && col == 1) || (row == 0 && col == 3) ||
+                (row == 1 && col == 6) || (row == 0 && col == 5) ||
+                (row == 0 && col == 6)) {
+            cell.setStyle("-fx-background-color: transparent;");
+        } else {
+            cell.setStyle("-fx-border-color: gray; -fx-border-width: 1px; " +
+                    "-fx-background-color: lightyellow;");
+        }
+
+        return cell;
+    }
+
+    /**
+     * Configura l'area delle carte avventura
+     */
+    private void setupAdventureCardArea() {
+        adventureCardArea.getChildren().clear();
+        adventureCardArea.setPrefWidth(200);
+        adventureCardArea.setSpacing(10);
+
+        Label titleLabel = new Label("Carte Avventura");
+        titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        adventureCardArea.getChildren().add(titleLabel);
+    }
+
+    /**
+     * Aggiorna la visualizzazione della nave del player
+     */
+    public void updatePlayerShip() {
+        if (gui == null || gui.getClient() == null) return;
+
+        Platform.runLater(() -> {
+            Player localPlayer = gui.getClient().getPlayer_local();
+            if (localPlayer == null || localPlayer.getShip() == null) return;
+
+            CardComponent[][] shipBoard = localPlayer.getShip().getShipBoard();
+
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 7; j++) {
+                    StackPane cell = getShipCellAt(i, j);
+                    if (cell == null) continue;
+
+                    cell.getChildren().clear();
+
+                    CardComponent component = shipBoard[i][j];
+                    if (component != null &&
+                            component.getComponentType() != ComponentType.Empty &&
+                            component.getComponentType() != ComponentType.NotAccessible) {
+
+                        String imagePath = component.getImagePath();
+                        if (imagePath != null) {
+                            try {
+                                Image image = new Image(Objects.requireNonNull(
+                                        getClass().getResourceAsStream(imagePath)));
+                                ImageView imageView = new ImageView(image);
+                                imageView.setFitWidth(SHIP_CELL_SIZE - 2);
+                                imageView.setFitHeight(SHIP_CELL_SIZE - 2);
+                                imageView.setPreserveRatio(false);
+                                cell.getChildren().add(imageView);
+                            } catch (Exception e) {
+                                System.err.println("Errore nel caricamento immagine: " + imagePath);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Ottiene la cella della nave alle coordinate specificate
+     */
+    private StackPane getShipCellAt(int row, int col) {
+        for (Node node : playerShipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            if (colIndex == col && rowIndex == row && node instanceof StackPane) {
+                return (StackPane) node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Aggiorna le posizioni dei giocatori sulla board usando le Map posizione -> Player
+     */
+    public void updatePlayerPositions(Map<Integer, Player> positions, Map<Integer, Player> laps) {
+        this.playerPositions = positions;
+        this.playerLaps = laps;
+
+        Platform.runLater(() -> {
+            // Rimuovi tutte le pedine esistenti
+            clearPlayerPawns();
+
+            // Aggiungi le pedine per ogni posizione nella Map
+            for (Map.Entry<Integer, Player> entry : positions.entrySet()) {
+                int position = entry.getKey();
+                Player player = entry.getValue();
+
+                if (player != null) {
+                    // Ottieni il numero di giri per questo giocatore (se presente)
+                    Player lapPlayer = laps.get(position);
+                    int lapCount = 0;
+
+                    if (lapPlayer != null && lapPlayer.getNickname().equals(player.getNickname())) {
+                        lapCount = lapPlayer.getNum_laps();
+                    }
+
+                    addPlayerPawnAtPosition(player, position, lapCount);
+                }
+            }
+        });
+    }
+
+    /**
+     * Rimuove tutte le pedine dalla board
+     */
+    private void clearPlayerPawns() {
+        for (Node node : boardGrid.getChildren()) {
+            if (node instanceof StackPane cell) {
+                cell.getChildren().removeIf(child ->
+                        child instanceof VBox && // Cambiato da ImageView a VBox per contenere pedina + label
+                                playerPawns.containsValue(((VBox) child).getChildren().get(0)));
+            }
+        }
+        playerPawns.clear();
+    }
+
+    /**
+     * Aggiunge la pedina di un giocatore sulla board alla posizione specificata con il numero di giri
+     */
+    private void addPlayerPawnAtPosition(Player player, int position, int lapCount) {
+        // Converte la posizione lineare (0-24) in coordinate di griglia (row, col)
+        int playerRow = position / BOARD_SIZE;
+        int playerCol = position % BOARD_SIZE;
+
+        StackPane cell = getBoardCellAt(playerRow, playerCol);
+        if (cell == null) return;
+
+        // Crea un contenitore verticale per pedina + label giri
+        VBox playerContainer = new VBox();
+        playerContainer.setSpacing(2);
+        playerContainer.setAlignment(javafx.geometry.Pos.CENTER);
+
+        // Crea l'immagine della pedina con il colore del player
+        ImageView pawn = createPlayerPawn(player);
+        playerPawns.put(player.getNickname(), pawn);
+
+        // Crea il label con nickname e giri
+        Label playerInfo = new Label(player.getNickname() + " (" + lapCount + ")");
+        playerInfo.setStyle("-fx-font-size: 8px; -fx-text-fill: black; " +
+                "-fx-background-color: white; -fx-background-radius: 3px; " +
+                "-fx-padding: 1px 3px;");
+
+        playerContainer.getChildren().addAll(pawn, playerInfo);
+        cell.getChildren().add(playerContainer);
+    }
+
+    /**
+     * Crea la pedina visuale per un giocatore con il suo colore
+     */
+    private ImageView createPlayerPawn(Player player) {
+        ImageView pawn = new ImageView();
+        pawn.setFitWidth(25);
+        pawn.setFitHeight(25);
+        pawn.setPreserveRatio(true);
+
+        // Prima prova a caricare un'immagine specifica per il colore
+        String pawnImagePath = getPawnImagePath(player.getColor());
+
+        try {
+            Image image = new Image(Objects.requireNonNull(
+                    getClass().getResourceAsStream(pawnImagePath)));
+            pawn.setImage(image);
+        } catch (Exception e) {
+            // Fallback: crea una pedina colorata semplice come cerchio
+            pawn.setStyle("-fx-background-color: " + getColorHex(player.getColor()) +
+                    "; -fx-background-radius: 12px; -fx-border-color: black; " +
+                    "-fx-border-width: 2px; -fx-border-radius: 12px;");
+
+            // Se non c'è immagine, crea un piccolo cerchio colorato
+            StackPane coloredPawn = new StackPane();
+            coloredPawn.setPrefSize(25, 25);
+            coloredPawn.setStyle("-fx-background-color: " + getColorHex(player.getColor()) +
+                    "; -fx-background-radius: 12px; -fx-border-color: black; " +
+                    "-fx-border-width: 2px; -fx-border-radius: 12px;");
+
+            // Restituisce l'ImageView ma con uno stile colorato
+            pawn.setStyle("-fx-background-color: " + getColorHex(player.getColor()) +
+                    "; -fx-background-radius: 12px;");
+        }
+
+        return pawn;
+    }
+
+    /**
+     * Ottiene il percorso dell'immagine della pedina basato sul colore
+     */
+    private String getPawnImagePath(Color color) {
+        switch (color) {
+            case BLUE: return "/images/pawns/pawn_blue.png";
+            case RED: return "/images/pawns/pawn_red.png";
+            case GREEN: return "/images/pawns/pawn_green.png";
+            case YELLOW: return "/images/pawns/pawn_yellow.png";
+            default: return "/images/pawns/pawn_default.png";
+        }
+    }
+
+    /**
+     * Ottiene il codice esadecimale del colore
+     */
+    private String getColorHex(Color color) {
+        switch (color) {
+            case BLUE: return "#0066CC";
+            case RED: return "#CC0000";
+            case GREEN: return "#00CC00";
+            case YELLOW: return "#CCCC00";
+            default: return "#888888";
+        }
+    }
+
+    /**
+     * Ottiene la cella della board alle coordinate specificate
+     */
+    private StackPane getBoardCellAt(int row, int col) {
+        for (Node node : boardGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            if (colIndex == col && rowIndex == row && node instanceof StackPane) {
+                return (StackPane) node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Muove la pedina di un giocatore da una posizione all'altra
+     */
+    public void movePlayerPawn(String nickname, int oldPosition, int newPosition) {
+        Platform.runLater(() -> {
+            // Rimuovi la pedina dalla posizione precedente
+            if (oldPosition >= 0 && oldPosition < 25) {
+                int oldRow = oldPosition / BOARD_SIZE;
+                int oldCol = oldPosition % BOARD_SIZE;
+                StackPane oldCell = getBoardCellAt(oldRow, oldCol);
+                if (oldCell != null) {
+                    ImageView pawn = playerPawns.get(nickname);
+                    if (pawn != null) {
+                        // Rimuovi il VBox contenitore della pedina
+                        oldCell.getChildren().removeIf(child ->
+                                child instanceof VBox &&
+                                        ((VBox) child).getChildren().contains(pawn));
+                    }
+                }
+            }
+
+            // Aggiungi la pedina alla nuova posizione
+            if (newPosition >= 0 && newPosition < 25) {
+                int newRow = newPosition / BOARD_SIZE;
+                int newCol = newPosition % BOARD_SIZE;
+                StackPane newCell = getBoardCellAt(newRow, newCol);
+                if (newCell != null) {
+                    // Trova il player e i suoi giri per la nuova posizione
+                    Player player = playerPositions.get(newPosition);
+                    Player lapPlayer = playerLaps.get(newPosition);
+                    int lapCount = 0;
+
+                    if (player != null && player.getNickname().equals(nickname)) {
+                        if (lapPlayer != null && lapPlayer.getNickname().equals(nickname)) {
+                            // lapCount = lapPlayer.getLaps(); // Da implementare
+                        }
+                        addPlayerPawnAtPosition(player, newPosition, lapCount);
+                    }
+                }
+            }
+
+            // Aggiorna la Map delle posizioni
+            Player player = playerPositions.get(oldPosition);
+            if (player != null && player.getNickname().equals(nickname)) {
+                playerPositions.remove(oldPosition);
+                playerPositions.put(newPosition, player);
+            }
+        });
+    }
+
+    /**
+     * Aggiunge una carta avventura all'area delle carte
+     */
+    public void addAdventureCard(CardComponent card) {
+        Platform.runLater(() -> {
+            try {
+                Image image = new Image(Objects.requireNonNull(
+                        getClass().getResourceAsStream(card.getImagePath())));
+                ImageView cardView = new ImageView(image);
+                cardView.setFitWidth(80);
+                cardView.setFitHeight(120);
+                cardView.setPreserveRatio(true);
+
+                cardView.setOnMouseClicked(e -> {
+                    if (!adventureCardAction.isDone()) {
+                        adventureCardAction.complete(1);
+                    }
+                });
+
+                adventureCardArea.getChildren().add(cardView);
+            } catch (Exception e) {
+                System.err.println("Errore nel caricamento carta avventura: " +
+                        card.getImagePath());
+            }
+        });
+    }
+
+    /**
+     * Pulisce l'area delle carte avventura
+     */
+    public void clearAdventureCards() {
+        Platform.runLater(() -> {
+            adventureCardArea.getChildren().removeIf(node -> node instanceof ImageView);
+        });
+    }
+
+    // Event Handlers FXML
+
+    @FXML
+    public void onEndTurn(ActionEvent event) {
+        System.out.println("Turno terminato");
+        // Logica per terminare il turno
+    }
+
+    @FXML
+    public void onDrawAdventureCard(ActionEvent event) {
+        System.out.println("Pesca carta avventura");
+        if (!adventureCardAction.isDone()) {
+            adventureCardAction.complete(0);
+        }
+    }
+
+    // Getter per i CompletableFuture
+
+    public CompletableFuture<Integer> getAdventureCardAction() {
+        if (adventureCardAction == null || adventureCardAction.isDone()) {
+            adventureCardAction = new CompletableFuture<>();
+        }
+        return adventureCardAction;
+    }
+
+    // Reset methods
+
+    public void resetAdventureCardAction() {
+        adventureCardAction = new CompletableFuture<>();
+    }
+
+    // Getter per le posizioni dei player
+
+    public Map<Integer, Player> getPlayerPositions() {
+        return new HashMap<>(playerPositions);
+    }
+
+    // Utility methods
+
+    /**
+     * Ottiene la posizione di un giocatore sulla board
+     */
+    public int getPlayerPosition(String nickname) {
+        return playerPositions.entrySet().stream()
+                .filter(entry -> entry.getValue().getNickname().equals(nickname))
+                .mapToInt(Map.Entry::getKey)
+                .findFirst()
+                .orElse(-1);
+    }
+
+    /**
+     * Aggiorna il label del giocatore corrente
+     */
+    public void updateCurrentPlayer(String playerName) {
+        Platform.runLater(() -> {
+            if (currentPlayerLabel != null) {
+                currentPlayerLabel.setText("Turno di: " + playerName);
+            }
+        });
+    }
+
+    /**
+     * Mostra un messaggio all'utente
+     */
+    public void showMessage(String message) {
+        if (gui != null) {
+            gui.showMessage(message);
+        } else {
+            System.out.println("Messaggio: " + message);
+        }
+    }
+}
