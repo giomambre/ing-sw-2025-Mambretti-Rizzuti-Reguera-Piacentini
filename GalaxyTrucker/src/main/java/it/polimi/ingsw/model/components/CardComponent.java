@@ -37,9 +37,9 @@ public class CardComponent implements Serializable {
         this.rotationAngle = angle;
     }
     public void addRotationAngle(){
-        rotationAngle+=90;
+        this.rotationAngle+=90;
+        this.rotationAngle %= 360;
     }
-
     /**
      * @param component_type the type of the component
      * @param connectors a map of connectors for each direction
@@ -143,6 +143,9 @@ public class CardComponent implements Serializable {
 
 
         connectors = rotated;
+        addRotationAngle();
+        System.out.println("DEBUG CardComponent: Rotato. Nuovo angolo: " + this.rotationAngle + " per carta UUID: " + this.card_uuid);
+
     }
 
     /**
@@ -176,6 +179,7 @@ public class CardComponent implements Serializable {
     public CardComponent copy() {
         CardComponent copy = new CardComponent(component_type, connectors, imagePath);
         copy.setCard_uuid(card_uuid);
+        copy.setRotationAngle(this.rotationAngle);
         return copy;
     }
 

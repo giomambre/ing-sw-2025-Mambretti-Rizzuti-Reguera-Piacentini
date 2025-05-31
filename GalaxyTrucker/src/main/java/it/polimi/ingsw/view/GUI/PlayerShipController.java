@@ -45,6 +45,8 @@ public class PlayerShipController {
 
                 }
                 else  {
+                    System.out.println("DEBUG: Componente a [" + i + "][" + j + "] ImagePath: " + component.getImagePath() + ", Angolo di rotazione: " + component.getRotationAngle());
+
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                     ImageView iv = new ImageView(img);
                     iv.setFitWidth(38);

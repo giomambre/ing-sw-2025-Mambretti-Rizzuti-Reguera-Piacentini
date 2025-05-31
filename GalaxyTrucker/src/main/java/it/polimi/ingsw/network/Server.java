@@ -361,7 +361,7 @@ public class Server {
                 break;
 
             case CHECK_SHIPS:
-                System.out.println("Inizia fase di controllo delle navi");
+
 
                 msgClient = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(msgClient.getId_client()));

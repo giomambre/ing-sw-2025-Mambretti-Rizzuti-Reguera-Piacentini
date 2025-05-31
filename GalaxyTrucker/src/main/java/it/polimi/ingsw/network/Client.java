@@ -458,9 +458,11 @@ public class Client {
                 if (sel == 1) {
                     CardComponent card = card_msg.getCardComponent();
                     card.rotate();
+
                     if (virtualViewType == VirtualViewType.GUI) {
                         ((GUI) virtualView).setActualcard(card);
                     }
+
                     elaborate(new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", clientId, card));
                     return;
                 }

@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseEvent;
+import java.awt.event.MouseEvent; // Questo import sembra inutilizzato, potresti volerlo rimuovere
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,29 +41,30 @@ public class Choosecolorcontroller{
 
 
     public void setActiveButton(List<Color> colors) {
-            if (colors.contains(Color.BLUE)) {
-                blueRectangle.setVisible(true);
-            } else {
-                blueRectangle.setVisible(false);
-            }
+        // È buona pratica impostare inizialmente tutti i bottoni a invisibile,
+        // e poi renderli visibili solo se il colore è disponibile.
+        // Questo evita problemi se lo stato precedente era visibile.
+        blueRectangle.setVisible(false);
+        redRectangle.setVisible(false);
+        greenRectangle.setVisible(false);
+        yellowRectangle.setVisible(false);
 
-            if (colors.contains(Color.RED)) {
-                redRectangle.setVisible(true);
-            } else {
-                redRectangle.setVisible(false);
-            }
 
-            if (colors.contains(Color.GREEN)) {
-                greenRectangle.setVisible(true);
-            } else {
-                greenRectangle.setVisible(false);
-            }
+        if (colors.contains(Color.BLUE)) {
+            blueRectangle.setVisible(true);
+        }
 
-            if (colors.contains(Color.YELLOW)) {
-                yellowRectangle.setVisible(true);
-            } else {
-                yellowRectangle.setVisible(false);
-            }
+        if (colors.contains(Color.RED)) {
+            redRectangle.setVisible(true);
+        }
+
+        if (colors.contains(Color.GREEN)) {
+            greenRectangle.setVisible(true);
+        }
+
+        if (colors.contains(Color.YELLOW)) {
+            yellowRectangle.setVisible(true);
+        }
 
     }
 
@@ -75,6 +76,7 @@ public class Choosecolorcontroller{
         gui.setStage(stage);
         Scene scene = new Scene(root);
         stage.setTitle("Choosing Color");
+        // Chiamare setActiveButton qui è importante per inizializzare la visibilità
         setActiveButton(gui.getColorsavailable());
         stage.setScene(scene);
         stage.centerOnScreen();
@@ -85,8 +87,16 @@ public class Choosecolorcontroller{
         }));
     }
 
+    private void disableAllColorButtons() {
+        blueRectangle.setDisable(true);
+        yellowRectangle.setDisable(true);
+        redRectangle.setDisable(true);
+        greenRectangle.setDisable(true);
+    }
+
     @FXML
     public void initialize() {
+
         if (gui != null && gui.getColorsavailable() != null) {
             setActiveButton(gui.getColorsavailable());
         }
@@ -95,18 +105,34 @@ public class Choosecolorcontroller{
     @FXML
     public void blueChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.BLUE);
+        // Nascondi il bottone blu
+        blueRectangle.setVisible(false);
+        disableAllColorButtons();
     }
+
     @FXML
     public void yellowChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.YELLOW);
+        // Nascondi il bottone giallo
+        yellowRectangle.setVisible(false);
+        disableAllColorButtons();
     }
+
     @FXML
     public void redChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.RED);
+        // Nascondi il bottone rosso
+        redRectangle.setVisible(false);
+        disableAllColorButtons();
+
     }
+
     @FXML
     public void greenChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.GREEN);
+        // Nascondi il bottone verde
+        greenRectangle.setVisible(false);
+        disableAllColorButtons();
     }
 
     public CompletableFuture<Color> getColorChosen() {
@@ -115,7 +141,4 @@ public class Choosecolorcontroller{
         }
         return colorChosen;
     }
-
-
-
 }
