@@ -480,7 +480,9 @@ public class Buildcontroller {
                         cell.setStyle("");
                         cell.setOnMouseClicked(null);
                         CardComponent component = ship.getShip_board()[i][j];
-                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty) {
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
+                                ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
+                        || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
                             cell.setStyle("-fx-background-color: lightgray;");
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -498,24 +500,20 @@ public class Buildcontroller {
                 if (cell != null) {
                     highlightCell(currentCoords);
                     cell.setOnMouseClicked(e -> {
-                        // Logica di rimozione della carta
                         ship.removeComponent(row, col);
                         removeImage(row, col);
 
-                        // Non rimuovere da 'connectors' o 'this.invalidConnectors' qui.
-                        // Verranno aggiornate dalla successiva chiamata a printInvalidsConnector.
 
-                        // Ricalcola i connettori invalidi dopo la rimozione
+
                         List<Pair<Integer, Integer>> updatedInvalids = ship.checkShipConnections();
 
                         if (updatedInvalids.isEmpty()) {
                             gui.showMessage("Tutti i connettori invalidi sono stati rimossi!");
-                            System.out.println("DEBUG: Tutti i connettori rimossi. Invia messaggio al server.");
+
                             if (shipUpdateFuture != null && !shipUpdateFuture.isDone()) {
                                 shipUpdateFuture.complete(ship);
                             }
                         } else {
-                            // Richiama la stessa funzione con la lista aggiornata
                             printInvalidsConnector(ship, updatedInvalids);
                         }
                     });
