@@ -567,6 +567,14 @@ public class Client {
 
                                 type = CrewmateType.PinkAlien;
                                 ((LivingUnit) component).addAlien(CrewmateType.PinkAlien);
+                                final int x = coords.getKey();
+                                final int y = coords.getValue();
+
+                                if(virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(()-> {
+                                        ((GUI) virtualView).getBuildcontroller().addObject(y, x, "Alien");
+                                    });
+                                }
 
 
                             } else {

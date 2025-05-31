@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -581,7 +582,7 @@ public class Buildcontroller {
         System.out.println("CARTA TROVATA");
 
         StackPane cell = (StackPane) cardNode; // Ora il cast è sicuro e corretto
-        ImageView overlay = createoverlayfortype(type);
+        Node overlay = createoverlayfortype(type);
         System.out.println("overlay trovato");
         if (overlay != null) { // Aggiungi l'overlay solo se è stato creato con successo
             cell.getChildren().add(overlay);
@@ -617,26 +618,38 @@ public class Buildcontroller {
         return null; // Nessuna cella trovata alle coordinate specificate
     }
 
-    public ImageView createoverlayfortype(String type){
+    public Node createoverlayfortype(String type){
         String path;
+
         switch(type){
             case "Astronaut":
-                path="/images/icons/Gemini_Generated_Image_qvn9qtqvn9qtqvn9.jpg";
-                break;
+                path = "/images/icons/astronautPawn.png";
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+
+                for (int i = 0; i < 2; i++) {
+                    ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    img.setFitWidth(40);
+                    img.setFitHeight(40);
+                    img.setPreserveRatio(true);
+                    img.setSmooth(true);
+                    img.setMouseTransparent(true);
+                    container.getChildren().add(img);
+                }
+                return container;
+
+            case "Alien":
+                path = "/images/icons/alien.png";
+                ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                img.setFitWidth(40);
+                img.setFitHeight(40);
+                img.setMouseTransparent(true);
+                return img;
 
             default:
                 return null;
         }
-
-        if(path==null){
-            System.out.println("ERROR:path null");
-            return null;
-        }
-        ImageView img=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-        img.setFitWidth(30);
-        img.setFitHeight(30);
-        img.setMouseTransparent(true);
-        return img;
     }
 
 
