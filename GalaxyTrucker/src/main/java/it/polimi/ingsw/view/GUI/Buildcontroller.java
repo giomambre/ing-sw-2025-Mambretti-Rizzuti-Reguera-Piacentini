@@ -273,6 +273,8 @@ public class Buildcontroller {
         }
     }
 
+
+
     public CompletableFuture<Pair<Integer,Integer>> getCoords() {
         if (coords == null || coords.isDone()) {
             coords = new CompletableFuture<>();
@@ -568,6 +570,75 @@ public class Buildcontroller {
     // Metodo per ottenere la nave aggiornata attuale (sincrono)
     public CardComponent[][] getCurrentUpdatedShip() {
         return currentShipBoard;
+    }
+
+
+    public void addObject(int x, int y, String type) {
+        Node cardNode = getCardPosition(x, y); // Il nodo recuperato
+
+        if (cardNode == null) {
+            System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
+            return;
+        }
+        System.out.println("CARTA TROVATA");
+
+        StackPane cell = (StackPane) cardNode; // Ora il cast è sicuro e corretto
+        ImageView overlay = createoverlayfortype(type);
+        System.out.println("overlay trovato");
+        if (overlay != null) { // Aggiungi l'overlay solo se è stato creato con successo
+            cell.getChildren().add(overlay);
+        } else {
+            System.out.println("ERROR: Impossibile creare l'overlay per il tipo: " + type);
+        }
+    }
+
+    /*public Node getCardPosition(int x,int y) {
+        Node card = null;
+        for (Node node : shipGrid.getChildren()) {
+            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
+                card = node;
+            }
+        }
+        return card;
+    }*/
+    public Node getCardPosition(int x, int y) {
+        for (Node node : shipGrid.getChildren()) {
+            // *** MODIFICA QUI: Gestione dei valori null per gli indici ***
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            // Se gli indici non sono esplicitamente impostati, GridPane li considera 0
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            // Ora si usa && per trovare la cella esatta
+            if (colIndex == x && rowIndex == y) {
+                return node; // Questo dovrebbe essere lo StackPane corretto
+            }
+        }
+        return null; // Nessuna cella trovata alle coordinate specificate
+    }
+
+    public ImageView createoverlayfortype(String type){
+        String path;
+        switch(type){
+            case "Astronaut":
+                path="/images/icons/Gemini_Generated_Image_qvn9qtqvn9qtqvn9.jpg";
+                break;
+
+            default:
+                return null;
+        }
+
+        if(path==null){
+            System.out.println("ERROR:path null");
+            return null;
+        }
+        ImageView img=new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+        img.setFitWidth(30);
+        img.setFitHeight(30);
+        img.setMouseTransparent(true);
+        return img;
     }
 
 

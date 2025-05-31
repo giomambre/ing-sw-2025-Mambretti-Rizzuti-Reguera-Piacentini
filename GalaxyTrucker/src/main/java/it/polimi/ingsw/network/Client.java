@@ -553,6 +553,14 @@ public class Client {
                             if (select == 1) {
                                 type = CrewmateType.Astronaut;
                                 ((LivingUnit) component).addAstronauts();
+                                final int x = coords.getKey();
+                                final int y = coords.getValue();
+
+                                if(virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(()-> {
+                                        ((GUI) virtualView).getBuildcontroller().addObject(y, x, "Astronaut");
+                                    });
+                                }
 
 
                             } else if (select == 2) {
