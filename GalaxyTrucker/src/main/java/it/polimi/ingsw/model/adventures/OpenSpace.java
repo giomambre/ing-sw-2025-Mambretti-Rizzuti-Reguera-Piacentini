@@ -38,7 +38,7 @@
          * @param players the list of players whose engine power is evaluated
          * @param batteryUsageMap  map specifying, for each player, which components use batteries
          */
-        public void execute(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap) {
+ /*       public void execute(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap) {
 
 
             for (Player player : players) {
@@ -50,7 +50,7 @@
             }
 
 
-        }
+        }*/
 
 
 

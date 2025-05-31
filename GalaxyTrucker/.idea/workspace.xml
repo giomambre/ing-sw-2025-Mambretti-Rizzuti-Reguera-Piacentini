@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="finendo carte avventura">
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" afterDir="false" />
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="minor changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/Buildcontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/Buildcontroller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/View.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Buildcontroller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Buildcontroller.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,88 +79,91 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.App.executor&quot;: &quot;Run&quot;,
-    &quot;Application.CardComponentLoader.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ClientMultiplo.executor&quot;: &quot;Run&quot;,
-    &quot;Application.JsonLoader.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MainClient.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Multiple Istance Client.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RmiClient.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RmiServer.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Unnamed (1).executor&quot;: &quot;Run&quot;,
-    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AbandonedShipTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AbandonedShipTest.testAbandonedShip.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AbandonedStationTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AbandonedStationTest.testAbandonedStation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BatteryTest.testAddBattery.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BatteryTest.testRemoveBattery.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BoardTest.checkLeaderTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BoardTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BoardTest.testRankingOrder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BoardTest.testmovePlayerBackwardWrappingAroundBoard.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.BoardTest.testmovePlayerForwardWrappingAroundBoardExtremeCase.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CombatZoneTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.EpidemicTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameControllerTest.testAddComponent.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameControllerTest.testAddPlayer.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameControllerTest.testCrewmateSupply.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameControllerTest.testEndPlayerBuildPhase.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.GameControllerTest.testsecureComponent.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.MeteorSwarmTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.OpenSpaceTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.OpenSpaceTest.testAccept_CorrectOrder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.OpenSpaceTest.testAccept_NoBatteries.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects_CorrectOrder.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects_NoBatteries.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PiratesTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PlanetsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PlayerTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PlayerTest.testsecureComponent.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.checkConnection.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.checkShipConnectionsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.findShipPieces.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.testaddComponent.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.testaddComponentCannon.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.testcalculateCannonPower.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest.testcalculateEnginePower.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest2.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest2.testExposedConnectors.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest2.testFindPieces.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest2.testPrintShipPlance.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ShipTest2.testRemoveComponentKillingAlien.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SlaversTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SmugglersTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StorageTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StorageTest.testStorage.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StorageTest.testaddCargo.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ingsw in PSP17.executor&quot;: &quot;Run&quot;,
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/gioma/Downloads/ing-sw-2024-zanoni-valentini-spazzadeschi-spandri-master&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.24316406&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.32299742&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.App.executor": "Run",
+    "Application.CardComponentLoader.executor": "Run",
+    "Application.Client.executor": "Run",
+    "Application.ClientMultiplo.executor": "Run",
+    "Application.JsonLoader.executor": "Run",
+    "Application.MainClient.executor": "Run",
+    "Application.Multiple Istance Client.executor": "Run",
+    "Application.RmiClient.executor": "Run",
+    "Application.RmiServer.executor": "Run",
+    "Application.Server.executor": "Run",
+    "Application.TestGui.executor": "Run",
+    "Application.Unnamed (1).executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "JUnit.AbandonedShipTest.executor": "Run",
+    "JUnit.AbandonedShipTest.testAbandonedShip.executor": "Run",
+    "JUnit.AbandonedStationTest.executor": "Run",
+    "JUnit.AbandonedStationTest.testAbandonedStation.executor": "Run",
+    "JUnit.BatteryTest.testAddBattery.executor": "Run",
+    "JUnit.BatteryTest.testRemoveBattery.executor": "Run",
+    "JUnit.BoardTest.checkLeaderTest.executor": "Run",
+    "JUnit.BoardTest.executor": "Run",
+    "JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces.executor": "Run",
+    "JUnit.BoardTest.testRankingOrder.executor": "Run",
+    "JUnit.BoardTest.testmovePlayerBackwardWrappingAroundBoard.executor": "Run",
+    "JUnit.BoardTest.testmovePlayerForwardWrappingAroundBoardExtremeCase.executor": "Run",
+    "JUnit.CombatZoneTest.executor": "Run",
+    "JUnit.EpidemicTest.executor": "Run",
+    "JUnit.GameControllerTest.executor": "Coverage",
+    "JUnit.GameControllerTest.testAddComponent.executor": "Run",
+    "JUnit.GameControllerTest.testAddPlayer.executor": "Run",
+    "JUnit.GameControllerTest.testCrewmateSupply.executor": "Run",
+    "JUnit.GameControllerTest.testEndPlayerBuildPhase.executor": "Run",
+    "JUnit.GameControllerTest.testsecureComponent.executor": "Run",
+    "JUnit.MeteorSwarmTest.executor": "Run",
+    "JUnit.OpenSpaceTest.executor": "Run",
+    "JUnit.OpenSpaceTest.testAccept_CorrectOrder.executor": "Run",
+    "JUnit.OpenSpaceTest.testAccept_NoBatteries.executor": "Run",
+    "JUnit.OpenSpaceTest.testExecuteAdventureEffects.executor": "Run",
+    "JUnit.OpenSpaceTest.testExecuteAdventureEffects_CorrectOrder.executor": "Run",
+    "JUnit.OpenSpaceTest.testExecuteAdventureEffects_NoBatteries.executor": "Run",
+    "JUnit.PiratesTest.executor": "Run",
+    "JUnit.PlanetsTest.executor": "Run",
+    "JUnit.PlayerTest.executor": "Run",
+    "JUnit.PlayerTest.testsecureComponent.executor": "Run",
+    "JUnit.ShipTest.checkConnection.executor": "Run",
+    "JUnit.ShipTest.checkShipConnectionsTest.executor": "Run",
+    "JUnit.ShipTest.executor": "Run",
+    "JUnit.ShipTest.findShipPieces.executor": "Run",
+    "JUnit.ShipTest.testaddComponent.executor": "Run",
+    "JUnit.ShipTest.testaddComponentCannon.executor": "Run",
+    "JUnit.ShipTest.testcalculateCannonPower.executor": "Run",
+    "JUnit.ShipTest.testcalculateEnginePower.executor": "Run",
+    "JUnit.ShipTest2.executor": "Run",
+    "JUnit.ShipTest2.testExposedConnectors.executor": "Run",
+    "JUnit.ShipTest2.testFindPieces.executor": "Run",
+    "JUnit.ShipTest2.testPrintShipPlance.executor": "Run",
+    "JUnit.ShipTest2.testRemoveComponentKillingAlien.executor": "Run",
+    "JUnit.SlaversTest.executor": "Run",
+    "JUnit.SmugglersTest.executor": "Run",
+    "JUnit.StorageTest.executor": "Run",
+    "JUnit.StorageTest.testStorage.executor": "Run",
+    "JUnit.StorageTest.testaddCargo.executor": "Run",
+    "JUnit.ingsw in PSP17.executor": "Run",
+    "JUnit.java in PSP17.executor": "Coverage",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/gioma/Downloads/ing-sw-2024-zanoni-valentini-spazzadeschi-spandri-master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.24316406",
+    "project.structure.side.proportion": "0.32299742",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\network\server" />
@@ -194,23 +191,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameControllerTest.testAddComponent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TestGui" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.view.GUI.TestGui" />
       <module name="PSP17" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="controllerTests.*" />
+          <option name="PATTERN" value="it.polimi.ingsw.view.GUI.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="controllerTests" />
-      <option name="MAIN_CLASS_NAME" value="controllerTests.GameControllerTest" />
-      <option name="METHOD_NAME" value="testAddComponent" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameControllerTest.testEndPlayerBuildPhase" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="GameControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PSP17" />
       <extension name="coverage">
         <pattern>
@@ -220,24 +214,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="controllerTests" />
       <option name="MAIN_CLASS_NAME" value="controllerTests.GameControllerTest" />
-      <option name="METHOD_NAME" value="testEndPlayerBuildPhase" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="GameControllerTest.testsecureComponent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PSP17" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="controllerTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="controllerTests" />
-      <option name="MAIN_CLASS_NAME" value="controllerTests.GameControllerTest" />
-      <option name="METHOD_NAME" value="testsecureComponent" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -258,13 +235,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="java in PSP17" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PSP17" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TestGui" />
         <item itemvalue="JUnit.ShipTest2.testPrintShipPlance" />
+        <item itemvalue="JUnit.GameControllerTest" />
+        <item itemvalue="JUnit.java in PSP17" />
         <item itemvalue="Application.Server" />
-        <item itemvalue="JUnit.GameControllerTest.testsecureComponent" />
-        <item itemvalue="JUnit.GameControllerTest.testAddComponent" />
-        <item itemvalue="JUnit.GameControllerTest.testEndPlayerBuildPhase" />
       </list>
     </recent_temporary>
   </component>
@@ -419,47 +404,12 @@
       <workItem from="1748265010712" duration="280000" />
       <workItem from="1748265612414" duration="995000" />
       <workItem from="1748274974244" duration="3027000" />
-      <workItem from="1748291582000" duration="2965000" />
-    </task>
-    <task id="LOCAL-00071" summary="continuo inserimento componente">
-      <option name="closed" value="true" />
-      <created>1744662617356</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1744662617356</updated>
-    </task>
-    <task id="LOCAL-00072" summary="continuo inserimento componente">
-      <option name="closed" value="true" />
-      <created>1744663191174</created>
-      <option name="number" value="00072" />
-      <option name="presentableId" value="LOCAL-00072" />
-      <option name="project" value="LOCAL" />
-      <updated>1744663191174</updated>
-    </task>
-    <task id="LOCAL-00073" summary="continuo inserimento componente">
-      <option name="closed" value="true" />
-      <created>1744733710456</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1744733710456</updated>
-    </task>
-    <task id="LOCAL-00074" summary="continuo inserimento componente">
-      <option name="closed" value="true" />
-      <created>1744736340303</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1744736340303</updated>
-    </task>
-    <task id="LOCAL-00075" summary="continuo inserimento componente">
-      <option name="closed" value="true" />
-      <created>1744897242172</created>
-      <option name="number" value="00075" />
-      <option name="presentableId" value="LOCAL-00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1744897242172</updated>
+      <workItem from="1748291582000" duration="3112000" />
+      <workItem from="1748341858389" duration="198000" />
+      <workItem from="1748514079167" duration="169000" />
+      <workItem from="1748518778973" duration="4230000" />
+      <workItem from="1748532201142" duration="480000" />
+      <workItem from="1748614263433" duration="4619000" />
     </task>
     <task id="LOCAL-00076" summary="continuo inserimento componente">
       <option name="closed" value="true" />
@@ -813,7 +763,47 @@
       <option name="project" value="LOCAL" />
       <updated>1748300275647</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL-00120" summary="finendo carte avventura">
+      <option name="closed" value="true" />
+      <created>1748300372176</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1748300372176</updated>
+    </task>
+    <task id="LOCAL-00121" summary="finendo carte avventura">
+      <option name="closed" value="true" />
+      <created>1748527656608</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1748527656609</updated>
+    </task>
+    <task id="LOCAL-00122" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1748616464947</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1748616464947</updated>
+    </task>
+    <task id="LOCAL-00123" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1748617109495</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1748617109495</updated>
+    </task>
+    <task id="LOCAL-00124" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1748617918393</created>
+      <option name="number" value="00124" />
+      <option name="presentableId" value="LOCAL-00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1748617918393</updated>
+    </task>
+    <option name="localTasksCounter" value="125" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -865,7 +855,6 @@
     <MESSAGE value="timer finito e quasi finito controllo" />
     <MESSAGE value="crewmate e tronconi da rivedere e testare" />
     <MESSAGE value="facendo open space manca la parte server, client finito" />
-    <MESSAGE value="minor changes" />
     <MESSAGE value="AbandonedStation  + cinema nella gestione dei cargo" />
     <MESSAGE value="abandoned ship" />
     <MESSAGE value="METEORITI" />
@@ -878,7 +867,8 @@
     <MESSAGE value="ZONA DI GUERRA CONTINUA..." />
     <MESSAGE value="ZONA DI GUERRA finita e epidemic pure" />
     <MESSAGE value="finendo carte avventura" />
-    <option name="LAST_COMMIT_MESSAGE" value="finendo carte avventura" />
+    <MESSAGE value="minor changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -892,9 +882,9 @@
           <option name="timeStamp" value="7" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java</url>
-          <line>603</line>
-          <option name="timeStamp" value="29" />
+          <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java</url>
+          <line>349</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -903,5 +893,11 @@
         <PinnedItemInfo parentTag="it.polimi.ingsw.model.Game" memberName="active_players" />
       </pinned-members>
     </pin-to-top-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/GalaxyTrucker$GameControllerTest.ic" NAME="GameControllerTest Coverage Results" MODIFIED="1748342038615" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>controllerTests.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/GalaxyTrucker$java_in_PSP17.ic" NAME="java in PSP17 Coverage Results" MODIFIED="1748341993014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>

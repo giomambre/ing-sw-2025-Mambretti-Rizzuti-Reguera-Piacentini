@@ -436,6 +436,12 @@ public class GUI implements View {
     public Pair<Integer, Integer> askCoords(Ship ship) {
         try {
             Pair<Integer,Integer> coords=buildcontroller.getCoords().get();
+
+            if(client.getPlayer_local().getShip().getComponent(coords.getKey(),coords.getValue()).getComponentType() != ComponentType.Empty){
+
+                return new Pair<>(-1,-1);
+
+            }
             buildcontroller.resetCoords();
             Platform.runLater(() -> {
                 CardComponent selectedCard = getActualcard();
@@ -568,6 +574,16 @@ public class GUI implements View {
     }
 
     @Override
+    public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
+        try {
+            return buildcontroller.getUpdatedShip().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public int nextMeteor() {
         return 0;
     }
@@ -656,10 +672,6 @@ public class GUI implements View {
 
 
 
-    @Override
-    public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
-        return null;
-    }
 
     @Override
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {

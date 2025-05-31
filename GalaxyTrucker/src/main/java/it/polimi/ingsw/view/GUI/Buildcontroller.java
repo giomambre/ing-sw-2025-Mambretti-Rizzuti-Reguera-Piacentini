@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.enumerates.Color;
-import it.polimi.ingsw.model.enumerates.ComponentType;
-import it.polimi.ingsw.model.enumerates.CrewmateType;
+import it.polimi.ingsw.model.enumerates.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
 import javafx.util.Pair;
 import javafx.scene.image.ImageView;
 
@@ -28,12 +27,18 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import javafx.scene.image.Image;
 
+import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.Direction.West;
+
 public class Buildcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
     private CompletableFuture<Integer> crewmate = new CompletableFuture<>();
     private List<Pair<Integer,Integer>> pickedcoords = new ArrayList<>();
-
+    private CardComponent[][] currentShipBoard;
+    private List<Pair<Integer, Integer>> invalidConnectors;
+    private CompletableFuture<Ship> shipUpdateFuture;
     @FXML
     private HBox playersButtonBox;
     @FXML
@@ -45,6 +50,8 @@ public class Buildcontroller {
     private GridPane shipGrid;
     @FXML
     private Button randomCard;
+
+    @FXML private ScrollPane faceUpScrollPane;
 
     @FXML private HBox reservedCardPreview;
     @FXML private HBox faceupCardPreview;
@@ -72,7 +79,8 @@ public class Buildcontroller {
 
                 Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardImage = new ImageView(image);
-                cardImage.setFitWidth(100);
+                cardImage.setFitWidth(62);
+                cardImage.setFitHeight(62);
                 cardImage.setPreserveRatio(true);
 
                 final int index = i;
@@ -89,8 +97,10 @@ public class Buildcontroller {
                 faceupCardPreview.getChildren().add(cardImage);
             }
 
-            faceupCardPreview.setVisible(!faceUpCards.isEmpty());
-            faceupCardPreview.setManaged(!faceUpCards.isEmpty());
+            if (faceUpScrollPane != null) {
+                faceUpScrollPane.setVisible(!faceUpCards.isEmpty());
+                faceUpScrollPane.setManaged(!faceUpCards.isEmpty());
+            }
         });
     }
 
@@ -130,7 +140,8 @@ public class Buildcontroller {
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
         ImageView cardImage = new ImageView(image);
-        cardImage.setFitWidth(100);
+        cardImage.setFitWidth(62);
+        cardImage.setFitHeight(61);
         cardImage.setPreserveRatio(true);
 
         int index = reservedCards.size() - 1;
@@ -159,7 +170,8 @@ public class Buildcontroller {
 
         for (CardComponent card : reserved) {
             ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath()))));
-            view.setFitWidth(60);
+            view.setFitWidth(62);
+            view.setFitHeight(62);
             view.setPreserveRatio(true);
             reservedCardPreview.getChildren().add(view);
         }
@@ -186,6 +198,7 @@ public class Buildcontroller {
         CardComponent[][] shipboard=gui.getClient().getPlayer_local().getShip().getShipBoard();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
+
                 StackPane cell = new StackPane();
 
                 cell.setPrefSize(62, 62);
@@ -202,8 +215,8 @@ public class Buildcontroller {
                         final int b = j;
                         cell.setOnMouseClicked(e -> {
                             coords.complete(new Pair<>(a, b));
+
                             if (gui.getRandomcardcontroller().getStage() != null) {
-                                System.out.println("chiudo lo stage");
                                 gui.getRandomcardcontroller().getStage().close();
                             }
                         });
@@ -214,18 +227,34 @@ public class Buildcontroller {
                     Color color = gui.getClient().getPlayer_local().getColor();
                     String imagePath = null;
 
+
+                    Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
+                    connectors.put(North, Empty_Connector);
+                    connectors.put(South, Empty_Connector);
+                    connectors.put(East, Empty_Connector);
+                    connectors.put(West, Empty_Connector);
+
+
                     switch (color) {
                         case BLUE:
                             imagePath = "/images/cardComponent/GT-mainUnitBlue.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitBlue,connectors,imagePath);
+
                             break;
                         case RED:
                             imagePath = "/images/cardComponent/GT-mainUnitRed.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitRed,connectors,imagePath);
+
                             break;
                         case GREEN:
                             imagePath = "/images/cardComponent/GT-mainUnitGreen.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitGreen,connectors,imagePath);
+
                             break;
                         case YELLOW:
                             imagePath = "/images/cardComponent/GT-mainUnitYellow.jpg";
+                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitYellow,connectors,imagePath);
+
                             break;
                     }
 
@@ -268,26 +297,6 @@ public class Buildcontroller {
         });
     }
 
-    public void setupCrewmatesButtons(List<CrewmateType> crewmateTypes) {
-        Platform.runLater(() -> {
-            crewmateButtonBox.getChildren().clear();
-            for (CrewmateType c : crewmateTypes) {
-                Button crewmateButton = new Button(c.name());
-                crewmateButton.setOnAction(e -> {
-                    if(c==CrewmateType.PinkAlien){
-                        crewmate.complete(2);
-                    }
-                    if(c==CrewmateType.BrownAlien){
-                        crewmate.complete(3);
-                    }
-                    if(c==CrewmateType.Astronaut){
-                        crewmate.complete(1);
-                    }
-                });
-                crewmateButtonBox.getChildren().add(crewmateButton);
-            }
-        });
-    }
 
     @FXML
     public void setFour(ActionEvent event) {
@@ -370,23 +379,21 @@ public class Buildcontroller {
     }
 
 
-
-
-    public void placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
+    public int placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
         int y = coords.getKey(); // RIGA
         int x = coords.getValue(); // COLONNA
         if((y==0&x==0)||(y==1&x==0)||(y==0&x==1)||(y==0&x==3)||(y==1&x==6)||(y==0&x==5)||(y==0&x==6)){
             gui.showMessage("Posizione non valida!");
-            return;
+            return 0 ;
         }
         if(pickedcoords.contains(coords)){
             gui.showMessage("Posizione già presa!");
-            return;
+            return 0 ;
         }
         pickedcoords.add(coords);
         String imagePath = card.getImagePath();
 
-        if (imagePath == null) return;
+        if (imagePath == null) return 0;
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         ImageView imageView = new ImageView(image);
@@ -417,6 +424,7 @@ public class Buildcontroller {
         // Aggiorna il modello della nave con la carta piazzata (opzionale)
         CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
         shipboard[y][x] = card;
+        return 1;
     }
 
     public void showShipForPlayer(String nickname) {
@@ -455,6 +463,112 @@ public class Buildcontroller {
         }
     }
 
+
+
+    public void printInvalidsConnector(Ship ship, List<Pair<Integer, Integer>> connectors) {
+        this.invalidConnectors = connectors;
+
+        Platform.runLater(() -> {
+            // Fase 1: Reset di tutte le celle esistenti
+            for (int i = 0; i < ship.getShip_board().length; i++) {
+                for (int j = 0; j < ship.getShip_board()[0].length; j++) {
+                    StackPane cell = (StackPane) shipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
+
+                    if (cell != null) {
+                        cell.setStyle("");
+                        cell.setOnMouseClicked(null);
+                        CardComponent component = ship.getShip_board()[i][j];
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty) {
+                            cell.setStyle("-fx-background-color: lightgray;");
+                        }
+                        cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
+                    }
+                }
+            }
+
+            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
+            for (Pair<Integer, Integer> currentCoords : connectors) {
+                int row = currentCoords.getKey();
+                int col = currentCoords.getValue();
+
+                StackPane cell = (StackPane) shipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+
+                if (cell != null) {
+                    highlightCell(currentCoords);
+                    cell.setOnMouseClicked(e -> {
+                        // Logica di rimozione della carta
+                        ship.removeComponent(row, col);
+                        removeImage(row, col);
+
+                        // Non rimuovere da 'connectors' o 'this.invalidConnectors' qui.
+                        // Verranno aggiornate dalla successiva chiamata a printInvalidsConnector.
+
+                        // Ricalcola i connettori invalidi dopo la rimozione
+                        List<Pair<Integer, Integer>> updatedInvalids = ship.checkShipConnections();
+
+                        if (updatedInvalids.isEmpty()) {
+                            gui.showMessage("Tutti i connettori invalidi sono stati rimossi!");
+                            System.out.println("DEBUG: Tutti i connettori rimossi. Invia messaggio al server.");
+                            if (shipUpdateFuture != null && !shipUpdateFuture.isDone()) {
+                                shipUpdateFuture.complete(ship);
+                            }
+                        } else {
+                            // Richiama la stessa funzione con la lista aggiornata
+                            printInvalidsConnector(ship, updatedInvalids);
+                        }
+                    });
+                    cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+                }
+            }
+
+            if (!connectors.isEmpty()) {
+                gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
+            } else {
+                // Se la lista passata è già vuota all'inizio (es. dopo l'ultimo clic)
+                // Assicurati che il messaggio di successo sia comunque mostrato.
+                // Questa parte potrebbe essere ridondante se la logica di 'if (updatedInvalids.isEmpty())' è sempre raggiunta.
+                // Potrebbe essere utile se la funzione viene chiamata con una lista vuota dall'esterno.
+            }
+        });
+    }
+
+    public void removeImage(int i, int j) {
+        Platform.runLater(() -> {
+            updateCellVisually(i, j);
+        });
+    }
+
+    // Metodo helper per aggiornare visivamente una singola cella
+    private void updateCellVisually(int row, int col) {
+        for (Node node : shipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            if (colIndex == col && rowIndex == row && node instanceof StackPane cell) {
+                // Pulisci la cella
+                cell.getChildren().clear();
+                cell.setOnMouseClicked(null);
+                cell.setStyle("-fx-background-color: lightgray; -fx-cursor: default;");
+                break;
+            }
+        }
+    }
+
+    // Metodo per ottenere la nave aggiornata in modo asincrono
+    public CompletableFuture<Ship> getUpdatedShip() {
+        if (shipUpdateFuture == null || shipUpdateFuture.isDone()) {
+            shipUpdateFuture = new CompletableFuture<>();
+        }
+        return shipUpdateFuture;
+    }
+
+    // Metodo per ottenere la nave aggiornata attuale (sincrono)
+    public CardComponent[][] getCurrentUpdatedShip() {
+        return currentShipBoard;
+    }
 
 
 }
