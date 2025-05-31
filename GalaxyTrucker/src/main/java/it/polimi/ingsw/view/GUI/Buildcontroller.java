@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.GUI;
 
-import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
@@ -22,11 +21,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 import javafx.util.Pair;
-import javafx.scene.image.ImageView;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import javafx.scene.image.Image;
 
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
@@ -622,7 +619,7 @@ public class Buildcontroller {
         String path;
 
         switch(type){
-            case "Astronaut":
+            case "Astronaut": {
                 path = "/images/icons/astronautPawn.png";
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
@@ -638,14 +635,25 @@ public class Buildcontroller {
                     container.getChildren().add(img);
                 }
                 return container;
+            }
 
-            case "Alien":
-                path = "/images/icons/alien.png";
+            case "PinkAlien": {
+                path = "/images/icons/pinkAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
                 img.setFitWidth(40);
                 img.setFitHeight(40);
                 img.setMouseTransparent(true);
                 return img;
+            }
+
+            case "BrownAlien": {
+                path = "/images/icons/brownAlien.png";
+                ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                img.setFitWidth(40);
+                img.setFitHeight(40);
+                img.setMouseTransparent(true);
+                return img;
+            }
 
             default:
                 return null;

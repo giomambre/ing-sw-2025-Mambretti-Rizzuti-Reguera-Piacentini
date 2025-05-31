@@ -572,7 +572,7 @@ public class Client {
 
                                 if(virtualViewType == VirtualViewType.GUI) {
                                     Platform.runLater(()-> {
-                                        ((GUI) virtualView).getBuildcontroller().addObject(y, x, "Alien");
+                                        ((GUI) virtualView).getBuildcontroller().addObject(y, x, "PinkAlien");
                                     });
                                 }
 
@@ -581,6 +581,15 @@ public class Client {
 
                                 type = CrewmateType.BrownAlien;
                                 ((LivingUnit) component).addAlien(CrewmateType.BrownAlien);
+
+                                final int x = coords.getKey();
+                                final int y = coords.getValue();
+
+                                if(virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(()-> {
+                                        ((GUI) virtualView).getBuildcontroller().addObject(y, x, "BrownAlien");
+                                    });
+                                }
 
 
                             }
