@@ -834,7 +834,6 @@ public class Client {
                     ((TUI) virtualView).setLocal_board_position(local_board_positions);
                     ((TUI) virtualView).setLocal_board_laps(local_board_positions);
 
-
                 }
                 int dummy = virtualView.nextMeteor();
                 boardLatch.countDown();
@@ -864,6 +863,9 @@ public class Client {
 
             case NEW_ADVENTURE_DRAWN:
                 AdventureCardMessage ad = (AdventureCardMessage) msg;
+                if(virtualViewType == VirtualViewType.GUI) {
+                    ((GUI)virtualView).getFlyghtController().addAdventureCard(ad.getAdventure());
+                }
                 virtualView.printCardAdventure(ad.getAdventure());
                  dummy = virtualView.nextMeteor();
 

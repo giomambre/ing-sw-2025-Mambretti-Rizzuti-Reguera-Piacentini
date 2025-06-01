@@ -30,6 +30,7 @@ public abstract class CardAdventure implements Serializable {
     private CardAdventureType type;
     protected Board board;
     protected boolean face_down;
+    private String path;
 
     /**
      *
@@ -37,13 +38,17 @@ public abstract class CardAdventure implements Serializable {
      * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be = 0
      * @param type
      */
-    public CardAdventure(int level, int cost_of_days ,CardAdventureType type) {
+    public CardAdventure(int level, int cost_of_days ,CardAdventureType type, String path) {
 
         this.level = level;
         this.cost_of_days = cost_of_days;
         this.type = type;
         this.face_down = true;
+        this.path = path;
+    }
 
+    public String getImagePath(){
+        return path;
     }
 
     /**

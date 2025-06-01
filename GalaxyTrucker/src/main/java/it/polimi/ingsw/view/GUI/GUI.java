@@ -390,6 +390,10 @@ public class GUI implements View {
         }
     }
 
+    public FlyghtController getFlyghtController() {
+        return flyghtController;
+    }
+
     @Override
     public int selectDeck() {
         try {
