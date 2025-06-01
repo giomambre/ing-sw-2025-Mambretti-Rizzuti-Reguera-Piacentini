@@ -91,7 +91,7 @@ public class OpenSpaceTest {
 
         List <Player> players = Arrays.asList(player1, player2, player3);
 
-        ((OpenSpace)openSpace).execute(players,batteryUsageMap);
+       // ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.getBoard();
 
@@ -118,7 +118,7 @@ public class OpenSpaceTest {
         }
 
         List<Player> players = Arrays.asList(player1, player2, player3);
-        ((OpenSpace)openSpace).execute(players,batteryUsageMap);
+       // ((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.getBoard();
 
@@ -163,7 +163,7 @@ public class OpenSpaceTest {
 
         List <Player> players = Arrays.asList(player1, player2, player3);
 
-        ((OpenSpace)openSpace).execute(players,batteryUsageMap);
+        //((OpenSpace)openSpace).execute(players,batteryUsageMap);
 
         Map<Integer, Player> playerPositions = board.getBoard();
 

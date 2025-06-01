@@ -74,7 +74,7 @@ public interface View {
      void printCargo(List<Cargo> cargos);
 
 
-        Boolean acceptAdventure();
+        Boolean acceptAdventure(String prompt);
 
     int askSecuredCard(List<CardComponent> cards);
 

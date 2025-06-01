@@ -62,7 +62,7 @@ public class Game extends BaseGame {
         List<CardAdventure> deck_adventure_liv1 = new ArrayList<>();
         List<CardAdventure> deck_adventure_liv2 = new ArrayList<>();
 
-        /*deck_adventure_liv1.add(new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5));
+        deck_adventure_liv1.add(new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5));
         deck_adventure_liv1.add(new Smugglers(1, 1, CardAdventureType.Smugglers, 4,
                 Arrays.asList(
                         Cargo.Yellow,
@@ -77,7 +77,7 @@ public class Game extends BaseGame {
                         new Pair<>(MeteorType.LightCannonFire, North)
                 )
         ));
-        deck_adventure_liv1.add(new Stardust(1, 0, CardAdventureType.Stardust));*/
+        deck_adventure_liv1.add(new Stardust(1, 0, CardAdventureType.Stardust));
         deck_adventure_liv1.add(new OpenSpace(1, 0, CardAdventureType.OpenSpace));
         deck_adventure_liv1.add(new OpenSpace(1, 0, CardAdventureType.OpenSpace));
         deck_adventure_liv1.add(new OpenSpace(1, 0, CardAdventureType.OpenSpace));
@@ -154,7 +154,7 @@ public class Game extends BaseGame {
                 )
         ));
 
-       /* deck_adventure_liv2.add(new Slavers(2, 2, CardAdventureType.Slavers, 7, 4, 8));
+       deck_adventure_liv2.add(new Slavers(2, 2, CardAdventureType.Slavers, 7, 4, 8));
         deck_adventure_liv2.add(new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
                 Arrays.asList(
                         Cargo.Red,
@@ -169,7 +169,7 @@ public class Game extends BaseGame {
                         new Pair<>(MeteorType.HeavyCannonFire, North)
                 )
         ));
-        deck_adventure_liv2.add(new Stardust(2, 0, CardAdventureType.Stardust));*/
+        deck_adventure_liv2.add(new Stardust(2, 0, CardAdventureType.Stardust));
         deck_adventure_liv2.add(new Epidemic(2, 0, CardAdventureType.Epidemic));
         deck_adventure_liv2.add(new OpenSpace(2, 0, CardAdventureType.OpenSpace));
         deck_adventure_liv2.add(new OpenSpace(2, 0, CardAdventureType.OpenSpace));

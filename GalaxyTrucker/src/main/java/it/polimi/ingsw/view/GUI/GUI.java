@@ -696,7 +696,7 @@ public class GUI implements View {
     }
 
     @Override
-    public Boolean acceptAdventure() {
+    public Boolean acceptAdventure(String prompt) {
         return null;
     }
 

@@ -464,14 +464,13 @@ public class Server {
                 CardAdventure adventure = controller.getRandomAdventure();
 
 
-                adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
-                        List.of(
-                                new Pair<>(MeteorType.LightCannonFire, North),
-                                new Pair<>(MeteorType.LightCannonFire, West),
-                                new Pair<>(MeteorType.LightCannonFire, East),
-                                new Pair<>(MeteorType.HeavyCannonFire, South)
-                        )
-                );
+                adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
+                        Arrays.asList(
+                                Cargo.Red,
+                                Cargo.Yellow,
+                                Cargo.Yellow
+                        ),
+                        3);
 
                 manageAdventure(adventure, controller);
 
@@ -518,9 +517,7 @@ public class Server {
                         if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
                             adventure = controller.getRandomAdventure();
-                               /* while(adventure.getType() != CardAdventureType.AbandonedStation){
-                                    adventure = controller.getRandomAdventure();
-                                }*/
+
                             manageAdventure(adventure, controller);
 
                         } else {
@@ -775,6 +772,73 @@ public class Server {
 
                         }
 
+
+                    case Smugglers:
+                        String[] esit = msg.getContent().split("\\s+");
+
+                        switch (esit[0]) {
+
+                            case "w":
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA SCONFITTO i CONTRABBANDIERI ! \n", getNickname(adv_msg.getId_client())));
+
+                                controller.movePlayer(getNickname(adv_msg.getId_client()), -controller.getCurrentAdventure().getCost_of_days());
+
+
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA SCONFITTO i CONTRABBANDIERI ! \n", getNickname(adv_msg.getId_client())));
+
+                                sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "\nIL PLAYER " + getNickname(adv_msg.getId_client())
+                                        + " HA PAGATO  per avere il MINOR NUMERO DI ASTRONAUTI , ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo" + "\n", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+
+
+
+
+
+                                adventure = controller.getRandomAdventure();
+
+                                manageAdventure(adventure,controller);
+                                break;
+
+                            case "d":
+                                if(controller.getAdv_index() >= controller.getAdventureOrder().size()) {
+                                    adventure = controller.getRandomAdventure();
+
+                                    manageAdventure(adventure,controller);
+                                    return;
+
+
+                                }
+                                curr_nick = controller.nextAdventurePlayer();
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PAREGGIATO i CONTRABBANDIERI ! \n", getNickname(adv_msg.getId_client())));
+                                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SMUGGLERS, "", controller.getCurrentAdventure()));
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici contrabbandieri ! \n", curr_nick));
+                                break;
+
+
+                            case "l":
+                                if(controller.getAdv_index() >= controller.getAdventureOrder().size()) {
+                                    adventure = controller.getRandomAdventure();
+
+                                    manageAdventure(adventure,controller);
+                                    return;
+
+
+                                }
+                                curr_nick = controller.nextAdventurePlayer();
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PERSO contro i  CONTRABBANDIERI ! \n", getNickname(adv_msg.getId_client())));
+                                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SMUGGLERS, "", controller.getCurrentAdventure()));
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici contrabbandieri ! \n", curr_nick));
+                                break;
+
+
+
+
+
+
+                        }
+break;
+
+
+
                 }
                 break;
 
@@ -928,6 +992,21 @@ public class Server {
 
 
                 }
+
+                break;
+
+
+            case Smugglers:
+
+                Smugglers smugglers = (Smugglers) adventure;
+                controller.initializeAdventure(adventure);
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
+                String curr_nick = controller.nextAdventurePlayer();
+                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SMUGGLERS, "", adventure));
+                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici contrabbandieri ! \n", curr_nick));
+break;
+
+
 
 
         }

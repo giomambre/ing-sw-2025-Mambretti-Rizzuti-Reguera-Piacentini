@@ -659,8 +659,9 @@ public class TUI implements View {
 
 
     @Override
-    public Boolean acceptAdventure() {
-        System.out.println("\nDESIDERI ACCETTARE LA CARTA?");
+    public Boolean acceptAdventure(String prompt) {
+        System.out.println();
+        System.out.println(prompt);
         System.out.println("\t 1 : ACCETTA\n\t 2 : RIFIUTA");
         int choice = readValidInt("Scelta ", 1,2,false);
         return choice == 1;
@@ -1508,6 +1509,9 @@ return total;
                 if(((Storage)card).removeCargo(Cargo.Red)){
 
                     printBorder("HAI PERSO UN CARGO "+RED+" ROSSO" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue());
+
+
+
                     System.out.println();
                     return;
                 }
@@ -1575,6 +1579,7 @@ return total;
                 if(((Battery)card).getStored() > 0) {
 
                     printBorder("HAI PERSO UNA "+GREEN+" BATTERIA" +RESET + " a RIGA : " + s.getKey()+ " COLONNA : " + s.getValue() );
+                    ((Battery)card).removeBattery();
                     System.out.println();
                     return;
                 }
