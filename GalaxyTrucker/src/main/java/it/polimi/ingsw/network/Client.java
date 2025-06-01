@@ -533,14 +533,13 @@ public class Client {
                         CardComponent component = plance[i][j];
                         coords = new Pair<>(i, j);
                         if (component.getComponentType() == LivingUnit) {
-                            System.out.println("(testing)Trovata LivingUnit in [" + i + "," + j + "]");
+
                             int select;
                             if(virtualViewType == VirtualViewType.GUI) {
                                 List<CrewmateType> crewmates=((GUI)virtualView).getCrewmates(coords);
                                 ((GUI) virtualView).getBuildcontroller().highlightCell(coords);
                                 ((GUI) virtualView).createCrewmateSelectionController(coords, crewmates);
                                 select = virtualView.crewmateAction(coords);
-                                System.out.println("(testing)select: "+select);
                                 ((GUI) virtualView).getBuildcontroller().resetHighlights(coords);
 
                             }
@@ -819,10 +818,15 @@ public class Client {
                     virtualView.showMessage(bm.getContent());
                     virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
+
                 } else {
                     System.out.println();
-                    virtualView.showBasicBoard(local_board_positions, local_board_laps);
-
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        System.out.print("sono qui");
+                        ((GUI) virtualView).createFlyghtScreen(local_board_positions, local_board_laps);
+                    }else {
+                        virtualView.showBasicBoard(local_board_positions, local_board_laps);
+                    }
                 }
 
 
@@ -848,13 +852,13 @@ public class Client {
 
 
             case START_FLIGHT:
-                if (virtualViewType == VirtualViewType.GUI) {
+                /*if (virtualViewType == VirtualViewType.GUI) {
                         Board b = player_local.getGame().getBoard();
                         ((GUI) virtualView).createFlyghtScreen(b.getBoard(), b.getLaps());
-                }
-                else if (virtualViewType == VirtualViewType.TUI) {
+                }*/
+
                     virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
-                }
+
                 break;
 
 
