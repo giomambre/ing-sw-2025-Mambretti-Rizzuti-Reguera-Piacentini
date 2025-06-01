@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.application.Platform;
@@ -435,7 +436,7 @@ public class FlyghtController {
     /**
      * Aggiunge una carta avventura all'area delle carte
      */
-    public void addAdventureCard(CardComponent card) {
+    public void addAdventureCard(CardAdventure card) {
         Platform.runLater(() -> {
             try {
                 Image image = new Image(Objects.requireNonNull(
@@ -529,14 +530,5 @@ public class FlyghtController {
         });
     }
 
-    /**
-     * Mostra un messaggio all'utente
-     */
-    public void showMessage(String message) {
-        if (gui != null) {
-            gui.showMessage(message);
-        } else {
-            System.out.println("Messaggio: " + message);
-        }
-    }
+
 }
