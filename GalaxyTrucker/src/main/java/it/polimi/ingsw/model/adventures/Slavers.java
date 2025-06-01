@@ -31,8 +31,8 @@ public class Slavers extends CardAdventure implements Serializable {
      * @param astronaut_loss
      * @param credits the reward in credits for defeating the pirates
      */
-    public Slavers(int level, int cost_of_days, CardAdventureType type, int cannons_strenght, int astronaut_loss, int credits) {
-        super(level, cost_of_days, type);
+    public Slavers(int level, int cost_of_days, CardAdventureType type, int cannons_strenght, int astronaut_loss, int credits,String path) {
+        super(level, cost_of_days, type,path);
         this.cannons_strenght = cannons_strenght;
         this.astronaut_loss = astronaut_loss;
         this.credits=credits;

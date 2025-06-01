@@ -470,7 +470,7 @@ public class Server {
                                 Cargo.Yellow,
                                 Cargo.Yellow
                         ),
-                        3);
+                        3,"");
 
                 manageAdventure(adventure, controller);
 

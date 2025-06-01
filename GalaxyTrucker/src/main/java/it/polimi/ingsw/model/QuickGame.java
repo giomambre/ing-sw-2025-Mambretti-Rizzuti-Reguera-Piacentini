@@ -56,36 +56,36 @@ public class QuickGame extends BaseGame {
                         new Pair<>(MeteorType.LargeMeteor, North),
                         new Pair<>(MeteorType.SmallMeteor, East),
                         new Pair<>(MeteorType.SmallMeteor, West)
-                )
+                ),""
         ));
-        deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace));
-        deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust));
+        deck_adventure.add(new OpenSpace(1,0,CardAdventureType.OpenSpace,""));
+        deck_adventure.add(new Stardust(1,0,CardAdventureType.Stardust,""));
         deck_adventure.add(new Smugglers(1, 1,CardAdventureType.Smugglers,4,
                 Arrays.asList(
                         Cargo.Yellow,
                         Cargo.Green,
                         Cargo.Blue
                 ),
-                2));
+                2,""));
         deck_adventure.add(new AbandonedStation(1,1,CardAdventureType.AbandonedStation,5,
                 Arrays.asList(
                         Cargo.Yellow,
                         Cargo.Green
-                )
+                ),""
         ));
-        deck_adventure.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,4,3));
+        deck_adventure.add(new AbandonedShip(1,1,CardAdventureType.AbandonedShip,4,3,""));
         deck_adventure.add(new CombatZone(1,3,CardAdventureType.CombatZone,2,0,0,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, South),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
-                )
+                ),""
         ));
         deck_adventure.add(new Planets(1,2,CardAdventureType.Planets,
                 Arrays.asList(
                         Arrays.asList(Cargo.Red, Cargo.Red),
                         Arrays.asList(Cargo.Red, Cargo.Blue, Cargo.Blue),
                         List.of(Cargo.Yellow)
-                )
+                ),""
         ));
 
         Collections.shuffle(deck_adventure);

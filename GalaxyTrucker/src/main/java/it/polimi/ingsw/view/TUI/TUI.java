@@ -1875,7 +1875,7 @@ int i = 0;
     @Override
     public void executeEpidemic(Ship ship) {
 
-        Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic);
+        Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic,"");
 
         epidemic.execute(ship);
 

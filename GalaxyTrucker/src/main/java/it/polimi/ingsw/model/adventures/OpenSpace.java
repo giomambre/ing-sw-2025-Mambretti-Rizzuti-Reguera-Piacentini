@@ -21,8 +21,8 @@
          * @param cost_of_days indicates how many position in the board the player will lose if he uses the card. Can be =0
          * @param type
          */
-        public OpenSpace(int level, int cost_of_days, CardAdventureType type) {
-            super(level, cost_of_days,type);
+        public OpenSpace(int level, int cost_of_days, CardAdventureType type,String path) {
+            super(level, cost_of_days,type,path);
         }
         /**
          * @param players the list of players whose engine power is evaluated

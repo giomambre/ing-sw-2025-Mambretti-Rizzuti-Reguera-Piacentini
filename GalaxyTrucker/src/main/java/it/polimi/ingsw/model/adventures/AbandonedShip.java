@@ -28,8 +28,8 @@ public class AbandonedShip extends CardAdventure implements Serializable {
      * @param given_credits
      * @param crewmates_loss
      */
-    public AbandonedShip(int level, int cost_of_days, CardAdventureType type, int given_credits, int crewmates_loss) {
-        super(level, cost_of_days,type);
+    public AbandonedShip(int level, int cost_of_days, CardAdventureType type, int given_credits, int crewmates_loss, String path) {
+        super(level, cost_of_days,type,path);
         this.given_credits = given_credits;
         this.crewmates_loss = crewmates_loss;
         this.board = board;

@@ -29,8 +29,8 @@ public class Planets extends CardAdventure implements Serializable {
      * @param type
      * @param cargo_reward the list of cargo rewards available for each planet
      */
-    public Planets(int level, int cost_of_days, CardAdventureType type, List<List<Cargo>> cargo_reward) {
-        super(level, cost_of_days, type);
+    public Planets(int level, int cost_of_days, CardAdventureType type, List<List<Cargo>> cargo_reward, String path) {
+        super(level, cost_of_days, type,path);
         this.cargo_reward = cargo_reward;
     }
 

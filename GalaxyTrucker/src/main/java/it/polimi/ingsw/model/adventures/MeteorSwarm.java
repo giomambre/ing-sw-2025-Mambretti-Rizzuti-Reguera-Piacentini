@@ -28,8 +28,8 @@ public class MeteorSwarm extends CardAdventure implements Serializable {
      * @param type
      * @param meteors
      */
-    public MeteorSwarm(int level, int cost_of_days, CardAdventureType type, List<Pair<MeteorType, Direction>> meteors) {
-        super(level, cost_of_days, type);
+    public MeteorSwarm(int level, int cost_of_days, CardAdventureType type, List<Pair<MeteorType, Direction>> meteors, String path) {
+        super(level, cost_of_days, type, path);
         this.meteors = meteors;
 
     }

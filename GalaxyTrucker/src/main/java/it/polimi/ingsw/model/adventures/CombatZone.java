@@ -42,8 +42,8 @@ public class CombatZone extends CardAdventure implements Serializable {
      * @param cargo_loss
      * @param meteors
      */
-    public CombatZone(int level, int cost_of_days, CardAdventureType type,int id, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors) {
-        super(level, cost_of_days, type);
+    public CombatZone(int level, int cost_of_days, CardAdventureType type,int id, int crewmates_loss, int cargo_loss, List<Pair<MeteorType, Direction>> meteors,String path) {
+        super(level, cost_of_days, type,path);
         this.crewmates_loss=crewmates_loss;
         this.cargo_loss=cargo_loss;
         this.meteors = meteors;

@@ -31,8 +31,8 @@ public class Pirates extends CardAdventure implements Serializable {
      * @param credits the reward in credits for defeating the pirates
      * @param meteors
      */
-    public Pirates(int level, int cost_of_days, CardAdventureType type, int cannons_strenght, int credits, List<Pair<MeteorType, Direction>> meteors ) {
-        super(level, cost_of_days, type);
+    public Pirates(int level, int cost_of_days, CardAdventureType type, int cannons_strenght, int credits, List<Pair<MeteorType, Direction>> meteors, String path ) {
+        super(level, cost_of_days, type,path);
         this.cannons_strenght = cannons_strenght;
         this.credits=credits;
         this.meteors = meteors;

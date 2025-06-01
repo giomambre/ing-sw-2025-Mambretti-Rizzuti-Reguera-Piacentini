@@ -31,8 +31,8 @@ public class Epidemic extends CardAdventure implements Serializable {
      * @param cost_of_days
      * @param type
      */
-    public Epidemic(int level, int cost_of_days, CardAdventureType type) {
-        super(level, cost_of_days, type);
+    public Epidemic(int level, int cost_of_days, CardAdventureType type,String path) {
+        super(level, cost_of_days, type,path);
     }
 
     /**

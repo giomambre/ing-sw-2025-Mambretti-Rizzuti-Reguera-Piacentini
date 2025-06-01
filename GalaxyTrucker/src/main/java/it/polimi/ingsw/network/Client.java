@@ -958,7 +958,7 @@ public class Client {
                                         List.of(
                                                 new Pair<>(MeteorType.LightCannonFire, South),
                                                 new Pair<>(MeteorType.HeavyCannonFire, South)
-                                        )
+                                        ),""
                                 ), coords_m.toString());
 
 
