@@ -170,7 +170,7 @@ public class Game extends BaseGame {
                 ),""
         ));
         deck_adventure_liv2.add(new Stardust(2, 0, CardAdventureType.Stardust,""));
-        deck_adventure_liv2.add(new Epidemic(2, 0, CardAdventureType.Epidemic,""));
+        deck_adventure_liv2.add(new Epidemic(2, 0, CardAdventureType.Epidemic,"/images/cardAdv/GT-cards_II_IT_015.jpg"));
         deck_adventure_liv2.add(new OpenSpace(2, 0, CardAdventureType.OpenSpace,""));
         deck_adventure_liv2.add(new OpenSpace(2, 0, CardAdventureType.OpenSpace,""));
         deck_adventure_liv2.add(new OpenSpace(2, 0, CardAdventureType.OpenSpace,""));

@@ -464,13 +464,13 @@ public class Server {
                 CardAdventure adventure = controller.getRandomAdventure();
 
 
-                adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
+                /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
                         Arrays.asList(
                                 Cargo.Red,
                                 Cargo.Yellow,
                                 Cargo.Yellow
                         ),
-                        3,"");
+                        3,"");*/
 
                 manageAdventure(adventure, controller);
 
