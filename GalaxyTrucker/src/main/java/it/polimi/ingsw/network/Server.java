@@ -910,8 +910,9 @@ public class Server {
 
 
                         }
-                        break;
+                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(UPDATED_SHIPS,"",controller.getActivePlayers()));
 
+                        break;
                 }
                 break;
 

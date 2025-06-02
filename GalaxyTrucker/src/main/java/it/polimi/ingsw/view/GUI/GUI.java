@@ -195,6 +195,26 @@ public class GUI implements View {
 
 
     @Override
+    public void updateLocalPlayer(Player localPlayer) {
+
+    }
+
+    @Override
+    public void updateOtherPlayers(List<Player> otherPlayers) {
+
+    }
+
+    @Override
+    public void updateAdventureDeck(Map<Direction, List<CardAdventure>> adventureDeck) {
+
+    }
+
+    @Override
+    public void updateFacedUpCards(List<CardComponent> facedUpDeck) {
+
+    }
+
+    @Override
     public void showMessage(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -28,6 +28,13 @@ import java.util.Set;
  */
 public interface View {
 
+
+    void updateLocalPlayer(Player localPlayer);
+    void updateOtherPlayers(List<Player> otherPlayers);
+    void updateAdventureDeck(Map<Direction, List<CardAdventure>> adventureDeck);
+    void updateFacedUpCards(List<CardComponent> facedUpDeck);
+
+
     public void showMessage(String message);
 
     public String askNickname();

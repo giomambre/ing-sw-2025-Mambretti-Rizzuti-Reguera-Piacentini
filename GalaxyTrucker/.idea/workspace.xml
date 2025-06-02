@@ -4,61 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="modifiche + contrabbandieri">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="PIRATI fatta">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0110.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0111.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0112.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0113.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0114.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0115.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0116.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0117.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0118.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0119.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_012.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0120.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_0121.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_013.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_014.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_015.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_016.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_017.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_018.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_II_IT_019.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0110.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0111.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0112.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0113.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0114.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0115.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0116.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0117.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0118.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0119.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_012.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0120.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_0121.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_013.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_014.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_015.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_016.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_017.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_018.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/cardAdv/GT-cards_I_IT_019.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedShipTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedShipTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedStationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/AbandonedStationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/CombatZoneTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/CombatZoneTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/EpidemicTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/EpidemicTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/MeteorSwarmTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/MeteorSwarmTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/OpenSpaceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/OpenSpaceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/PiratesTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/PiratesTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/PlanetsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/PlanetsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/ShipTest2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/ShipTest2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/SlaversTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/SlaversTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/SmugglersTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/it/polimi/ingsw/SmugglersTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +103,7 @@
     "Application.App.executor": "Run",
     "Application.CardComponentLoader.executor": "Run",
     "Application.Client.executor": "Run",
-    "Application.ClientMultiplo.executor": "Debug",
+    "Application.ClientMultiplo.executor": "Run",
     "Application.JsonLoader.executor": "Run",
     "Application.MainClient.executor": "Run",
     "Application.Multiple Istance Client.executor": "Run",
@@ -463,15 +434,8 @@
       <workItem from="1748703949779" duration="577000" />
       <workItem from="1748780803196" duration="9365000" />
       <workItem from="1748798338890" duration="342000" />
-      <workItem from="1748856844901" duration="2282000" />
-    </task>
-    <task id="LOCAL-00082" summary="aggiunto scelta gui tui">
-      <option name="closed" value="true" />
-      <created>1745776144579</created>
-      <option name="number" value="00082" />
-      <option name="presentableId" value="LOCAL-00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1745776144579</updated>
+      <workItem from="1748856844901" duration="2434000" />
+      <workItem from="1748870553903" duration="4270000" />
     </task>
     <task id="LOCAL-00083" summary="fixati test e aggiunto test controller">
       <option name="closed" value="true" />
@@ -857,7 +821,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748856894334</updated>
     </task>
-    <option name="localTasksCounter" value="131" />
+    <task id="LOCAL-00131" summary="PIRATI fatta">
+      <option name="closed" value="true" />
+      <created>1748859240310</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1748859240310</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -897,7 +869,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="network capendo come fare" />
     <MESSAGE value="inziata gesione partite multiple con lobby" />
     <MESSAGE value="manca da gestire le notifiche in arrivo, fatto la prima parte del colore" />
     <MESSAGE value="inizio richiesta carte e inserimento" />
@@ -922,7 +893,8 @@
     <MESSAGE value="finendo carte avventura" />
     <MESSAGE value="minor changes" />
     <MESSAGE value="modifiche + contrabbandieri" />
-    <option name="LAST_COMMIT_MESSAGE" value="modifiche + contrabbandieri" />
+    <MESSAGE value="PIRATI fatta" />
+    <option name="LAST_COMMIT_MESSAGE" value="PIRATI fatta" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -935,11 +907,6 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="7" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java</url>
-          <line>1128</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>

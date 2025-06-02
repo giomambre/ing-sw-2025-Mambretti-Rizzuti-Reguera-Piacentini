@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.adventures.Planets;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.*;
+import it.polimi.ingsw.network.VirtualViewType;
 import it.polimi.ingsw.view.TUI.TUI;
 import it.polimi.ingsw.view.View;
 import javafx.util.Pair;
@@ -355,7 +356,9 @@ public void testChoosePiece() {
  @Test
     public  void  testPrintShipPlance() {
 
+     View v = new TUI();
 
+     v.printShip(ship1.getShipBoard());
     Map<Pair<Integer,Integer>, Boolean> map = new HashMap<>();
     map.put(new Pair<>(1,1), true);
      System.out.println( ship1.calculateCannonPower(map));
