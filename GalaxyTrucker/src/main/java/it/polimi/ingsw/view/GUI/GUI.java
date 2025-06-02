@@ -330,13 +330,11 @@ public class GUI implements View {
                     System.exit(0);
                 });
 
-                // Dopo che tutto è pronto, setta i bottoni
                 controller.setupPlayerButtons(client.getOther_players_local());
                 controller.initializeShipBoard();
-
                 controller.updateFaceUpCardsDisplay();
 
-                future.complete(null);  // GUI pronta
+                future.complete(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 future.completeExceptionally(ex);

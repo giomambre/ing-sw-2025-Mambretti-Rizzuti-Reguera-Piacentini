@@ -602,6 +602,19 @@ public class Client {
                                 });
                             }
 
+                        } else if (component.getComponentType() == ComponentType.MainUnitBlue ||
+                                component.getComponentType() == ComponentType.MainUnitRed ||
+                                component.getComponentType() == ComponentType.MainUnitGreen ||
+                                component.getComponentType() == ComponentType.MainUnitYellow) {
+
+                            final int x = coords.getKey();
+                            final int y = coords.getValue();
+
+                            if (virtualViewType == VirtualViewType.GUI) {
+                                Platform.runLater(() -> {
+                                    ((GUI) virtualView).getBuildcontroller().addObject(y, x, "Astronaut");
+                                });
+                            }
                         }
                     }
                 }
