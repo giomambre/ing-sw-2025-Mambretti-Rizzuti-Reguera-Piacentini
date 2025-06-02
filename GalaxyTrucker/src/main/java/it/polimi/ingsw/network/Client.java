@@ -970,11 +970,6 @@ public class Client {
                     if(msg.getContent().equals("1")) {
 
                         virtualView.showMessage("\n --- il PLAYER " + less_cannon + " sta pagando la penitenza di 2 CANNONATE ---\n");
-                    }else{
-
-
-
-
                     }
                 }
 
@@ -1379,6 +1374,8 @@ break;
                      if(choice ){
                          cargoAction(smugglers.getCargo_rewards());
 
+                         out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+                        break;
                      }
 
                     out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
@@ -1395,6 +1392,55 @@ break;
 
                 break;
 
+
+            case Pirates:
+                Pirates pirates = (Pirates) adventure;
+                virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +pirates.getCannons_strenght() +  " \n");
+                 power_c =  cannonPower(pirates.getCannons_strenght());
+                virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+
+                StringBuilder coords_m = new StringBuilder();
+
+                if(power_c < pirates.getCannons_strenght()) {
+
+
+                    virtualView.showMessage("\n ----- HAI PERSO RICEVI DELLE CANNONATE ---- ");
+
+                    manageAdventure(
+                            new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                                    List.of(
+                                            new Pair<>(MeteorType.LightCannonFire, South),
+                                            new Pair<>(MeteorType.HeavyCannonFire, South)
+                                    ),""
+                            ), content);
+
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    break;
+                } else if(power_c == pirates.getCannons_strenght() ){
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
+
+
+                }else if(power_c > pirates.getCannons_strenght()) {
+
+
+                choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + pirates.getCredits()+ "crediti e perdere "+ pirates.getCost_of_days() +" giorni di volo?" );
+
+                if(choice){
+                        player_local.setCredits(pirates.getCredits());
+                        virtualView.showMessage("HAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+
+                }else{
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+
+                }
+
+        break;
+
+                }
 
 
         }
