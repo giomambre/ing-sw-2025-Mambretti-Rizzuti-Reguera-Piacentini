@@ -461,7 +461,7 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new Message(START_FLIGHT, ""));
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
-                CardAdventure adventure = controller.getRandomAdventure();
+                //CardAdventure adventure = controller.getRandomAdventure();
 
 
                 /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -471,6 +471,7 @@ public class Server {
                                 Cargo.Yellow
                         ),
                         3,"");*/
+                CardAdventure adventure=new OpenSpace(1,3,CardAdventureType.OpenSpace,"/images/cardAdventure/GT-openSpace_2.1.jpg");
 
                 manageAdventure(adventure, controller);
 

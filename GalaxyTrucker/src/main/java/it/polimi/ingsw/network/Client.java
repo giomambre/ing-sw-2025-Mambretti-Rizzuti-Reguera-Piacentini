@@ -1030,6 +1030,11 @@ public class Client {
 
                         if (card.getComponentType() == DoubleEngine) {
 
+                            if(virtualViewType==VirtualViewType.GUI){
+                                ((GUI)virtualView).getFlyghtController().highlightCell(i,j);
+                                ((GUI) virtualView).getFlyghtController().updatePlayerShip();
+                            }
+
                             battery = virtualView.askEngine(new Pair<>(i, j));
 
                             if (battery.getKey() == -1 || battery.getValue() == -1) {
@@ -1046,6 +1051,10 @@ public class Client {
                                 card_battery.removeBattery();
 
 
+                            }
+                            if(virtualViewType==VirtualViewType.GUI){
+                                ((GUI)virtualView).getFlyghtController().resetHighlights(i,j);
+                                ((GUI) virtualView).getFlyghtController().updatePlayerShip();
                             }
 
                         }
