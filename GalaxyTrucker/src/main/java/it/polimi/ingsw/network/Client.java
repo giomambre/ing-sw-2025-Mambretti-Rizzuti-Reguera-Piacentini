@@ -531,15 +531,14 @@ public class Client {
                         if (component.getComponentType() == LivingUnit) {
 
                             int select;
-                            if(virtualViewType == VirtualViewType.GUI) {
-                                List<CrewmateType> crewmates=((GUI)virtualView).getCrewmates(coords);
+                            if (virtualViewType == VirtualViewType.GUI) {
+                                List<CrewmateType> crewmates = ((GUI) virtualView).getCrewmates(coords);
                                 ((GUI) virtualView).getBuildcontroller().highlightCell(coords);
                                 ((GUI) virtualView).createCrewmateSelectionController(coords, crewmates);
                                 select = virtualView.crewmateAction(coords);
                                 ((GUI) virtualView).getBuildcontroller().resetHighlights(coords);
 
-                            }
-                            else {
+                            } else {
                                 select = virtualView.crewmateAction(coords);
                             }
                             CrewmateType type;
@@ -551,8 +550,8 @@ public class Client {
                                 final int x = coords.getKey();
                                 final int y = coords.getValue();
 
-                                if(virtualViewType == VirtualViewType.GUI) {
-                                    Platform.runLater(()-> {
+                                if (virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(() -> {
                                         ((GUI) virtualView).getBuildcontroller().addObject(y, x, "Astronaut");
                                     });
                                 }
@@ -565,8 +564,8 @@ public class Client {
                                 final int x = coords.getKey();
                                 final int y = coords.getValue();
 
-                                if(virtualViewType == VirtualViewType.GUI) {
-                                    Platform.runLater(()-> {
+                                if (virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(() -> {
                                         ((GUI) virtualView).getBuildcontroller().addObject(y, x, "PinkAlien");
                                     });
                                 }
@@ -580,23 +579,33 @@ public class Client {
                                 final int x = coords.getKey();
                                 final int y = coords.getValue();
 
-                                if(virtualViewType == VirtualViewType.GUI) {
-                                    Platform.runLater(()-> {
+                                if (virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(() -> {
                                         ((GUI) virtualView).getBuildcontroller().addObject(y, x, "BrownAlien");
                                     });
                                 }
 
-
                             }
                             out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
+                        } else if (component.getComponentType() == Battery) {
+                            Battery batteryComponent = (Battery) component;
 
+
+                            int batteryCount = batteryComponent.getStored();
+
+                            final int x = coords.getKey();
+                            final int y = coords.getValue();
+
+                            if (virtualViewType == VirtualViewType.GUI) {
+                                Platform.runLater(() -> {
+                                    ((GUI) virtualView).getBuildcontroller().addBattery(y, x, "Battery", batteryCount);
+                                });
+                            }
 
                         }
-
                     }
                 }
                 out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
-
 
                 break;
 
