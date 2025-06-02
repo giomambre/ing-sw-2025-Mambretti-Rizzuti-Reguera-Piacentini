@@ -713,7 +713,6 @@ public class Client {
 
                         player_local = p;
 
-
                     } else {
                         other_players_local.add(p);
                     }
@@ -725,8 +724,8 @@ public class Client {
                     }
                 }
                 if (virtualViewType == VirtualViewType.TUI) {
-                    ((TUI) virtualView).setPlayer_local(player_local);
-                    ((TUI) virtualView).setOther_players_local(other_players_local);
+                   virtualView.updateLocalPlayer(player_local);
+                    virtualView.updateOtherPlayers(other_players_local);
                     ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
                 }
                 break;

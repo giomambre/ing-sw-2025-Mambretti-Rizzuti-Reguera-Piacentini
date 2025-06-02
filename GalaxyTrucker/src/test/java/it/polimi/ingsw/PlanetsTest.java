@@ -64,7 +64,7 @@ public class PlanetsTest {
         cargo_reward.add(new ArrayList<>(List.of(Blue, Green)));
 
 
-        planets = new Planets(2,2, CardAdventureType.Planets, cargo_reward );
+        planets = new Planets(2,2, CardAdventureType.Planets, cargo_reward ,"");
         planets.setBoard(board);
 
 

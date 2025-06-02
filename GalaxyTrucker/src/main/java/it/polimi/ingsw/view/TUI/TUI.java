@@ -78,28 +78,57 @@ public class TUI implements View {
      * @return Il valore letto oppure -1 se allowExit è true e si vuole uscire
      */
     private int readValidInt(String prompt, int minVal, int maxVal, boolean allowExit, Set<Integer> excludedValues) {
-        int value;
+        int value = 0;
         String fullPrompt = prompt + (allowExit ? " (-1 per uscire)" : "") + ": ";
 
-        do {
-            System.out.print(fullPrompt);
-            String input = readLine().trim();
+        // Memorizza il prompt per quando il menu si chiude
+        if (!isMenuOpen) {
+            lastRequest = fullPrompt;
+        }
 
-            if (allowExit && input.equalsIgnoreCase("-1")) {
+        do {
+            out.print(fullPrompt);
+            String inputLine = readLine();
+
+            if (inputLine == null) {
+                out.println(RED + "Lettura input interrotta." + RESET);
+                return Integer.MIN_VALUE;
+            }
+
+            String trimmedInput = inputLine.trim();
+
+            if (trimmedInput.equalsIgnoreCase("/menu")) {
+                if (isMenuOpen) {
+                    out.println(YELLOW + "Menu già attivo. Scegli un'opzione valida o esci con -1." + RESET);
+                    fullPrompt = "Scelta (-1 per uscire): ";
+                    continue;
+                } else {
+                    showMenu();
+
+                    if (!isMenuOpen) {
+                        out.print(lastRequest);
+                    }
+                    value = Integer.MIN_VALUE;
+                    continue;
+                }
+            }
+
+
+            if (allowExit && trimmedInput.equalsIgnoreCase("-1")) {
                 return -1;
             }
 
             try {
-                value = Integer.parseInt(input);
+                value = Integer.parseInt(trimmedInput);
                 if (value < minVal || value > maxVal) {
-                    System.out.println(RED + "Errore: il valore deve essere compreso tra " + minVal + " e " + maxVal + "." + RESET);
+                    out.println(RED + "Errore: il valore deve essere compreso tra " + minVal + " e " + maxVal + "." + RESET);
                     value = Integer.MIN_VALUE;
                 } else if (excludedValues.contains(value)) {
-                    System.out.println(RED + "Errore: il valore " + value + " non è selezionabile." + RESET);
+                    out.println(RED + "Errore: il valore " + value + " non è selezionabile." + RESET);
                     value = Integer.MIN_VALUE;
                 }
             } catch (NumberFormatException e) {
-                System.out.println(RED + "Errore: inserisci un numero valido." + RESET);
+                out.println(RED + "Errore: inserisci un numero valido." + RESET);
                 value = Integer.MIN_VALUE;
             }
 
@@ -141,23 +170,30 @@ public class TUI implements View {
 
 
         new Thread(() -> {
-            Scanner scanner = new Scanner(System.in);
+            Scanner dedicatedScanner = new Scanner(System.in); // Scanner dedicato per questo thread
             while (true) {
                 try {
-                    String input = scanner.nextLine();
-                    if (isMenuOpen && !input.equalsIgnoreCase("/menu")) {
+                    if (!dedicatedScanner.hasNextLine()) {
+                        break;
+                    }
+                    String userInput = dedicatedScanner.nextLine();
+      inputQueue.put(userInput);
 
-                        continue;
-                    }
-                    switch (input.toLowerCase()) {
-                        case "/menu" -> showMenu();
-                        default -> inputQueue.put(input);
-                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    out.println(RED + "Thread di input interrotto." + RESET);
+                    break;
+                } catch (NoSuchElementException e) {
+                    out.println(RED + "Stream di input chiuso (EOF)." + RESET);
+                    break;
                 } catch (Exception e) {
+                    out.println(RED + "Errore imprevisto nel thread di input: " + e.getMessage() + RESET);
                     e.printStackTrace();
                 }
             }
+
         }).start();
+
 
     }
 
@@ -278,6 +314,26 @@ public class TUI implements View {
         return reply;
     }
 
+
+    @Override
+    public void updateLocalPlayer(Player localPlayer) {
+        this.player_local = localPlayer;
+    }
+
+    @Override
+    public void updateOtherPlayers(List<Player> otherPlayers) {
+        this.other_players_local = otherPlayers;
+    }
+
+    @Override
+    public void updateAdventureDeck(Map<Direction, List<CardAdventure>> adventureDeck) {
+
+    }
+
+    @Override
+    public void updateFacedUpCards(List<CardComponent> facedUpDeck) {
+
+    }
 
     @Override
     public void showMessage(String message) {
@@ -789,15 +845,15 @@ public class TUI implements View {
         System.out.println("CARTA COLPITA : ");
 
         // Componenti centrali
-        String topStr = center(printConnector(card.getConnector_type(Direction.North), Direction.North), CELL_WIDTH);
+        String topStr = center(printConnector(card.getConnector_type(North), North), CELL_WIDTH);
         String cardStr = printCard(card.getComponentType());
         String midStr = center(
-                printConnector(card.getConnector_type(Direction.West), Direction.West)
+                printConnector(card.getConnector_type(West), West)
                         + cardStr +
-                        printConnector(card.getConnector_type(Direction.East), Direction.East),
+                        printConnector(card.getConnector_type(East), East),
                 CELL_WIDTH
         );
-        String botStr = center(printConnector(card.getConnector_type(Direction.South), Direction.South), CELL_WIDTH);
+        String botStr = center(printConnector(card.getConnector_type(South), South), CELL_WIDTH);
 
         // Riga extra sopra/sotto per freccia verticale
         String arrowTop = " ".repeat(CELL_WIDTH);
@@ -1316,8 +1372,8 @@ public class TUI implements View {
         for (int i = 0; i < ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
                 CardComponent component = ship.getComponent(i, j);
-                if (component != null && component.getComponentType() == ComponentType.LivingUnit ||  component.getComponentType() == ComponentType.MainUnitRed
-                || component.getComponentType() == ComponentType.MainUnitYellow || component.getComponentType() == ComponentType.MainUnitGreen || component.getComponentType() == ComponentType.MainUnitBlue) {
+                if (component != null && component.getComponentType() == ComponentType.LivingUnit ||  component.getComponentType() == MainUnitRed
+                || component.getComponentType() == MainUnitYellow || component.getComponentType() == MainUnitGreen || component.getComponentType() == MainUnitBlue) {
                     LivingUnit unit = (LivingUnit) component;
                     if (unit.getNum_crewmates() > 0) {
                         livingUnits.add(new Pair<>(i, j));

@@ -57,7 +57,7 @@ public class EpidemicTest {
 
     @Test
     public void epidemicTest() {
-        epidemic = new Epidemic(2,0, CardAdventureType.Epidemic);
+        epidemic = new Epidemic(2,0, CardAdventureType.Epidemic,"");
         epidemic.setBoard(board);
 
         Map<Direction, ConnectorType> connectors = new HashMap<>();

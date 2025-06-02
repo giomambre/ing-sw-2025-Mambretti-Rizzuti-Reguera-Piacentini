@@ -230,10 +230,10 @@ public class CombatZoneTest {
                     new Pair<>(MeteorType.HeavyCannonFire, South), new Pair<>(MeteorType.HeavyCannonFire, North)
             );
 
-            combatZone = new CombatZone(2,2, CardAdventureType.CombatZone,2,0,3,meteors);
+            combatZone = new CombatZone(2,2, CardAdventureType.CombatZone,2,0,3,meteors,"");
             meteors = ((CombatZone)combatZone).getMeteors();
 
-            meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors);
+            meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors,"");
             meteorSwarm.setBoard(board);
             System.out.println(ship1.printShipPlance());
 
