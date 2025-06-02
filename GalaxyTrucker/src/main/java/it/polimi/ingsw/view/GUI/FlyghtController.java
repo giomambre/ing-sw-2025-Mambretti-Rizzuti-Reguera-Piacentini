@@ -13,7 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -26,6 +28,8 @@ import javafx.util.Pair;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class FlyghtController {
     private GUI gui;
@@ -34,6 +38,8 @@ public class FlyghtController {
     private Map<String, ImageView> playerPawns = new HashMap<>();
     private Map<Integer, Player> playerPositions = new HashMap<>(); // posizione -> Player
     private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
+    private CompletableFuture<Pair<Integer, Integer>> batterySelectionFuture; // Per la selezione della batteria specifica
+    private AtomicBoolean isWaitingForBatterySelection = new AtomicBoolean(false);
 
     // FXML Components
     @FXML
@@ -70,6 +76,8 @@ public class FlyghtController {
         setupPlayerShipGrid();
         setupAdventureCardArea();
     }
+
+
 
     /**
      * Imposta la GUI di riferimento
@@ -344,11 +352,16 @@ public class FlyghtController {
      */
     private String getPawnImagePath(Color color) {
         switch (color) {
-            case BLUE: return "/images/pawns/pawn_blue.png";
-            case RED: return "/images/pawns/pawn_red.png";
-            case GREEN: return "/images/pawns/pawn_green.png";
-            case YELLOW: return "/images/pawns/pawn_yellow.png";
-            default: return "/images/pawns/pawn_default.png";
+            case BLUE:
+                return "/images/pawns/pawn_blue.png";
+            case RED:
+                return "/images/pawns/pawn_red.png";
+            case GREEN:
+                return "/images/pawns/pawn_green.png";
+            case YELLOW:
+                return "/images/pawns/pawn_yellow.png";
+            default:
+                return "/images/pawns/pawn_default.png";
         }
     }
 
@@ -357,11 +370,16 @@ public class FlyghtController {
      */
     private String getColorHex(Color color) {
         switch (color) {
-            case BLUE: return "#0066CC";
-            case RED: return "#CC0000";
-            case GREEN: return "#00CC00";
-            case YELLOW: return "#CCCC00";
-            default: return "#888888";
+            case BLUE:
+                return "#0066CC";
+            case RED:
+                return "#CC0000";
+            case GREEN:
+                return "#00CC00";
+            case YELLOW:
+                return "#CCCC00";
+            default:
+                return "#888888";
         }
     }
 
@@ -530,5 +548,173 @@ public class FlyghtController {
         });
     }
 
+    public void highlightCell(int y,int x) {
+
+        for (Node node : playerShipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                // Se la cella contiene un'immagine, applica il bordo all'immagine
+                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
+                    imageView.setStyle("-fx-effect: dropshadow(gaussian, gold, 5, 0.8, 0, 0); -fx-border-color: gold; -fx-border-width: 3px;");
+                } else {
+                    // Se la cella è vuota, applica il bordo alla StackPane
+                    cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
+                }
+                return;
+            }
+        }
+    }
+
+    public void resetHighlights(int y,int x) {
+
+        for (Node node : playerShipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
+
+            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                // Se la cella contiene un'immagine, rimuovi gli effetti dall'immagine
+                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
+                    imageView.setStyle(""); // Rimuovi tutti gli stili
+                } else {
+                    // Se la cella è vuota, rimuovi il bordo dalla StackPane
+                    cell.setStyle("-fx-background-color: lightyellow;");
+                }
+                return;
+            }
+        }
+
+
+    }
+
+
+    public CompletableFuture<Pair<Integer, Integer>> getBatterySelectionFuture() {
+        if (batterySelectionFuture == null) {
+            batterySelectionFuture = new CompletableFuture<>();
+        }
+        return batterySelectionFuture;
+    }
+
+    public void resetBatterySelectionFuture() {
+        batterySelectionFuture = null; // Resetta per il prossimo utilizzo
+        isWaitingForBatterySelection.set(false);
+    }
+
+    /**
+     * Mostra un alert per chiedere all'utente se vuole usare la batteria per il motore doppio.
+     * Restituisce un CompletableFuture<Boolean> che si completa con la scelta.
+     * True se vuole usare la batteria, False altrimenti.
+     */
+    public CompletableFuture<Boolean> askUseBatteryConfirmation(int engineRow, int engineCol) {
+        CompletableFuture<Boolean> futureConfirmation = new CompletableFuture<>();
+
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Motore Doppio");
+            alert.setHeaderText("Motore Doppio trovato a RIGA: " + engineRow + " COLONNA: " + engineCol);
+            alert.setContentText("Vuoi usare una batteria per attivare questo motore?");
+
+            ButtonType buttonUseBattery = new ButtonType("Usa Batteria");
+            ButtonType buttonDoNotUseBattery = new ButtonType("Non usare Batteria");
+
+            alert.getButtonTypes().setAll(buttonUseBattery, buttonDoNotUseBattery);
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            futureConfirmation.complete(result.isPresent() && result.get() == buttonUseBattery);
+        });
+        return futureConfirmation;
+    }
+
+    /**
+     * Evidenzia le celle delle batterie disponibili e imposta il listener per la selezione.
+     *
+     * @param batteryPositions Lista delle posizioni delle batterie disponibili.
+     */
+    public void highlightAndEnableBatterySelection(List<Pair<Integer, Integer>> batteryPositions) {
+        Platform.runLater(() -> {
+            isWaitingForBatterySelection.set(true); // Imposta lo stato di attesa
+
+
+            // Aggiungi un listener per i click sulla griglia per catturare la selezione della batteria
+            playerShipGrid.getChildren().forEach(node -> {
+                Integer colIndex = GridPane.getColumnIndex(node);
+                Integer rowIndex = GridPane.getRowIndex(node);
+
+                if (colIndex == null) colIndex = 0;
+                if (rowIndex == null) rowIndex = 0;
+
+                Pair<Integer, Integer> currentCellCoords = new Pair<>(rowIndex, colIndex);
+
+                if (node instanceof StackPane cell && batteryPositions.contains(currentCellCoords)) {
+                    // Aggiungi il listener solo alle celle che contengono batterie valide
+                    cell.setOnMouseClicked(event -> {
+                        if (isWaitingForBatterySelection.get()) { // Controlla lo stato
+                            // Completa il future con la posizione della batteria selezionata
+                            getBatterySelectionFuture().complete(currentCellCoords);
+                            // Rimuovi l'highlight e i listener dopo la selezione
+                            cell.setOnMouseClicked(null); // Rimuovi il listener da questa cella
+                            isWaitingForBatterySelection.set(false); // Resetta lo stato
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    /*public void askBattery(int engineRow, int engineCol) {
+        CompletableFuture<Integer> choice = new CompletableFuture<>();
+
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Motore Doppio");
+            alert.setHeaderText("Motore Doppio trovato a RIGA: " + engineRow + " COLONNA: " + engineCol);
+            alert.setContentText("Vuoi usare una batteria per attivare questo motore?");
+
+            ButtonType buttonUseBattery = new ButtonType("Usa Batteria");
+            ButtonType buttonDoNotUseBattery = new ButtonType("Non usare Batteria");
+
+            alert.getButtonTypes().setAll(buttonUseBattery, buttonDoNotUseBattery);
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == buttonUseBattery) {
+                choice.complete(1);
+                setBatteryChoice(1);
+            } else {
+                choice.complete(2);
+                 setBatteryChoice(1);
+            }
+        });
+    }*/
+
+
+    /*public void setBatteryChoice(int choice) {
+        if (batterychoice != null) {
+            if(choice==1){
+                batterychoice.complete(gui.useBattery(gui.getClient().getPlayer_local().getShip()));
+            }else{
+                batterychoice.complete(new Pair<>(-1,-1));
+            }
+        }
+    }
+
+    public CompletableFuture<Pair<Integer,Integer>> getBatteryChoice() {
+        if (batterychoice == null) {
+            batterychoice = new CompletableFuture<>();
+        }
+        return batterychoice;
+    }
+
+    public void resetChoice() {
+        batterychoice = new CompletableFuture<>();
+    }*/
 
 }

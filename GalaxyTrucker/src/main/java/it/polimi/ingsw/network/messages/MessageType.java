@@ -57,6 +57,8 @@ public enum MessageType {
     CANNON_POWER_RANK,
     CANNON_POWER,
     CARGO_LOSS,
-    SMUGGLERS
+    SMUGGLERS,
+    PIRATES,
+    SLAYERS,
 
 }
