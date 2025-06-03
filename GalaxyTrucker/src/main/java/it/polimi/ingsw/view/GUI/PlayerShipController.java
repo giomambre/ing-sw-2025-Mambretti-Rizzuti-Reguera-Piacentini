@@ -34,14 +34,14 @@ public class PlayerShipController {
         for (int i = 0; i < shipBoard.length; i++) {
             for (int j = 0; j < shipBoard[0].length; j++) {
                 StackPane cell = new StackPane();
-                cell.setPrefSize(40, 40);
+                cell.setPrefSize(53, 53);
 
                 CardComponent component = shipBoard[i][j];
                 if(component==null||component.getComponentType()== ComponentType.NotAccessible||component.getComponentType()==ComponentType.Empty){
                     if (component == null) {
                         System.out.println("DEBUG: shipBoard[" + i + "][" + j + "] is null");
                     }
-                    cell.setStyle("-fx-background-color: lightgray;");
+                    cell.setStyle("-fx-background-color: transparent;");
 
                 }
                 else  {
@@ -49,8 +49,8 @@ public class PlayerShipController {
 
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                     ImageView iv = new ImageView(img);
-                    iv.setFitWidth(38);
-                    iv.setFitHeight(38);
+                    iv.setFitWidth(53);
+                    iv.setFitHeight(53);
                     iv.setPreserveRatio(true);
                     iv.setRotate(component.getRotationAngle());
                     cell.getChildren().add(iv);

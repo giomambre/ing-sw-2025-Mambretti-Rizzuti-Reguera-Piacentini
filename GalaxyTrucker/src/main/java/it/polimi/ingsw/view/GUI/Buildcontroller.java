@@ -291,7 +291,7 @@ public class Buildcontroller {
             for (Player p : otherPlayers) {
                 Button playerButton = new Button(p.getNickname());
                 playerButton.setOnAction(e -> showShipForPlayer(p.getNickname()));
-                //playerButton.getStyleClass().add("player-button"); // se vuoi uno stile CSS
+                playerButton.getStyleClass().add("player-button");
                 playersButtonBox.getChildren().add(playerButton);
             }
         });

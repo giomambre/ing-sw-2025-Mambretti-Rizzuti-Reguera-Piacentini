@@ -44,7 +44,7 @@
             <Button fx:id="endbutton" onAction="#setFour" styleClass="ship-button" text="Termina Assemblaggio" />
 
             <Pane prefHeight="340" prefWidth="468" StackPane.alignment="CENTER">
-                <GridPane fx:id="shipGrid" alignment="CENTER" layoutX="552.0" layoutY="17.0" prefHeight="309.0" prefWidth="432.0">
+                <GridPane fx:id="shipGrid" alignment="CENTER" layoutX="552.0" layoutY="13.0" prefHeight="309.0" prefWidth="432.0">
                <columnConstraints>
                   <ColumnConstraints />
                </columnConstraints>
