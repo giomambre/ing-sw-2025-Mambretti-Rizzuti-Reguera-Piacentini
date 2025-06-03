@@ -17,7 +17,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.util.Pair;
 
-import javax.smartcardio.Card;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -27,10 +26,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
-import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
-import static it.polimi.ingsw.model.enumerates.ConnectorType.Smooth;
-import static it.polimi.ingsw.model.enumerates.Direction.*;
-import static it.polimi.ingsw.model.enumerates.Direction.West;
+import static it.polimi.ingsw.model.enumerates.Direction.South;
 
 public class Client {
     private static ObjectInputStream in;
@@ -70,17 +66,6 @@ public class Client {
 
     public static void main(String[] args) {
         try {
-
-            Map<Direction, ConnectorType> connectors = new HashMap<>();
-            connectors.put(North, Double);
-            connectors.put(East, Smooth);
-            connectors.put(South, Engine_Connector);
-            connectors.put(West, Smooth);
-            CardComponent provba = new Battery(Battery,connectors,2,"");
-            System.out.println(provba.getRotationAngle());
-            provba.rotate();
-            System.out.println(provba.getRotationAngle());
-
 
             Socket socket = new Socket("0.tcp.eu.ngrok.io", 14754);
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -1063,7 +1048,7 @@ public class Client {
 
                             if(virtualViewType==VirtualViewType.GUI){
                                 ((GUI)virtualView).getFlyghtController().highlightCell(i,j);
-                                ((GUI) virtualView).getFlyghtController().updatePlayerShip();
+                                //((GUI) virtualView).getFlyghtController().updatePlayerShip();
                             }
 
                             battery = virtualView.askEngine(new Pair<>(i, j));

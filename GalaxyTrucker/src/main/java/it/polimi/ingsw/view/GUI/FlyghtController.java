@@ -487,22 +487,6 @@ public class FlyghtController {
         });
     }
 
-    // Event Handlers FXML
-
-    @FXML
-    public void onEndTurn(ActionEvent event) {
-        System.out.println("Turno terminato");
-        // Logica per terminare il turno
-    }
-
-    @FXML
-    public void onDrawAdventureCard(ActionEvent event) {
-        System.out.println("Pesca carta avventura");
-        if (!adventureCardAction.isDone()) {
-            adventureCardAction.complete(0);
-        }
-    }
-
     // Getter per i CompletableFuture
 
     public CompletableFuture<Integer> getAdventureCardAction() {

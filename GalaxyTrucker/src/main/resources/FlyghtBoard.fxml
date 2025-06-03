@@ -39,12 +39,7 @@
                         <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Carte Avventura" />
                     </children>
                 </VBox>
-                <VBox spacing="10.0">
-                    <children>
-                        <Button fx:id="drawAdventureCardButton" mnemonicParsing="false" onAction="#onDrawAdventureCard" prefWidth="150.0" text="Pesca Carta Avventura" />
-                        <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#onEndTurn" prefWidth="150.0" text="Termina Turno" />
-                    </children>
-                </VBox>
+
             </children>
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
