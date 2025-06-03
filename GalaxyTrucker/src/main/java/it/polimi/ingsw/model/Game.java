@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.adventures.*;
-import it.polimi.ingsw.model.components.Battery;
-import it.polimi.ingsw.model.components.CardComponent;
-import it.polimi.ingsw.model.components.LivingUnit;
-import it.polimi.ingsw.model.components.Storage;
+import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
 
@@ -1485,7 +1482,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_1.jpg")); //di defaul rivolti nord-est (da capire se fare sottoclasse)
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_1.jpg")); //di defaul rivolti nord-est (da capire se fare sottoclasse)
 
 
         connectors.put(North, Single);
@@ -1493,7 +1490,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_2.jpg"));
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_2.jpg"));
 
 
         connectors.put(North, Double);
@@ -1501,7 +1498,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_3.jpg"));
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_3.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1509,7 +1506,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_4.jpg"));
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_4.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1517,7 +1514,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_5.jpg"));
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_5.jpg"));
 
 
         connectors.put(North, Single);
@@ -1525,7 +1522,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_6.jpg"));
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1533,7 +1530,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_7.jpg"));
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_7.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1541,7 +1538,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Shield, connectors, "/images/cardComponent/GT-shield_8.jpg"));
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_8.jpg"));
 
 
         //to add : adventure deck creation and allocation

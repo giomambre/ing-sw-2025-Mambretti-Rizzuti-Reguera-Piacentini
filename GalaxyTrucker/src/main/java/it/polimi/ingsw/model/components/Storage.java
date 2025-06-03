@@ -148,7 +148,6 @@ public class Storage extends CardComponent  implements Serializable {
     copy.setCard_uuid(getCard_uuid());
     copy.setCarried_cargos(carried_cargos);
         copy.setRotationAngle(this.getRotationAngle());
-
         return copy;
     }
 
