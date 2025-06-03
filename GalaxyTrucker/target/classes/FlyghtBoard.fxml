@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.FlyghtController">
+    <top>
+        <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label fx:id="currentPlayerLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Turno di: Giocatore" />
+                <HBox fx:id="playersInfoBox" alignment="CENTER" spacing="20.0">
+                    <children>
+                        <Label text="Info Giocatori" />
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </top>
+    <center>
+        <GridPane fx:id="boardGrid" alignment="CENTER" hgap="2.0" vgap="2.0" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </GridPane>
+    </center>
+    <right>
+        <VBox spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox fx:id="adventureCardArea" spacing="10.0" style="-fx-background-color: #f0f0f0; -fx-border-color: gray; -fx-border-width: 1px; -fx-padding: 10px;">
+                    <children>
+                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Carte Avventura" />
+                    </children>
+                </VBox>
+                <VBox spacing="10.0">
+                    <children>
+                        <Button fx:id="drawAdventureCardButton" mnemonicParsing="false" onAction="#onDrawAdventureCard" prefWidth="150.0" text="Pesca Carta Avventura" />
+                        <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#onEndTurn" prefWidth="150.0" text="Termina Turno" />
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </right>
+    <bottom>
+        <VBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="La tua Nave" />
+                <GridPane fx:id="playerShipGrid" alignment="CENTER" hgap="1.0" vgap="1.0" style="-fx-background-color: #e6f3ff; -fx-border-color: navy; -fx-border-width: 2px; -fx-padding: 10px;" />
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+        </VBox>
+    </bottom>
+</BorderPane>
