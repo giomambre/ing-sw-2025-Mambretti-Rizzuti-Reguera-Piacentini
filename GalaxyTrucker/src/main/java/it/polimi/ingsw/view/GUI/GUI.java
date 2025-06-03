@@ -9,10 +9,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import it.polimi.ingsw.model.*;
@@ -101,7 +103,6 @@ public class GUI implements View {
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
-                stage.centerOnScreen();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -429,7 +430,6 @@ public class GUI implements View {
     public CardComponent getActualcard() {
         return actualcard;
     }
-
     public void createrandomcardcontroller(CardComponent card) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         this.actualcard = card;
@@ -438,34 +438,51 @@ public class GUI implements View {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
                 Parent root = loader.load();
-                Randomcardcontroller controller = loader.getController(); // usa questo
+                Randomcardcontroller controller = loader.getController();
 
-                controller.setGui(this); // associa la GUI
-                controller.setStage(new Stage());
+                controller.setGui(this);
+                Stage stage = new Stage(); // Crea la stage qui
+                controller.setStage(stage); // Passa la stage al controller
                 //controller.setComboBox();
                 controller.showCardImage(card);
 
-                Stage stage = controller.getStage();
                 stage.setTitle("Random Card");
                 stage.setScene(new Scene(root));
-                stage.centerOnScreen();
+
+
+                Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+
+                double screenWidth = primaryScreenBounds.getWidth();
+                double screenHeight = primaryScreenBounds.getHeight();
+                double windowWidth = stage.getScene().getWidth();
+                double windowHeight = stage.getScene().getHeight();
+
+                double windowX = (screenWidth - windowWidth) / 2;
+                double windowY = (screenHeight - windowHeight) / 2;
+
+
+                stage.setX(windowX);
+                stage.setY(windowY);
+
+
                 stage.show();
 
-                /*stage.setOnCloseRequest(event -> {
-                    Platform.exit();
-                    System.exit(0);
-                });*/
+            /*stage.setOnCloseRequest(event -> {
+                Platform.exit();
+                System.exit(0);
+            });*/
 
-                this.randomcardcontroller = controller; // salva quello GIUSTO
+                this.randomcardcontroller = controller;
 
-                future.complete(null); // GUI pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
 
         try {
-            future.get(); // aspetta la GUI
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
