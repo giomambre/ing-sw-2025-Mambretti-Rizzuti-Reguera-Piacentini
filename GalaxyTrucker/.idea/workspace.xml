@@ -6,16 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="some fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/components/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/components/Storage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Battery.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Battery.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/CardComponent$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/CardComponent$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/CardComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/CardComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/LivingUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/LivingUnit.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Shield.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Shield.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,92 +75,92 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.App.executor": "Run",
-    "Application.CardComponentLoader.executor": "Run",
-    "Application.Client.executor": "Run",
-    "Application.ClientMultiplo.executor": "Run",
-    "Application.JsonLoader.executor": "Run",
-    "Application.MainClient.executor": "Run",
-    "Application.Multiple Istance Client.executor": "Run",
-    "Application.RmiClient.executor": "Run",
-    "Application.RmiServer.executor": "Run",
-    "Application.Server.executor": "Run",
-    "Application.TestGui.executor": "Run",
-    "Application.Unnamed (1).executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "JUnit.AbandonedShipTest.executor": "Run",
-    "JUnit.AbandonedShipTest.testAbandonedShip.executor": "Run",
-    "JUnit.AbandonedStationTest.executor": "Run",
-    "JUnit.AbandonedStationTest.testAbandonedStation.executor": "Run",
-    "JUnit.BatteryTest.testAddBattery.executor": "Run",
-    "JUnit.BatteryTest.testRemoveBattery.executor": "Run",
-    "JUnit.BoardTest.checkLeaderTest.executor": "Run",
-    "JUnit.BoardTest.executor": "Run",
-    "JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces.executor": "Run",
-    "JUnit.BoardTest.testRankingOrder.executor": "Run",
-    "JUnit.BoardTest.testmovePlayerBackwardWrappingAroundBoard.executor": "Run",
-    "JUnit.BoardTest.testmovePlayerForwardWrappingAroundBoardExtremeCase.executor": "Run",
-    "JUnit.CombatZoneTest.executor": "Run",
-    "JUnit.EpidemicTest.executor": "Run",
-    "JUnit.GameControllerTest.executor": "Coverage",
-    "JUnit.GameControllerTest.testAddComponent.executor": "Run",
-    "JUnit.GameControllerTest.testAddPlayer.executor": "Run",
-    "JUnit.GameControllerTest.testCrewmateSupply.executor": "Run",
-    "JUnit.GameControllerTest.testEndPlayerBuildPhase.executor": "Run",
-    "JUnit.GameControllerTest.testsecureComponent.executor": "Run",
-    "JUnit.MeteorSwarmTest.executor": "Run",
-    "JUnit.OpenSpaceTest.executor": "Run",
-    "JUnit.OpenSpaceTest.testAccept_CorrectOrder.executor": "Run",
-    "JUnit.OpenSpaceTest.testAccept_NoBatteries.executor": "Run",
-    "JUnit.OpenSpaceTest.testExecuteAdventureEffects.executor": "Run",
-    "JUnit.OpenSpaceTest.testExecuteAdventureEffects_CorrectOrder.executor": "Run",
-    "JUnit.OpenSpaceTest.testExecuteAdventureEffects_NoBatteries.executor": "Run",
-    "JUnit.PiratesTest.executor": "Run",
-    "JUnit.PlanetsTest.executor": "Run",
-    "JUnit.PlayerTest.executor": "Run",
-    "JUnit.PlayerTest.testsecureComponent.executor": "Run",
-    "JUnit.ShipTest.checkConnection.executor": "Run",
-    "JUnit.ShipTest.checkShipConnectionsTest.executor": "Run",
-    "JUnit.ShipTest.executor": "Run",
-    "JUnit.ShipTest.findShipPieces.executor": "Run",
-    "JUnit.ShipTest.testaddComponent.executor": "Run",
-    "JUnit.ShipTest.testaddComponentCannon.executor": "Run",
-    "JUnit.ShipTest.testcalculateCannonPower.executor": "Run",
-    "JUnit.ShipTest.testcalculateEnginePower.executor": "Run",
-    "JUnit.ShipTest2.executor": "Run",
-    "JUnit.ShipTest2.testExposedConnectors.executor": "Run",
-    "JUnit.ShipTest2.testFindPieces.executor": "Run",
-    "JUnit.ShipTest2.testPrintShipPlance.executor": "Run",
-    "JUnit.ShipTest2.testRemoveComponentKillingAlien.executor": "Run",
-    "JUnit.SlaversTest.executor": "Run",
-    "JUnit.SmugglersTest.executor": "Run",
-    "JUnit.StorageTest.executor": "Run",
-    "JUnit.StorageTest.testStorage.executor": "Run",
-    "JUnit.StorageTest.testaddCargo.executor": "Run",
-    "JUnit.ingsw in PSP17.executor": "Run",
-    "JUnit.java in PSP17.executor": "Coverage",
-    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "extract.method.default.visibility": "public",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/gioma/Downloads/ing-sw-2024-zanoni-valentini-spazzadeschi-spandri-master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.24316406",
-    "project.structure.side.proportion": "0.32299742",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Application.CardComponentLoader.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ClientMultiplo.executor&quot;: &quot;Run&quot;,
+    &quot;Application.JsonLoader.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainClient.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Multiple Istance Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RmiClient.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RmiServer.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestGui.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedShipTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedShipTest.testAbandonedShip.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedStationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedStationTest.testAbandonedStation.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BatteryTest.testAddBattery.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BatteryTest.testRemoveBattery.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.checkLeaderTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testRankingOrder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testmovePlayerBackwardWrappingAroundBoard.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testmovePlayerForwardWrappingAroundBoardExtremeCase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CombatZoneTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.EpidemicTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.GameControllerTest.testAddComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testAddPlayer.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testCrewmateSupply.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testEndPlayerBuildPhase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testsecureComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MeteorSwarmTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testAccept_CorrectOrder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testAccept_NoBatteries.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects_CorrectOrder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects_NoBatteries.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PiratesTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlanetsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlayerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlayerTest.testsecureComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.checkConnection.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.checkShipConnectionsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.findShipPieces.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testaddComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testaddComponentCannon.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testcalculateCannonPower.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testcalculateEnginePower.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testExposedConnectors.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testFindPieces.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testPrintShipPlance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testRemoveComponentKillingAlien.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SlaversTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SmugglersTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StorageTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StorageTest.testStorage.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StorageTest.testaddCargo.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ingsw in PSP17.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in PSP17.executor&quot;: &quot;Coverage&quot;,
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;public&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/gioma/Downloads/ing-sw-2024-zanoni-valentini-spazzadeschi-spandri-master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.24316406&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.32299742&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\network\server" />
@@ -428,14 +419,7 @@
       <workItem from="1748948033968" duration="180000" />
       <workItem from="1748958135972" duration="644000" />
       <workItem from="1748963399590" duration="3149000" />
-    </task>
-    <task id="LOCAL-00086" summary="timer finito e quasi finito controllo">
-      <option name="closed" value="true" />
-      <created>1746371385998</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1746371385999</updated>
+      <workItem from="1748966581021" duration="362000" />
     </task>
     <task id="LOCAL-00087" summary="timer finito e quasi finito controllo">
       <option name="closed" value="true" />
@@ -821,7 +805,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748965676251</updated>
     </task>
-    <option name="localTasksCounter" value="135" />
+    <task id="LOCAL-00135" summary="some fixes">
+      <option name="closed" value="true" />
+      <created>1748966852999</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1748966853000</updated>
+    </task>
+    <option name="localTasksCounter" value="136" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -906,7 +898,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java</url>
-          <line>84</line>
+          <line>69</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>

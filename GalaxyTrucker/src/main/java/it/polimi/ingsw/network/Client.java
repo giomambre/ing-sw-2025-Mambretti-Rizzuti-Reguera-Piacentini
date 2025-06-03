@@ -67,7 +67,7 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("0.tcp.eu.ngrok.io", 14754);
+            Socket socket = new Socket("localhost", 14754);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
