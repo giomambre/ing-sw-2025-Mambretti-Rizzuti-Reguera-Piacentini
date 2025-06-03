@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
@@ -8,10 +9,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import it.polimi.ingsw.model.*;
@@ -194,6 +197,26 @@ public class GUI implements View {
 
 
     @Override
+    public void updateLocalPlayer(Player localPlayer) {
+
+    }
+
+    @Override
+    public void updateOtherPlayers(List<Player> otherPlayers) {
+
+    }
+
+    @Override
+    public void updateAdventureDeck(Map<Direction, List<CardAdventure>> adventureDeck) {
+
+    }
+
+    @Override
+    public void updateFacedUpCards(List<CardComponent> facedUpDeck) {
+
+    }
+
+    @Override
     public void showMessage(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -309,13 +332,11 @@ public class GUI implements View {
                     System.exit(0);
                 });
 
-                // Dopo che tutto è pronto, setta i bottoni
                 controller.setupPlayerButtons(client.getOther_players_local());
                 controller.initializeShipBoard();
-
                 controller.updateFaceUpCardsDisplay();
 
-                future.complete(null);  // GUI pronta
+                future.complete(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 future.completeExceptionally(ex);
@@ -409,7 +430,6 @@ public class GUI implements View {
     public CardComponent getActualcard() {
         return actualcard;
     }
-
     public void createrandomcardcontroller(CardComponent card) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         this.actualcard = card;
@@ -418,34 +438,51 @@ public class GUI implements View {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
                 Parent root = loader.load();
-                Randomcardcontroller controller = loader.getController(); // usa questo
+                Randomcardcontroller controller = loader.getController();
 
-                controller.setGui(this); // associa la GUI
-                controller.setStage(new Stage());
+                controller.setGui(this);
+                Stage stage = new Stage(); // Crea la stage qui
+                controller.setStage(stage); // Passa la stage al controller
                 //controller.setComboBox();
                 controller.showCardImage(card);
 
-                Stage stage = controller.getStage();
                 stage.setTitle("Random Card");
                 stage.setScene(new Scene(root));
-                stage.centerOnScreen();
+
+
+                Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+
+
+                double screenWidth = primaryScreenBounds.getWidth();
+                double screenHeight = primaryScreenBounds.getHeight();
+                double windowWidth = stage.getScene().getWidth();
+                double windowHeight = stage.getScene().getHeight();
+
+                double windowX = (screenWidth - windowWidth) / 2;
+                double windowY = (screenHeight - windowHeight) / 2;
+
+
+                stage.setX(windowX);
+                stage.setY(windowY);
+
+
                 stage.show();
 
-                /*stage.setOnCloseRequest(event -> {
-                    Platform.exit();
-                    System.exit(0);
-                });*/
+            /*stage.setOnCloseRequest(event -> {
+                Platform.exit();
+                System.exit(0);
+            });*/
 
-                this.randomcardcontroller = controller; // salva quello GIUSTO
+                this.randomcardcontroller = controller;
 
-                future.complete(null); // GUI pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
 
         try {
-            future.get(); // aspetta la GUI
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -550,6 +587,87 @@ public class GUI implements View {
         crewmateType.add(CrewmateType.Astronaut);
         return crewmateType;
     }
+
+    /*public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
+        try {
+            Pair<Integer,Integer>selection=flyghtController.getBatteryChoice().get();
+            flyghtController.resetChoice();
+            return selection;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }*/
+
+    @Override
+    public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> engine) {
+        System.out.println("\nMOTORE DOPPIO" + " trovato a RIGA : " + engine.getKey()  + " COLONNA : " + engine.getValue());
+
+        CompletableFuture<Boolean> useBatteryConfirmation = flyghtController.askUseBatteryConfirmation(engine.getKey(), engine.getValue());
+
+        boolean wantsToUseBattery;
+        try {
+            wantsToUseBattery = useBatteryConfirmation.get(); // Aspetta la conferma dell'utente
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println("Errore durante l'attesa della conferma uso batteria: " + e.getMessage());
+            Thread.currentThread().interrupt();
+            return new Pair<>(-1, -1); // Errore o annullamento
+        }
+
+        if (!wantsToUseBattery) {
+            return new Pair<>(-1, -1); // L'utente non vuole usare la batteria
+        } else {
+            // L'utente vuole usare la batteria, ora avvia la selezione grafica
+            List<Pair<Integer, Integer>> batteryPositions = new ArrayList<>();
+            Ship ship = client.getPlayer_local().getShip(); // Ottieni la nave dal client
+
+            // Trova tutte le batterie con energia > 0
+            for (int i = 0; i < ship.getROWS(); i++) {
+                for (int j = 0; j < ship.getCOLS(); j++) {
+                    CardComponent component = ship.getComponent(i, j);
+                    if (component != null && component.getComponentType() == ComponentType.Battery && ((Battery) component).getStored() > 0) {
+                        batteryPositions.add(new Pair<>(i, j));
+                    }
+                }
+            }
+
+            if (batteryPositions.isEmpty()) {
+                showMessage("Nessuna batteria disponibile per questo motore.");
+                return new Pair<>(-1, -1); // Nessuna batteria da usare
+            }
+
+            // Inizializza il future per la selezione della batteria nel FlyghtController
+            flyghtController.resetBatterySelectionFuture();
+            CompletableFuture<Pair<Integer, Integer>> batterySelectionFuture = flyghtController.getBatterySelectionFuture();
+
+            // Evidenzia le batterie e abilita la selezione
+            flyghtController.highlightAndEnableBatterySelection(batteryPositions);
+
+            Pair<Integer, Integer> selectedBattery = null;
+            try {
+                selectedBattery = batterySelectionFuture.get(); // Aspetta la selezione della batteria
+            } catch (InterruptedException | ExecutionException e) {
+                System.err.println("Errore durante l'attesa della selezione della batteria: " + e.getMessage());
+                Thread.currentThread().interrupt();
+                return new Pair<>(-1, -1); // Errore o annullamento
+            } finally {
+                // Assicurati di resettare gli highlight e i listener
+                //flyghtController.resetBatteryHighlights(batteryPositions);
+                flyghtController.resetBatterySelectionFuture(); // Resetta il future
+                flyghtController.updatePlayerShip(); // Aggiorna la GUI per rimuovere tutti gli highlight
+            }
+
+            return selectedBattery; // Restituisce la batteria selezionata
+        }
+    }
+
+    @Override
+    public Pair<Integer, Integer> useBattery(Ship ship) {
+        return null;
+    }
+
+
+
 
     @Override
     public void printMeteors(List<Pair<MeteorType, Direction>> meteors) {
@@ -679,8 +797,8 @@ public class GUI implements View {
         return null;
     }
 
-    @Override
-    public Pair<Integer,Integer> useBattery(Ship ship){return null;};
+
+
 
     @Override
     public Map<CardComponent, Boolean> batteryUsage(Ship ship){return null;};
@@ -741,10 +859,6 @@ public class GUI implements View {
 
 
 
-    @Override
-    public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
-        return null;
-    }
 
     @Override
     public Pair<Integer, Integer> askCannon(Pair<Integer, Integer> cannon) {

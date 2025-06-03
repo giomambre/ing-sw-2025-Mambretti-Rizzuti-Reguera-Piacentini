@@ -588,6 +588,25 @@ public class Buildcontroller {
         }
     }
 
+    public void addBattery(int x, int y, String type, int count) {
+        Node cardNode = getCardPosition(x, y); // Il nodo recuperato
+
+        if (cardNode == null) {
+            System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
+            return;
+        }
+        System.out.println("CARTA TROVATA");
+
+        StackPane cell = (StackPane) cardNode; // Ora il cast è sicuro e corretto
+        Node overlay = createoverlayfortype(type, count);
+        System.out.println("overlay trovato");
+        if (overlay != null) { // Aggiungi l'overlay solo se è stato creato con successo
+            cell.getChildren().add(overlay);
+        } else {
+            System.out.println("ERROR: Impossibile creare l'overlay per il tipo: " + type);
+        }
+    }
+
     /*public Node getCardPosition(int x,int y) {
         Node card = null;
         for (Node node : shipGrid.getChildren()) {
@@ -615,7 +634,11 @@ public class Buildcontroller {
         return null; // Nessuna cella trovata alle coordinate specificate
     }
 
-    public Node createoverlayfortype(String type){
+    public Node createoverlayfortype(String type) {
+        return createoverlayfortype(type, -1); // -1 = valore di default ignorato
+    }
+
+    public Node createoverlayfortype(String type, int count) {
         String path;
 
         switch(type){
@@ -624,7 +647,6 @@ public class Buildcontroller {
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
-
                 for (int i = 0; i < 2; i++) {
                     ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
                     img.setFitWidth(40);
@@ -655,10 +677,29 @@ public class Buildcontroller {
                 return img;
             }
 
+            case "Battery": {
+                path = "/images/icons/battery.png";
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+
+                for (int i = 0; i < count; i++) {
+                    ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    batteryImg.setFitWidth(25);
+                    batteryImg.setFitHeight(25);
+                    batteryImg.setPreserveRatio(true);
+                    batteryImg.setSmooth(true);
+                    batteryImg.setMouseTransparent(true);
+                    container.getChildren().add(batteryImg);
+                }
+                return container;
+            }
+
             default:
                 return null;
         }
     }
+
 
 
 }

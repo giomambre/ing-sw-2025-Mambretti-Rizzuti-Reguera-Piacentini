@@ -40,7 +40,7 @@ public class OpenSpaceTest {
         board = new Board(24,game);
         board.putPlayersOnBoard(Arrays.asList(player1, player2, player3));
 
-        openSpace = new OpenSpace(2,0,OpenSpace);
+        openSpace = new OpenSpace(2,0,OpenSpace,"");
         openSpace.setBoard(board);
 
         connectors.put(North, Universal);

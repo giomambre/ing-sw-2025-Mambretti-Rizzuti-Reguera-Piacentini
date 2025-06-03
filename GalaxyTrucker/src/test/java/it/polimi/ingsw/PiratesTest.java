@@ -226,7 +226,7 @@ public class PiratesTest {
                 new Pair<>(MeteorType.HeavyCannonFire, South), new Pair<>(MeteorType.HeavyCannonFire, North)
         );
 
-        pirates = new Pirates(2,2,CardAdventureType.Pirates, 3,3, meteors);
+        pirates = new Pirates(2,2,CardAdventureType.Pirates, 3,3, meteors,"");
         pirates.setBoard(board);
 
     }
@@ -241,7 +241,7 @@ public class PiratesTest {
     @Test
     public void testExecuteLoss() {
         meteors = ((Pirates)pirates).getMeteors();
-        meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors);
+        meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors,"");
         System.out.println(ship1.printShipPlance());
 
         for (Pair<MeteorType, Direction> pair : meteors) {
