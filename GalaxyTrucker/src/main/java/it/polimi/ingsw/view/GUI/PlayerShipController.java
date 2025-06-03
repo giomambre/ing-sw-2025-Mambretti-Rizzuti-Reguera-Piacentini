@@ -30,6 +30,7 @@ public class PlayerShipController {
 
         playerNameLabel.setText("Nave di " + nickname);
         shipGrid.getChildren().clear();
+        playerNameLabel.setStyle("-fx-font-family: 'Verdana'; -fx-font-size: 14px; -fx-text-fill: #4B0082 ; -fx-font-weight: bold;");
 
         for (int i = 0; i < shipBoard.length; i++) {
             for (int j = 0; j < shipBoard[0].length; j++) {
