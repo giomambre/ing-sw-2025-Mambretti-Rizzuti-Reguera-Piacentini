@@ -38,6 +38,7 @@ public class Battery extends CardComponent  implements Serializable {
         super(component_type, connectors, imagePath);
         this.size = size;
         this.stored = size;
+
     }
 
     //hp: le batterie si aggiungono solo quando si fanno i rifornimenti iniziali (mi sembra di ricordare dal regolamento)
@@ -100,6 +101,7 @@ public class Battery extends CardComponent  implements Serializable {
         Battery copy = new Battery(getComponentType(),getConnectors(),size, getImagePath());
          copy.setStored(stored);
          copy.setCard_uuid(getCard_uuid());
+        copy.setRotationAngle(this.getRotationAngle());
 
          return copy;
      }

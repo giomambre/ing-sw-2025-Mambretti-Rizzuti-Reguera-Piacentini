@@ -118,6 +118,8 @@ public class LivingUnit extends CardComponent  implements Serializable {
         copy.setCard_uuid(getCard_uuid());
         copy.setCrewmate_type(getCrewmate_type());
         copy.setNum_crewmates(getNum_crewmates());
+        copy.setRotationAngle(this.getRotationAngle());
+
         return copy;
     }
 
