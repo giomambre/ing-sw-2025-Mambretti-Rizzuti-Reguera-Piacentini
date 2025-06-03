@@ -216,7 +216,7 @@ public class SlaversTest {
 
         ship1.addComponent(new CardComponent(Engine, connectors,""), 4, 5);
 
-        slayers = new Slavers(2,2,CardAdventureType.Slavers, 3,3, 9);
+        slayers = new Slavers(2,2,CardAdventureType.Slavers, 3,3, 9,"");
         slayers.setBoard(board);
 
     }

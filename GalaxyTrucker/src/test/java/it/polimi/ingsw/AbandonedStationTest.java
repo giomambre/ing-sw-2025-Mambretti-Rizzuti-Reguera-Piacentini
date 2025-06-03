@@ -51,7 +51,7 @@ public class AbandonedStationTest {
         cargos.add(Cargo.Yellow);
 
 
-        abd_station = new AbandonedStation(1,1,AbandonedStation,5,cargos);
+        abd_station = new AbandonedStation(1,1,AbandonedStation,5,cargos,"");
         abd_station.setBoard(board);
 
 

@@ -18,7 +18,7 @@ public class GameController {
 
     private CardAdventure adventure;
     private int adv_index = 0;
-
+    String pirates_coords = "";
     String planets = "";
     List<Player> finishedAdventure = new ArrayList<>();
     List<Player> adventureOrder = new ArrayList<>();
@@ -45,6 +45,14 @@ public class GameController {
         this.game_state = SETTINGS;
 
 
+    }
+
+    public String getPirates_coords() {
+        return pirates_coords;
+    }
+
+    public void setPirates_coords(String pirates_coords) {
+        this.pirates_coords = pirates_coords;
     }
 
     public CardAdventure getCurrentAdventure() {

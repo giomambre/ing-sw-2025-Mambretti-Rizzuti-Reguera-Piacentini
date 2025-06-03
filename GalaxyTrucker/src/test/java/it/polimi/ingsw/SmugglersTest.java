@@ -61,7 +61,7 @@ public class SmugglersTest {
         cargo_rewards.add(Cargo.Blue);
         cargo_rewards.add(Cargo.Blue);
 
-        smugglers = new Smugglers(2,2,CardAdventureType.Smugglers, 3,cargo_rewards, 2);
+        smugglers = new Smugglers(2,2,CardAdventureType.Smugglers, 3,cargo_rewards, 2,"");
         smugglers.setBoard(board);
 
     }

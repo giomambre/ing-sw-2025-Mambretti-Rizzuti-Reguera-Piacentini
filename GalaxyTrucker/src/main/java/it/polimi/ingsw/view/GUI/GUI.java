@@ -195,6 +195,26 @@ public class GUI implements View {
 
 
     @Override
+    public void updateLocalPlayer(Player localPlayer) {
+
+    }
+
+    @Override
+    public void updateOtherPlayers(List<Player> otherPlayers) {
+
+    }
+
+    @Override
+    public void updateAdventureDeck(Map<Direction, List<CardAdventure>> adventureDeck) {
+
+    }
+
+    @Override
+    public void updateFacedUpCards(List<CardComponent> facedUpDeck) {
+
+    }
+
+    @Override
     public void showMessage(String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -310,13 +330,11 @@ public class GUI implements View {
                     System.exit(0);
                 });
 
-                // Dopo che tutto è pronto, setta i bottoni
                 controller.setupPlayerButtons(client.getOther_players_local());
                 controller.initializeShipBoard();
-
                 controller.updateFaceUpCardsDisplay();
 
-                future.complete(null);  // GUI pronta
+                future.complete(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 future.completeExceptionally(ex);

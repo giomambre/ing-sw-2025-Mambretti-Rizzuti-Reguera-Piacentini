@@ -56,7 +56,7 @@ public class AbandonedShipTest {
     @Test
 
     public void testAbandonedShip() {
-        abandonedShip = new AbandonedShip(2,5,AbandonedShip,5,3);
+        abandonedShip = new AbandonedShip(2,5,AbandonedShip,5,3,"");
         abandonedShip.setBoard(board);
         Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
         astronaut_losses.put(ship.getComponent(3,1),2);

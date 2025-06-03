@@ -531,15 +531,14 @@ public class Client {
                         if (component.getComponentType() == LivingUnit) {
 
                             int select;
-                            if(virtualViewType == VirtualViewType.GUI) {
-                                List<CrewmateType> crewmates=((GUI)virtualView).getCrewmates(coords);
+                            if (virtualViewType == VirtualViewType.GUI) {
+                                List<CrewmateType> crewmates = ((GUI) virtualView).getCrewmates(coords);
                                 ((GUI) virtualView).getBuildcontroller().highlightCell(coords);
                                 ((GUI) virtualView).createCrewmateSelectionController(coords, crewmates);
                                 select = virtualView.crewmateAction(coords);
                                 ((GUI) virtualView).getBuildcontroller().resetHighlights(coords);
 
-                            }
-                            else {
+                            } else {
                                 select = virtualView.crewmateAction(coords);
                             }
                             CrewmateType type;
@@ -551,8 +550,8 @@ public class Client {
                                 final int x = coords.getKey();
                                 final int y = coords.getValue();
 
-                                if(virtualViewType == VirtualViewType.GUI) {
-                                    Platform.runLater(()-> {
+                                if (virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(() -> {
                                         ((GUI) virtualView).getBuildcontroller().addObject(y, x, "Astronaut");
                                     });
                                 }
@@ -565,8 +564,8 @@ public class Client {
                                 final int x = coords.getKey();
                                 final int y = coords.getValue();
 
-                                if(virtualViewType == VirtualViewType.GUI) {
-                                    Platform.runLater(()-> {
+                                if (virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(() -> {
                                         ((GUI) virtualView).getBuildcontroller().addObject(y, x, "PinkAlien");
                                     });
                                 }
@@ -580,23 +579,46 @@ public class Client {
                                 final int x = coords.getKey();
                                 final int y = coords.getValue();
 
-                                if(virtualViewType == VirtualViewType.GUI) {
-                                    Platform.runLater(()-> {
+                                if (virtualViewType == VirtualViewType.GUI) {
+                                    Platform.runLater(() -> {
                                         ((GUI) virtualView).getBuildcontroller().addObject(y, x, "BrownAlien");
                                     });
                                 }
 
-
                             }
                             out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
+                        } else if (component.getComponentType() == Battery) {
+                            Battery batteryComponent = (Battery) component;
 
 
+                            int batteryCount = batteryComponent.getStored();
+
+                            final int x = coords.getKey();
+                            final int y = coords.getValue();
+
+                            if (virtualViewType == VirtualViewType.GUI) {
+                                Platform.runLater(() -> {
+                                    ((GUI) virtualView).getBuildcontroller().addBattery(y, x, "Battery", batteryCount);
+                                });
+                            }
+
+                        } else if (component.getComponentType() == ComponentType.MainUnitBlue ||
+                                component.getComponentType() == ComponentType.MainUnitRed ||
+                                component.getComponentType() == ComponentType.MainUnitGreen ||
+                                component.getComponentType() == ComponentType.MainUnitYellow) {
+
+                            final int x = coords.getKey();
+                            final int y = coords.getValue();
+
+                            if (virtualViewType == VirtualViewType.GUI) {
+                                Platform.runLater(() -> {
+                                    ((GUI) virtualView).getBuildcontroller().addObject(y, x, "Astronaut");
+                                });
+                            }
                         }
-
                     }
                 }
                 out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
-
 
                 break;
 
@@ -713,7 +735,6 @@ public class Client {
 
                         player_local = p;
 
-
                     } else {
                         other_players_local.add(p);
                     }
@@ -725,8 +746,8 @@ public class Client {
                     }
                 }
                 if (virtualViewType == VirtualViewType.TUI) {
-                    ((TUI) virtualView).setPlayer_local(player_local);
-                    ((TUI) virtualView).setOther_players_local(other_players_local);
+                   virtualView.updateLocalPlayer(player_local);
+                    virtualView.updateOtherPlayers(other_players_local);
                     ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
                 }
                 break;
@@ -970,11 +991,6 @@ public class Client {
                     if(msg.getContent().equals("1")) {
 
                         virtualView.showMessage("\n --- il PLAYER " + less_cannon + " sta pagando la penitenza di 2 CANNONATE ---\n");
-                    }else{
-
-
-
-
                     }
                 }
 
@@ -1379,6 +1395,8 @@ break;
                      if(choice ){
                          cargoAction(smugglers.getCargo_rewards());
 
+                         out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+                        break;
                      }
 
                     out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
@@ -1395,6 +1413,55 @@ break;
 
                 break;
 
+
+            case Pirates:
+                Pirates pirates = (Pirates) adventure;
+                virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +pirates.getCannons_strenght() +  " \n");
+                 power_c =  cannonPower(pirates.getCannons_strenght());
+                virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+
+                StringBuilder coords_m = new StringBuilder();
+
+                if(power_c < pirates.getCannons_strenght()) {
+
+
+                    virtualView.showMessage("\n ----- HAI PERSO RICEVI DELLE CANNONATE ---- ");
+
+                    manageAdventure(
+                            new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                                    List.of(
+                                            new Pair<>(MeteorType.LightCannonFire, South),
+                                            new Pair<>(MeteorType.HeavyCannonFire, South)
+                                    ),""
+                            ), content);
+
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    break;
+                } else if(power_c == pirates.getCannons_strenght() ){
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
+
+
+                }else if(power_c > pirates.getCannons_strenght()) {
+
+
+                choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + pirates.getCredits()+ "crediti e perdere "+ pirates.getCost_of_days() +" giorni di volo?" );
+
+                if(choice){
+                        player_local.setCredits(pirates.getCredits());
+                        virtualView.showMessage("HAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+
+                }else{
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+
+                }
+
+        break;
+
+                }
 
 
         }
