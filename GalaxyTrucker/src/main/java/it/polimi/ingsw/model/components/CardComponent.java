@@ -27,7 +27,7 @@ public class CardComponent implements Serializable {
     private Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
     private UUID card_uuid;
     private String imagePath;
-    private int rotationAngle=0;
+    private int rotationAngle;
 
     public int getRotationAngle(){
         return rotationAngle;
@@ -49,6 +49,8 @@ public class CardComponent implements Serializable {
         this.component_type = component_type;
         this.connectors = new EnumMap<>(connectors);
         this.imagePath = imagePath;
+        this.rotationAngle = 0;
+
 
     }
 

@@ -85,6 +85,8 @@ public class Shield extends CardComponent implements Serializable {
         Shield copy = new Shield(getComponentType(),getConnectors(), getImagePath());
         copy.setCovered_sides(covered_sides);
         copy.setCard_uuid(getCard_uuid());
+        copy.setRotationAngle(this.getRotationAngle());
+
         return copy;
 
     }
