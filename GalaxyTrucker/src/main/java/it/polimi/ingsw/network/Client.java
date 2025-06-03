@@ -67,7 +67,7 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("localhost", 12345);
+            Socket socket = new Socket("0.tcp.eu.ngrok.io", 14754);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
@@ -1048,7 +1048,7 @@ public class Client {
 
                             if(virtualViewType==VirtualViewType.GUI){
                                 ((GUI)virtualView).getFlyghtController().highlightCell(i,j);
-                                ((GUI) virtualView).getFlyghtController().updatePlayerShip();
+                                //((GUI) virtualView).getFlyghtController().updatePlayerShip();
                             }
 
                             battery = virtualView.askEngine(new Pair<>(i, j));
