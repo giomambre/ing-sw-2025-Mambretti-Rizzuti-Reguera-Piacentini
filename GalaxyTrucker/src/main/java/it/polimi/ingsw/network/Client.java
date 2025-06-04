@@ -1140,36 +1140,64 @@ public class Client {
 
             case AbandonedShip:
 
-                choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
                 AbandonedShip ab_ship = (AbandonedShip) adventure;
+
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).getFlyghtController().showChoice();
+                    choice = ((GUI) virtualView).useCard();
+                } else {
+                    choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
+                }
 
                 if (choice) {
 
                     int num_crew_mates = ab_ship.getCrewmates_loss();
 
-
                     while (num_crew_mates != 0) {
 
+                        if (virtualViewType == VirtualViewType.GUI) {
+                            for (int i = 0; i < player_local.getShip().getROWS(); i++) {
+                                for (int j = 0; j < player_local.getShip().getCOLS(); j++) {
+                                    CardComponent card = player_local.getShip().getComponent(i, j);
+
+                                    if (card instanceof LivingUnit) {
+                                        ((GUI) virtualView).getFlyghtController().highlightCell(i, j);
+                                    }
+                                }
+                            }
+                        }
+
+                        ((GUI) virtualView).getFlyghtController().showAstronauts(player_local.getShip());
+
                         Pair<Integer, Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
-                        if (lu.getValue() == -1 || lu.getKey() == -1) continue;
-                        else {
-                            LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+
+                        int x = lu.getKey();
+                        int y = lu.getValue();
+
+                        if (x == -1 || y == -1) continue;
+
+                        CardComponent card = player_local.getShip().getComponent(x, y);
+
+                        if (card instanceof LivingUnit) {
+                            player_local.getShip().removeComponent(x, y);
+                            if (virtualViewType == VirtualViewType.GUI) {
+                                ((GUI) virtualView).getBuildcontroller().removeObject(x, y, "Astronaut");
+                                ((GUI) virtualView).getFlyghtController().resetHighlights(x,y);
+                            }
+
                             num_crew_mates--;
                             virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                         }
-
                     }
 
 
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local));
                 } else {
-
-                    out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local)));
-                    break;
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
                 }
 
-                out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local)));
-
                 break;
+
 
 
             case MeteorSwarm:

@@ -43,10 +43,14 @@
                 <VBox alignment="CENTER" spacing="10.0">
                     <children>
                         <Label fx:id="dclabel" text="Decidere se usare o no il cannone" visible="false" />
+                        <Label fx:id="choiceLabel" text="Vuoi usare questa carta avventura?" visible="false" />
+
                         <HBox alignment="CENTER" spacing="10.0">
                             <children>
                                 <Button fx:id="yesdc" text="Sì" visible="false" />
                                 <Button fx:id="nodc" text="No" visible="false" />
+                                <Button fx:id="accept" text="Sì" visible="false" />
+                                <Button fx:id="reject" text="No" visible="false" />
                             </children>
                         </HBox>
                         <Button fx:id="dontusebattery" text="Non usare nessuna batteria" visible="false" />

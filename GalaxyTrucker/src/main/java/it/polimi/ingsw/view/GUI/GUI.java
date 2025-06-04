@@ -588,6 +588,17 @@ public class GUI implements View {
         return crewmateType;
     }
 
+    public Boolean useCard() {
+        try {
+            Boolean choice=flyghtController.getUseCard().get();
+            flyghtController.resetUseCard();
+            return choice;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Boolean useDoubleCannon() {
         try {
             Boolean selection=flyghtController.getUseDoubleCannon().get();
@@ -818,9 +829,14 @@ public class GUI implements View {
 
     @Override
     public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
-        return null;
+        try {
+            FlyghtController.resetAstronautSelection();
+            return FlyghtController.getAstronautSelection().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return new Pair<>(-1, -1);
+        }
     }
-
 
 
 

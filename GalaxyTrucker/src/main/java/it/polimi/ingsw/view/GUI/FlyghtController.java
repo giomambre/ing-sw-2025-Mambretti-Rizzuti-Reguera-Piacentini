@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -44,6 +45,7 @@ public class FlyghtController {
     private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
     private CompletableFuture<Boolean> useDoubleCannon;
     private CompletableFuture<Pair<Integer, Integer>> coordsBattery;
+    private CompletableFuture<Boolean> useCard;
 
     // FXML Components
     @FXML
@@ -79,10 +81,67 @@ public class FlyghtController {
     @FXML
     private Button dontusebattery;
 
+    @FXML
+    private Button accept;
+
+    @FXML
+    private Button reject;
+
+    @FXML
+    private Label choiceLabel;
+
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_SIZE = 80;
     private static final int SHIP_CELL_SIZE = 40;
+    private static CompletableFuture<Pair<Integer, Integer>> astronautToRemove = new CompletableFuture<>();
+    public void showAstronauts(Ship ship) {
+        if (this.astronautToRemove == null || this.astronautToRemove.isDone()) {
+            this.astronautToRemove = new CompletableFuture<>();
+        }
+        final CompletableFuture<Pair<Integer, Integer>> currentAstronautFuture = this.astronautToRemove;
+
+        Platform.runLater(() -> {
+            for (int i = 0; i < ship.getShip_board().length; i++) {
+                for (int j = 0; j < ship.getShip_board()[0].length; j++) {
+                    StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
+                    if (cell != null) {
+                        cell.setStyle("");
+                        cell.setOnMouseClicked(null);
+
+                        CardComponent component = ship.getShip_board()[i][j];
+
+
+                        if (component instanceof LivingUnit livingUnit && livingUnit.getNum_crewmates() > 0) {
+                            highlightCell(i, j);
+                            cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+
+                            int finalI = i;
+                            int finalJ = j;
+                            cell.setOnMouseClicked(e -> {
+                                if (currentAstronautFuture != null && !currentAstronautFuture.isDone()) {
+                                    currentAstronautFuture.complete(new Pair<>(finalI, finalJ));
+                                }
+                                resetHighlights(finalI, finalJ);
+                                clearShipListeners(ship);
+                                cell.setOnMouseClicked(null);
+                            });
+                        } else {
+                            cell.setStyle("-fx-background-color: lightgray; -fx-cursor: default;");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public static void resetAstronautSelection() {
+        astronautToRemove = new CompletableFuture<>();
+    }
+
+    public static CompletableFuture<Pair<Integer, Integer>> getAstronautSelection() {
+        return astronautToRemove;
+    }
 
     /**
      * Inizializza il controller
@@ -197,6 +256,16 @@ public class FlyghtController {
         return null;
     }
 
+    public CompletableFuture<Boolean> getUseCard() {
+        if (useCard == null) {
+            useCard = new CompletableFuture<>();
+        }
+        return useCard;
+    }
+
+    public void resetUseCard() {
+        useCard = new CompletableFuture<>();
+    }
 
     public CompletableFuture<Boolean> getUseDoubleCannon() {
         if (useDoubleCannon == null) {
@@ -207,6 +276,19 @@ public class FlyghtController {
 
     public void resetUseDC(){
         useDoubleCannon = new CompletableFuture<>();
+    }
+
+    public void showChoice(){
+        Platform.runLater(() -> {
+            choiceLabel.setText("Decidere se usare o no questa carta");
+            choiceLabel.setVisible(true);
+            accept.setVisible(true);
+            accept.setOnAction((ActionEvent event) -> {useCard.complete(true);
+                hideChoice();});
+            reject.setVisible(true);
+            reject.setOnAction((ActionEvent event) -> {useCard.complete(false);
+                hideChoice();});
+        });
     }
 
     public void showdc(int x, int y) {
@@ -228,6 +310,14 @@ public class FlyghtController {
         yesdc.setVisible(false);
         nodc.setVisible(false);
     }
+
+    public void hideChoice() {
+
+        choiceLabel.setVisible(false);
+        accept.setVisible(false);
+        reject.setVisible(false);
+    }
+
 
     /**
      * Imposta la GUI di riferimento
@@ -727,6 +817,8 @@ public class FlyghtController {
 
 
     }
+
+
 
 
     /*public CompletableFuture<Pair<Integer, Integer>> getBatterySelectionFuture() {
