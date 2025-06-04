@@ -44,6 +44,7 @@ public class FlyghtController {
     private Map<Integer, Player> playerPositions = new HashMap<>(); // posizione -> Player
     private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
     private CompletableFuture<Boolean> useDoubleCannon;
+    private CompletableFuture<Boolean> acceptAdventure;
     private CompletableFuture<Pair<Integer, Integer>> coordsBattery;
     private CompletableFuture<Boolean> useCard;
 
@@ -304,6 +305,8 @@ public class FlyghtController {
         });
     }
 
+
+
     public void hidedc() {
 
         dclabel.setVisible(false);
@@ -317,6 +320,35 @@ public class FlyghtController {
         accept.setVisible(false);
         reject.setVisible(false);
     }
+
+
+    public Boolean acceptAdv(String prompt) {
+
+        acceptAdventure = new CompletableFuture<>();
+
+        Platform.runLater(() -> {
+            dclabel.setText(prompt);
+            dclabel.setVisible(true);
+            yesdc.setVisible(true);
+            yesdc.setOnAction((ActionEvent event) -> {
+                acceptAdventure.complete(true);
+                hidedc();
+            });
+            nodc.setVisible(true);
+            nodc.setOnAction((ActionEvent event) -> {
+                acceptAdventure.complete(false);
+                hidedc();
+            });
+        });
+
+        try {
+            return acceptAdventure.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
     /**
@@ -446,6 +478,7 @@ public class FlyghtController {
                                 imageView.setFitWidth(SHIP_CELL_SIZE - 2);
                                 imageView.setFitHeight(SHIP_CELL_SIZE - 2);
                                 imageView.setPreserveRatio(false);
+                                imageView.setRotate(component.getRotationAngle());
                                 cell.getChildren().add(imageView);
                             } catch (Exception e) {
                                 System.err.println("Errore nel caricamento immagine: " + imagePath);

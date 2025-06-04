@@ -1033,6 +1033,9 @@ public class Client {
 
 
     public static void manageAdventure(CardAdventure adventure, String content) throws IOException {
+        if (virtualViewType==VirtualViewType.GUI){
+            ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
+        }
 
         switch (adventure.getType()) {
 
@@ -1084,6 +1087,8 @@ public class Client {
                                         battery = new Pair<>(-1, -1);
                                     }
                                 }
+
+
                             }
 
                             else {
@@ -1108,7 +1113,6 @@ public class Client {
 
                 double power_m = ship.calculateEnginePower(battery_usage_os);
                 virtualView.showMessage("\n\nPOTENZA MOTORE : " + power_m);
-
                 out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power_m), clientId, player_local));
 
                 break;
@@ -1587,11 +1591,11 @@ public class Client {
             if (scelta == -1) {
                 break;
             }
+            System.out.println("debug scelgo" +scelta);
 
             Cargo c = planet_cargos.get(scelta);
-
-
             new_position = virtualView.addCargo(player_local.getShip(), c);
+
             if (new_position != null) {
                 ship = player_local.getShip();
                 planet_cargos.remove(scelta);
