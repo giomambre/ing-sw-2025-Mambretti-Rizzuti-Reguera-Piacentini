@@ -87,6 +87,7 @@ public class Server {
                 } else {
                     if (requestedName=="") {
                         sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Stringa vuota non accettata. Inserisci un altro nickname.", msgClient.getId_client()));
+                        break;
                     }
                     connectedNames.add(requestedName);
                     ClientHandler handler = clients.get(msgClient.getId_client());
