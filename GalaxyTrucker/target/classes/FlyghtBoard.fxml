@@ -49,7 +49,7 @@
                                 <Button fx:id="nodc" text="No" visible="false" />
                             </children>
                         </HBox>
-                        <Button fx:id="dontusebattery" text="Sì" visible="false" />
+                        <Button fx:id="dontusebattery" text="Non usare nessuna batteria" visible="false" />
                     </children>
                 </VBox>
             </children>

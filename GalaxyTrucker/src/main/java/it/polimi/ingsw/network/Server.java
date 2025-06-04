@@ -475,7 +475,12 @@ public class Server {
                                 Cargo.Yellow
                         ),
                         3,"");*/
-                CardAdventure adventure = new OpenSpace(1, 3, CardAdventureType.OpenSpace, "/images/cardAdventure/GT-openSpace_2.1.jpg");
+                CardAdventure adventure = new AbandonedStation(1, 3, CardAdventureType.AbandonedStation, 3,  Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow
+                ),"/images/cardAdventure/GT-abandonedStation_1.1.jpg");
+
 
                 /*adventure = new Pirates(1, 1, CardAdventureType.Pirates, 5, 4,
                         List.of(

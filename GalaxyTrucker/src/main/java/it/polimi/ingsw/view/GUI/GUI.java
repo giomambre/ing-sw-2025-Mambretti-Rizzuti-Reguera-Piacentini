@@ -784,7 +784,7 @@ public class GUI implements View {
 
     @Override
     public Boolean acceptAdventure(String prompt) {
-        return null;
+        return flyghtController.acceptAdv(prompt);
     }
 
 
@@ -837,7 +837,8 @@ public class GUI implements View {
 
     @Override
     public int askCargo(List<Cargo> cargos) {
-        return 0;
+        CargoSelector selector = new CargoSelector();
+        return selector.askCargo(cargos);
     }
 
 
