@@ -588,8 +588,8 @@ public class Buildcontroller {
         }
     }
 
-    public void addBattery(int x, int y, String type, int count) {
-        Node cardNode = getCardPosition(x, y); // Il nodo recuperato
+    public void removeObject(int x, int y, String type) {
+        Node cardNode = getCardPosition(x, y);
 
         if (cardNode == null) {
             System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
@@ -597,15 +597,72 @@ public class Buildcontroller {
         }
         System.out.println("CARTA TROVATA");
 
-        StackPane cell = (StackPane) cardNode; // Ora il cast è sicuro e corretto
+        StackPane cell = (StackPane) cardNode;
+
+        // Trova e rimuovi l'overlay del tipo specificato
+        Node overlayToRemove = null;
+        for (Node child : cell.getChildren()) {
+            if (isOverlayOfType(child, type)) {
+                overlayToRemove = child;
+                break;
+            }
+        }
+
+        if (overlayToRemove != null) {
+            cell.getChildren().remove(overlayToRemove);
+            System.out.println("Overlay rimosso per il tipo: " + type);
+        } else {
+            System.out.println("ERROR: Nessun overlay trovato per il tipo: " + type);
+        }
+    }
+
+    public void addBattery(int x, int y, String type, int count) {
+        Node cardNode = getCardPosition(x, y);
+
+        if (cardNode == null) {
+            System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
+            return;
+        }
+        System.out.println("CARTA TROVATA");
+
+        StackPane cell = (StackPane) cardNode;
         Node overlay = createoverlayfortype(type, count);
         System.out.println("overlay trovato");
-        if (overlay != null) { // Aggiungi l'overlay solo se è stato creato con successo
+        if (overlay != null) {
             cell.getChildren().add(overlay);
         } else {
             System.out.println("ERROR: Impossibile creare l'overlay per il tipo: " + type);
         }
     }
+
+    public void removeBattery(int x, int y, String type) {
+        Node cardNode = getCardPosition(x, y);
+
+        if (cardNode == null) {
+            System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
+            return;
+        }
+        System.out.println("CARTA TROVATA");
+
+        StackPane cell = (StackPane) cardNode;
+
+        // Trova e rimuovi l'overlay del tipo specificato
+        Node overlayToRemove = null;
+        for (Node child : cell.getChildren()) {
+            if (isOverlayOfType(child, type)) {
+                overlayToRemove = child;
+                break;
+            }
+        }
+
+        if (overlayToRemove != null) {
+            cell.getChildren().remove(overlayToRemove);
+            System.out.println("Overlay rimosso per il tipo: " + type);
+        } else {
+            System.out.println("ERROR: Nessun overlay trovato per il tipo: " + type);
+        }
+    }
+
 
     /*public Node getCardPosition(int x,int y) {
         Node card = null;
@@ -647,6 +704,7 @@ public class Buildcontroller {
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
                 for (int i = 0; i < 2; i++) {
                     ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
                     img.setFitWidth(40);
@@ -665,6 +723,7 @@ public class Buildcontroller {
                 img.setFitWidth(40);
                 img.setFitHeight(40);
                 img.setMouseTransparent(true);
+                img.setId("overlay-" + type);
                 return img;
             }
 
@@ -674,6 +733,7 @@ public class Buildcontroller {
                 img.setFitWidth(40);
                 img.setFitHeight(40);
                 img.setMouseTransparent(true);
+                img.setId("overlay-" + type);
                 return img;
             }
 
@@ -682,6 +742,8 @@ public class Buildcontroller {
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
+
 
                 for (int i = 0; i < count; i++) {
                     ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
@@ -698,6 +760,11 @@ public class Buildcontroller {
             default:
                 return null;
         }
+    }
+
+    private boolean isOverlayOfType(Node node, String type) {
+        String nodeId = node.getId();
+        return nodeId != null && nodeId.equals("overlay-" + type);
     }
 
 
