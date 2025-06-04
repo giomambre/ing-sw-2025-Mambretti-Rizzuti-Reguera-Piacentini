@@ -24,6 +24,7 @@ import java.io.*;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.South;
@@ -119,9 +120,9 @@ public class Client {
 
                         switch (msg.getType()) {
                             case  REQUEST_NAME, NAME_REJECTED,
-                                 NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
-                                 CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
-                                 INVALID_CONNECTORS, SELECT_PIECE:
+                                  NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
+                                  CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
+                                  INVALID_CONNECTORS, SELECT_PIECE:
                                 inputQueue.put(msg);
                                 break;
 
@@ -206,30 +207,30 @@ public class Client {
                 }
 
 
-                    if (virtualViewType == VirtualViewType.GUI) {
-                        ((GUI) virtualView).setClientCallback(nickname -> {
-                            try {
-                                setNickname(nickname);
-                                out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
-                                out.flush();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        ((GUI) virtualView).createNicknamescreen();
-
-                    } else {
-                            nickname = virtualView.askNickname();
-
-
-
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).setClientCallback(nickname -> {
                         try {
+                            setNickname(nickname);
                             out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
                             out.flush();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
+                    });
+                    ((GUI) virtualView).createNicknamescreen();
+
+                } else {
+                    nickname = virtualView.askNickname();
+
+
+
+                    try {
+                        out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+                }
 
                 break;
 
@@ -606,10 +607,10 @@ public class Client {
                                 });
                             }
 
-                        } else if (component.getComponentType() == ComponentType.MainUnitBlue ||
-                                component.getComponentType() == ComponentType.MainUnitRed ||
-                                component.getComponentType() == ComponentType.MainUnitGreen ||
-                                component.getComponentType() == ComponentType.MainUnitYellow) {
+                        } else if (component.getComponentType() == MainUnitBlue ||
+                                component.getComponentType() == MainUnitRed ||
+                                component.getComponentType() == MainUnitGreen ||
+                                component.getComponentType() == MainUnitYellow) {
 
                             final int x = coords.getKey();
                             final int y = coords.getValue();
@@ -711,7 +712,7 @@ public class Client {
                 }
                 if (parts[0].equals(nickname)) {
                     if (virtualViewType == VirtualViewType.TUI){
-                    virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
+                        virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
                     }
                 } else {
                     // virtualView.showMessage("\nIl player " + parts[0] + " ha scelto il colore : " + parts[1]);
@@ -750,7 +751,7 @@ public class Client {
                     }
                 }
                 if (virtualViewType == VirtualViewType.TUI) {
-                   virtualView.updateLocalPlayer(player_local);
+                    virtualView.updateLocalPlayer(player_local);
                     virtualView.updateOtherPlayers(other_players_local);
                     ((TUI) virtualView).setLocal_extra_components(player_local.getShip().getExtra_components());
                 }
@@ -873,7 +874,7 @@ public class Client {
 
             case START_FLIGHT:
 
-                    virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
+                virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
 
                 break;
 
@@ -884,7 +885,7 @@ public class Client {
                     ((GUI)virtualView).getFlyghtController().addAdventureCard(ad.getAdventure());
                 }
                 virtualView.printCardAdventure(ad.getAdventure());
-                 dummy = virtualView.nextMeteor();
+                dummy = virtualView.nextMeteor();
 
                 break;
 
@@ -937,22 +938,22 @@ public class Client {
                 String combat_zone_id = rank.getContent();
 
 
-                    if (less_engine.equals(nickname)) {
+                if (less_engine.equals(nickname)) {
 
-                        if (combat_zone_id.equals("1")) {
-                            elaborate(new Message(MessageType.ASTRONAUT_LOSS, ""));
-                            break;
-                        } else {
+                    if (combat_zone_id.equals("1")) {
+                        elaborate(new Message(MessageType.ASTRONAUT_LOSS, ""));
+                        break;
+                    } else {
 
-                            handleNotification(new Message(MessageType.CARGO_LOSS, "2"));
-                            break;
-                        }
-
-                    }   else {
-
-                        virtualView.showMessage("\n --- il PLAYER " + less_engine + " sta pagando la penitenza ---\n");
-
+                        handleNotification(new Message(MessageType.CARGO_LOSS, "2"));
+                        break;
                     }
+
+                }   else {
+
+                    virtualView.showMessage("\n --- il PLAYER " + less_engine + " sta pagando la penitenza ---\n");
+
+                }
 
 
                 break;
@@ -990,7 +991,7 @@ public class Client {
                     }
 
 
-                        break;
+                    break;
                 } else {
                     if(msg.getContent().equals("1")) {
 
@@ -1040,8 +1041,8 @@ public class Client {
                 OpenSpace openSpace = (OpenSpace) adventure;
                 Ship ship = player_local.getShip();
                 Map<Pair<Integer,Integer>, Boolean> battery_usage_os = new HashMap<>();
-                Pair<Integer, Integer> battery;
-                Battery card_battery;
+                Pair<Integer, Integer> battery=new Pair<>(-1,-1);
+                Battery card_battery = null;
 
 
                 for (int i = 0; i < ship.getROWS(); i++) {
@@ -1050,31 +1051,54 @@ public class Client {
 
                         if (card.getComponentType() == DoubleEngine) {
 
-                            if(virtualViewType==VirtualViewType.GUI){
-                                ((GUI)virtualView).getFlyghtController().highlightCell(i,j);
-                                //((GUI) virtualView).getFlyghtController().updatePlayerShip();
+                            if(virtualViewType==VirtualViewType.GUI) {
+                                ((GUI) virtualView).getFlyghtController().highlightCell(i, j);
+                                ((GUI) virtualView).getFlyghtController().showdc(i, j);
+                                Boolean useDC = ((GUI) virtualView).useDoubleCannon();
+                                System.out.println("lA SCELTA SE USARE O NO IL DC è" + useDC);
+                                ((GUI) virtualView).getFlyghtController().resetHighlights(i, j);
+                                if (!useDC) {
+                                    battery = new Pair<>(-1, -1);
+                                    battery_usage_os.put(new Pair<>(i, j), false);
+                                } else {
+                                    virtualView.showMessage("Scegliere la batteria");
+                                    ((GUI) virtualView).getFlyghtController().showBatteries(ship);
+                                    try {
+                                        battery = ((GUI) virtualView).coordsBattery();
+                                        System.out.println("Batteria scelta: " + battery);
+
+
+                                        if (battery == null || (battery.getKey() == -1 && battery.getValue() == -1)) {
+
+                                            System.out.println("Nessuna batteria è stata scelta o si è verificato un errore.");
+                                            battery_usage_os.put(new Pair<>(i, j), false);
+                                        } else {
+                                            battery_usage_os.put(new Pair<>(i, j), true);
+                                            card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
+                                            card_battery.removeBattery();
+                                        }
+
+                                    } catch (Exception e) {
+                                        System.err.println("Errore durante la selezione della batteria: " + e.getMessage());
+                                        battery_usage_os.put(new Pair<>(i, j), false);
+                                        battery = new Pair<>(-1, -1);
+                                    }
+                                }
                             }
 
-                            battery = virtualView.askEngine(new Pair<>(i, j));
+                            else {
+                                battery = virtualView.askEngine(new Pair<>(i, j));
+                                if (battery.getKey() == -1 || battery.getValue() == -1) {
 
-                            if (battery.getKey() == -1 || battery.getValue() == -1) {
+                                    battery_usage_os.put(new Pair<>(i, j), false);
 
-                                battery_usage_os.put(new Pair<>(i, j), false);
-
-                            } else {
-
-
-                                battery_usage_os.put(new Pair<>(i, j), true);
-                                card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
-
-
-                                card_battery.removeBattery();
+                                } else {
+                                    battery_usage_os.put(new Pair<>(i, j), true);
+                                    card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
+                                    card_battery.removeBattery();
 
 
-                            }
-                            if(virtualViewType==VirtualViewType.GUI){
-                                ((GUI)virtualView).getFlyghtController().resetHighlights(i,j);
-                                ((GUI) virtualView).getFlyghtController().updatePlayerShip();
+                                }
                             }
 
                         }
@@ -1116,7 +1140,7 @@ public class Client {
 
             case AbandonedShip:
 
-                 choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
+                choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
                 AbandonedShip ab_ship = (AbandonedShip) adventure;
 
                 if (choice) {
@@ -1166,7 +1190,7 @@ public class Client {
                     virtualView.printMeteor(m, coordList.get(i));
 
 
-                    if (m.getValue() == Direction.North || m.getValue() == Direction.South) {
+                    if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
                             int dummy = virtualView.nextMeteor();
@@ -1232,7 +1256,7 @@ public class Client {
 
 
                                     } else {
-                                        card_battery = (Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
+                                        card_battery=(Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
                                         card_battery.removeBattery();
                                     }
                                 } else {
@@ -1260,25 +1284,25 @@ public class Client {
                             break;
 
 
-                            case HeavyCannonFire:
+                        case HeavyCannonFire:
 
-                                player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
+                            player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
 
-                                virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
-                                virtualView.printShip(player_local.getShip().getShipBoard());
-
-
-                                List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+                            virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+                            virtualView.printShip(player_local.getShip().getShipBoard());
 
 
-                                if (pieces.isEmpty()) {
-                                    virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! ---- ");
-                                    out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                                } else if (pieces.size() > 1) {
-                                    int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
-                                    player_local.getShip().choosePiece(piece);
-                                }
-break;
+                            List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+
+
+                            if (pieces.isEmpty()) {
+                                virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! ---- ");
+                                out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+                            } else if (pieces.size() > 1) {
+                                int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                                player_local.getShip().choosePiece(piece);
+                            }
+                            break;
 
 
                     }
@@ -1354,7 +1378,7 @@ break;
 
 
                     case "cannon":
-                       double power_c =  cannonPower(0);
+                        double power_c =  cannonPower(0);
 
 
                         virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
@@ -1381,27 +1405,27 @@ break;
 
                 if(power_c < smugglers.getCannons_strenght()) {
 
-                int cargo_loss = smugglers.getCargo_loss();
+                    int cargo_loss = smugglers.getCargo_loss();
 
-                while(cargo_loss > 0) {
+                    while(cargo_loss > 0) {
 
-                    virtualView.removeCargo(player_local.getShip());
-                    cargo_loss--;
+                        virtualView.removeCargo(player_local.getShip());
+                        cargo_loss--;
 
-                }
+                    }
 
-                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
-                break;
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    break;
 
                 }else if(power_c > smugglers.getCannons_strenght()) {
 
-                     choice = virtualView.acceptAdventure("HAI SCONFITTO IL NEMICO, VUOI PRENDERE RICOMPENSA (e quindi perdere i giorni di volo)?");
-                     if(choice ){
-                         cargoAction(smugglers.getCargo_rewards());
+                    choice = virtualView.acceptAdventure("HAI SCONFITTO IL NEMICO, VUOI PRENDERE RICOMPENSA (e quindi perdere i giorni di volo)?");
+                    if(choice ){
+                        cargoAction(smugglers.getCargo_rewards());
 
-                         out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
                         break;
-                     }
+                    }
 
                     out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
 
@@ -1421,7 +1445,7 @@ break;
             case Pirates:
                 Pirates pirates = (Pirates) adventure;
                 virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +pirates.getCannons_strenght() +  " \n");
-                 power_c =  cannonPower(pirates.getCannons_strenght());
+                power_c =  cannonPower(pirates.getCannons_strenght());
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
 
                 StringBuilder coords_m = new StringBuilder();
@@ -1450,20 +1474,20 @@ break;
                 }else if(power_c > pirates.getCannons_strenght()) {
 
 
-                choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + pirates.getCredits()+ "crediti e perdere "+ pirates.getCost_of_days() +" giorni di volo?" );
+                    choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + pirates.getCredits()+ "crediti e perdere "+ pirates.getCost_of_days() +" giorni di volo?" );
 
-                if(choice){
+                    if(choice){
                         player_local.setCredits(pirates.getCredits());
                         virtualView.showMessage("HAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
-                }else{
+                    }else{
 
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
 
-                }
+                    }
 
-        break;
+                    break;
 
                 }
 
@@ -1610,8 +1634,8 @@ break;
     public static double cannonPower(int val){
 
         Map<Pair<Integer,Integer>,Boolean> battery_usage_c = new HashMap<>();
-       Pair<Integer,Integer> battery = new Pair<>(-1, -1);
-       Ship ship = player_local.getShip();
+        Pair<Integer,Integer> battery = new Pair<>(-1, -1);
+        Ship ship = player_local.getShip();
 
         for (int k = 0; k < ship.getROWS(); k++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
@@ -1648,7 +1672,7 @@ break;
             }
         }
 
-         return  ship.calculateCannonPower(battery_usage_c);
+        return  ship.calculateCannonPower(battery_usage_c);
 
 
     }
