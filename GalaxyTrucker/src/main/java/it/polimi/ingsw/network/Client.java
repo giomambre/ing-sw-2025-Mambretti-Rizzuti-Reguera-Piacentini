@@ -202,31 +202,35 @@ public class Client {
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
 
                 if (msg.getType() == MessageType.NAME_REJECTED) {
-                    virtualView.showMessage("\n username già utilizzato.");
+                    virtualView.showMessage(msg.getContent());
                 }
 
-                if (virtualViewType == VirtualViewType.GUI) {
-                    ((GUI) virtualView).setClientCallback(nickname -> {
+
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        ((GUI) virtualView).setClientCallback(nickname -> {
+                            try {
+                                setNickname(nickname);
+                                out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+                                out.flush();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                        ((GUI) virtualView).createNicknamescreen();
+
+                    } else {
+                            nickname = virtualView.askNickname();
+
+
+
                         try {
-                            setNickname(nickname);
                             out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
                             out.flush();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                    });
-                    ((GUI) virtualView).createNicknamescreen();
-
-                } else {
-                    nickname = virtualView.askNickname();
-
-                    try {
-                        out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
-                        out.flush();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
-                }
+
                 break;
 
             case NAME_ACCEPTED:
