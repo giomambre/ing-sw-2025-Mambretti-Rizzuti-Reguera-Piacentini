@@ -7,6 +7,7 @@
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="some fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/FlyghtController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/FlyghtController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -419,15 +420,9 @@
       <workItem from="1748948033968" duration="180000" />
       <workItem from="1748958135972" duration="644000" />
       <workItem from="1748963399590" duration="3149000" />
-      <workItem from="1748966581021" duration="362000" />
-    </task>
-    <task id="LOCAL-00087" summary="timer finito e quasi finito controllo">
-      <option name="closed" value="true" />
-      <created>1746371628738</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
-      <option name="project" value="LOCAL" />
-      <updated>1746371628738</updated>
+      <workItem from="1748966581021" duration="457000" />
+      <workItem from="1748979165375" duration="482000" />
+      <workItem from="1749029174394" duration="1540000" />
     </task>
     <task id="LOCAL-00088" summary="timer finito e quasi finito controllo">
       <option name="closed" value="true" />
@@ -813,7 +808,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748966853000</updated>
     </task>
-    <option name="localTasksCounter" value="136" />
+    <task id="LOCAL-00136" summary="some fixes">
+      <option name="closed" value="true" />
+      <created>1748966956810</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1748966956810</updated>
+    </task>
+    <option name="localTasksCounter" value="137" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -891,16 +894,6 @@
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="7" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/Buildcontroller.java</url>
-          <line>450</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>

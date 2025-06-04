@@ -110,7 +110,6 @@ public class FlyghtController {
                     if (cell != null) {
                         cell.setStyle("");
                         cell.setOnMouseClicked(null);
-                        clearAllBoardHighlightsAndListeners();
                         CardComponent component = ship.getShip_board()[i][j];
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
                                 ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
@@ -139,6 +138,7 @@ public class FlyghtController {
                     cell.setOnMouseClicked(e -> {
                         ((Battery) ship.getComponent(row, col)).removeBattery();
                         coordsBattery.complete(new Pair<>(row, col));
+                        clearShipListeners(ship);
                         cell.setOnMouseClicked(null);
                     });
                     cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
@@ -167,42 +167,21 @@ public class FlyghtController {
         return selectionFuture;
     }*/
 
-    public CompletableFuture<Pair<Integer, Integer>> startBatterySelection(List<Pair<Integer, Integer>> selectableCells) {
-        CompletableFuture<Pair<Integer, Integer>> currentBatteryBoardSelection = new CompletableFuture<>();
 
+    public void clearShipListeners(Ship ship) {
         Platform.runLater(() -> {
-            clearAllBoardHighlightsAndListeners();
-
-            for (Pair<Integer, Integer> coords : selectableCells) {
-                int row = coords.getKey();
-                int col = coords.getValue();
-                Node cellNode = getNodeFromGridPane(boardGrid, col, row);
-
-                if (cellNode != null) {
-                    highlightCell(row,col);
-                    cellNode.setOnMouseClicked(event -> {
-                        if (!currentBatteryBoardSelection.isDone()) {
-                            currentBatteryBoardSelection.complete(new Pair<>(row, col));
-                            clearAllBoardHighlightsAndListeners();
-                        }
-                        event.consume();
-                    });
+            for (int i = 0; i < ship.getShip_board().length; i++) {
+                for (int j = 0; j < ship.getShip_board()[0].length; j++) {
+                    StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
+                    if (cell != null) {
+                        cell.setOnMouseClicked(null);
+                        cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
+                        resetHighlights(i,j);
+                    }
                 }
             }
-
         });
-        return currentBatteryBoardSelection;
     }
-
-
-    /*public void clearAllBoardHighlightsAndListeners(Ship ship) {
-        Platform.runLater(() -> {
-            for (: playerShipGrid.getChildren()) {
-                resetHighlights();
-                node.setOnMouseClicked(null); // Rimuove il listener di click
-            }
-        });
-    }*/
 
 
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {

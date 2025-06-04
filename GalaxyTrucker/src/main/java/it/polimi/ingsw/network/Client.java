@@ -24,7 +24,6 @@ import java.io.*;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.South;
@@ -68,7 +67,7 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("localhost", 12345);
+            Socket socket = new Socket("localhost", 14754);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
@@ -203,35 +202,31 @@ public class Client {
             case REQUEST_NAME, NAME_REJECTED:  //send the nickname request to the server with his UUID
 
                 if (msg.getType() == MessageType.NAME_REJECTED) {
-                    virtualView.showMessage(msg.getContent());
+                    virtualView.showMessage("\n username già utilizzato.");
                 }
 
-
-                    if (virtualViewType == VirtualViewType.GUI) {
-                        ((GUI) virtualView).setClientCallback(nickname -> {
-                            try {
-                                setNickname(nickname);
-                                out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
-                                out.flush();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        ((GUI) virtualView).createNicknamescreen();
-
-                    } else {
-                            nickname = virtualView.askNickname();
-
-
-
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).setClientCallback(nickname -> {
                         try {
+                            setNickname(nickname);
                             out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
                             out.flush();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                    }
+                    });
+                    ((GUI) virtualView).createNicknamescreen();
 
+                } else {
+                    nickname = virtualView.askNickname();
+
+                    try {
+                        out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+                        out.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 break;
 
             case NAME_ACCEPTED:
@@ -607,10 +602,10 @@ public class Client {
                                 });
                             }
 
-                        } else if (component.getComponentType() == MainUnitBlue ||
-                                component.getComponentType() == MainUnitRed ||
-                                component.getComponentType() == MainUnitGreen ||
-                                component.getComponentType() == MainUnitYellow) {
+                        } else if (component.getComponentType() == ComponentType.MainUnitBlue ||
+                                component.getComponentType() == ComponentType.MainUnitRed ||
+                                component.getComponentType() == ComponentType.MainUnitGreen ||
+                                component.getComponentType() == ComponentType.MainUnitYellow) {
 
                             final int x = coords.getKey();
                             final int y = coords.getValue();
@@ -640,6 +635,7 @@ public class Client {
                         try {
 
                             Ship updatedShip = ((GUI)virtualView).getBuildcontroller().getUpdatedShip().get();
+                            player_local.setShip(updatedShip);
                             out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
@@ -1041,8 +1037,8 @@ public class Client {
                 OpenSpace openSpace = (OpenSpace) adventure;
                 Ship ship = player_local.getShip();
                 Map<Pair<Integer,Integer>, Boolean> battery_usage_os = new HashMap<>();
-                Pair<Integer, Integer> battery=new Pair<>(-1,-1);
-                Battery card_battery = null;
+                Pair<Integer, Integer> battery;
+                Battery card_battery;
 
 
                 for (int i = 0; i < ship.getROWS(); i++) {
@@ -1051,33 +1047,31 @@ public class Client {
 
                         if (card.getComponentType() == DoubleEngine) {
 
-                            if(virtualViewType==VirtualViewType.GUI) {
-                                ((GUI) virtualView).getFlyghtController().highlightCell(i, j);
-                                ((GUI) virtualView).getFlyghtController().showdc(i, j);
-                                Boolean useDC = ((GUI) virtualView).useDoubleCannon();
-                                System.out.println("lA SCELTA SE USARE O NO IL DC è" + useDC);
-                                ((GUI) virtualView).getFlyghtController().resetHighlights(i, j);
-                                if (!useDC) {
-                                    battery = new Pair<>(-1, -1);
-                                    battery_usage_os.put(new Pair<>(i, j), false);
-                                } else {
-                                    virtualView.showMessage("Scegliere la batteria");
-                                    ((GUI) virtualView).getFlyghtController().showbatteries(ship);
-                                }
+                            if(virtualViewType==VirtualViewType.GUI){
+                                ((GUI)virtualView).getFlyghtController().highlightCell(i,j);
+                                //((GUI) virtualView).getFlyghtController().updatePlayerShip();
                             }
-                             else {
-                                battery = virtualView.askEngine(new Pair<>(i, j));
-                                if (battery.getKey() == -1 || battery.getValue() == -1) {
 
-                                    battery_usage_os.put(new Pair<>(i, j), false);
+                            battery = virtualView.askEngine(new Pair<>(i, j));
 
-                                } else {
-                                    battery_usage_os.put(new Pair<>(i, j), true);
-                                    card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
-                                    card_battery.removeBattery();
+                            if (battery.getKey() == -1 || battery.getValue() == -1) {
+
+                                battery_usage_os.put(new Pair<>(i, j), false);
+
+                            } else {
 
 
-                                }
+                                battery_usage_os.put(new Pair<>(i, j), true);
+                                card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
+
+
+                                card_battery.removeBattery();
+
+
+                            }
+                            if(virtualViewType==VirtualViewType.GUI){
+                                ((GUI)virtualView).getFlyghtController().resetHighlights(i,j);
+                                ((GUI) virtualView).getFlyghtController().updatePlayerShip();
                             }
 
                         }
@@ -1169,7 +1163,7 @@ public class Client {
                     virtualView.printMeteor(m, coordList.get(i));
 
 
-                    if (m.getValue() == Direction.North || m.getValue() == South) {
+                    if (m.getValue() == Direction.North || m.getValue() == Direction.South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
                             int dummy = virtualView.nextMeteor();
@@ -1235,7 +1229,7 @@ public class Client {
 
 
                                     } else {
-                                        card_battery=(Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
+                                        card_battery = (Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
                                         card_battery.removeBattery();
                                     }
                                 } else {
