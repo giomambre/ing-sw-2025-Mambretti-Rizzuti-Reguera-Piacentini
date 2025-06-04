@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
+import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,11 +29,12 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import javax.smartcardio.Card;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static it.polimi.ingsw.model.enumerates.ComponentType.Battery;
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
 
 public class FlyghtController {
@@ -197,6 +199,71 @@ public class FlyghtController {
                         if (component != null && component.getComponentType() == Battery) {
                             if (((Battery) component).getStored() > 0) {
                                 batteries.add(new Pair<>(i, j));
+                            }
+                        }
+                        cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
+                    }
+                }
+            }
+
+            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
+            for (Pair<Integer, Integer> currentCoords : batteries) {
+                int row = currentCoords.getKey();
+                int col = currentCoords.getValue();
+
+                StackPane cell = (StackPane) playerShipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+
+                if (cell != null) {
+                    highlightCell(row, col);
+                    cell.setOnMouseClicked(e -> {
+                        ((Battery) ship.getComponent(row, col)).removeBattery();
+                        if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
+                            currentCoordsBatteryFuture.complete(new Pair<>(row, col));
+                        }
+                        clearShipListeners(ship);
+                        cell.setOnMouseClicked(null);
+                    });
+                    cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+                }
+            }
+
+        });
+    }
+
+    public void showStorage(Ship ship, Cargo cargo) {
+        batteries.clear();
+        if (this.coordsBattery == null || this.coordsBattery.isDone()) {
+            this.coordsBattery = new CompletableFuture<>();
+        }
+        final CompletableFuture<Pair<Integer,Integer>> currentCoordsBatteryFuture = this.coordsBattery; // Capture it for the lambda
+
+        Platform.runLater(() -> {
+
+
+            for (int i = 0; i < ship.getShip_board().length; i++) {
+                for (int j = 0; j < ship.getShip_board()[0].length; j++) {
+                    StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
+                    if (cell != null) {
+                        cell.setStyle("");
+                        cell.setOnMouseClicked(null);
+                        CardComponent component = ship.getShip_board()[i][j];
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
+                                ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
+                                || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
+                            cell.setStyle("-fx-background-color: lightgray;");
+                        }
+                        if (cargo == Cargo.Red) {
+                            if (component != null && (component.getComponentType() == RedStorage)) {
+                                if (((Battery) component).getStored() > 0) {
+                                    batteries.add(new Pair<>(i, j));
+                                }
+                            }
+                        }
+                        else {
+                            if (component != null && (component.getComponentType() == RedStorage || component.getComponentType() == BlueStorage)) {
+                                if (((Battery) component).getStored() > 0) {
+                                    batteries.add(new Pair<>(i, j));
+                                }
                             }
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");

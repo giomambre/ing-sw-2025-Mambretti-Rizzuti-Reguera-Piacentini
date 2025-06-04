@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.Battery;
+import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
@@ -770,7 +771,23 @@ public class GUI implements View {
 
     @Override
     public Pair<Pair<Integer, Integer>, Integer> addCargo(Ship ship, Cargo cargo) {
-        return null;
+
+        Pair<Pair<Integer, Integer>, Integer> pair;
+        flyghtController.showStorage(ship, cargo);
+        try {
+            Pair<Integer,Integer> selection=flyghtController.getcoordsBattery().get();
+            flyghtController.resetcoordsBattery();
+            CargoSelector cargoSelector = new CargoSelector();
+            int pos = cargoSelector.askCargo(((Storage)ship.getComponent(selection.getValue(), selection.getKey())).getCarried_cargos());
+            pair = new Pair<>(selection, pos);
+            return pair;
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
 
 
