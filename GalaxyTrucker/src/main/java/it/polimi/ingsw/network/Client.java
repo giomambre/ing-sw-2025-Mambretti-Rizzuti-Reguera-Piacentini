@@ -1355,7 +1355,13 @@ public class Client {
                 Epidemic epidemic = (Epidemic) adventure;
 
                 virtualView.executeEpidemic((player_local.getShip()));
+
+                virtualView.nextMeteor();
+
                 break;
+
+            case Stardust:
+                Stardust stardust = (Stardust) adventure;
 
 
             case Planets:
@@ -1500,6 +1506,8 @@ public class Client {
                     break;
                 } else if(power_c == pirates.getCannons_strenght() ){
 
+
+                    virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
                     out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
 
@@ -1509,8 +1517,8 @@ public class Client {
                     choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + pirates.getCredits()+ "crediti e perdere "+ pirates.getCost_of_days() +" giorni di volo?" );
 
                     if(choice){
-                        player_local.setCredits(pirates.getCredits());
-                        virtualView.showMessage("HAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
+                        player_local.setCredits( player_local .getCredits() + pirates.getCredits());
+                        virtualView.showMessage("\nHAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
                         out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     }else{
@@ -1521,9 +1529,66 @@ public class Client {
 
                     break;
 
+
+
+
+
                 }
 
 
+            case Slavers:
+                Slavers slavers = (Slavers) adventure;
+                virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +slavers.getCannons_strenght() +  " \n");
+                power_c =  cannonPower(slavers.getCannons_strenght());
+                virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+
+
+
+                if(power_c < slavers.getCannons_strenght()) {
+
+
+                    virtualView.showMessage("\n ----- HAI PERSO e PERDI " + slavers.getAstronaut_loss() +" membri dell' EQUIPUAGGIO ---- ");
+                    int num_crew_mates = slavers.getAstronaut_loss();
+                    while (num_crew_mates != 0) {
+
+                        Pair<Integer, Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
+                        if (lu.getValue() == -1 || lu.getKey() == -1) continue;
+                        else {
+                            LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+                            num_crew_mates--;
+                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
+                        }
+
+                    }
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    break;
+                } else if(power_c == slavers.getCannons_strenght() ){
+
+                    virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
+
+
+                }else if(power_c > slavers.getCannons_strenght()) {
+
+
+                    choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + slavers.getCredits() + "crediti e perdere " + slavers.getCost_of_days() + " giorni di volo?");
+
+                    if (choice) {
+                        player_local.setCredits( player_local .getCredits() + slavers.getCredits());
+                        virtualView.showMessage("HAI GUADAGNATO " + slavers.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+
+                    } else {
+
+                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+
+                    }
+
+                    break;
+                }
+        break;
         }
 
 
