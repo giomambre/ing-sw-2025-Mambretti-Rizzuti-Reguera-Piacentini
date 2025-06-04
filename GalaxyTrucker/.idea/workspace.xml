@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="some fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/FlyghtController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/FlyghtController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -422,15 +421,7 @@
       <workItem from="1748963399590" duration="3149000" />
       <workItem from="1748966581021" duration="457000" />
       <workItem from="1748979165375" duration="482000" />
-      <workItem from="1749029174394" duration="1540000" />
-    </task>
-    <task id="LOCAL-00088" summary="timer finito e quasi finito controllo">
-      <option name="closed" value="true" />
-      <created>1746447966736</created>
-      <option name="number" value="00088" />
-      <option name="presentableId" value="LOCAL-00088" />
-      <option name="project" value="LOCAL" />
-      <updated>1746447966736</updated>
+      <workItem from="1749029174394" duration="2200000" />
     </task>
     <task id="LOCAL-00089" summary="timer finito e quasi finito controllo">
       <option name="closed" value="true" />
@@ -816,7 +807,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748966956810</updated>
     </task>
-    <option name="localTasksCounter" value="137" />
+    <task id="LOCAL-00137" summary="some fixes">
+      <option name="closed" value="true" />
+      <created>1749031624138</created>
+      <option name="number" value="00137" />
+      <option name="presentableId" value="LOCAL-00137" />
+      <option name="project" value="LOCAL" />
+      <updated>1749031624138</updated>
+    </task>
+    <option name="localTasksCounter" value="138" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

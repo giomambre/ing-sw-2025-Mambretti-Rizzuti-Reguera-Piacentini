@@ -100,7 +100,7 @@ public class FlyghtController {
         coordsBattery = new CompletableFuture<>();
     }
 
-    public void showbatteries(Ship ship) {
+    public void showBatteries(Ship ship) {
 
         Platform.runLater(() -> {
           List<Pair<Integer,Integer>> batteries = new ArrayList<>();
