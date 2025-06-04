@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.application.Platform;
@@ -30,6 +31,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static it.polimi.ingsw.model.enumerates.ComponentType.Battery;
+
 
 public class FlyghtController {
     private GUI gui;
@@ -38,8 +41,8 @@ public class FlyghtController {
     private Map<String, ImageView> playerPawns = new HashMap<>();
     private Map<Integer, Player> playerPositions = new HashMap<>(); // posizione -> Player
     private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
-    private CompletableFuture<Pair<Integer, Integer>> batterySelectionFuture; // Per la selezione della batteria specifica
-    private AtomicBoolean isWaitingForBatterySelection = new AtomicBoolean(false);
+    private CompletableFuture<Boolean> useDoubleCannon;
+    private CompletableFuture<Pair<Integer, Integer>> coordsBattery;
 
     // FXML Components
     @FXML
@@ -63,6 +66,15 @@ public class FlyghtController {
     @FXML
     private Button drawAdventureCardButton;
 
+    @FXML
+    private Label dclabel;
+
+    @FXML
+    private Button yesdc;
+
+    @FXML
+    private Button nodc;
+
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_SIZE = 80;
@@ -77,7 +89,163 @@ public class FlyghtController {
         setupAdventureCardArea();
     }
 
+    public CompletableFuture<Pair<Integer,Integer>> getcoordsBattery() {
+        if (coordsBattery == null) {
+            coordsBattery = new CompletableFuture<>();
+        }
+        return coordsBattery;
+    }
 
+    public void resetcoordsBattery(){
+        coordsBattery = new CompletableFuture<>();
+    }
+
+    public void showbatteries(Ship ship) {
+
+        Platform.runLater(() -> {
+          List<Pair<Integer,Integer>> batteries = new ArrayList<>();
+            for (int i = 0; i < ship.getShip_board().length; i++) {
+                for (int j = 0; j < ship.getShip_board()[0].length; j++) {
+                    StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
+                    if (cell != null) {
+                        cell.setStyle("");
+                        cell.setOnMouseClicked(null);
+                        clearAllBoardHighlightsAndListeners();
+                        CardComponent component = ship.getShip_board()[i][j];
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
+                                ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
+                                || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
+                            cell.setStyle("-fx-background-color: lightgray;");
+                        }
+                        if (component.getComponentType() == Battery) {
+                            if (((Battery) component).getStored() > 0) {
+                                batteries.add(new Pair<>(i, j));
+                            }
+                        }
+                        cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
+                    }
+                }
+            }
+
+            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
+            for (Pair<Integer, Integer> currentCoords : batteries) {
+                int row = currentCoords.getKey();
+                int col = currentCoords.getValue();
+
+                StackPane cell = (StackPane) playerShipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+
+                if (cell != null) {
+                    highlightCell(row, col);
+                    cell.setOnMouseClicked(e -> {
+                        ((Battery) ship.getComponent(row, col)).removeBattery();
+                        coordsBattery.complete(new Pair<>(row, col));
+                        cell.setOnMouseClicked(null);
+                    });
+                    cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+                }
+            }
+
+        });
+    }
+
+
+    /*public CompletableFuture<Pair<Integer, Integer>> selectBoardCellForBattery(int row, int col) {
+        CompletableFuture<Pair<Integer, Integer>> selectionFuture = new CompletableFuture<>();
+        Platform.runLater(() -> {
+            Node cellNode = getNodeFromGridPane(boardGrid, col, row);
+            if (cellNode != null) {
+                cellNode.setOnMouseClicked(event -> {
+                    if (coordsBattery!= null && !coordsBattery.isDone()) {
+                        coordsBattery.complete(new Pair<>(row, col));
+                        cellNode.setOnMouseClicked(null);
+                    }
+                    event.consume();
+                });
+            }
+        });
+
+        return selectionFuture;
+    }*/
+
+    public CompletableFuture<Pair<Integer, Integer>> startBatterySelection(List<Pair<Integer, Integer>> selectableCells) {
+        CompletableFuture<Pair<Integer, Integer>> currentBatteryBoardSelection = new CompletableFuture<>();
+
+        Platform.runLater(() -> {
+            clearAllBoardHighlightsAndListeners();
+
+            for (Pair<Integer, Integer> coords : selectableCells) {
+                int row = coords.getKey();
+                int col = coords.getValue();
+                Node cellNode = getNodeFromGridPane(boardGrid, col, row);
+
+                if (cellNode != null) {
+                    highlightCell(row,col);
+                    cellNode.setOnMouseClicked(event -> {
+                        if (!currentBatteryBoardSelection.isDone()) {
+                            currentBatteryBoardSelection.complete(new Pair<>(row, col));
+                            clearAllBoardHighlightsAndListeners();
+                        }
+                        event.consume();
+                    });
+                }
+            }
+
+        });
+        return currentBatteryBoardSelection;
+    }
+
+
+    /*public void clearAllBoardHighlightsAndListeners(Ship ship) {
+        Platform.runLater(() -> {
+            for (: playerShipGrid.getChildren()) {
+                resetHighlights();
+                node.setOnMouseClicked(null); // Rimuove il listener di click
+            }
+        });
+    }*/
+
+
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) != null && GridPane.getRowIndex(node) != null &&
+                    GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+
+    public CompletableFuture<Boolean> getUseDoubleCannon() {
+        if (useDoubleCannon == null) {
+            useDoubleCannon = new CompletableFuture<>();
+        }
+        return useDoubleCannon;
+    }
+
+    public void resetUseDC(){
+        useDoubleCannon = new CompletableFuture<>();
+    }
+
+    public void showdc(int x, int y) {
+        Platform.runLater(() -> {
+        dclabel.setText("Decidere se usare o no il cannone alle coordinate (" + x + ", " + y + ")");
+        dclabel.setVisible(true);
+        yesdc.setVisible(true);
+        yesdc.setOnAction((ActionEvent event) -> {useDoubleCannon.complete(true);
+        hidedc();});
+        nodc.setVisible(true);
+        nodc.setOnAction((ActionEvent event) -> {useDoubleCannon.complete(false);
+        hidedc();});
+        });
+    }
+
+    public void hidedc() {
+
+        dclabel.setVisible(false);
+        yesdc.setVisible(false);
+        nodc.setVisible(false);
+    }
 
     /**
      * Imposta la GUI di riferimento
@@ -579,7 +747,7 @@ public class FlyghtController {
     }
 
 
-    public CompletableFuture<Pair<Integer, Integer>> getBatterySelectionFuture() {
+    /*public CompletableFuture<Pair<Integer, Integer>> getBatterySelectionFuture() {
         if (batterySelectionFuture == null) {
             batterySelectionFuture = new CompletableFuture<>();
         }
@@ -596,7 +764,7 @@ public class FlyghtController {
      * Restituisce un CompletableFuture<Boolean> che si completa con la scelta.
      * True se vuole usare la batteria, False altrimenti.
      */
-    public CompletableFuture<Boolean> askUseBatteryConfirmation(int engineRow, int engineCol) {
+    /*public CompletableFuture<Boolean> askUseBatteryConfirmation(int engineRow, int engineCol) {
         CompletableFuture<Boolean> futureConfirmation = new CompletableFuture<>();
 
         Platform.runLater(() -> {
@@ -622,7 +790,7 @@ public class FlyghtController {
      *
      * @param batteryPositions Lista delle posizioni delle batterie disponibili.
      */
-    public void highlightAndEnableBatterySelection(List<Pair<Integer, Integer>> batteryPositions) {
+    /*public void highlightAndEnableBatterySelection(List<Pair<Integer, Integer>> batteryPositions) {
         Platform.runLater(() -> {
             isWaitingForBatterySelection.set(true); // Imposta lo stato di attesa
 
@@ -651,7 +819,7 @@ public class FlyghtController {
                 }
             });
         });
-    }
+    }*/
 
     /*public void askBattery(int engineRow, int engineCol) {
         CompletableFuture<Integer> choice = new CompletableFuture<>();

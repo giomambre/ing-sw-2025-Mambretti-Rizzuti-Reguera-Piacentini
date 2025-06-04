@@ -24,6 +24,7 @@ import java.io.*;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.Direction.South;
@@ -606,10 +607,10 @@ public class Client {
                                 });
                             }
 
-                        } else if (component.getComponentType() == ComponentType.MainUnitBlue ||
-                                component.getComponentType() == ComponentType.MainUnitRed ||
-                                component.getComponentType() == ComponentType.MainUnitGreen ||
-                                component.getComponentType() == ComponentType.MainUnitYellow) {
+                        } else if (component.getComponentType() == MainUnitBlue ||
+                                component.getComponentType() == MainUnitRed ||
+                                component.getComponentType() == MainUnitGreen ||
+                                component.getComponentType() == MainUnitYellow) {
 
                             final int x = coords.getKey();
                             final int y = coords.getValue();
@@ -1040,8 +1041,8 @@ public class Client {
                 OpenSpace openSpace = (OpenSpace) adventure;
                 Ship ship = player_local.getShip();
                 Map<Pair<Integer,Integer>, Boolean> battery_usage_os = new HashMap<>();
-                Pair<Integer, Integer> battery;
-                Battery card_battery;
+                Pair<Integer, Integer> battery=new Pair<>(-1,-1);
+                Battery card_battery = null;
 
 
                 for (int i = 0; i < ship.getROWS(); i++) {
@@ -1050,31 +1051,33 @@ public class Client {
 
                         if (card.getComponentType() == DoubleEngine) {
 
-                            if(virtualViewType==VirtualViewType.GUI){
-                                ((GUI)virtualView).getFlyghtController().highlightCell(i,j);
-                                //((GUI) virtualView).getFlyghtController().updatePlayerShip();
+                            if(virtualViewType==VirtualViewType.GUI) {
+                                ((GUI) virtualView).getFlyghtController().highlightCell(i, j);
+                                ((GUI) virtualView).getFlyghtController().showdc(i, j);
+                                Boolean useDC = ((GUI) virtualView).useDoubleCannon();
+                                System.out.println("lA SCELTA SE USARE O NO IL DC è" + useDC);
+                                ((GUI) virtualView).getFlyghtController().resetHighlights(i, j);
+                                if (!useDC) {
+                                    battery = new Pair<>(-1, -1);
+                                    battery_usage_os.put(new Pair<>(i, j), false);
+                                } else {
+                                    virtualView.showMessage("Scegliere la batteria");
+                                    ((GUI) virtualView).getFlyghtController().showbatteries(ship);
+                                }
                             }
+                             else {
+                                battery = virtualView.askEngine(new Pair<>(i, j));
+                                if (battery.getKey() == -1 || battery.getValue() == -1) {
 
-                            battery = virtualView.askEngine(new Pair<>(i, j));
+                                    battery_usage_os.put(new Pair<>(i, j), false);
 
-                            if (battery.getKey() == -1 || battery.getValue() == -1) {
-
-                                battery_usage_os.put(new Pair<>(i, j), false);
-
-                            } else {
-
-
-                                battery_usage_os.put(new Pair<>(i, j), true);
-                                card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
+                                } else {
+                                    battery_usage_os.put(new Pair<>(i, j), true);
+                                    card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
+                                    card_battery.removeBattery();
 
 
-                                card_battery.removeBattery();
-
-
-                            }
-                            if(virtualViewType==VirtualViewType.GUI){
-                                ((GUI)virtualView).getFlyghtController().resetHighlights(i,j);
-                                ((GUI) virtualView).getFlyghtController().updatePlayerShip();
+                                }
                             }
 
                         }
@@ -1166,7 +1169,7 @@ public class Client {
                     virtualView.printMeteor(m, coordList.get(i));
 
 
-                    if (m.getValue() == Direction.North || m.getValue() == Direction.South) {
+                    if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
                             int dummy = virtualView.nextMeteor();
@@ -1232,7 +1235,7 @@ public class Client {
 
 
                                     } else {
-                                        card_battery = (Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
+                                        card_battery=(Battery) player_local.getShip().getComponent(b.getKey(), b.getValue());
                                         card_battery.removeBattery();
                                     }
                                 } else {
