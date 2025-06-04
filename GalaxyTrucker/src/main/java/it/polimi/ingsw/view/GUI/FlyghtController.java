@@ -42,6 +42,7 @@ public class FlyghtController {
     private CompletableFuture<Integer> adventureCardAction = new CompletableFuture<>();
     private List<Player> players = new ArrayList<>();
     List<Pair<Integer,Integer>> batteries = new ArrayList<>();
+    List<Pair<Integer,Integer>> livingUnits = new ArrayList<>();
     private Map<String, ImageView> playerPawns = new HashMap<>();
     private Map<Integer, Player> playerPositions = new HashMap<>(); // posizione -> Player
     private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
@@ -49,6 +50,7 @@ public class FlyghtController {
     private CompletableFuture<Boolean> acceptAdventure;
     private CompletableFuture<Pair<Integer, Integer>> coordsBattery;
     private CompletableFuture<Boolean> useCard;
+    private CompletableFuture<Pair<Integer, Integer>> astronautToRemove;
 
     // FXML Components
     @FXML
@@ -92,59 +94,100 @@ public class FlyghtController {
 
     @FXML
     private Label choiceLabel;
+    @FXML
+    private Label playerCreditsLabel;
 
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_SIZE = 80;
     private static final int SHIP_CELL_SIZE = 40;
-    private static CompletableFuture<Pair<Integer, Integer>> astronautToRemove = new CompletableFuture<>();
-    public void showAstronauts(Ship ship) {
+
+    public void updateCreditLabel(int credits) {
+        playerCreditsLabel.setText("Crediti: " + credits);
+    }
+
+    public CompletableFuture<Pair<Integer,Integer>> getAstronautToRemove() {
+        if (astronautToRemove == null) {
+            astronautToRemove = new CompletableFuture<>();
+        }
+        return astronautToRemove;
+    }
+
+    public void resetastronautToRemove(){
+        astronautToRemove = new CompletableFuture<>();
+    }
+
+    public void showCrewmates(Ship ship) {
+        livingUnits.clear();
         if (this.astronautToRemove == null || this.astronautToRemove.isDone()) {
             this.astronautToRemove = new CompletableFuture<>();
         }
-        final CompletableFuture<Pair<Integer, Integer>> currentAstronautFuture = this.astronautToRemove;
+        final CompletableFuture<Pair<Integer,Integer>> currentCoordsAstronautFuture = this.astronautToRemove; // Capture it for the lambda
 
         Platform.runLater(() -> {
+
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
                     StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
                     if (cell != null) {
                         cell.setStyle("");
                         cell.setOnMouseClicked(null);
-
                         CardComponent component = ship.getShip_board()[i][j];
-
-
-                        if (component instanceof LivingUnit livingUnit && livingUnit.getNum_crewmates() > 0) {
-                            highlightCell(i, j);
-                            cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
-
-                            int finalI = i;
-                            int finalJ = j;
-                            cell.setOnMouseClicked(e -> {
-                                if (currentAstronautFuture != null && !currentAstronautFuture.isDone()) {
-                                    currentAstronautFuture.complete(new Pair<>(finalI, finalJ));
-                                }
-                                resetHighlights(finalI, finalJ);
-                                clearShipListeners(ship);
-                                cell.setOnMouseClicked(null);
-                            });
-                        } else {
-                            cell.setStyle("-fx-background-color: lightgray; -fx-cursor: default;");
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty) {
+                            cell.setStyle("-fx-background-color: lightgray;");
                         }
+                        if (component != null && component.getComponentType() == ComponentType.LivingUnit ||  component.getComponentType() == MainUnitRed
+                                || component.getComponentType() == MainUnitYellow || component.getComponentType() == MainUnitGreen || component.getComponentType() == MainUnitBlue) {
+                            LivingUnit unit = (LivingUnit) component;
+                            if (unit.getNum_crewmates() > 0) {
+                                livingUnits.add(new Pair<>(i, j));
+                            }
+                        }
+                        cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
+                    }
+                }
+            }
+
+            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
+            for (Pair<Integer, Integer> currentCoords : livingUnits) {
+                int row = currentCoords.getKey();
+                int col = currentCoords.getValue();
+
+                StackPane cell = (StackPane) playerShipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+
+                if (cell != null) {
+                    highlightCell(row, col);
+                    cell.setOnMouseClicked(e -> {
+                        ((LivingUnit) ship.getComponent(row, col)).removeCrewmates( 1);
+                        if (astronautToRemove != null && !astronautToRemove.isDone()) {
+                            astronautToRemove.complete(new Pair<>(row, col));
+                        }
+                        clearCrewmates(ship);
+                        cell.setOnMouseClicked(null);
+                    });
+                    cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+                }
+            }
+
+        });
+    }
+
+
+    public void clearCrewmates(Ship ship) {
+        Platform.runLater(() -> {
+            for (int i = 0; i < ship.getShip_board().length; i++) {
+                for (int j = 0; j < ship.getShip_board()[0].length; j++) {
+                    StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
+                    if (cell != null) {
+                        cell.setOnMouseClicked(null);
+                        cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
+                        resetHighlights(i,j);
                     }
                 }
             }
         });
     }
 
-    public static void resetAstronautSelection() {
-        astronautToRemove = new CompletableFuture<>();
-    }
-
-    public static CompletableFuture<Pair<Integer, Integer>> getAstronautSelection() {
-        return astronautToRemove;
-    }
 
     /**
      * Inizializza il controller
@@ -348,7 +391,7 @@ public class FlyghtController {
 
     public void showChoice(){
         Platform.runLater(() -> {
-            choiceLabel.setText("Decidere se usare o no questa carta");
+            choiceLabel.setText("Decidere se accettare o meno l'avventura");
             choiceLabel.setVisible(true);
             accept.setVisible(true);
             accept.setOnAction((ActionEvent event) -> {useCard.complete(true);

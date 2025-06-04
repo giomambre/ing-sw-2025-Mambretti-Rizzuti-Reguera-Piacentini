@@ -622,16 +622,16 @@ public class GUI implements View {
         }
     }
 
-    /*public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> cannon) {
+    public Pair<Integer,Integer> coordsCrewmate() {
         try {
-            Pair<Integer,Integer>selection=flyghtController.getBatteryChoice().get();
-            flyghtController.resetChoice();
+            Pair<Integer,Integer> selection=flyghtController.getAstronautToRemove().get();
+            flyghtController.resetastronautToRemove();
             return selection;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
         }
-    }*/
+    }
 
     @Override
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> engine) {
@@ -846,13 +846,7 @@ public class GUI implements View {
 
     @Override
     public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
-        try {
-            FlyghtController.resetAstronautSelection();
-            return FlyghtController.getAstronautSelection().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return new Pair<>(-1, -1);
-        }
+        return null;
     }
 
 

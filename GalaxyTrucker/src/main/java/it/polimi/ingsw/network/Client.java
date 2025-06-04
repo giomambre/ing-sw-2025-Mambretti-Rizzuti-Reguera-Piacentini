@@ -1152,53 +1152,47 @@ public class Client {
                 } else {
                     choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
                 }
-
                 if (choice) {
 
                     int num_crew_mates = ab_ship.getCrewmates_loss();
 
                     while (num_crew_mates != 0) {
-
-                        if (virtualViewType == VirtualViewType.GUI) {
-                            for (int i = 0; i < player_local.getShip().getROWS(); i++) {
-                                for (int j = 0; j < player_local.getShip().getCOLS(); j++) {
-                                    CardComponent card = player_local.getShip().getComponent(i, j);
-
-                                    if (card instanceof LivingUnit) {
-                                        ((GUI) virtualView).getFlyghtController().highlightCell(i, j);
-                                    }
+                        if(virtualViewType == VirtualViewType.GUI) {
+                            virtualView.showMessage("Mancano"+num_crew_mates+" crewmates da rimuovere");
+                            ((GUI) virtualView).getFlyghtController().showCrewmates(player_local.getShip());
+                            try {
+                                Pair<Integer, Integer> lu =  ((GUI) virtualView).coordsCrewmate();
+                                if (lu.getValue() == -1 || lu.getKey() == -1) continue;
+                                else {
+                                    LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+                                    num_crew_mates--;
+                                    virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                                 }
+                            } catch (Exception e) {
+                                System.err.println("Errore durante la selezione del crewmate: " + e.getMessage());
                             }
                         }
 
-                        ((GUI) virtualView).getFlyghtController().showAstronauts(player_local.getShip());
-
-                        Pair<Integer, Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
-
-                        int x = lu.getKey();
-                        int y = lu.getValue();
-
-                        if (x == -1 || y == -1) continue;
-
-                        CardComponent card = player_local.getShip().getComponent(x, y);
-
-                        if (card instanceof LivingUnit) {
-                            player_local.getShip().removeComponent(x, y);
-                            if (virtualViewType == VirtualViewType.GUI) {
-                                ((GUI) virtualView).getBuildcontroller().removeObject(x, y, "Astronaut");
-                                ((GUI) virtualView).getFlyghtController().resetHighlights(x,y);
+                        if(virtualViewType==VirtualViewType.TUI) {
+                            Pair<Integer, Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
+                            if (lu.getValue() == -1 || lu.getKey() == -1) continue;
+                            else {
+                                LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+                                num_crew_mates--;
+                                virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                             }
-
-                            num_crew_mates--;
-                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                         }
+
                     }
-
-
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local));
+                    if(virtualViewType == VirtualViewType.GUI){
+                        System.out.println("Credits: "+player_local.getCredits());
+                        ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                    }
                 } else {
                     out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                    break;
                 }
+                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local));
 
                 break;
 
