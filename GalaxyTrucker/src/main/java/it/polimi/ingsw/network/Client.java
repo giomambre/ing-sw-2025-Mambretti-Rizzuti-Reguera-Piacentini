@@ -1063,8 +1063,29 @@ public class Client {
                                 } else {
                                     virtualView.showMessage("Scegliere la batteria");
                                     ((GUI) virtualView).getFlyghtController().showBatteries(ship);
+                                    try {
+                                        battery = ((GUI) virtualView).coordsBattery();
+                                        System.out.println("Batteria scelta: " + battery);
+
+
+                                        if (battery == null || (battery.getKey() == -1 && battery.getValue() == -1)) {
+
+                                            System.out.println("Nessuna batteria è stata scelta o si è verificato un errore.");
+                                            battery_usage_os.put(new Pair<>(i, j), false);
+                                        } else {
+                                            battery_usage_os.put(new Pair<>(i, j), true);
+                                            card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
+                                            card_battery.removeBattery();
+                                        }
+
+                                    } catch (Exception e) {
+                                        System.err.println("Errore durante la selezione della batteria: " + e.getMessage());
+                                        battery_usage_os.put(new Pair<>(i, j), false);
+                                        battery = new Pair<>(-1, -1);
+                                    }
                                 }
                             }
+
                             else {
                                 battery = virtualView.askEngine(new Pair<>(i, j));
                                 if (battery.getKey() == -1 || battery.getValue() == -1) {

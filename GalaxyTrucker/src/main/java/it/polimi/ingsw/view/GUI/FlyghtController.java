@@ -38,6 +38,7 @@ public class FlyghtController {
     private GUI gui;
     private CompletableFuture<Integer> adventureCardAction = new CompletableFuture<>();
     private List<Player> players = new ArrayList<>();
+    List<Pair<Integer,Integer>> batteries = new ArrayList<>();
     private Map<String, ImageView> playerPawns = new HashMap<>();
     private Map<Integer, Player> playerPositions = new HashMap<>(); // posizione -> Player
     private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
@@ -75,6 +76,9 @@ public class FlyghtController {
     @FXML
     private Button nodc;
 
+    @FXML
+    private Button dontusebattery;
+
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_SIZE = 80;
@@ -89,6 +93,10 @@ public class FlyghtController {
         setupAdventureCardArea();
     }
 
+    public List<Pair<Integer,Integer>> getBatteries() {
+        return batteries;
+    }
+
     public CompletableFuture<Pair<Integer,Integer>> getcoordsBattery() {
         if (coordsBattery == null) {
             coordsBattery = new CompletableFuture<>();
@@ -101,9 +109,19 @@ public class FlyghtController {
     }
 
     public void showBatteries(Ship ship) {
+        batteries.clear();
+        if (this.coordsBattery == null || this.coordsBattery.isDone()) {
+            this.coordsBattery = new CompletableFuture<>();
+        }
+        final CompletableFuture<Pair<Integer,Integer>> currentCoordsBatteryFuture = this.coordsBattery; // Capture it for the lambda
 
         Platform.runLater(() -> {
-          List<Pair<Integer,Integer>> batteries = new ArrayList<>();
+
+            dontusebattery.setVisible(true);
+            dontusebattery.setOnAction((ActionEvent event) -> {
+                currentCoordsBatteryFuture.complete(new Pair<>(-1,-1));
+                clearShipListeners(ship);
+            });
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
                     StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
@@ -116,7 +134,7 @@ public class FlyghtController {
                                 || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
                             cell.setStyle("-fx-background-color: lightgray;");
                         }
-                        if (component.getComponentType() == Battery) {
+                        if (component != null && component.getComponentType() == Battery) {
                             if (((Battery) component).getStored() > 0) {
                                 batteries.add(new Pair<>(i, j));
                             }
@@ -137,7 +155,9 @@ public class FlyghtController {
                     highlightCell(row, col);
                     cell.setOnMouseClicked(e -> {
                         ((Battery) ship.getComponent(row, col)).removeBattery();
-                        coordsBattery.complete(new Pair<>(row, col));
+                        if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
+                            currentCoordsBatteryFuture.complete(new Pair<>(row, col));
+                        }
                         clearShipListeners(ship);
                         cell.setOnMouseClicked(null);
                     });
@@ -149,27 +169,10 @@ public class FlyghtController {
     }
 
 
-    /*public CompletableFuture<Pair<Integer, Integer>> selectBoardCellForBattery(int row, int col) {
-        CompletableFuture<Pair<Integer, Integer>> selectionFuture = new CompletableFuture<>();
-        Platform.runLater(() -> {
-            Node cellNode = getNodeFromGridPane(boardGrid, col, row);
-            if (cellNode != null) {
-                cellNode.setOnMouseClicked(event -> {
-                    if (coordsBattery!= null && !coordsBattery.isDone()) {
-                        coordsBattery.complete(new Pair<>(row, col));
-                        cellNode.setOnMouseClicked(null);
-                    }
-                    event.consume();
-                });
-            }
-        });
-
-        return selectionFuture;
-    }*/
-
 
     public void clearShipListeners(Ship ship) {
         Platform.runLater(() -> {
+            dontusebattery.setVisible(false);
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
                     StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
