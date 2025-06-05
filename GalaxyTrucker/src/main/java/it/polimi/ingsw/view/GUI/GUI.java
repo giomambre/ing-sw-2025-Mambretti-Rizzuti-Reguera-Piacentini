@@ -590,16 +590,16 @@ public class GUI implements View {
         return crewmateType;
     }
 
-    public Boolean useCard() {
-        try {
-            Boolean choice=flyghtController.getUseCard().get();
-            flyghtController.resetUseCard();
-            return choice;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    public Boolean useCard() {
+//        try {
+//            Boolean choice=flyghtController.getUseCard().get();
+//            flyghtController.resetUseCard();
+//            return choice;
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     public Boolean useDoubleCannon() {
         try {
@@ -772,14 +772,23 @@ public class GUI implements View {
 
     @Override
     public Pair<Pair<Integer, Integer>, Integer> addCargo(Ship ship, Cargo cargo) {
-
         Pair<Pair<Integer, Integer>, Integer> pair;
         flyghtController.showStorage(ship, cargo);
+
         try {
-            Pair<Integer,Integer> selection=flyghtController.getcoordsBattery().get();
+            Pair<Integer,Integer> selection = flyghtController.getcoordsBattery().get();
             flyghtController.resetcoordsBattery();
+
+            // Controlla se la selezione è valida (non -1, -1)
+            if (selection.getKey() == -1 && selection.getValue() == -1) {
+                // Nessuno storage disponibile o selezione annullata
+                return null;
+            }
+            Storage selectedStorage = (Storage) ship.getComponent(selection.getKey(), selection.getValue());
+
             CargoSelector cargoSelector = new CargoSelector();
-            int pos = cargoSelector.askCargo(((Storage)ship.getComponent(selection.getValue(), selection.getKey())).getCarried_cargos());
+            int pos = cargoSelector.askCargo(selectedStorage.getCarried_cargos());
+
             pair = new Pair<>(selection, pos);
             return pair;
 
@@ -787,8 +796,6 @@ public class GUI implements View {
             e.printStackTrace();
             return null;
         }
-
-
     }
 
 

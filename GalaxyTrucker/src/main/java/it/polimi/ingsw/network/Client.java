@@ -1146,12 +1146,9 @@ public class Client {
 
                 AbandonedShip ab_ship = (AbandonedShip) adventure;
 
-                if (virtualViewType == VirtualViewType.GUI) {
-                    ((GUI) virtualView).getFlyghtController().showChoice();
-                    choice = ((GUI) virtualView).useCard();
-                } else {
-                    choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
-                }
+
+                choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
+
                 if (choice) {
 
                     int num_crew_mates = ab_ship.getCrewmates_loss();
