@@ -9,18 +9,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="900.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" styleClass="stack-pane">
 
     <stylesheets>
         <URL value="@JoinGame.css" />
     </stylesheets>
 
     <children>
-        <ImageView preserveRatio="false">
-            <image>
-                <Image url="@images/backgrounds/bgJoinGameScreen.jpg" />
-            </image>
-        </ImageView>
 
         <VBox alignment="CENTER" spacing="30">
          <ImageView fitHeight="189.0" fitWidth="352.0" preserveRatio="true">
@@ -28,14 +23,14 @@
                <Image url="@images/backgrounds/logo.png" />
             </image>
             <VBox.margin>
-               <Insets bottom="100.0" top="-200.0" />
+               <Insets bottom="100.0" />
             </VBox.margin>
          </ImageView>
             <Label style="-fx-font-size: 28px; -fx-font-family: 'Verdana'; -fx-text-fill:  #fef6d5; -fx-font-weight: bold;" text="Inizia il tuo viaggio stellare:">
             <VBox.margin>
                <Insets />
             </VBox.margin></Label>
-            <Button fx:id="lobbyButton" onAction="#setOne" prefHeight="72.0" prefWidth="232.0" style="-fx-text-fill: #fef6d5; -fx-font-size: 20px;" styleClass="button" text="Crea una lobby">
+            <Button fx:id="lobbyButton" onAction="#setOne" prefHeight="72.0" prefWidth="231.0" style="-fx-text-fill: #fef6d5; -fx-font-size: 20px;" styleClass="button" text="Crea una lobby">
                     <graphic>
                         <ImageView fitHeight="35.0" fitWidth="34.0">
                             <image>
@@ -44,7 +39,7 @@
                         </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="joinButton" onAction="#setTwo" prefHeight="72.0" prefWidth="232.0" style="-fx-text-fill: #fef6d5; -fx-font-size: 20px;" styleClass="button" text="Entra in una lobby">
+            <Button fx:id="joinButton" onAction="#setTwo" prefHeight="72.0" style="-fx-text-fill: #fef6d5; -fx-font-size: 20px;" styleClass="button" text="Entra in una lobby">
                 <graphic>
                     <ImageView fitHeight="29.0" fitWidth="34.0">
                         <image>

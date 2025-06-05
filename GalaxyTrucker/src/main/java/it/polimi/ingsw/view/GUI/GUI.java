@@ -117,6 +117,7 @@ public class GUI implements View {
                 Stage stage = application.getStage();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
+                stage.centerOnScreen();
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

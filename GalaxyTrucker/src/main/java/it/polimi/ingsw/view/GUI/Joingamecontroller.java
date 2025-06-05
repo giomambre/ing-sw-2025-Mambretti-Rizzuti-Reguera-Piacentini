@@ -35,6 +35,8 @@ public class Joingamecontroller {
         stage.setScene(scene);
         stage.centerOnScreen();
 
+        stage.setMaximized(true);
+
         stage.show();
         stage.setOnCloseRequest((event->{
             Platform.exit();

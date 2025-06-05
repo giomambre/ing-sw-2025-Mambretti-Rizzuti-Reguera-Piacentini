@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane prefHeight="937.0" prefWidth="1299.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
 <stylesheets>
    <URL value="@Nickname.css" />
 </stylesheets>
@@ -22,17 +22,18 @@
             <Image url="@images/backgrounds/logo.png" />
          </image>
             <VBox.margin>
-               <Insets bottom="50.0" top="100.0" />
+               <Insets bottom="50.0" top="150.0" />
             </VBox.margin>
       </ImageView>
 
-      <Label style="-fx-font-family: 'Verdana'; -fx-font-size: 28px; -fx-text-fill: #fef6d5; -fx-font-weight: bold;"
-             text="Benvenuto, inserisci il tuo nome:" />
+      <Label style="-fx-font-family: 'Verdana'; -fx-font-size: 28px; -fx-text-fill: #fef6d5; -fx-font-weight: bold;" text="Benvenuto, inserisci il tuo nome:">
+            <VBox.margin>
+               <Insets top="30.0" />
+            </VBox.margin></Label>
 
       <TextField fx:id="nicknameField" maxWidth="300.0" prefHeight="39.0" prefWidth="300.0" promptText="Nome..." style="-fx-font-size: 22;" />
 
-      <Button onAction="#sendNickname"
-              style="-fx-font-family: 'Verdana'; -fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Continua" />
+      <Button onAction="#sendNickname" style="-fx-font-family: 'Verdana'; -fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #333333;" text="Continua" />
 
       <ImageView fitHeight="387.0" fitWidth="561.0" preserveRatio="true">
          <image>
