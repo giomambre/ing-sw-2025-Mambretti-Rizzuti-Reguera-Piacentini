@@ -391,16 +391,16 @@ public class FlyghtController {
         return null;
     }
 
-    public CompletableFuture<Boolean> getUseCard() {
-        if (useCard == null) {
-            useCard = new CompletableFuture<>();
-        }
-        return useCard;
-    }
+//    public CompletableFuture<Boolean> getUseCard() {
+//        if (useCard == null) {
+//            useCard = new CompletableFuture<>();
+//        }
+//        return useCard;
+//    }
 
-    public void resetUseCard() {
-        useCard = new CompletableFuture<>();
-    }
+//    public void resetUseCard() {
+//        useCard = new CompletableFuture<>();
+//    }
 
     public CompletableFuture<Boolean> getUseDoubleCannon() {
         if (useDoubleCannon == null) {
@@ -811,52 +811,52 @@ public class FlyghtController {
     /**
      * Muove la pedina di un giocatore da una posizione all'altra
      */
-    public void movePlayerPawn(String nickname, int oldPosition, int newPosition) {
-        Platform.runLater(() -> {
-            // Rimuovi la pedina dalla posizione precedente
-            if (oldPosition >= 0 && oldPosition < 25) {
-                int oldRow = oldPosition / BOARD_SIZE;
-                int oldCol = oldPosition % BOARD_SIZE;
-                StackPane oldCell = getBoardCellAt(oldRow, oldCol);
-                if (oldCell != null) {
-                    ImageView pawn = playerPawns.get(nickname);
-                    if (pawn != null) {
-                        // Rimuovi il VBox contenitore della pedina
-                        oldCell.getChildren().removeIf(child ->
-                                child instanceof VBox &&
-                                        ((VBox) child).getChildren().contains(pawn));
-                    }
-                }
-            }
-
-            // Aggiungi la pedina alla nuova posizione
-            if (newPosition >= 0 && newPosition < 25) {
-                int newRow = newPosition / BOARD_SIZE;
-                int newCol = newPosition % BOARD_SIZE;
-                StackPane newCell = getBoardCellAt(newRow, newCol);
-                if (newCell != null) {
-                    // Trova il player e i suoi giri per la nuova posizione
-                    Player player = playerPositions.get(newPosition);
-                    Player lapPlayer = playerLaps.get(newPosition);
-                    int lapCount = 0;
-
-                    if (player != null && player.getNickname().equals(nickname)) {
-                        if (lapPlayer != null && lapPlayer.getNickname().equals(nickname)) {
-                            // lapCount = lapPlayer.getLaps(); // Da implementare
-                        }
-                        addPlayerPawnAtPosition(player, newPosition, lapCount);
-                    }
-                }
-            }
-
-            // Aggiorna la Map delle posizioni
-            Player player = playerPositions.get(oldPosition);
-            if (player != null && player.getNickname().equals(nickname)) {
-                playerPositions.remove(oldPosition);
-                playerPositions.put(newPosition, player);
-            }
-        });
-    }
+//    public void movePlayerPawn(String nickname, int oldPosition, int newPosition) {
+//        Platform.runLater(() -> {
+//            // Rimuovi la pedina dalla posizione precedente
+//            if (oldPosition >= 0 && oldPosition < 25) {
+//                int oldRow = oldPosition / BOARD_SIZE;
+//                int oldCol = oldPosition % BOARD_SIZE;
+//                StackPane oldCell = getBoardCellAt(oldRow, oldCol);
+//                if (oldCell != null) {
+//                    ImageView pawn = playerPawns.get(nickname);
+//                    if (pawn != null) {
+//                        // Rimuovi il VBox contenitore della pedina
+//                        oldCell.getChildren().removeIf(child ->
+//                                child instanceof VBox &&
+//                                        ((VBox) child).getChildren().contains(pawn));
+//                    }
+//                }
+//            }
+//
+//            // Aggiungi la pedina alla nuova posizione
+//            if (newPosition >= 0 && newPosition < 25) {
+//                int newRow = newPosition / BOARD_SIZE;
+//                int newCol = newPosition % BOARD_SIZE;
+//                StackPane newCell = getBoardCellAt(newRow, newCol);
+//                if (newCell != null) {
+//                    // Trova il player e i suoi giri per la nuova posizione
+//                    Player player = playerPositions.get(newPosition);
+//                    Player lapPlayer = playerLaps.get(newPosition);
+//                    int lapCount = 0;
+//
+//                    if (player != null && player.getNickname().equals(nickname)) {
+//                        if (lapPlayer != null && lapPlayer.getNickname().equals(nickname)) {
+//                            // lapCount = lapPlayer.getLaps(); // Da implementare
+//                        }
+//                        addPlayerPawnAtPosition(player, newPosition, lapCount);
+//                    }
+//                }
+//            }
+//
+//            // Aggiorna la Map delle posizioni
+//            Player player = playerPositions.get(oldPosition);
+//            if (player != null && player.getNickname().equals(nickname)) {
+//                playerPositions.remove(oldPosition);
+//                playerPositions.put(newPosition, player);
+//            }
+//        });
+//    }
 
     /**
      * Aggiunge una carta avventura all'area delle carte
