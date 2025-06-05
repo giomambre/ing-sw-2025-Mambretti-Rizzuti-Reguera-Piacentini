@@ -59,6 +59,8 @@ public enum MessageType {
     CARGO_LOSS,
     SMUGGLERS,
     PIRATES,
-    SLAYERS,
+    SLAVERS,
+    EPIDEMIC,
+    STURDUST
 
 }

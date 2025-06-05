@@ -1152,53 +1152,47 @@ public class Client {
                 } else {
                     choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
                 }
-
                 if (choice) {
 
                     int num_crew_mates = ab_ship.getCrewmates_loss();
 
                     while (num_crew_mates != 0) {
-
-                        if (virtualViewType == VirtualViewType.GUI) {
-                            for (int i = 0; i < player_local.getShip().getROWS(); i++) {
-                                for (int j = 0; j < player_local.getShip().getCOLS(); j++) {
-                                    CardComponent card = player_local.getShip().getComponent(i, j);
-
-                                    if (card instanceof LivingUnit) {
-                                        ((GUI) virtualView).getFlyghtController().highlightCell(i, j);
-                                    }
+                        if(virtualViewType == VirtualViewType.GUI) {
+                            virtualView.showMessage("Mancano"+num_crew_mates+" crewmates da rimuovere");
+                            ((GUI) virtualView).getFlyghtController().showCrewmates(player_local.getShip());
+                            try {
+                                Pair<Integer, Integer> lu =  ((GUI) virtualView).coordsCrewmate();
+                                if (lu.getValue() == -1 || lu.getKey() == -1) continue;
+                                else {
+                                    LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+                                    num_crew_mates--;
+                                    virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                                 }
+                            } catch (Exception e) {
+                                System.err.println("Errore durante la selezione del crewmate: " + e.getMessage());
                             }
                         }
 
-                        ((GUI) virtualView).getFlyghtController().showAstronauts(player_local.getShip());
-
-                        Pair<Integer, Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
-
-                        int x = lu.getKey();
-                        int y = lu.getValue();
-
-                        if (x == -1 || y == -1) continue;
-
-                        CardComponent card = player_local.getShip().getComponent(x, y);
-
-                        if (card instanceof LivingUnit) {
-                            player_local.getShip().removeComponent(x, y);
-                            if (virtualViewType == VirtualViewType.GUI) {
-                                ((GUI) virtualView).getBuildcontroller().removeObject(x, y, "Astronaut");
-                                ((GUI) virtualView).getFlyghtController().resetHighlights(x,y);
+                        if(virtualViewType==VirtualViewType.TUI) {
+                            Pair<Integer, Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
+                            if (lu.getValue() == -1 || lu.getKey() == -1) continue;
+                            else {
+                                LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+                                num_crew_mates--;
+                                virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                             }
-
-                            num_crew_mates--;
-                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                         }
+
                     }
-
-
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local));
+                    if(virtualViewType == VirtualViewType.GUI){
+                        System.out.println("Credits: "+player_local.getCredits());
+                        ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                    }
                 } else {
                     out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                    break;
                 }
+                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local));
 
                 break;
 
@@ -1355,7 +1349,13 @@ public class Client {
                 Epidemic epidemic = (Epidemic) adventure;
 
                 virtualView.executeEpidemic((player_local.getShip()));
+
+                virtualView.nextMeteor();
+
                 break;
+
+            case Stardust:
+                Stardust stardust = (Stardust) adventure;
 
 
             case Planets:
@@ -1500,6 +1500,8 @@ public class Client {
                     break;
                 } else if(power_c == pirates.getCannons_strenght() ){
 
+
+                    virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
                     out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
 
@@ -1509,8 +1511,8 @@ public class Client {
                     choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + pirates.getCredits()+ "crediti e perdere "+ pirates.getCost_of_days() +" giorni di volo?" );
 
                     if(choice){
-                        player_local.setCredits(pirates.getCredits());
-                        virtualView.showMessage("HAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
+                        player_local.setCredits( player_local .getCredits() + pirates.getCredits());
+                        virtualView.showMessage("\nHAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
                         out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     }else{
@@ -1521,9 +1523,66 @@ public class Client {
 
                     break;
 
+
+
+
+
                 }
 
 
+            case Slavers:
+                Slavers slavers = (Slavers) adventure;
+                virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +slavers.getCannons_strenght() +  " \n");
+                power_c =  cannonPower(slavers.getCannons_strenght());
+                virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+
+
+
+                if(power_c < slavers.getCannons_strenght()) {
+
+
+                    virtualView.showMessage("\n ----- HAI PERSO e PERDI " + slavers.getAstronaut_loss() +" membri dell' EQUIPUAGGIO ---- ");
+                    int num_crew_mates = slavers.getAstronaut_loss();
+                    while (num_crew_mates != 0) {
+
+                        Pair<Integer, Integer> lu = virtualView.chooseAstronautLosses(player_local.getShip());
+                        if (lu.getValue() == -1 || lu.getKey() == -1) continue;
+                        else {
+                            LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+                            num_crew_mates--;
+                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
+                        }
+
+                    }
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    break;
+                } else if(power_c == slavers.getCannons_strenght() ){
+
+                    virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
+
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
+
+
+                }else if(power_c > slavers.getCannons_strenght()) {
+
+
+                    choice = virtualView.acceptAdventure("\nCOMPLIMENTI HAI SCONFITTO I PIRATI, vuoi prendere " + slavers.getCredits() + "crediti e perdere " + slavers.getCost_of_days() + " giorni di volo?");
+
+                    if (choice) {
+                        player_local.setCredits( player_local .getCredits() + slavers.getCredits());
+                        virtualView.showMessage("HAI GUADAGNATO " + slavers.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+
+                    } else {
+
+                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+
+                    }
+
+                    break;
+                }
+        break;
         }
 
 

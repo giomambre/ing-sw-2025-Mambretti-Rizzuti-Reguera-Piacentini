@@ -538,8 +538,11 @@ public class Server {
                             manageAdventure(adventure, controller);
 
                         } else {
+                            String next_p = controller.nextAdventurePlayer();
 
-                            sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
+                            sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta dichiarando la potenza motoreA ! \n", next_p));
+
+                            sendToClient(getId_client(next_p), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
 
                         }
 
@@ -551,6 +554,7 @@ public class Server {
                         ShipClientMessage abandoned_msg = (ShipClientMessage) msg;
 
                         if (abandoned_msg.getContent().isEmpty()) {
+                            sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(abandoned_msg.getId_client()) + " NON ha ACCETTATO  ! \n", getNickname(abandoned_msg.getId_client())));
 
                             if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
@@ -559,8 +563,11 @@ public class Server {
 
 
                             } else {
+                                String next_p = controller.nextAdventurePlayer();
 
-                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "", controller.getCurrentAdventure()));
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se accettare la STAZIONE ABBANDONATA ! \n", next_p));
+
+                                sendToClient(getId_client(next_p), new AdventureCardMessage(ABANDONED_STATION, "", controller.getCurrentAdventure()));
 
 
                             }
@@ -582,6 +589,7 @@ public class Server {
 
                         abandoned_msg = (ShipClientMessage) msg;
                         if (abandoned_msg.getContent().isEmpty()) {
+                            sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(abandoned_msg.getId_client()) + " NON ha ACCETTATO  ! \n", getNickname(abandoned_msg.getId_client())));
 
                             if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
@@ -590,8 +598,10 @@ public class Server {
 
 
                             } else {
+                                String next_p = controller.nextAdventurePlayer();
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se accettare la NAVE ABBANDONATA ! \n", next_p));
 
-                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_SHIP, "", controller.getCurrentAdventure()));
+                                sendToClient(getId_client(next_p), new AdventureCardMessage(ABANDONED_SHIP, "", controller.getCurrentAdventure()));
 
 
                             }
@@ -634,6 +644,7 @@ public class Server {
                     case Planets:
                         ShipClientMessage planet_msg = (ShipClientMessage) msg;
                         if (planet_msg.getContent().isEmpty()) {
+                            sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(planet_msg.getId_client()) + " non è sceso su NESSUN PIANETA ! \n", getNickname(planet_msg.getId_client())));
 
                             if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
@@ -642,6 +653,9 @@ public class Server {
 
 
                             } else {
+                                String next_p = controller.nextAdventurePlayer();
+
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se prendere un PIANETA ! \n", next_p));
 
                                 sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
 
@@ -717,7 +731,7 @@ public class Server {
 
                                     curr_nick = controller.nextAdventurePlayer();
                                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
-                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua potenza cannoni ! \n", curr_nick));
 
 
                                     break;
@@ -746,7 +760,7 @@ public class Server {
                                         controller.initializeAdventure(controller.getCurrentAdventure());
                                         curr_nick = controller.nextAdventurePlayer();
                                         sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", controller.getCurrentAdventure()));
-                                        sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motori ! \n", curr_nick));
+                                        sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua POTENZA MOTORI ! \n", curr_nick));
 
 
                                         break;
@@ -755,7 +769,7 @@ public class Server {
 
                                     curr_nick = controller.nextAdventurePlayer();
                                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
-                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la POTENZA CANNONI! \n", curr_nick));
 
 
                                     break;
@@ -781,7 +795,7 @@ public class Server {
 
                                     curr_nick = controller.nextAdventurePlayer();
                                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", controller.getCurrentAdventure()));
-                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua POTENZA MOTORE ! \n", curr_nick));
 
                                     break;
                             }
@@ -922,6 +936,77 @@ public class Server {
                         sendToAllClients(controller.getLobby(),new PlayersShipsMessage(UPDATED_SHIPS,"",controller.getActivePlayers()));
 
                         break;
+
+
+
+                    case Slavers:
+
+
+                        esit = msg.getContent().split("\\s+");
+
+                        switch (esit[0]) {
+
+                            case "ww":
+
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA SCONFITTO gli SCHIAVISTI ! \n", getNickname(adv_msg.getId_client())));
+
+                                controller.movePlayer(getNickname(adv_msg.getId_client()), -controller.getCurrentAdventure().getCost_of_days());
+
+
+                                sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "\nIL PLAYER " + getNickname(adv_msg.getId_client())
+                                        + " HA PRESO LA RICOMPENSA , ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo" + "\n", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+
+
+                                adventure = controller.getRandomAdventure();
+
+                                manageAdventure(adventure, controller);
+                                break;
+
+
+                            case "w":
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA SCONFITTO gli SCHIAVISTI, ma non ha riscosso la ricompensa  ! \n", getNickname(adv_msg.getId_client())));
+                                adventure = controller.getRandomAdventure();
+
+                                manageAdventure(adventure, controller);
+                                break;
+
+
+                            case "d":
+
+                                if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
+                                    adventure = controller.getRandomAdventure();
+
+                                    manageAdventure(adventure, controller);
+                                    return;
+
+
+                                }
+                                curr_nick = controller.nextAdventurePlayer();
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PAREGGIATO con gli SCHIAVISTI ! \n", getNickname(adv_msg.getId_client())));
+                                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SLAVERS, controller.getPirates_coords(), controller.getCurrentAdventure()));
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Schiavisti ! \n", curr_nick));
+                                break;
+
+                            case "l":
+                                if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
+                                    adventure = controller.getRandomAdventure();
+
+                                    manageAdventure(adventure, controller);
+                                    return;
+
+
+                                }
+                                curr_nick = controller.nextAdventurePlayer();
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PERSO contro i  PIRATI ! \n", getNickname(adv_msg.getId_client())));
+                                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SLAVERS, controller.getPirates_coords(), controller.getCurrentAdventure()));
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Schiavisti ! \n", curr_nick));
+                                break;
+
+
+                        }
+                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(UPDATED_SHIPS,"",controller.getActivePlayers()));
+
+                        break;
                 }
                 break;
 
@@ -963,6 +1048,13 @@ public class Server {
 
     public void manageAdventure(CardAdventure adventure, GameController controller) {
 
+if(adventure == null){
+
+    System.out.println("FINITA LA PARTITA DA CAPIRE POI");
+
+
+}
+
 
         for (Player p : controller.getPlayers()) { //kick dei i giocatori doppiati
 
@@ -983,8 +1075,9 @@ public class Server {
                 controller.initializeAdventure(adventure);
 
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
-
-                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(OPEN_SPACE, "", adventure));
+                String next_p = controller.nextAdventurePlayer();
+                sendToClient(getId_client(next_p), new AdventureCardMessage(OPEN_SPACE, "", adventure));
+                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta dichiarando la sua POTENZA MOTORE ! \n", next_p));
 
                 break;
 
@@ -1000,8 +1093,11 @@ public class Server {
                     manageAdventure(adventure, controller);
                     break;
                 }
+                 next_p = controller.nextAdventurePlayer();
 
-                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(ABANDONED_STATION, "", adventure));
+                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se accettare la STAZIONE ABBANDONATA ! \n", next_p));
+
+                sendToClient(getId_client(next_p), new AdventureCardMessage(ABANDONED_STATION, "", adventure));
                 break;
 
 
@@ -1065,7 +1161,7 @@ public class Server {
                     //gestione potenza di fuoco
                     String curr_nick = controller.nextAdventurePlayer();
                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", adventure));
-                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza motore ! \n", curr_nick));
+                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua POTENZA MOTORE ! \n", curr_nick));
 
 
                 } else if (combatZone.getId() == 0) {
@@ -1074,7 +1170,7 @@ public class Server {
                     String curr_nick = controller.nextAdventurePlayer();
 
                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", adventure));
-                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
+                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua POTENZA CANNONI ! \n", curr_nick));
 
 
                 }
@@ -1111,8 +1207,33 @@ public class Server {
                 break;
 
 
+            case Slavers:
+                Slavers slavers = (Slavers) adventure;
+                controller.initializeAdventure(adventure);
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
+                curr_nick = controller.nextAdventurePlayer();
+
+                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SLAVERS, "", adventure));
+                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Schiavisti ! \n", curr_nick));
+                break;
 
 
+            case Epidemic:
+
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(EPIDEMIC, "", adventure));
+                manageAdventure(controller.getRandomAdventure(),controller);
+                break;
+
+
+         /*   case Stardust:
+        Stardust stardust = (Stardust) adventure;
+
+
+
+        sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(STURDUST, "", adventure));
+                manageAdventure(controller.getRandomAdventure(),controller);*/
 
 
         }
