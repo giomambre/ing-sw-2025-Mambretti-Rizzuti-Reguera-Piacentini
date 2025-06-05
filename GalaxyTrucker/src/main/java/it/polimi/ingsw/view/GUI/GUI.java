@@ -6,26 +6,40 @@ import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.network.Client;
 import it.polimi.ingsw.view.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.CardComponent;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 
@@ -651,9 +665,115 @@ public class GUI implements View {
 
     }
 
+
+
     @Override
     public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
 
+        // Esegui tutto sul thread JavaFX
+        Platform.runLater(() -> {
+            try {
+                Stage meteorStage = new Stage();
+
+                meteorStage.initModality(Modality.APPLICATION_MODAL);
+                meteorStage.setTitle("Allarme Meteora!");
+                meteorStage.setResizable(false);
+
+                VBox mainContainer = new VBox(15);
+                mainContainer.setAlignment(Pos.CENTER);
+                mainContainer.setPadding(new Insets(20));
+                mainContainer.setStyle("-fx-background-color: #2c3e50;");
+
+                String imagePath = getMeteorImagePath(meteor.getKey());
+
+                ImageView meteorImage = new ImageView();
+                try {
+                    Image image = new Image(getClass().getResourceAsStream(imagePath));
+                    meteorImage.setImage(image);
+                    meteorImage.setFitWidth(150);
+                    meteorImage.setFitHeight(150);
+                    meteorImage.setPreserveRatio(true);
+                    rotateMeteorImage(meteorImage, meteor.getValue());
+                } catch (Exception e) {
+                    meteorImage.setFitWidth(150);
+                    meteorImage.setFitHeight(150);
+                    System.err.println("Impossibile caricare l'immagine: " + imagePath);
+                    e.printStackTrace();
+                }
+
+                Label meteorTypeLabel = new Label(getMeteorTypeText(meteor.getKey()));
+                meteorTypeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+                meteorTypeLabel.setStyle("-fx-text-fill: #e74c3c;");
+
+                Label directionLabel = new Label("in arrivo " + getDirectionText(meteor.getValue()));
+                directionLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
+                directionLabel.setStyle("-fx-text-fill: #ecf0f1;");
+
+                Label coordLabel = new Label("alla coordinata: " + coord);
+                coordLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+                coordLabel.setStyle("-fx-text-fill: #f39c12;");
+
+                mainContainer.getChildren().addAll(meteorImage, meteorTypeLabel, directionLabel, coordLabel);
+
+                Scene scene = new Scene(mainContainer, 300, 350);
+                meteorStage.setScene(scene);
+
+                // Timer per chiudere automaticamente la finestra dopo 3 secondi
+                Timeline timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(3), e -> meteorStage.close())
+                );
+                timeline.play();
+
+                // *** IL CAMBIAMENTO FONDAMENTALE ***
+                // Mostra la finestra e blocca il thread corrente (quello che ha chiamato printMeteor)
+                // finché la finestra non viene chiusa (dal timer o dall'utente).
+                meteorStage.showAndWait();
+
+            } catch (Exception e) {
+                System.err.println("Errore durante la visualizzazione dell'allarme meteorite.");
+                e.printStackTrace();
+            }
+        }); // Fine di Platform.runLater
+    }
+    // Metodo ausiliario per ottenere il percorso dell'immagine
+    private String getMeteorImagePath(MeteorType type) {
+        return switch (type) {
+            case LargeMeteor -> "/images/meteortype/large_meteor.jpg";
+            case SmallMeteor -> "/images/meteortype/small_meteor.jpg";
+            case HeavyCannonFire -> "/images/meteortype/heavy_cannon.jpg";
+            case LightCannonFire -> "/images/meteortype/light_cannon.jpg";
+        };
+    }
+
+    // Metodo ausiliario per ottenere il testo del tipo di meteora
+    private String getMeteorTypeText(MeteorType type) {
+        return switch (type) {
+            case LargeMeteor -> "METEORA GROSSA";
+            case SmallMeteor -> "METEORA PICCOLA";
+            case HeavyCannonFire -> "CANNONATA PESANTE";
+            case LightCannonFire -> "CANNONATA LEGGERA";
+        };
+    }
+
+    // Metodo ausiliario per ottenere il testo della direzione
+    private String getDirectionText(Direction direction) {
+        return switch (direction) {
+            case South -> "da SUD";
+            case East -> "da EST";
+            case West -> "da OVEST";
+            case North -> "da NORD";
+        };
+    }
+
+    // Metodo ausiliario per ruotare l'immagine basata sulla direzione
+    private void rotateMeteorImage(ImageView imageView, Direction direction) {
+        double rotation = switch (direction) {
+            case North -> 0;      // Verso il basso
+            case South -> 180;    // Verso l'alto
+            case East -> 270;     // Verso sinistra
+            case West -> 90;      // Verso destra
+        };
+        imageView.setRotate(rotation);
     }
 
     @Override
@@ -747,10 +867,48 @@ public class GUI implements View {
 
     @Override
     public int nextMeteor() {
-        return 0;
+        Platform.runLater(() -> {
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Continua l'Avventura");
+            popupStage.setResizable(false);
+
+            VBox mainContainer = new VBox(15);
+            mainContainer.setAlignment(Pos.CENTER);
+            mainContainer.setPadding(new Insets(20));
+            mainContainer.setStyle("-fx-background-color: #2c3e50;");
+
+            Label messageLabel = new Label("Premi Continua per proseguire.");
+            messageLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+            messageLabel.setStyle("-fx-text-fill: #ecf0f1;");
+
+            Button continueButton = new Button("Continua");
+            continueButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            continueButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;");
+            continueButton.setPrefWidth(100);
+
+            continueButton.setOnAction(e -> popupStage.close());
+
+            mainContainer.getChildren().addAll(messageLabel, continueButton);
+
+            Scene scene = new Scene(mainContainer, 250, 150);
+            popupStage.setScene(scene);
+
+            popupStage.show();
+        });
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Il thread è stato interrotto durante l'attesa per il popup Continua.");
+        }
+
+        return 1;
     }
 
-    @Override
+
+        @Override
     public void showHittedCard(CardComponent card, Direction direction) {
 
     }

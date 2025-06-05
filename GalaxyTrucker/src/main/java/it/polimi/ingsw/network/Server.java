@@ -475,20 +475,14 @@ public class Server {
                                 Cargo.Yellow
                         ),
                         3,"");*/
-                CardAdventure adventure = new AbandonedStation(1, 3, CardAdventureType.AbandonedStation, 3,  Arrays.asList(
-                        Cargo.Red,
-                        Cargo.Yellow,
-                        Cargo.Yellow
-                ),"/images/cardAdventure/GT-abandonedStation_1.1.jpg");
 
 
-                /*adventure = new Pirates(1, 1, CardAdventureType.Pirates, 5, 4,
-                        List.of(
-                                new Pair<>(MeteorType.LightCannonFire, North),
-                                new Pair<>(MeteorType.HeavyCannonFire, North),
-                                new Pair<>(MeteorType.LightCannonFire, North)
-                        ),"/images/cardAdventure/GT-pirates_1.jpg"
-                );*/
+                CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
+                        new Pair<>(MeteorType.LargeMeteor, North),
+                        new Pair<>(MeteorType.SmallMeteor, South),
+                        new Pair<>(MeteorType.SmallMeteor, East)
+                ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
+                );
 
                 manageAdventure(adventure, controller);
 
