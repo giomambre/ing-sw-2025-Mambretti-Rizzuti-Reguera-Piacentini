@@ -274,15 +274,13 @@ public class FlyghtController {
     }
 
     public void showStorage(Ship ship, Cargo cargo) {
-        batteries.clear();
+        batteries.clear(); // Potresti voler rinominare questa lista in "storages" per chiarezza
         if (this.coordsBattery == null || this.coordsBattery.isDone()) {
             this.coordsBattery = new CompletableFuture<>();
         }
-        final CompletableFuture<Pair<Integer,Integer>> currentCoordsBatteryFuture = this.coordsBattery; // Capture it for the lambda
+        final CompletableFuture<Pair<Integer,Integer>> currentCoordsBatteryFuture = this.coordsBattery;
 
         Platform.runLater(() -> {
-
-
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
                     StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
@@ -290,21 +288,32 @@ public class FlyghtController {
                         cell.setStyle("");
                         cell.setOnMouseClicked(null);
                         CardComponent component = ship.getShip_board()[i][j];
-                        if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
-                                ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
-                                || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
+
+                        // Celle non accessibili o vuote
+                        if (component == null || component.getComponentType() == ComponentType.NotAccessible ||
+                                component.getComponentType() == ComponentType.Empty ||
+                                component.getComponentType() == ComponentType.MainUnitRed ||
+                                component.getComponentType() == ComponentType.MainUnitGreen ||
+                                component.getComponentType() == ComponentType.MainUnitBlue ||
+                                component.getComponentType() == ComponentType.MainUnitYellow) {
                             cell.setStyle("-fx-background-color: lightgray;");
                         }
+
+                        // Controlla i componenti di storage
                         if (cargo == Cargo.Red) {
-                            if (component != null && (component.getComponentType() == RedStorage)) {
-                                if (((Battery) component).getStored() > 0) {
+                            // Solo storage rossi per cargo rosso
+                            if (component != null && component.getComponentType() == RedStorage) {
+                                Storage storage = (Storage) component; // Cast corretto a Storage
+                                if (storage.getCarried_cargos().size() > 0) { // Controlla se ha cargo
                                     batteries.add(new Pair<>(i, j));
                                 }
                             }
-                        }
-                        else {
-                            if (component != null && (component.getComponentType() == RedStorage || component.getComponentType() == BlueStorage)) {
-                                if (((Battery) component).getStored() > 0) {
+                        } else {
+                            // Storage rossi e blu per altri tipi di cargo
+                            if (component != null && (component.getComponentType() == RedStorage ||
+                                    component.getComponentType() == BlueStorage)) {
+                                Storage storage = (Storage) component; // Cast corretto a Storage
+                                if (storage.getCarried_cargos().size() > 0) { // Controlla se ha cargo
                                     batteries.add(new Pair<>(i, j));
                                 }
                             }
@@ -314,27 +323,42 @@ public class FlyghtController {
                 }
             }
 
-            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
-            for (Pair<Integer, Integer> currentCoords : batteries) {
-                int row = currentCoords.getKey();
-                int col = currentCoords.getValue();
+            // Controlla se ci sono storage disponibili
+            if (batteries.isEmpty()) {
+                // Nessuno storage disponibile per questo tipo di cargo
+                String cargoType = cargo == Cargo.Red ? "rosso" : "blu/altro";
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Storage non disponibile");
+                alert.setHeaderText("Nessuno storage disponibile");
+                alert.setContentText("Non hai storage disponibili per il cargo di tipo " + cargoType );
+                alert.showAndWait();
 
-                StackPane cell = (StackPane) playerShipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+                // Completa il future con coordinate negative per indicare che non c'è selezione
+                if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
+                    currentCoordsBatteryFuture.complete(new Pair<>(-1, -1));
+                }
+            } else {
+                // Evidenzia e imposta i listener per gli storage validi
+                for (Pair<Integer, Integer> currentCoords : batteries) {
+                    int row = currentCoords.getKey();
+                    int col = currentCoords.getValue();
 
-                if (cell != null) {
-                    highlightCell(row, col);
-                    cell.setOnMouseClicked(e -> {
-                        ((Battery) ship.getComponent(row, col)).removeBattery();
-                        if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
-                            currentCoordsBatteryFuture.complete(new Pair<>(row, col));
-                        }
-                        clearShipListeners(ship);
-                        cell.setOnMouseClicked(null);
-                    });
-                    cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+                    StackPane cell = (StackPane) playerShipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+
+                    if (cell != null) {
+                        highlightCell(row, col);
+                        cell.setOnMouseClicked(e -> {
+                            // Non rimuovere nulla qui - lascia che sia il metodo chiamante a gestire la logica
+                            if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
+                                currentCoordsBatteryFuture.complete(new Pair<>(row, col));
+                            }
+                            clearShipListeners(ship);
+                            cell.setOnMouseClicked(null);
+                        });
+                        cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
+                    }
                 }
             }
-
         });
     }
 
@@ -389,18 +413,18 @@ public class FlyghtController {
         useDoubleCannon = new CompletableFuture<>();
     }
 
-    public void showChoice(){
-        Platform.runLater(() -> {
-            choiceLabel.setText("Decidere se accettare o meno l'avventura");
-            choiceLabel.setVisible(true);
-            accept.setVisible(true);
-            accept.setOnAction((ActionEvent event) -> {useCard.complete(true);
-                hideChoice();});
-            reject.setVisible(true);
-            reject.setOnAction((ActionEvent event) -> {useCard.complete(false);
-                hideChoice();});
-        });
-    }
+//    public void showChoice(){
+//        Platform.runLater(() -> {
+//            choiceLabel.setText("Decidere se accettare o meno l'avventura");
+//            choiceLabel.setVisible(true);
+//            accept.setVisible(true);
+//            accept.setOnAction((ActionEvent event) -> {useCard.complete(true);
+//                hideChoice();});
+//            reject.setVisible(true);
+//            reject.setOnAction((ActionEvent event) -> {useCard.complete(false);
+//                hideChoice();});
+//        });
+//    }
 
     public void showdc(int x, int y) {
         Platform.runLater(() -> {
