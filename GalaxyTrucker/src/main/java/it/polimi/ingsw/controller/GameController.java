@@ -689,9 +689,29 @@ public class GameController {
         smugglers.executeLoss(p, cargo_position);
     }
 
-    public void executeStardust(String nickname, Stardust stardust) {
-        Player p = game.getPlayer(nickname);
-        stardust.execute(p);
+    public void executeStardust(Stardust stardust) {
+        initializeAdventure(stardust);
+        for(Player p : adventureOrder) {
+
+        movePlayer(p.getNickname(),-p.getShip().calculateExposedConnectors());
+
+
+        }
+    }
+public void addCredits(String nickname, int credits){
+
+            for(Player p : getActivePlayers()) {
+
+                if(p.getNickname().equals(nickname)) {
+
+                    p.setCredits(p.getCredits() + credits);
+
+                }
+
+            }
+
+
+
     }
 
 

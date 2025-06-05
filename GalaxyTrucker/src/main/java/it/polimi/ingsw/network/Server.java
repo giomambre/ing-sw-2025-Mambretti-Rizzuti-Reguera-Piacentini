@@ -484,7 +484,7 @@ public class Server {
                 ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
                 );
 
-                manageAdventure(adventure, controller);
+                manageAdventure(new OpenSpace(1,0,CardAdventureType.OpenSpace,"/images/cardAdventure/GT-openSpace_1.1.jpg"), controller);
 
 
                 break;
@@ -602,7 +602,7 @@ public class Server {
 
                         } else {
                             controller.movePlayer(getNickname(adv_msg.getId_client()), -controller.getCurrentAdventure().getCost_of_days());
-
+                            controller.addCredits(getNickname(adv_msg.getId_client()), ((AbandonedShip) controller.getCurrentAdventure()).getGiven_credits());
                             sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
                                     + " HA ACCETTATO L'AVVENTURA, ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
@@ -1220,14 +1220,15 @@ if(adventure == null){
                 break;
 
 
-         /*   case Stardust:
+           case Stardust:
         Stardust stardust = (Stardust) adventure;
 
 
 
         sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
-                sendToAllClients(controller.getLobby(), new AdventureCardMessage(STURDUST, "", adventure));
-                manageAdventure(controller.getRandomAdventure(),controller);*/
+        controller.executeStardust(stardust);
+               sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "TUTTI I PLAYER HANNO PERSO NUMERO DI VOLO in BASE AI LORO CONNETTORI ESPOSTI", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+               manageAdventure(controller.getRandomAdventure(),controller);
 
 
         }
