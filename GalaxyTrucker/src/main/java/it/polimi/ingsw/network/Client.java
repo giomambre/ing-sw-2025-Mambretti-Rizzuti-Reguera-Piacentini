@@ -1153,7 +1153,7 @@ public class Client {
                 if (choice) {
 
                     int num_crew_mates = ab_ship.getCrewmates_loss();
-
+                    player_local.setCredits(player_local.getCredits() + ab_ship.getCrewmates_loss());
                     while (num_crew_mates != 0) {
                         if(virtualViewType == VirtualViewType.GUI) {
                             virtualView.showMessage("Mancano"+num_crew_mates+" crewmates da rimuovere");
