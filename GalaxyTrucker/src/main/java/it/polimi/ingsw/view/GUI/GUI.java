@@ -43,6 +43,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
 
+
 public class GUI implements View {
 
     Joingamecontroller joingamecontroller;
@@ -54,6 +55,7 @@ public class GUI implements View {
     CrewmateSelectionController crewmateSelectionController;
     Stage stage;
     private String nicknamescelto;
+    private Player player_local;
     @FXML
     public TextField nicknameField;
     private GuiApplication application;
@@ -234,13 +236,37 @@ public class GUI implements View {
 
     @Override
     public void showMessage(String message) {
+        CountDownLatch latch = new CountDownLatch(1);
+
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Messaggio");
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
+            try {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Messaggio");
+                alert.setHeaderText(null);
+                alert.setContentText(message);
+
+                // Quando l'alert viene chiuso, rilascia il latch
+                alert.setOnCloseRequest(e -> latch.countDown());
+
+                alert.showAndWait();
+
+                // Rilascia il latch anche dopo showAndWait (nel caso non sia stato già rilasciato)
+                latch.countDown();
+
+            } catch (Exception e) {
+                System.err.println("Errore durante la visualizzazione del messaggio.");
+                e.printStackTrace();
+                latch.countDown(); // Rilascia in caso di errore
+            }
         });
+
+        // Blocca il thread chiamante finché l'utente non preme OK
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Il thread è stato interrotto durante l'attesa del messaggio.");
+        }
     }
 
     public void createselectlobbyscreen(List<Integer> lobbies){
@@ -650,12 +676,46 @@ public class GUI implements View {
 
     @Override
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> engine) {
-        return null;
+        int i = engine.getKey();
+        int j = engine.getValue();
+        FlyghtController controller = getFlyghtController();
+
+        getFlyghtController().highlightCell(i, j);
+        getFlyghtController().showdc(i, j);
+        Boolean useDC = useDoubleCannon();
+        getFlyghtController().resetHighlights(i, j);
+        if (!useDC) {
+            return new Pair<>(-1,-1);
+        } else {
+            return useBattery(player_local.getShip());
+        }
+
     }
 
     @Override
     public Pair<Integer, Integer> useBattery(Ship ship) {
-        return null;
+        Pair<Integer, Integer> battery = new Pair<>(-1, -1);
+        Map<Pair<Integer, Integer>, Boolean> battery_usage_os = new HashMap<Pair<Integer, Integer>, Boolean>();
+        Battery card_battery;
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent card = ship.getComponent(i, j);
+                showMessage("Scegliere la batteria");
+                getFlyghtController().showBatteries(ship);
+                try {
+                    battery = coordsBattery();
+                    System.out.println("Batteria scelta: " + battery);
+                    return battery;
+
+                } catch (Exception e) {
+                    System.err.println("Errore durante la selezione della batteria: " + e.getMessage());
+                    battery_usage_os.put(new Pair<>(i, j), false);
+
+                }
+            }
+        }
+        return battery;
+
     }
 
 
@@ -670,6 +730,7 @@ public class GUI implements View {
 
     @Override
     public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
+        CountDownLatch latch = new CountDownLatch(1);
 
         // Esegui tutto sul thread JavaFX
         Platform.runLater(() -> {
@@ -714,27 +775,44 @@ public class GUI implements View {
                 coordLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
                 coordLabel.setStyle("-fx-text-fill: #f39c12;");
 
-                mainContainer.getChildren().addAll(meteorImage, meteorTypeLabel, directionLabel, coordLabel);
+                // Bottone Continua
+                Button continueButton = new Button("Continua");
+                continueButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+                continueButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 10px 20px;");
+                continueButton.setPrefWidth(120);
 
-                Scene scene = new Scene(mainContainer, 300, 350);
+                // Event handler per il bottone
+                continueButton.setOnAction(e -> {
+                    meteorStage.close();
+                    latch.countDown(); // Rilascia il thread in attesa
+                });
+
+                // Aggiungi anche la possibilità di chiudere con ESC o clic sulla X
+                meteorStage.setOnCloseRequest(e -> {
+                    latch.countDown(); // Rilascia il thread anche se chiuso diversamente
+                });
+
+                mainContainer.getChildren().addAll(meteorImage, meteorTypeLabel, directionLabel, coordLabel, continueButton);
+
+                Scene scene = new Scene(mainContainer, 300, 400); // Altezza aumentata per il bottone
                 meteorStage.setScene(scene);
 
-                // Timer per chiudere automaticamente la finestra dopo 3 secondi
-                Timeline timeline = new Timeline(
-                        new KeyFrame(Duration.seconds(3), e -> meteorStage.close())
-                );
-                timeline.play();
-
-                // *** IL CAMBIAMENTO FONDAMENTALE ***
-                // Mostra la finestra e blocca il thread corrente (quello che ha chiamato printMeteor)
-                // finché la finestra non viene chiusa (dal timer o dall'utente).
-                meteorStage.showAndWait();
+                meteorStage.show();
 
             } catch (Exception e) {
                 System.err.println("Errore durante la visualizzazione dell'allarme meteorite.");
                 e.printStackTrace();
+                latch.countDown(); // Rilascia in caso di errore
             }
         }); // Fine di Platform.runLater
+
+        // Blocca il thread corrente finché l'utente non preme Continua
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Il thread è stato interrotto durante l'attesa dell'allarme meteora.");
+        }
     }
     // Metodo ausiliario per ottenere il percorso dell'immagine
     private String getMeteorImagePath(MeteorType type) {
@@ -868,45 +946,51 @@ public class GUI implements View {
 
     @Override
     public int nextMeteor() {
-        Platform.runLater(() -> {
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle("Continua l'Avventura");
-            popupStage.setResizable(false);
-
-            VBox mainContainer = new VBox(15);
-            mainContainer.setAlignment(Pos.CENTER);
-            mainContainer.setPadding(new Insets(20));
-            mainContainer.setStyle("-fx-background-color: #2c3e50;");
-
-            Label messageLabel = new Label("Premi Continua per proseguire.");
-            messageLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-            messageLabel.setStyle("-fx-text-fill: #ecf0f1;");
-
-            Button continueButton = new Button("Continua");
-            continueButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-            continueButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;");
-            continueButton.setPrefWidth(100);
-
-            continueButton.setOnAction(e -> popupStage.close());
-
-            mainContainer.getChildren().addAll(messageLabel, continueButton);
-
-            Scene scene = new Scene(mainContainer, 250, 150);
-            popupStage.setScene(scene);
-
-            popupStage.show();
-        });
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            System.err.println("Il thread è stato interrotto durante l'attesa per il popup Continua.");
-        }
-
-        return 1;
-    }
+//        CountDownLatch latch = new CountDownLatch(1);
+//
+//        Platform.runLater(() -> {
+//            Stage popupStage = new Stage();
+//            popupStage.initModality(Modality.APPLICATION_MODAL);
+//            popupStage.setTitle("Continua l'Avventura");
+//            popupStage.setResizable(false);
+//
+//            VBox mainContainer = new VBox(15);
+//            mainContainer.setAlignment(Pos.CENTER);
+//            mainContainer.setPadding(new Insets(20));
+//            mainContainer.setStyle("-fx-background-color: #2c3e50;");
+//
+//            Label messageLabel = new Label("Premi Continua per proseguire.");
+//            messageLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+//            messageLabel.setStyle("-fx-text-fill: #ecf0f1;");
+//
+//            Button continueButton = new Button("Continua");
+//            continueButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+//            continueButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;");
+//            continueButton.setPrefWidth(100);
+//
+//            continueButton.setOnAction(e -> {
+//                popupStage.close();
+//                latch.countDown(); // Rilascia il thread in attesa
+//            });
+//
+//            mainContainer.getChildren().addAll(messageLabel, continueButton);
+//
+//            Scene scene = new Scene(mainContainer, 250, 150);
+//            popupStage.setScene(scene);
+//
+//            popupStage.show();
+//        });
+//
+//        try {
+//            latch.await(); // Aspetta che l'utente prema il bottone
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            System.err.println("Il thread è stato interrotto durante l'attesa per il popup Continua.");
+//            return 0; // Ritorna 0 in caso di interruzione
+//        }
+//
+      return 1;
+   }
 
 
         @Override

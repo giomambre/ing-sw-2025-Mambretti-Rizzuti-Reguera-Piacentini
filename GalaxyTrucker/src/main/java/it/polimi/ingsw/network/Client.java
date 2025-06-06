@@ -745,6 +745,7 @@ public class Client {
                     }
                 }
                 if (virtualViewType == VirtualViewType.GUI) {
+                    virtualView.updateLocalPlayer(player_local);
                     if (!Client.otherPlayersReady.isDone()) {
                         Client.otherPlayersReady.complete(null);
                         System.out.println(">>> [DEBUG] CompletableFuture completata con altri giocatori: " + other_players_local);
@@ -1209,14 +1210,14 @@ public class Client {
                 int i = 0;
                 for (Pair<MeteorType, Direction> m : meteors) {
 
-
+                    int dummy = virtualView.nextMeteor();
                     virtualView.printMeteor(m, coordList.get(i));
 
 
                     if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            int dummy = virtualView.nextMeteor();
+                            dummy = virtualView.nextMeteor();
 
                             continue;
                         }
@@ -1225,7 +1226,7 @@ public class Client {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            int dummy = virtualView.nextMeteor();
+                            dummy = virtualView.nextMeteor();
 
                             continue;
 
@@ -1237,7 +1238,7 @@ public class Client {
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
                         virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                        int dummy = virtualView.nextMeteor();
+                         dummy = virtualView.nextMeteor();
 
                         continue;
 
@@ -1258,7 +1259,7 @@ public class Client {
 
 
                                 virtualView.showMessage("\nMeteorite rimbalza sul lato liscio \n");
-                                int dummy = virtualView.nextMeteor();
+                                dummy = virtualView.nextMeteor();
 
                                 continue;
 
@@ -1330,7 +1331,7 @@ public class Client {
 
                     }
                     i++;
-                    int dummy = virtualView.nextMeteor();
+
 
                 }
 
