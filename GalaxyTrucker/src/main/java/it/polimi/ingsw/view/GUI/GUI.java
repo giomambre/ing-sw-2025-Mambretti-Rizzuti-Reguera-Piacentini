@@ -33,6 +33,7 @@ import javafx.stage.Stage;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.components.CardComponent;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
@@ -995,66 +996,101 @@ public class GUI implements View {
 
 
         @Override
-    public void showHittedCard(CardComponent card, Direction direction) {
-            // Esegui sul JavaFX Application Thread
-            Platform.runLater(() -> {
-                // Crea un nuovo stage
-                Stage stage = new Stage();
-                stage.setTitle("Carta Colpita");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.setResizable(false);
-
-                // Layout principale
-                VBox root = new VBox(20);
-                root.setPadding(new Insets(20));
-                root.setAlignment(Pos.CENTER);
-                root.setStyle("-fx-background-color: #2E8B57;");
-
-                // Label informativa
-                Label infoLabel = new Label("La carta è stata colpita in direzione: " + direction.toString());
-                infoLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
-
-                // ImageView per la carta
-                ImageView cardImageView = new ImageView();
-
-                // Carica l'immagine della carta
-                String imagePath = card.getImagePath(); // Assumendo che CardComponent abbia questo metodo
-                Image cardImage = new Image(imagePath);
-                cardImageView.setImage(cardImage);
-
-                // Imposta dimensioni dell'immagine
-                cardImageView.setFitWidth(150);
-                cardImageView.setFitHeight(200);
-                cardImageView.setPreserveRatio(true);
-
-                // Applica la rotazione in base alla direzione
-                cardImageView.setRotate(card.getRotationAngle());
-
-                // Container per l'immagine con bordo
-                StackPane imageContainer = new StackPane();
-                imageContainer.getChildren().add(cardImageView);
-                imageContainer.setStyle("-fx-border-color: white; -fx-border-width: 2px; -fx-background-color: white;");
-                imageContainer.setPadding(new Insets(10));
-
-                // Bottone OK
-                Button okButton = new Button("OK");
-                okButton.setStyle("-fx-font-size: 14px; -fx-min-width: 80px; -fx-min-height: 35px;");
-                okButton.setOnAction(e -> stage.close());
-
-                // Aggiunge tutti i componenti al layout
-                root.getChildren().addAll(infoLabel, imageContainer, okButton);
-
-                // Crea la scena
-                Scene scene = new Scene(root, 300, 400);
-                stage.setScene(scene);
-
-                // Centra lo stage rispetto al parent
-                stage.centerOnScreen();
-
-                // Mostra lo stage e aspetta che venga chiuso
-                stage.showAndWait();
-            });
+        public void showHittedCard(CardComponent card, Direction direction) {
+            // Se non siamo sul JavaFX Application Thread, usa CountDownLatch
+            if (!Platform.isFxApplicationThread()) {
+                CountDownLatch latch = new CountDownLatch(1);
+                Platform.runLater(() -> {
+                    createAndShowStage(card, direction, latch);
+                });
+                try {
+                    latch.await(); // Aspetta che la finestra venga chiusa
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                // Se siamo già sul JavaFX thread, crea direttamente lo stage
+                createAndShowStage(card, direction, null);
+            }
         }
+
+    private void createAndShowStage(CardComponent card, Direction direction, CountDownLatch latch) {
+        // Crea un nuovo stage
+        Stage stage = new Stage();
+        stage.setTitle("Carta Colpita");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false);
+
+        // Ottieni la finestra principale per impostare il proprietario
+        Stage primaryStage = (Stage) Stage.getWindows().stream()
+                .filter(Window::isShowing)
+                .findFirst()
+                .orElse(null);
+        if (primaryStage != null) {
+            stage.initOwner(primaryStage);
+        }
+
+        // Layout principale
+        VBox root = new VBox(20);
+        root.setPadding(new Insets(20));
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-background-color: #2E8B57;");
+
+        // Label informativa
+        Label infoLabel = new Label("La carta è stata colpita in direzione: " + direction.toString());
+        infoLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
+
+        // ImageView per la carta
+        ImageView cardImageView = new ImageView();
+
+        // Carica l'immagine della carta
+        String imagePath = card.getImagePath(); // Assumendo che CardComponent abbia questo metodo
+        Image cardImage = new Image(imagePath);
+        cardImageView.setImage(cardImage);
+
+        // Imposta dimensioni dell'immagine
+        cardImageView.setFitWidth(150);
+        cardImageView.setFitHeight(200);
+        cardImageView.setPreserveRatio(true);
+
+        // Applica la rotazione in base alla direzione
+        cardImageView.setRotate(card.getRotationAngle());
+
+        // Container per l'immagine con bordo
+        StackPane imageContainer = new StackPane();
+        imageContainer.getChildren().add(cardImageView);
+        imageContainer.setStyle("-fx-border-color: white; -fx-border-width: 2px; -fx-background-color: white;");
+        imageContainer.setPadding(new Insets(10));
+
+        // Bottone OK
+        Button okButton = new Button("OK");
+        okButton.setStyle("-fx-font-size: 14px; -fx-min-width: 80px; -fx-min-height: 35px;");
+        okButton.setOnAction(e -> {
+            stage.close();
+            if (latch != null) {
+                latch.countDown(); // Sblocca il thread chiamante
+            }
+        });
+
+        // Aggiunge tutti i componenti al layout
+        root.getChildren().addAll(infoLabel, imageContainer, okButton);
+
+        // Crea la scena
+        Scene scene = new Scene(root, 300, 400);
+        stage.setScene(scene);
+
+        // Centra lo stage rispetto al parent
+        stage.centerOnScreen();
+
+        // Mostra lo stage
+        if (latch != null) {
+            stage.show(); // Non usa showAndWait() perché stiamo gestendo il blocking con CountDownLatch
+        } else {
+            stage.showAndWait(); // Usa showAndWait() se siamo già sul JavaFX thread
+        }
+    }
+
+
 
     @Override
     public void printCardAdventure(CardAdventure adventure) {
