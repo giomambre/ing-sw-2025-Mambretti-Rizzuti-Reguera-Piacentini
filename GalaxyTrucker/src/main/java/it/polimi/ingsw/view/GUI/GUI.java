@@ -238,36 +238,37 @@ public class GUI implements View {
 
     @Override
     public void showMessage(String message) {
-        CountDownLatch latch = new CountDownLatch(1);
+        if (Platform.isFxApplicationThread()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Messaggio");
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        } else {
+            CompletableFuture<Void> future = new CompletableFuture<>();
 
-        Platform.runLater(() -> {
+            Platform.runLater(() -> {
+                try {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Messaggio Bloccante");
+                    alert.setHeaderText(null);
+                    alert.setContentText(message);
+
+                    alert.showAndWait();
+
+                    future.complete(null);
+                } catch (Exception e) {
+                    future.completeExceptionally(e);
+                }
+            });
+
             try {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Messaggio");
-                alert.setHeaderText(null);
-                alert.setContentText(message);
-
-                // Quando l'alert viene chiuso, rilascia il latch
-                alert.setOnCloseRequest(e -> latch.countDown());
-
-                alert.showAndWait();
-
-                // Rilascia il latch anche dopo showAndWait (nel caso non sia stato già rilasciato)
-                latch.countDown();
-
-            } catch (Exception e) {
-                System.err.println("Errore durante la visualizzazione del messaggio.");
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("La visualizzazione del messaggio è stata interrotta o ha fallito.");
                 e.printStackTrace();
-                latch.countDown(); // Rilascia in caso di errore
             }
-        });
-
-        // Blocca il thread chiamante finché l'utente non preme OK
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            System.err.println("Il thread è stato interrotto durante l'attesa del messaggio.");
         }
     }
 
@@ -1012,6 +1013,7 @@ public class GUI implements View {
                 // Se siamo già sul JavaFX thread, crea direttamente lo stage
                 createAndShowStage(card, direction, null);
             }
+            flyghtController.updatePlayerShip();
         }
 
     private void createAndShowStage(CardComponent card, Direction direction, CountDownLatch latch) {
