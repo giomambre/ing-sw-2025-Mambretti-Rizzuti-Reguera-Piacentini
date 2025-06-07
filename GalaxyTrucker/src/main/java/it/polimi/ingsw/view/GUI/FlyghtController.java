@@ -428,7 +428,7 @@ public class FlyghtController {
 
     public void showdc(int x, int y) {
         Platform.runLater(() -> {
-        dclabel.setText("Decidere se usare o no il cannone alle coordinate (" + x + ", " + y + ")");
+        dclabel.setText("Decidere se attivare la carta alle coordinate (" + x + ", " + y + ")");
         dclabel.setVisible(true);
         yesdc.setVisible(true);
         yesdc.setOnAction((ActionEvent event) -> {useDoubleCannon.complete(true);

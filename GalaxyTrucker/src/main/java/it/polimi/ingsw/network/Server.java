@@ -479,12 +479,12 @@ public class Server {
 
                 CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
                         new Pair<>(MeteorType.LargeMeteor, North),
-                        new Pair<>(MeteorType.SmallMeteor, South),
-                        new Pair<>(MeteorType.SmallMeteor, East)
+                        new Pair<>(MeteorType.LargeMeteor, South),
+                        new Pair<>(MeteorType.LargeMeteor, East)
                 ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
                 );
 
-                manageAdventure(new OpenSpace(1,0,CardAdventureType.OpenSpace,"/images/cardAdventure/GT-openSpace_1.1.jpg"), controller);
+                manageAdventure(adventure, controller);
 
 
                 break;

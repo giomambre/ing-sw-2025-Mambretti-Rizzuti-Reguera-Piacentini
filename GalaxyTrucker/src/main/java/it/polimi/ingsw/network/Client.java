@@ -1037,6 +1037,7 @@ public class Client {
         if (virtualViewType==VirtualViewType.GUI){
             ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
         }
+        virtualView.updateLocalPlayer(player_local);
 
         switch (adventure.getType()) {
 
@@ -1055,44 +1056,6 @@ public class Client {
 
                         if (card.getComponentType() == DoubleEngine) {
 
-                            if(virtualViewType==VirtualViewType.GUI) {
-                                ((GUI) virtualView).getFlyghtController().highlightCell(i, j);
-                                ((GUI) virtualView).getFlyghtController().showdc(i, j);
-                                Boolean useDC = ((GUI) virtualView).useDoubleCannon();
-                                System.out.println("lA SCELTA SE USARE O NO IL DC è" + useDC);
-                                ((GUI) virtualView).getFlyghtController().resetHighlights(i, j);
-                                if (!useDC) {
-                                    battery = new Pair<>(-1, -1);
-                                    battery_usage_os.put(new Pair<>(i, j), false);
-                                } else {
-                                    virtualView.showMessage("Scegliere la batteria");
-                                    ((GUI) virtualView).getFlyghtController().showBatteries(ship);
-                                    try {
-                                        battery = ((GUI) virtualView).coordsBattery();
-                                        System.out.println("Batteria scelta: " + battery);
-
-
-                                        if (battery == null || (battery.getKey() == -1 && battery.getValue() == -1)) {
-
-                                            System.out.println("Nessuna batteria è stata scelta o si è verificato un errore.");
-                                            battery_usage_os.put(new Pair<>(i, j), false);
-                                        } else {
-                                            battery_usage_os.put(new Pair<>(i, j), true);
-                                            card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
-                                            card_battery.removeBattery();
-                                        }
-
-                                    } catch (Exception e) {
-                                        System.err.println("Errore durante la selezione della batteria: " + e.getMessage());
-                                        battery_usage_os.put(new Pair<>(i, j), false);
-                                        battery = new Pair<>(-1, -1);
-                                    }
-                                }
-
-
-                            }
-
-                            else {
                                 battery = virtualView.askEngine(new Pair<>(i, j));
                                 if (battery.getKey() == -1 || battery.getValue() == -1) {
 
@@ -1105,7 +1068,7 @@ public class Client {
 
 
                                 }
-                            }
+
 
                         }
 

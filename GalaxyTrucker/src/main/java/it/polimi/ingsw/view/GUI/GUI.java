@@ -23,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -216,7 +217,7 @@ public class GUI implements View {
 
     @Override
     public void updateLocalPlayer(Player localPlayer) {
-
+        this.player_local = localPlayer;
     }
 
     @Override
@@ -680,8 +681,8 @@ public class GUI implements View {
         int j = engine.getValue();
         FlyghtController controller = getFlyghtController();
 
-        getFlyghtController().highlightCell(i, j);
-        getFlyghtController().showdc(i, j);
+        controller.highlightCell(i, j);
+        controller.showdc(i, j);
         Boolean useDC = useDoubleCannon();
         getFlyghtController().resetHighlights(i, j);
         if (!useDC) {
@@ -995,8 +996,65 @@ public class GUI implements View {
 
         @Override
     public void showHittedCard(CardComponent card, Direction direction) {
+            // Esegui sul JavaFX Application Thread
+            Platform.runLater(() -> {
+                // Crea un nuovo stage
+                Stage stage = new Stage();
+                stage.setTitle("Carta Colpita");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setResizable(false);
 
-    }
+                // Layout principale
+                VBox root = new VBox(20);
+                root.setPadding(new Insets(20));
+                root.setAlignment(Pos.CENTER);
+                root.setStyle("-fx-background-color: #2E8B57;");
+
+                // Label informativa
+                Label infoLabel = new Label("La carta è stata colpita in direzione: " + direction.toString());
+                infoLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
+
+                // ImageView per la carta
+                ImageView cardImageView = new ImageView();
+
+                // Carica l'immagine della carta
+                String imagePath = card.getImagePath(); // Assumendo che CardComponent abbia questo metodo
+                Image cardImage = new Image(imagePath);
+                cardImageView.setImage(cardImage);
+
+                // Imposta dimensioni dell'immagine
+                cardImageView.setFitWidth(150);
+                cardImageView.setFitHeight(200);
+                cardImageView.setPreserveRatio(true);
+
+                // Applica la rotazione in base alla direzione
+                cardImageView.setRotate(card.getRotationAngle());
+
+                // Container per l'immagine con bordo
+                StackPane imageContainer = new StackPane();
+                imageContainer.getChildren().add(cardImageView);
+                imageContainer.setStyle("-fx-border-color: white; -fx-border-width: 2px; -fx-background-color: white;");
+                imageContainer.setPadding(new Insets(10));
+
+                // Bottone OK
+                Button okButton = new Button("OK");
+                okButton.setStyle("-fx-font-size: 14px; -fx-min-width: 80px; -fx-min-height: 35px;");
+                okButton.setOnAction(e -> stage.close());
+
+                // Aggiunge tutti i componenti al layout
+                root.getChildren().addAll(infoLabel, imageContainer, okButton);
+
+                // Crea la scena
+                Scene scene = new Scene(root, 300, 400);
+                stage.setScene(scene);
+
+                // Centra lo stage rispetto al parent
+                stage.centerOnScreen();
+
+                // Mostra lo stage e aspetta che venga chiuso
+                stage.showAndWait();
+            });
+        }
 
     @Override
     public void printCardAdventure(CardAdventure adventure) {
