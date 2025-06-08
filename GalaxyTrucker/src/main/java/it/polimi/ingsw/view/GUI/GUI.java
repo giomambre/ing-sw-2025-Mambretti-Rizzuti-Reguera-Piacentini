@@ -703,17 +703,20 @@ public class GUI implements View {
         for (int i = 0; i < ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
                 CardComponent card = ship.getComponent(i, j);
-                showMessage("Scegliere la batteria");
-                getFlyghtController().showBatteries(ship);
-                try {
-                    battery = coordsBattery();
-                    System.out.println("Batteria scelta: " + battery);
-                    return battery;
+                if (card.getComponentType() != ComponentType.Battery) {
+                    showMessage("Scegliere la batteria");
+                    getFlyghtController().showBatteries(ship);
 
-                } catch (Exception e) {
-                    System.err.println("Errore durante la selezione della batteria: " + e.getMessage());
-                    battery_usage_os.put(new Pair<>(i, j), false);
+                    try {
+                        battery = coordsBattery();
+                        System.out.println("Batteria scelta: " + battery);
+                        return battery;
 
+                    } catch (Exception e) {
+                        System.err.println("Errore durante la selezione della batteria: " + e.getMessage());
+                        battery_usage_os.put(new Pair<>(i, j), false);
+
+                    }
                 }
             }
         }

@@ -465,7 +465,7 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new Message(START_FLIGHT, ""));
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
-                //CardAdventure adventure = controller.getRandomAdventure();
+                CardAdventure adventure = controller.getRandomAdventure();
 
 
                 /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -477,12 +477,12 @@ public class Server {
                         3,"");*/
 
 
-                CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
-                        new Pair<>(MeteorType.LargeMeteor, North),
-                        new Pair<>(MeteorType.LargeMeteor, South),
-                        new Pair<>(MeteorType.LargeMeteor, East)
-                ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
-                );
+//                CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
+//                        new Pair<>(MeteorType.LargeMeteor, North),
+//                        new Pair<>(MeteorType.LargeMeteor, South),
+//                        new Pair<>(MeteorType.LargeMeteor, East)
+//                ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
+//                );
 
                 manageAdventure(adventure, controller);
 

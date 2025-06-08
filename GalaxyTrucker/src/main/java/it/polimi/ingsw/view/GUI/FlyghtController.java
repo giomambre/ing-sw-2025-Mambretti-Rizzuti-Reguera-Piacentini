@@ -864,6 +864,7 @@ public class FlyghtController {
     public void addAdventureCard(CardAdventure card) {
         Platform.runLater(() -> {
             try {
+                adventureCardArea.getChildren().removeIf(node -> node instanceof ImageView);
                 Image image = new Image(Objects.requireNonNull(
                         getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardView = new ImageView(image);
