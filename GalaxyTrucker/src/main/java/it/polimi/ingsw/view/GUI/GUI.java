@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.Epidemic;
 import it.polimi.ingsw.model.components.Battery;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 import it.polimi.ingsw.network.Client;
@@ -44,6 +46,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
+import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
 
 public class GUI implements View {
@@ -633,16 +636,6 @@ public class GUI implements View {
         return crewmateType;
     }
 
-//    public Boolean useCard() {
-//        try {
-//            Boolean choice=flyghtController.getUseCard().get();
-//            flyghtController.resetUseCard();
-//            return choice;
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
 
     public Boolean useDoubleCannon() {
         try {
@@ -674,6 +667,18 @@ public class GUI implements View {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public int nextMeteor() {
+        try {
+            return flyghtController.getNextMeteor().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return -1;
+        } finally {
+            flyghtController.resetNextMeteor();
         }
     }
 
@@ -949,7 +954,7 @@ public class GUI implements View {
             return null;
         }
     }
-
+/*
     @Override
     public int nextMeteor() {
 //        CountDownLatch latch = new CountDownLatch(1);
@@ -996,7 +1001,7 @@ public class GUI implements View {
 //        }
 //
       return 1;
-   }
+   }*/
 
 
         @Override
@@ -1208,7 +1213,7 @@ public class GUI implements View {
 
     @Override
     public void executeEpidemic(Ship ship) {
-
+        flyghtController.executeEpidemic(ship);
     }
 
     @Override

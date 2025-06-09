@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.adventures.CardAdventure;
+import it.polimi.ingsw.model.adventures.Epidemic;
 import it.polimi.ingsw.model.components.Battery;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
@@ -51,6 +52,7 @@ public class FlyghtController {
     private CompletableFuture<Pair<Integer, Integer>> coordsBattery;
     private CompletableFuture<Boolean> useCard;
     private CompletableFuture<Pair<Integer, Integer>> astronautToRemove;
+    private CompletableFuture<Integer> nextMeteor;
 
     // FXML Components
     @FXML
@@ -97,10 +99,27 @@ public class FlyghtController {
     @FXML
     private Label playerCreditsLabel;
 
+    @FXML
+    private Label epidemicLabel;
+
+    @FXML
+    private Button continueButton;
+
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_SIZE = 80;
     private static final int SHIP_CELL_SIZE = 40;
+
+    public CompletableFuture<Integer> getNextMeteor() {
+        if (nextMeteor == null) {
+            nextMeteor = new CompletableFuture<>();
+        }
+        return nextMeteor;
+    }
+
+    public void resetNextMeteor() {
+        nextMeteor = new CompletableFuture<>();
+    }
 
     public void updateCreditLabel(int credits) {
         playerCreditsLabel.setText("Crediti: " + credits);
@@ -864,7 +883,7 @@ public class FlyghtController {
     public void addAdventureCard(CardAdventure card) {
         Platform.runLater(() -> {
             try {
-                adventureCardArea.getChildren().removeIf(node -> node instanceof ImageView);
+
                 Image image = new Image(Objects.requireNonNull(
                         getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardView = new ImageView(image);
@@ -986,7 +1005,42 @@ public class FlyghtController {
 
     }
 
+    public void executeEpidemic(Ship ship){
+        Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic,"");
 
+        epidemic.execute(ship);
+
+        List<CardComponent> list_lu = new ArrayList<>();
+
+        epidemicLabel.setVisible(true);
+        continueButton.setVisible(true);
+        continueButton.setOnAction(e -> {
+            nextMeteor.complete(1);
+            epidemicLabel.setVisible(false);
+            continueButton.setVisible(false);
+            continueButton.setOnAction(null);
+        });
+
+        CardComponent[][] plance = ship.getShipBoard();
+
+        for(int i = 0 ; i < ship.getROWS() ; i++) {
+            for(int j = 0 ; j < ship.getCOLS() ; j++) {
+                CardComponent card = plance[i][j];
+
+                if(card.getComponentType().equals(MainUnitGreen) ||
+                        card.getComponentType().equals(MainUnitRed) ||
+                        card.getComponentType().equals(MainUnitBlue) ||
+                        card.getComponentType().equals(MainUnitYellow) ||
+                        card.getComponentType().equals(LivingUnit)) {
+                    LivingUnit lu = (LivingUnit) card;
+                    if(lu.getNum_crewmates() > 0) {
+                        list_lu.add(card);
+                    }
+                }
+            }
+        }
+
+    }
 
 
     /*public CompletableFuture<Pair<Integer, Integer>> getBatterySelectionFuture() {

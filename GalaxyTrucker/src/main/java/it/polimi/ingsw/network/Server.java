@@ -465,7 +465,9 @@ public class Server {
                 sendToAllClients(controller.getLobby(), new Message(START_FLIGHT, ""));
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
-                CardAdventure adventure = controller.getRandomAdventure();
+                //CardAdventure adventure = controller.getRandomAdventure();
+
+                CardAdventure adventure=new Epidemic(1,0,CardAdventureType.Epidemic,"/images/cardAdventure/GT-epidemic_2.jpg");
 
 
                 /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
