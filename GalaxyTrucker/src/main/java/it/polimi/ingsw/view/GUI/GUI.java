@@ -672,14 +672,15 @@ public class GUI implements View {
 
     @Override
     public int nextMeteor() {
-        try {
-            return flyghtController.getNextMeteor().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return -1;
-        } finally {
-            flyghtController.resetNextMeteor();
-        }
+//        try {
+//            return flyghtController.getNextMeteor().get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//            return -1;
+//        } finally {
+//            flyghtController.resetNextMeteor();
+//        }
+        return 0;
     }
 
     @Override

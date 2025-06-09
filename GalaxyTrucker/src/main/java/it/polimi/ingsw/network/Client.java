@@ -1037,7 +1037,7 @@ public class Client {
         if (virtualViewType==VirtualViewType.GUI){
             ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
         }
-        virtualView.updateLocalPlayer(player_local);
+        //virtualView.updateLocalPlayer(player_local);
 
         switch (adventure.getType()) {
 

@@ -883,7 +883,6 @@ public class FlyghtController {
     public void addAdventureCard(CardAdventure card) {
         Platform.runLater(() -> {
             try {
-
                 Image image = new Image(Objects.requireNonNull(
                         getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardView = new ImageView(image);
