@@ -579,7 +579,7 @@ public class FlyghtController {
             cell.setStyle("-fx-background-color: transparent;");
         } else {
             cell.setStyle("-fx-border-color: gray; -fx-border-width: 1px; " +
-                    "-fx-background-color: lightyellow;");
+                    "-fx-background-color: transparent;");
         }
 
         return cell;
@@ -995,7 +995,7 @@ public class FlyghtController {
                     imageView.setStyle(""); // Rimuovi tutti gli stili
                 } else {
                     // Se la cella è vuota, rimuovi il bordo dalla StackPane
-                    cell.setStyle("-fx-background-color: lightyellow;");
+                    cell.setStyle("-fx-background-color: gray;");
                 }
                 return;
             }
