@@ -86,7 +86,7 @@
 
                         <Label fx:id="epidemicLabel" text="sono stati RIMOSSI 1 ASTRONAUTA per ogni Living Unit ADIACENTE" visible="false" />
 
-                        <Button fx:id="continueBotton" text="Sì" visible="false" />
+                        <Button fx:id="continueButton" text="Sì" visible="false" />
 
                         <HBox alignment="CENTER" spacing="10.0">
 
