@@ -4,24 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="ultime carte avventura, devo ancora testarle">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="finito tutto, da testare ancora bene ci sono qualche problemi">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/MessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/View.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -441,15 +438,8 @@
       <workItem from="1749057256155" duration="154000" />
       <workItem from="1749145677634" duration="2865000" />
       <workItem from="1749288649152" duration="1975000" />
-      <workItem from="1749545131157" duration="1661000" />
-    </task>
-    <task id="LOCAL-00092" summary="minor changes">
-      <option name="closed" value="true" />
-      <created>1746715491792</created>
-      <option name="number" value="00092" />
-      <option name="presentableId" value="LOCAL-00092" />
-      <option name="project" value="LOCAL" />
-      <updated>1746715491792</updated>
+      <workItem from="1749545131157" duration="1681000" />
+      <workItem from="1749558614212" duration="1192000" />
     </task>
     <task id="LOCAL-00093" summary="minor changes">
       <option name="closed" value="true" />
@@ -835,7 +825,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749148545956</updated>
     </task>
-    <option name="localTasksCounter" value="141" />
+    <task id="LOCAL-00141" summary="finito tutto, da testare ancora bene ci sono qualche problemi">
+      <option name="closed" value="true" />
+      <created>1749546811497</created>
+      <option name="number" value="00141" />
+      <option name="presentableId" value="LOCAL-00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1749546811498</updated>
+    </task>
+    <option name="localTasksCounter" value="142" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -875,7 +873,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="aggiunto scelta gui tui" />
     <MESSAGE value="fixati test e aggiunto test controller" />
     <MESSAGE value="timer" />
     <MESSAGE value="timer finito e quasi finito controllo" />
@@ -900,7 +897,8 @@
     <MESSAGE value="some fixes" />
     <MESSAGE value="iniziato meteorswarm ma e un cinema stampare i meteoriti, da cambiare metodo probabilmente" />
     <MESSAGE value="ultime carte avventura, devo ancora testarle" />
-    <option name="LAST_COMMIT_MESSAGE" value="ultime carte avventura, devo ancora testarle" />
+    <MESSAGE value="finito tutto, da testare ancora bene ci sono qualche problemi" />
+    <option name="LAST_COMMIT_MESSAGE" value="finito tutto, da testare ancora bene ci sono qualche problemi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -912,6 +910,10 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="7" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="8" />
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>

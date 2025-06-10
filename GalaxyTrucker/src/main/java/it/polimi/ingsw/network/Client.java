@@ -1030,6 +1030,7 @@ public class Client {
                 break;
 
 
+
             default:
 
                 AdventureCardMessage adv = (AdventureCardMessage) msg;
@@ -1304,7 +1305,9 @@ public class Client {
 
                 virtualView.showMessage("\n--- RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
 
-                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                if(adventure.getLevel() != -1) {
+                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                }
                 break;
 
 
@@ -1452,7 +1455,7 @@ public class Client {
                     virtualView.showMessage("\n ----- HAI PERSO RICEVI DELLE CANNONATE ---- ");
 
                     manageAdventure(
-                            new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                            new MeteorSwarm(-1, 0, CardAdventureType.MeteorSwarm,
                                     List.of(
                                             new Pair<>(MeteorType.LightCannonFire, South),
                                             new Pair<>(MeteorType.HeavyCannonFire, South)

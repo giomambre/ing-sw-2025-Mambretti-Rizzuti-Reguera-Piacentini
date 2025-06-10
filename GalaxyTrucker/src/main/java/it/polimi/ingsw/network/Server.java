@@ -480,13 +480,15 @@ public class Server {
                         3,"");*/
 
 
-                CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
+         /*       CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
                         new Pair<>(MeteorType.LargeMeteor, North),
                         new Pair<>(MeteorType.LargeMeteor, South),
                         new Pair<>(MeteorType.LargeMeteor, East)
                 ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
                 );
+*/
 
+                CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
 
 
@@ -654,7 +656,7 @@ public class Server {
 
                                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se prendere un PIANETA ! \n", next_p));
 
-                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
+                                sendToClient(getId_client(next_p), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
 
                             }
 
@@ -1231,7 +1233,7 @@ public class Server {
                 controller.executeStardust(stardust);
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "TUTTI I PLAYER HANNO PERSO NUMERO DI VOLO in BASE AI LORO CONNETTORI ESPOSTI", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
                 manageAdventure(controller.getRandomAdventure(), controller);
-
+                break;
 
         }
 

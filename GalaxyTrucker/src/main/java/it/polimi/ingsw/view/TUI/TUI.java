@@ -231,7 +231,7 @@ public class TUI implements View {
 
         isMenuOpen = false;
         out.println();
-        out.print(lastRequest);
+
     }
 
     private void showExtraCard(){
