@@ -85,6 +85,9 @@ public interface View {
 
     int askSecuredCard(List<CardComponent> cards);
 
+    public void printFinalRanks(List<Player> finalRanks);
+
+
     int showCard(CardComponent card);
 
     public int askPlanet(List<List<Cargo>> planets, Set<Integer> planet_taken) ;

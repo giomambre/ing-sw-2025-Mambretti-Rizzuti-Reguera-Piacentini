@@ -114,8 +114,7 @@ public class GameController {
     }
 
     public void removeFromAdventure(String nickname) {
-        Player player = game.getPlayer(nickname);
-        adventureOrder.remove(player);
+        adv_index--;
     }
 
     public void initializeAdventure(CardAdventure adventure) {
@@ -158,6 +157,8 @@ public class GameController {
 
                 break;
 
+            case MeteorSwarm:
+                adv_index =getActivePlayers().size();
 
             default:
                 adventureOrder = game.getBoard().getRanking();
@@ -166,6 +167,7 @@ public class GameController {
         }
 
     }
+
 
 
     public String getPlanets() {
@@ -698,7 +700,31 @@ public class GameController {
 
         }
     }
-public void addCredits(String nickname, int credits){
+
+    public void setRewards(){
+
+        game.setRewards();
+
+
+    }
+
+
+    public  List<Player> winOrder() {
+        List<Player> orderedList = new ArrayList<>(game.getActive_players());
+
+
+        Collections.sort(orderedList, new Comparator<Player>() {
+            @Override
+            public int compare(Player p1, Player p2) {
+                return Integer.compare(p2.getCredits(), p1.getCredits());
+            }
+        });
+
+        return orderedList;
+
+
+    }
+        public void addCredits(String nickname, int credits){
 
             for(Player p : getActivePlayers()) {
 

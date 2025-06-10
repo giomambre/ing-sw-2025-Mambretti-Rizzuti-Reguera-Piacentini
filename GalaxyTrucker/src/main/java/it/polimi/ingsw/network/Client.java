@@ -68,7 +68,7 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("localhost",  12345);
+            Socket socket = new Socket("localhost", 12345);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
@@ -701,6 +701,14 @@ public class Client {
         switch (msg.getType()) {
 
 
+            case GAME_FINISHED:
+            PlayersShipsMessage pm = (PlayersShipsMessage) msg;
+            virtualView.showMessage("\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
+            virtualView.printFinalRanks(pm.getPlayers());
+            break;
+
+
+
             case COLOR_SELECTED:
                 gameState = GameState.BuildingPhase;
                 String[] parts = msg.getContent().split(" ");
@@ -1037,7 +1045,7 @@ public class Client {
         if (virtualViewType==VirtualViewType.GUI){
             ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
         }
-        //virtualView.updateLocalPlayer(player_local);
+        virtualView.updateLocalPlayer(player_local);
 
         switch (adventure.getType()) {
 
@@ -1173,14 +1181,12 @@ public class Client {
                 int i = 0;
                 for (Pair<MeteorType, Direction> m : meteors) {
 
-                    int dummy = virtualView.nextMeteor();
                     virtualView.printMeteor(m, coordList.get(i));
 
 
                     if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            dummy = virtualView.nextMeteor();
 
                             continue;
                         }
@@ -1189,7 +1195,6 @@ public class Client {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            dummy = virtualView.nextMeteor();
 
                             continue;
 
@@ -1201,7 +1206,6 @@ public class Client {
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
                         virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                         dummy = virtualView.nextMeteor();
 
                         continue;
 
@@ -1222,7 +1226,6 @@ public class Client {
 
 
                                 virtualView.showMessage("\nMeteorite rimbalza sul lato liscio \n");
-                                dummy = virtualView.nextMeteor();
 
                                 continue;
 
@@ -1294,7 +1297,7 @@ public class Client {
 
                     }
                     i++;
-
+            int dummy = virtualView.nextMeteor();
 
                 }
 
