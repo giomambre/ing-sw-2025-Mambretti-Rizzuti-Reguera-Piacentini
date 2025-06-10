@@ -183,6 +183,7 @@ public class FlyghtController {
                         if (astronautToRemove != null && !astronautToRemove.isDone()) {
                             astronautToRemove.complete(new Pair<>(row, col));
                         }
+                        updateCrewmateOverlayAt(row, col, ship);
                         clearCrewmates(ship);
                         cell.setOnMouseClicked(null);
                     });
@@ -287,6 +288,8 @@ public class FlyghtController {
                         if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
                             currentCoordsBatteryFuture.complete(new Pair<>(row, col));
                         }
+
+                        updatePlayerShip();
                         clearShipListeners(ship);
                         cell.setOnMouseClicked(null);
                     });
@@ -645,8 +648,46 @@ public class FlyghtController {
                     }
                 }
             }
+            restoreOverlays(localPlayer.getShip());
         });
     }
+
+    public void restoreOverlays(Ship ship) {
+        for (int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent component = ship.getComponent(i, j);
+                if (component == null) continue;
+
+                ComponentType type = component.getComponentType();
+
+                if (type == MainUnitBlue || type == MainUnitRed || type == MainUnitGreen || type == MainUnitYellow) {
+                    addOverlay(i,j, "Astronaut");
+                }
+
+
+                if (type == LivingUnit) {
+                    LivingUnit unit = (LivingUnit) component;
+                    if (unit.getNum_crewmates() > 0) {
+                        if (unit.getCrewmate_type().equals(CrewmateType.Astronaut)) {
+                            addOverlay(i, j, "Astronaut");
+                        } else if (unit.getCrewmate_type().equals(CrewmateType.PinkAlien)) {
+                            addOverlay(i, j, "PinkAlien");
+                        } else if (unit.getCrewmate_type().equals(CrewmateType.BrownAlien)) {
+                            addOverlay(i, j, "BrownAlien");
+                        }
+                    }
+                }
+
+                if (type == ComponentType.Battery) {
+                    Battery battery = (Battery) component;
+                    if (battery.getStored() > 0) {
+                        addOverlay(i, j, "Battery", battery.getStored());
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Ottiene la cella della nave alle coordinate specificate
@@ -1117,9 +1158,11 @@ public class FlyghtController {
     }
 
     private boolean isOverlayOfType(Node node, String type) {
+        if (node == null) return false;
         String nodeId = node.getId();
         return nodeId != null && nodeId.equals("overlay-" + type);
     }
+
     public void addOverlay(int x, int y, String type) {
         StackPane cell = getShipCellAt(x, y);
         if (cell == null) return;
@@ -1156,6 +1199,28 @@ public class FlyghtController {
             cell.getChildren().remove(toRemove);
         }
     }
+
+    public void updateCrewmateOverlayAt(int row, int col, Ship ship) {
+        CardComponent component = ship.getComponent(row, col);
+
+        if (component == null || component.getComponentType()== LivingUnit) return;
+
+        LivingUnit unit = (LivingUnit) component;
+
+        removeOverlay(row, col, "Astronaut");
+        removeOverlay(row, col, "PinkAlien");
+        removeOverlay(row, col, "BrownAlien");
+
+        if (unit.getNum_crewmates() > 0) {
+            CrewmateType type = unit.getCrewmate_type();
+            switch (type) {
+                case Astronaut -> addOverlay(row, col, "Astronaut");
+                case PinkAlien -> addOverlay(row, col, "PinkAlien");
+                case BrownAlien -> addOverlay(row, col, "BrownAlien");
+            }
+        }
+    }
+
 
 
 
