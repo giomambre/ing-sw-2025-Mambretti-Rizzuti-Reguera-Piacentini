@@ -231,7 +231,7 @@ public class TUI implements View {
 
         isMenuOpen = false;
         out.println();
-        out.print(lastRequest);
+
     }
 
     private void showExtraCard(){
@@ -1085,7 +1085,25 @@ public class TUI implements View {
         }
     }
 
+    @Override
+    public void printFinalRanks(List<Player> finalRanks) {
+            StringBuilder sb = new StringBuilder();
 
+            sb.append("CLASSIFICA FINALE \n");
+            if (finalRanks.isEmpty()) {
+                sb.append("Nessun giocatore da mostrare.");
+            } else {
+                for (int i = 0; i < finalRanks.size(); i++) {
+                    Player player = finalRanks.get(i);
+                    sb.append(String.format("%d. %s - Crediti: %d%n",
+                            (i + 1), player.getNickname(), player.getCredits()));
+                }
+            }
+
+            printBorder(sb.toString());
+
+
+    }
 
 
     @Override

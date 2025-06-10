@@ -619,6 +619,11 @@ public class GUI implements View {
     }
 
     @Override
+    public void printFinalRanks(List<Player> finalRanks) {
+
+    }
+
+    @Override
     public int crewmateAction(Pair<Integer,Integer> component) {
         try {
             return crewmateSelectionController.getCrewmate().get();

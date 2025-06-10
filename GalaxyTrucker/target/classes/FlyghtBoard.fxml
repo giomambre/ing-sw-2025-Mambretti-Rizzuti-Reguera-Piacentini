@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-
 <?import javafx.geometry.Insets?>
-
 <?import javafx.scene.control.Button?>
-
 <?import javafx.scene.control.Label?>
-
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-
 <?import javafx.scene.layout.GridPane?>
-
 <?import javafx.scene.layout.HBox?>
-
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.FlyghtController">
+<BorderPane style="-fx-background-color: lightyellow;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.FlyghtController">
 
     <top>
 
@@ -26,14 +19,14 @@
 
             <children>
 
-                <Label fx:id="currentPlayerLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Turno di: Giocatore" />
+                <Label fx:id="currentPlayerLabel" style="-fx-font-size: 18px; -fx-font-family: 'Verdana' ;-fx-font-weight: bold; -fx-text-fill: #4B0149; " text="Turno di: Giocatore" />
 
                 <HBox fx:id="playersInfoBox" alignment="CENTER" spacing="20.0">
 
                     <children>
 
-                        <Label text="Info Giocatori" />
-                        <Label fx:id="playerCreditsLabel" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: gold;" text="Crediti: 0" />
+                        <Label text="Info Giocatori" style="-fx-font-size: 12px; -fx-font-family: 'Verdana'; -fx-text-fill: gray; " />
+                        <Label fx:id="playerCreditsLabel" style="-fx-font-size: 12px; -fx-font-weight: bold ;-fx-font-family: 'Verdana'; -fx-text-fill: #DAA520;" text="Crediti: 0" />
 
                     </children>
 
@@ -71,11 +64,11 @@
 
             <children>
 
-                <VBox fx:id="adventureCardArea" spacing="10.0" style="-fx-background-color: #f0f0f0; -fx-border-color: gray; -fx-border-width: 1px; -fx-padding: 10px;">
+                <VBox fx:id="adventureCardArea" spacing="10.0" style="-fx-background-color: #D8B7DD; -fx-border-color: #4B0149; -fx-border-width: 1px; -fx-padding: 10px;">
 
                     <children>
 
-                        <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Carte Avventura" />
+                        <Label style="-fx-font-size: 14px; -fx-font-family: 'Verdana' ;-fx-font-weight: bold; -fx-text-fill: #4B0149; " text="Carte Avventura" />
 
                     </children>
 
@@ -93,7 +86,7 @@
 
                         <Label fx:id="epidemicLabel" text="sono stati RIMOSSI 1 ASTRONAUTA per ogni Living Unit ADIACENTE" visible="false" />
 
-                        <Button fx:id="continueBotton" text="Sì" visible="false" />
+                        <Button fx:id="continueButton" text="Sì" visible="false" />
 
                         <HBox alignment="CENTER" spacing="10.0">
 
@@ -135,9 +128,16 @@
 
             <children>
 
-                <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="La tua Nave" />
+                <Label style="-fx-font-size: 14px; -fx-font-family: 'Verdana' ;-fx-font-weight: bold; -fx-text-fill: #4B0149; " text="La tua Nave" />
 
-                <GridPane fx:id="playerShipGrid" alignment="CENTER" hgap="1.0" vgap="1.0" style="-fx-background-color: #e6f3ff; -fx-border-color: navy; -fx-border-width: 2px; -fx-padding: 10px;" />
+                <StackPane alignment="CENTER">
+                    <ImageView fitHeight="225" fitWidth="310" preserveRatio="false">
+                        <image>
+                            <Image url="@/images/backgrounds/bgShipBoard.jpg" />
+                        </image>
+                    </ImageView>
+                    <GridPane fx:id="playerShipGrid" alignment="CENTER" hgap="1.0" style="-fx-border-color: transparent; -fx-padding: 10px;" vgap="1.0" />
+                </StackPane>
 
             </children>
 
