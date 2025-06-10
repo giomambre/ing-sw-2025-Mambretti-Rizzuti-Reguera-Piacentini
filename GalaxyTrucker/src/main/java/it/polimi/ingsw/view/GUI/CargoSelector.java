@@ -1,6 +1,11 @@
 package it.polimi.ingsw.view.GUI;
 
+import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.components.Battery;
+import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.Cargo;
+import it.polimi.ingsw.model.enumerates.ComponentType;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,9 +17,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+
+import static it.polimi.ingsw.model.enumerates.ComponentType.BlueStorage;
+import static it.polimi.ingsw.model.enumerates.ComponentType.RedStorage;
 
 public class CargoSelector {
 
@@ -436,5 +447,204 @@ public class CargoSelector {
                 "-fx-border-color: #000000; " +
                 "-fx-border-width: 2; " +
                 "-fx-border-radius: 8;";
+    }
+
+    // Aggiungere questi metodi alla classe CargoSelector
+
+    private String removedCargoMessage = "";
+    private CountDownLatch removalLatch;
+
+    public void removeCargo(Ship ship) {
+        List<Pair<Integer,Integer>> storage_with_red = new ArrayList<>();
+        List<Pair<Integer,Integer>> other_storage = new ArrayList<>();
+        List<Pair<Integer,Integer>> batteries = new ArrayList<>();
+
+        // Analizza la nave per trovare cargo e batterie
+        for(int i = 0; i < ship.getROWS(); i++) {
+            for (int j = 0; j < ship.getCOLS(); j++) {
+                CardComponent card = ship.getComponent(i, j);
+
+                if (card.getComponentType() == RedStorage && ((Storage)card).containsCargo(Cargo.Red)) {
+                    storage_with_red.add(new Pair<>(i,j));
+                    other_storage.add(new Pair<>(i, j));
+                } else if ((card.getComponentType() == BlueStorage || card.getComponentType() == RedStorage) &&
+                        (((Storage)card).getCargoCount() > 0)) {
+                    other_storage.add(new Pair<>(i, j));
+                } else if (card.getComponentType() == ComponentType.Battery && ((Battery)card).getStored() > 0) {
+                    batteries.add(new Pair<>(i, j));
+                }
+            }
+        }
+
+        // Priorità 1: Rimuovi cargo rosso da RedStorage
+        if (!storage_with_red.isEmpty()) {
+            handleRedCargoRemoval(ship, storage_with_red);
+        }
+        // Priorità 2: Rimuovi altri cargo da storage
+        else if (!other_storage.isEmpty()) {
+            handleOtherCargoRemoval(ship, other_storage);
+        }
+        // Priorità 3: Rimuovi batterie
+        else if (!batteries.isEmpty()) {
+            handleBatteryRemoval(ship, batteries);
+        }
+        // Nessuna perdita
+        else {
+            showRemovalMessage("NON HAI PERSO NIENTE!!!", "Non avevi cargo o batterie disponibili!", "#28a745");
+        }
+    }
+
+    private void handleRedCargoRemoval(Ship ship, List<Pair<Integer,Integer>> storage_with_red) {
+        for (Pair<Integer, Integer> pos : storage_with_red) {
+            CardComponent card = ship.getComponent(pos.getKey(), pos.getValue());
+            if (((Storage)card).removeCargo(Cargo.Red)) {
+                String message = String.format("HAI PERSO UN CARGO ROSSO a RIGA: %d COLONNA: %d",
+                        pos.getKey(), pos.getValue());
+                showRemovalMessage("Cargo Perso!", message, "#dc3545");
+                return;
+            }
+        }
+    }
+
+    private void handleOtherCargoRemoval(Ship ship, List<Pair<Integer,Integer>> other_storage) {
+        // Ordine di priorità: Yellow, Green, Blue
+        Cargo[] cargoOrder = {Cargo.Yellow, Cargo.Green, Cargo.Blue};
+        String[] cargoColors = {"#ffc107", "#198754", "#0d6efd"};
+        String[] cargoNames = {"GIALLO", "VERDE", "BLU"};
+
+        for (int cargoIndex = 0; cargoIndex < cargoOrder.length; cargoIndex++) {
+            Cargo cargoType = cargoOrder[cargoIndex];
+            for (Pair<Integer, Integer> pos : other_storage) {
+                CardComponent card = ship.getComponent(pos.getKey(), pos.getValue());
+                if (((Storage)card).removeCargo(cargoType)) {
+                    String message = String.format("HAI PERSO UN CARGO %s a RIGA: %d COLONNA: %d",
+                            cargoNames[cargoIndex], pos.getKey(), pos.getValue());
+                    showRemovalMessage("Cargo Perso!", message, cargoColors[cargoIndex]);
+                    return;
+                }
+            }
+        }
+    }
+
+    private void handleBatteryRemoval(Ship ship, List<Pair<Integer,Integer>> batteries) {
+        for (Pair<Integer, Integer> pos : batteries) {
+            CardComponent card = ship.getComponent(pos.getKey(), pos.getValue());
+            if (((Battery)card).getStored() > 0) {
+                ((Battery)card).removeBattery();
+                String message = String.format("HAI PERSO UNA BATTERIA a RIGA: %d COLONNA: %d",
+                        pos.getKey(), pos.getValue());
+                showRemovalMessage("Batteria Persa!", message, "#ff8c00");
+                return;
+            }
+        }
+    }
+
+    private void showRemovalMessage(String title, String message, String color) {
+        removalLatch = new CountDownLatch(1);
+
+        Platform.runLater(() -> {
+            showRemovalDialog(title, message, color);
+        });
+
+        // Attende che l'utente chiuda il messaggio
+        try {
+            removalLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void showRemovalDialog(String title, String message, String color) {
+        // Creazione dello Stage popup
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initStyle(StageStyle.UTILITY);
+        popupStage.setTitle(title);
+        popupStage.setResizable(false);
+
+        // Container principale
+        VBox mainContainer = new VBox(20);
+        mainContainer.setPadding(new Insets(30));
+        mainContainer.setAlignment(Pos.CENTER);
+        mainContainer.setStyle("-fx-background-color: #f8f9fa;");
+
+        // Icona e titolo
+        Label titleLabel = new Label(title);
+        titleLabel.setStyle(String.format(
+                "-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: %s;", color));
+
+        // Messaggio
+        Label messageLabel = new Label(message);
+        messageLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333; -fx-text-alignment: center;");
+        messageLabel.setWrapText(true);
+        messageLabel.setMaxWidth(300);
+
+        // Bottone OK
+        Button okButton = new Button("OK");
+        okButton.setStyle(String.format(
+                "-fx-background-color: %s; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-size: 14px; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 10 30 10 30; " +
+                        "-fx-background-radius: 5;", color
+        ));
+
+        okButton.setOnAction(e -> {
+            popupStage.close();
+            removalLatch.countDown();
+        });
+
+        // Effetto hover per il bottone OK
+        String hoverColor = darkenColor(color);
+        okButton.setOnMouseEntered(e ->
+                okButton.setStyle(String.format(
+                        "-fx-background-color: %s; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-font-size: 14px; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-padding: 10 30 10 30; " +
+                                "-fx-background-radius: 5;", hoverColor
+                ))
+        );
+        okButton.setOnMouseExited(e ->
+                okButton.setStyle(String.format(
+                        "-fx-background-color: %s; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-font-size: 14px; " +
+                                "-fx-font-weight: bold; " +
+                                "-fx-padding: 10 30 10 30; " +
+                                "-fx-background-radius: 5;", color
+                ))
+        );
+
+        // Assemblaggio del layout
+        mainContainer.getChildren().addAll(titleLabel, messageLabel, okButton);
+
+        // Creazione della scena
+        Scene scene = new Scene(mainContainer);
+        popupStage.setScene(scene);
+
+        // Gestione della chiusura della finestra
+        popupStage.setOnCloseRequest(e -> {
+            removalLatch.countDown();
+        });
+
+        // Mostra il popup e centra il focus sul bottone
+        popupStage.show();
+        okButton.requestFocus();
+    }
+
+    // Metodo helper per scurire i colori per l'effetto hover
+    private String darkenColor(String hexColor) {
+        switch (hexColor) {
+            case "#dc3545": return "#bb2d3b"; // Rosso più scuro
+            case "#ffc107": return "#e0a800"; // Giallo più scuro
+            case "#198754": return "#146c43"; // Verde più scuro
+            case "#0d6efd": return "#0b5ed7"; // Blu più scuro
+            case "#28a745": return "#1e7e34"; // Verde successo più scuro
+            case "#ff8c00": return "#e07600"; // Arancione più scuro
+            default: return "#5a6268"; // Grigio scuro di default
+        }
     }
 }
