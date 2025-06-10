@@ -19,6 +19,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.spi.AbstractResourceBundleProvider;
 
 import static it.polimi.ingsw.controller.GameState.*;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
@@ -33,7 +34,7 @@ public class Server {
     private GameManager manager = new GameManager();
     private Map<Integer, GameController> all_games = new HashMap<>();
     GameController controller;
-    public  String util_string = "";
+    public String util_string = "";
     private boolean build120Ended = false;
     private Map<Integer, LobbyTimer> lobbyTimers = new HashMap<>();
 
@@ -85,7 +86,7 @@ public class Server {
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Nome già in uso. Inserisci un altro nickname.", msgClient.getId_client()));
 
                 } else {
-                    if (requestedName=="") {
+                    if (requestedName == "") {
                         sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Stringa vuota non accettata. Inserisci un altro nickname.", msgClient.getId_client()));
                         break;
                     }
@@ -467,7 +468,7 @@ public class Server {
 
                 //CardAdventure adventure = controller.getRandomAdventure();
 
-                CardAdventure adventure=new Epidemic(1,0,CardAdventureType.Epidemic,"/images/cardAdventure/GT-epidemic_2.jpg");
+               // CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
 
 
                 /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -479,14 +480,32 @@ public class Server {
                         3,"");*/
 
 
-//                CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
-//                        new Pair<>(MeteorType.LargeMeteor, North),
-//                        new Pair<>(MeteorType.LargeMeteor, South),
-//                        new Pair<>(MeteorType.LargeMeteor, East)
-//                ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
-//                );
+             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
+                     Cargo.Red,
+                     Cargo.Yellow,
+                     Cargo.Yellow),
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow),
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow)
+             ),"/images/cardAdventure/GT-planets_1.1.jpg" );
 
+//             CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
+//                        Arrays.asList(
+//                                Cargo.Red,
+//                                Cargo.Yellow,
+//                                Cargo.Yellow
+//                        ),
+//                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
+
+
+                //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
+
 
 
                 break;
@@ -619,7 +638,7 @@ public class Server {
                     case MeteorSwarm:
                         ShipClientMessage meteor_msg = (ShipClientMessage) msg;
 
-                        controller.removeFromAdventure(getNickname(meteor_msg.getId_client()));
+                        controller.removeFromAdventure("");
 
                         if (controller.getActivePlayers().size() <= 1) {
 
@@ -629,7 +648,7 @@ public class Server {
                         }
 
 
-                        if (controller.getAdventureOrder().isEmpty()) {
+                        if (controller.getAdv_index() == 0) {
                             adventure = controller.getRandomAdventure();
                             manageAdventure(adventure, controller);
                         }
@@ -653,7 +672,7 @@ public class Server {
 
                                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se prendere un PIANETA ! \n", next_p));
 
-                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
+                                sendToClient(getId_client(next_p), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
 
                             }
 
@@ -929,10 +948,9 @@ public class Server {
 
 
                         }
-                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(UPDATED_SHIPS,"",controller.getActivePlayers()));
+                        sendToAllClients(controller.getLobby(), new PlayersShipsMessage(UPDATED_SHIPS, "", controller.getActivePlayers()));
 
                         break;
-
 
 
                     case Slavers:
@@ -1000,7 +1018,7 @@ public class Server {
 
 
                         }
-                        sendToAllClients(controller.getLobby(),new PlayersShipsMessage(UPDATED_SHIPS,"",controller.getActivePlayers()));
+                        sendToAllClients(controller.getLobby(), new PlayersShipsMessage(UPDATED_SHIPS, "", controller.getActivePlayers()));
 
                         break;
                 }
@@ -1044,12 +1062,13 @@ public class Server {
 
     public void manageAdventure(CardAdventure adventure, GameController controller) {
 
-if(adventure == null){
+        if (adventure == null) {
 
-    System.out.println("FINITA LA PARTITA DA CAPIRE POI");
+            controller.setRewards();
 
-
-}
+            sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getActivePlayers()));
+            return;
+        }
 
 
         for (Player p : controller.getPlayers()) { //kick dei i giocatori doppiati
@@ -1089,7 +1108,7 @@ if(adventure == null){
                     manageAdventure(adventure, controller);
                     break;
                 }
-                 next_p = controller.nextAdventurePlayer();
+                next_p = controller.nextAdventurePlayer();
 
                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se accettare la STAZIONE ABBANDONATA ! \n", next_p));
 
@@ -1190,7 +1209,7 @@ if(adventure == null){
                 controller.initializeAdventure(adventure);
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 curr_nick = controller.nextAdventurePlayer();
-                 coords_m = new StringBuilder();
+                coords_m = new StringBuilder();
 
                 for (int k = 0; k < 2; k++) {
 
@@ -1218,20 +1237,19 @@ if(adventure == null){
 
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(EPIDEMIC, "", adventure));
-                manageAdventure(controller.getRandomAdventure(),controller);
+                manageAdventure(controller.getRandomAdventure(), controller);
                 break;
 
 
-           case Stardust:
-        Stardust stardust = (Stardust) adventure;
+            case Stardust:
+                Stardust stardust = (Stardust) adventure;
 
 
-
-        sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
-        controller.executeStardust(stardust);
-               sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "TUTTI I PLAYER HANNO PERSO NUMERO DI VOLO in BASE AI LORO CONNETTORI ESPOSTI", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
-               manageAdventure(controller.getRandomAdventure(),controller);
-
+                sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
+                controller.executeStardust(stardust);
+                sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "TUTTI I PLAYER HANNO PERSO NUMERO DI VOLO in BASE AI LORO CONNETTORI ESPOSTI", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+                manageAdventure(controller.getRandomAdventure(), controller);
+                break;
 
         }
 

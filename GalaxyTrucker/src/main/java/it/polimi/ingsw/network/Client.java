@@ -22,6 +22,7 @@ import java.net.Socket;
 
 import java.io.*;
 
+import java.rmi.NotBoundException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -53,6 +54,7 @@ public class Client {
     private static Map<Direction, List<CardAdventure>> local_adventure_deck = new HashMap<>();
     private static List<Color> still_Available_colors = new ArrayList<>();
     private static CompletableFuture<Void> otherPlayersReady = new CompletableFuture<>();
+    private static NetworkAdapter networkAdapter = null;
 
 
     public static void setOtherPlayersLocal(List<Player> players) {
@@ -68,16 +70,53 @@ public class Client {
     public static void main(String[] args) {
         try {
 
-            Socket socket = new Socket("localhost",  12345);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
             Scanner scanner = new Scanner(System.in);
-            Message response = (Message) in.readObject();
+            String host = "localhost";
+            int socketPort = 12345;
+            int rmiPort = 12346;
+            int choice = -1;
+            do {
+                System.out.println("Scegli il tipo di connessione:");
+                System.out.println("1. Socket");
+                System.out.println("2. RMI");
+                System.out.print("Inserisci la tua scelta: ");
+                String input = scanner.nextLine();
+
+                try {
+                    choice = Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.out.println("Input non valido. Inserisci un numero.");
+                    choice = 0;
+                }
+            } while (choice != 1 && choice != 2);
+
+
+
+
+            try {
+                if (choice == 1) {
+                    networkAdapter = new SocketAdapter(host, socketPort);
+                    System.out.println("Connessione tramite Socket...");
+                } else {
+                    networkAdapter = new RmiAdapter(host, rmiPort); // Assumendo un costruttore simile
+                    System.out.println("Connessione tramite RMI...");
+                }
+                networkAdapter.connect(host, choice == 1 ? socketPort : rmiPort);
+
+
+            } catch (IOException | NotBoundException NotBoundException ) {
+                System.err.println("Impossibile connettersi al server.");
+            }
+
+
+
+
+            Message response = networkAdapter.readMessage();
             if (response.getType() == MessageType.ASSIGN_UUID) {
                 clientId = ((StandardMessageClient) response).getId_client();
                 System.out.println("✅ Connesso con UUID: " + clientId);
             }
-            int choice = -1;
+
 
             do {
                 System.out.println("Inserisci 1 per la TUI 2 per la GUI : ");
@@ -115,7 +154,7 @@ public class Client {
                 try {
                     while (true) {
 
-                        Message msg = (Message) in.readObject();
+                        Message msg = (Message) networkAdapter.readMessage();
 
 
                         switch (msg.getType()) {
@@ -211,8 +250,8 @@ public class Client {
                     ((GUI) virtualView).setClientCallback(nickname -> {
                         try {
                             setNickname(nickname);
-                            out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
-                            out.flush();
+                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -225,8 +264,8 @@ public class Client {
 
 
                     try {
-                        out.writeObject(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
-                        out.flush();
+                        networkAdapter.sendMessage(new StandardMessageClient(MessageType.SENDED_NAME, nickname, clientId));
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -257,8 +296,8 @@ public class Client {
                     }
                     to_send = new CreateLobbyMessage(MessageType.CREATE_LOBBY, "", clientId, num);
                     try {
-                        out.writeObject(to_send);
-                        out.flush();
+                        networkAdapter.sendMessage(to_send);
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -266,8 +305,8 @@ public class Client {
                 } else {
                     to_send = new StandardMessageClient(MessageType.SEE_LOBBIES, "", clientId);
                     try {
-                        out.writeObject(to_send);
-                        out.flush();
+                        networkAdapter.sendMessage(to_send);
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -306,7 +345,7 @@ public class Client {
                     } else {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
                     }
-                    out.writeObject(new StandardMessageClient(MessageType.SELECT_LOBBY, "" + lobby_index, clientId));
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.SELECT_LOBBY, "" + lobby_index, clientId));
 
                 }
                 break;
@@ -342,10 +381,10 @@ public class Client {
                 if (virtualViewType == VirtualViewType.GUI) {
                     ((GUI) virtualView).createchoosecolorscreen(still_Available_colors);
                     c = virtualView.askColor(still_Available_colors);
-                    out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 } else {
                     c = virtualView.askColor(gs_msg.getAvailableColors());
-                    out.writeObject(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.COLOR_SELECTED, "" + c, clientId));
                 }
                 break;
 
@@ -366,7 +405,7 @@ public class Client {
 
 
                 if (deck_selected == 1) {
-                    out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASK_CARD, "", clientId));
 
                 } else if (deck_selected == 2) {
                     if (virtualViewType == VirtualViewType.GUI) {
@@ -379,7 +418,7 @@ public class Client {
                             break;
                         }
                         UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
-                        out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
+                        networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
 
                     } else {
 
@@ -395,7 +434,7 @@ public class Client {
                                 break;
                             }
                             UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
-                            out.writeObject(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
+                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
                         }
 
                     }
@@ -430,7 +469,7 @@ public class Client {
                     }
 
                 } else if (deck_selected == 4) {
-                    out.writeObject(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.BUILD_PHASE_ENDED, "", clientId));
                 }
 
                 break;
@@ -478,7 +517,7 @@ public class Client {
                         return;
                     }
 
-                    out.writeObject(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
+                    networkAdapter.sendMessage(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
                     elaborate(new Message(MessageType.BUILD_START, ""));
                     break;
                 }
@@ -493,7 +532,7 @@ public class Client {
                     } else {
 
 
-                        out.writeObject(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
+                        networkAdapter.sendMessage(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
 
                         player_local.addToShip(card_msg.getCardComponent(), coords.getKey(), coords.getValue());
 
@@ -508,7 +547,7 @@ public class Client {
 
                     if (player_local.getShip().getExtra_components().size() == 2) {
                         virtualView.showMessage("\nSpazio esaurito nelle carte prenotate");
-                        out.writeObject(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
+                        networkAdapter.sendMessage(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
                         elaborate(new Message(MessageType.BUILD_START, ""));
 
                     } else {
@@ -591,7 +630,7 @@ public class Client {
                                 }
 
                             }
-                            out.writeObject(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
+                            networkAdapter.sendMessage(new AddCrewmateMessage(MessageType.ADD_CREWMATES, "", clientId, coords, type));
                         } else if (component.getComponentType() == Battery) {
                             Battery batteryComponent = (Battery) component;
 
@@ -623,7 +662,7 @@ public class Client {
                         }
                     }
                 }
-                out.writeObject(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
+                networkAdapter.sendMessage(new StandardMessageClient(MessageType.CHECK_SHIPS, "", clientId));
 
                 break;
 
@@ -631,7 +670,7 @@ public class Client {
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if (icm.getInvalids().isEmpty()) {
                     virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
-                    out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
 
@@ -640,7 +679,7 @@ public class Client {
                         try {
 
                             Ship updatedShip = ((GUI)virtualView).getBuildcontroller().getUpdatedShip().get();
-                            out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
+                            networkAdapter.sendMessage(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
@@ -648,7 +687,7 @@ public class Client {
                     } else {
 
                         player_local.setShip(virtualView.removeInvalidsConnections(player_local.getShip(), icm.getInvalids()));
-                        out.writeObject(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                     }
                 }
                 break;
@@ -658,7 +697,7 @@ public class Client {
                 ShipPiecesMessage spm = (ShipPiecesMessage) msg;
                 List<List<Pair<Integer, Integer>>> pieces = spm.getPieces();
                 int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
-                out.writeObject(new StandardMessageClient(MessageType.SELECT_PIECE, String.valueOf(piece), clientId));
+                networkAdapter.sendMessage(new StandardMessageClient(MessageType.SELECT_PIECE, String.valueOf(piece), clientId));
                 break;
 
 
@@ -677,7 +716,7 @@ public class Client {
                     }
 
                 }
-                out.writeObject(new StandardMessageClient(MessageType.ASTRONAUT_LOSS, "", clientId));
+                networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASTRONAUT_LOSS, "", clientId));
                 break;
 
 
@@ -699,6 +738,14 @@ public class Client {
 
 
         switch (msg.getType()) {
+
+
+            case GAME_FINISHED:
+            PlayersShipsMessage pm = (PlayersShipsMessage) msg;
+            virtualView.showMessage("\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
+            virtualView.printFinalRanks(pm.getPlayers());
+            break;
+
 
 
             case COLOR_SELECTED:
@@ -1017,9 +1064,10 @@ public class Client {
                     num_cargo_loss--;
 
                 }
-                out.writeObject(new StandardMessageClient(MessageType.CARGO_LOSS,"cz",clientId));
+                networkAdapter.sendMessage(new StandardMessageClient(MessageType.CARGO_LOSS,"cz",clientId));
 
                 break;
+
 
 
             default:
@@ -1077,7 +1125,7 @@ public class Client {
 
                 double power_m = ship.calculateEnginePower(battery_usage_os);
                 virtualView.showMessage("\n\nPOTENZA MOTORE : " + power_m);
-                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power_m), clientId, player_local));
+                networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power_m), clientId, player_local));
 
                 break;
 
@@ -1096,11 +1144,11 @@ public class Client {
                     cargoAction(cargos);
                 } else {
 
-                    out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local)));
+                    networkAdapter.sendMessage((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local)));
                     break;
                 }
 
-                out.writeObject((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local)));
+                networkAdapter.sendMessage((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local)));
 
 
                 break;
@@ -1150,10 +1198,10 @@ public class Client {
                         ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
                     }
                 } else {
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
                     break;
                 }
-                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local));
+                networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "adv done", clientId, player_local));
 
                 break;
 
@@ -1173,14 +1221,12 @@ public class Client {
                 int i = 0;
                 for (Pair<MeteorType, Direction> m : meteors) {
 
-                    int dummy = virtualView.nextMeteor();
                     virtualView.printMeteor(m, coordList.get(i));
 
 
                     if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            dummy = virtualView.nextMeteor();
 
                             continue;
                         }
@@ -1189,7 +1235,6 @@ public class Client {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                            dummy = virtualView.nextMeteor();
 
                             continue;
 
@@ -1201,7 +1246,6 @@ public class Client {
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
                         virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-                         dummy = virtualView.nextMeteor();
 
                         continue;
 
@@ -1222,7 +1266,6 @@ public class Client {
 
 
                                 virtualView.showMessage("\nMeteorite rimbalza sul lato liscio \n");
-                                dummy = virtualView.nextMeteor();
 
                                 continue;
 
@@ -1284,7 +1327,7 @@ public class Client {
 
                             if (pieces.isEmpty()) {
                                 virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! ---- ");
-                                out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+                                networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                             } else if (pieces.size() > 1) {
                                 int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
                                 player_local.getShip().choosePiece(piece);
@@ -1294,14 +1337,16 @@ public class Client {
 
                     }
                     i++;
-
+            int dummy = virtualView.nextMeteor();
 
                 }
 
 
                 virtualView.showMessage("\n--- RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
 
-                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                if(adventure.getLevel() != -1) {
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                }
                 break;
 
 
@@ -1337,7 +1382,7 @@ public class Client {
                 }
                 int planet = virtualView.askPlanet(planet_list, planets_taken);
                 if (planet == -1) {
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
 
                     virtualView.showMessage("\n--- HAI DECISO DI NON PRENDERE NESSUN PIANETA,  RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
 
@@ -1345,7 +1390,7 @@ public class Client {
                 }
                 List<Cargo> planet_cargos = new ArrayList<>(planet_list.get(planet));
                 cargoAction(planet_cargos);
-                out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(planet), clientId, player_local));
+                networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(planet), clientId, player_local));
                 virtualView.showMessage("\n--- AVVENTURA COMPLETATA, RIMANI IN ATTESA CHE ANCHE GLI ALTRI GIOCATORI FINISCANO L'AVVENTURA ---");
 
                 break;
@@ -1366,7 +1411,7 @@ public class Client {
 
                         virtualView.showMessage("\n ----- POTENZA MOTORE TOTALE :  " + power + " -----\n");
 
-                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng " + String.valueOf(power), clientId, player_local));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng " + String.valueOf(power), clientId, player_local));
                         break;
 
 
@@ -1376,7 +1421,7 @@ public class Client {
 
                         virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
 
-                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can " + String.valueOf(power_c), clientId, player_local));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can " + String.valueOf(power_c), clientId, player_local));
                         break;
 
                 }
@@ -1407,7 +1452,7 @@ public class Client {
 
                     }
 
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
                     break;
 
                 }else if(power_c > smugglers.getCannons_strenght()) {
@@ -1416,18 +1461,18 @@ public class Client {
                     if(choice ){
                         cargoAction(smugglers.getCargo_rewards());
 
-                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
                         break;
                     }
 
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
 
 
                 }else if(power_c == smugglers.getCannons_strenght()) {
 
 
                     virtualView.showMessage("\nHAI PAREGGIATO, IL NEMICO NON è SCONFITTO, MA NON PAGHI NULLA!");
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
                 }
 
@@ -1449,7 +1494,7 @@ public class Client {
                     virtualView.showMessage("\n ----- HAI PERSO RICEVI DELLE CANNONATE ---- ");
 
                     manageAdventure(
-                            new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                            new MeteorSwarm(-1, 0, CardAdventureType.MeteorSwarm,
                                     List.of(
                                             new Pair<>(MeteorType.LightCannonFire, South),
                                             new Pair<>(MeteorType.HeavyCannonFire, South)
@@ -1457,13 +1502,13 @@ public class Client {
                             ), content);
 
 
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
                     break;
                 } else if(power_c == pirates.getCannons_strenght() ){
 
 
                     virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
 
                 }else if(power_c > pirates.getCannons_strenght()) {
@@ -1474,11 +1519,11 @@ public class Client {
                     if(choice){
                         player_local.setCredits( player_local .getCredits() + pirates.getCredits());
                         virtualView.showMessage("\nHAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
-                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     }else{
 
-                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
 
                     }
 
@@ -1516,13 +1561,13 @@ public class Client {
 
                     }
 
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
                     break;
                 } else if(power_c == slavers.getCannons_strenght() ){
 
                     virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
 
-                    out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
 
                 }else if(power_c > slavers.getCannons_strenght()) {
@@ -1533,11 +1578,11 @@ public class Client {
                     if (choice) {
                         player_local.setCredits( player_local .getCredits() + slavers.getCredits());
                         virtualView.showMessage("HAI GUADAGNATO " + slavers.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
-                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     } else {
 
-                        out.writeObject(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
 
                     }
 
@@ -1568,7 +1613,7 @@ public class Client {
 
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! ---- ");
-                    out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
                     player_local.getShip().choosePiece(piece);
@@ -1594,7 +1639,7 @@ public class Client {
 
         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
         if (pieces.isEmpty()) {
-            out.writeObject(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
         } else if (pieces.size() > 1) {
             int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
             player_local.getShip().choosePiece(piece);

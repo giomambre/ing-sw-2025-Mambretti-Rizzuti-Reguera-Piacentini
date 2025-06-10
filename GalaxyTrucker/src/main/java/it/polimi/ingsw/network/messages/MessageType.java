@@ -61,6 +61,7 @@ public enum MessageType {
     PIRATES,
     SLAVERS,
     EPIDEMIC,
-    STURDUST
+    STURDUST,
+    GAME_FINISHED,
 
 }
