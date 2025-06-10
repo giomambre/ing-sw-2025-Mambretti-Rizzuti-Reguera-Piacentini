@@ -480,16 +480,32 @@ public class Server {
                         3,"");*/
 
 
-         /*       CardAdventure adventure = new MeteorSwarm(1, 1, CardAdventureType.MeteorSwarm, List.of(
-                        new Pair<>(MeteorType.LargeMeteor, North),
-                        new Pair<>(MeteorType.LargeMeteor, South),
-                        new Pair<>(MeteorType.LargeMeteor, East)
-                ), "/images/cardAdventure/GT-meteorSwarm_1.1.jpg"
-                );
-*/
+             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
+                     Cargo.Red,
+                     Cargo.Yellow,
+                     Cargo.Yellow),
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow),
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow)
+             ),"/images/cardAdventure/GT-planets_1.1.jpg" );
 
-                CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
+//             CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
+//                        Arrays.asList(
+//                                Cargo.Red,
+//                                Cargo.Yellow,
+//                                Cargo.Yellow
+//                        ),
+//                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
+
+
+                //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
+
 
 
                 break;

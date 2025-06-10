@@ -581,7 +581,8 @@ public class GUI implements View {
 
     @Override
     public int askPlanet(List<List<Cargo>> planets, Set<Integer> planets_taken) {
-        return 0;
+        CargoSelector selector = new CargoSelector();
+        return selector.askPlanet(planets, planets_taken);
     }
 
     @Override
@@ -714,7 +715,7 @@ public class GUI implements View {
         for (int i = 0; i < ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
                 CardComponent card = ship.getComponent(i, j);
-                if (card.getComponentType() != ComponentType.Battery) {
+                if (card.getComponentType() == ComponentType.Battery) {
                     showMessage("Scegliere la batteria");
                     getFlyghtController().showBatteries(ship);
 
@@ -1201,7 +1202,8 @@ public class GUI implements View {
 
     @Override
     public void removeCargo(Ship ship) {
-
+        CargoSelector cargoSelector = new CargoSelector();
+        cargoSelector.removeCargo(ship);
     }
 
     @Override
@@ -1214,7 +1216,19 @@ public class GUI implements View {
 
     @Override
     public Pair<Integer, Integer> askCannon(Pair<Integer, Integer> cannon) {
-        return null;
+        int i = cannon.getKey();
+        int j = cannon.getValue();
+        FlyghtController controller = getFlyghtController();
+
+        controller.highlightCell(i, j);
+        controller.showdc(i, j);
+        Boolean useDC = useDoubleCannon();
+        getFlyghtController().resetHighlights(i, j);
+        if (!useDC) {
+            return new Pair<>(-1,-1);
+        } else {
+            return useBattery(player_local.getShip());
+        }
     }
 
     @Override
