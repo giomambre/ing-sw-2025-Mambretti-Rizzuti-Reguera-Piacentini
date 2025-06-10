@@ -581,7 +581,8 @@ public class GUI implements View {
 
     @Override
     public int askPlanet(List<List<Cargo>> planets, Set<Integer> planets_taken) {
-        return 0;
+        CargoSelector selector = new CargoSelector();
+        return selector.askPlanet(planets, planets_taken);
     }
 
     @Override
