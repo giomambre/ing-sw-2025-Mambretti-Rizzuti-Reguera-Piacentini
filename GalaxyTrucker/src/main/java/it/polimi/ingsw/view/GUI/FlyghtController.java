@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -160,6 +161,7 @@ public class FlyghtController {
                             LivingUnit unit = (LivingUnit) component;
                             if (unit.getNum_crewmates() > 0) {
                                 livingUnits.add(new Pair<>(i, j));
+                                addOverlay(i, j, "Astronaut");
                             }
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -201,6 +203,8 @@ public class FlyghtController {
                         cell.setOnMouseClicked(null);
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
                         resetHighlights(i,j);
+                        removeOverlay(i, j, "Astronaut");
+
                     }
                 }
             }
@@ -261,6 +265,7 @@ public class FlyghtController {
                         if (component != null && component.getComponentType() == Battery) {
                             if (((Battery) component).getStored() > 0) {
                                 batteries.add(new Pair<>(i, j));
+                                addOverlay(i, j, "Battery", ((Battery) component).getStored());
                             }
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -1042,6 +1047,117 @@ public class FlyghtController {
         }
 
     }
+    private Node createOverlayForType(String type) {
+        return createOverlayForType(type, -1); // Per astronauti/alieni
+    }
+
+    private Node createOverlayForType(String type, int count) {
+        String path;
+
+        switch(type){
+            case "Astronaut": {
+                path = "/images/icons/astronautPawn.png";
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
+                for (int i = 0; i < 2; i++) {
+                    ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    img.setFitWidth(20);  // Riduci se necessario
+                    img.setFitHeight(20);
+                    img.setPreserveRatio(true);
+                    img.setSmooth(true);
+                    img.setMouseTransparent(true);
+                    container.getChildren().add(img);
+                }
+                return container;
+            }
+
+            case "PinkAlien": {
+                path = "/images/icons/pinkAlien.png";
+                ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                img.setFitWidth(20);
+                img.setFitHeight(20);
+                img.setMouseTransparent(true);
+                img.setId("overlay-" + type);
+                return img;
+            }
+
+            case "BrownAlien": {
+                path = "/images/icons/brownAlien.png";
+                ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                img.setFitWidth(20);
+                img.setFitHeight(20);
+                img.setMouseTransparent(true);
+                img.setId("overlay-" + type);
+                return img;
+            }
+
+            case "Battery": {
+                path = "/images/icons/battery.png";
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
+                for (int i = 0; i < count; i++) {
+                    ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    batteryImg.setFitWidth(15);
+                    batteryImg.setFitHeight(15);
+                    batteryImg.setPreserveRatio(true);
+                    batteryImg.setSmooth(true);
+                    batteryImg.setMouseTransparent(true);
+                    container.getChildren().add(batteryImg);
+                }
+                return container;
+            }
+
+            default:
+                return null;
+        }
+    }
+
+    private boolean isOverlayOfType(Node node, String type) {
+        String nodeId = node.getId();
+        return nodeId != null && nodeId.equals("overlay-" + type);
+    }
+    public void addOverlay(int x, int y, String type) {
+        StackPane cell = getShipCellAt(x, y);
+        if (cell == null) return;
+
+        Node overlay = createOverlayForType(type);
+        if (overlay != null) {
+            cell.getChildren().add(overlay);
+        }
+    }
+
+    public void addOverlay(int x, int y, String type, int count) {
+        StackPane cell = getShipCellAt(x, y);
+        if (cell == null) return;
+
+        Node overlay = createOverlayForType(type, count);
+        if (overlay != null) {
+            cell.getChildren().add(overlay);
+        }
+    }
+
+    public void removeOverlay(int x, int y, String type) {
+        StackPane cell = getShipCellAt(x, y);
+        if (cell == null) return;
+
+        Node toRemove = null;
+        for (Node child : cell.getChildren()) {
+            if (isOverlayOfType(child, type)) {
+                toRemove = child;
+                break;
+            }
+        }
+
+        if (toRemove != null) {
+            cell.getChildren().remove(toRemove);
+        }
+    }
+
+
 
 
     /*public CompletableFuture<Pair<Integer, Integer>> getBatterySelectionFuture() {
