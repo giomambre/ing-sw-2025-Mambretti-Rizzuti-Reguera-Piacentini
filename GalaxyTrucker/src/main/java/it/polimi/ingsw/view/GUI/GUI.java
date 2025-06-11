@@ -838,7 +838,7 @@ public class GUI implements View {
             case LargeMeteor -> "/images/meteortype/large_meteor.jpg";
             case SmallMeteor -> "/images/meteortype/small_meteor.jpg";
             case HeavyCannonFire -> "/images/meteortype/heavy_cannon.jpg";
-            case LightCannonFire -> "/images/meteortype/light_cannon.jpg";
+            case LightCannonFire -> "/images/meteortype/small_cannon.jpg";
         };
     }
 
@@ -1208,7 +1208,17 @@ public class GUI implements View {
 
     @Override
     public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
-        return null;
+        getFlyghtController().showCrewmates(player_local.getShip());
+        Pair<Integer, Integer> lu = new Pair<>(-1, -1);
+        try {
+             lu = coordsCrewmate();
+                LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
+                showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
+
+        } catch (Exception e) {
+            System.err.println("Errore durante la selezione del crewmate: " + e.getMessage());
+        }
+        return lu;
     }
 
 

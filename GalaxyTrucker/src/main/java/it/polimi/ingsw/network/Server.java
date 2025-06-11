@@ -480,19 +480,19 @@ public class Server {
                         3,"");*/
 
 
-             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
-                     Cargo.Red,
-                     Cargo.Yellow,
-                     Cargo.Yellow),
-                Arrays.asList(
-                        Cargo.Red,
-                        Cargo.Yellow,
-                        Cargo.Yellow),
-                Arrays.asList(
-                        Cargo.Red,
-                        Cargo.Yellow,
-                        Cargo.Yellow)
-             ),"/images/cardAdventure/GT-planets_1.1.jpg" );
+//             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
+//                     Cargo.Red,
+//                     Cargo.Yellow,
+//                     Cargo.Yellow),
+//                Arrays.asList(
+//                        Cargo.Red,
+//                        Cargo.Yellow,
+//                        Cargo.Yellow),
+//                Arrays.asList(
+//                        Cargo.Red,
+//                        Cargo.Yellow,
+//                        Cargo.Yellow)
+//             ),"/images/cardAdventure/GT-planets_1.1.jpg" );
 
 //             CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
 //                        Arrays.asList(
@@ -501,7 +501,10 @@ public class Server {
 //                                Cargo.Yellow
 //                        ),
 //                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
-
+                CardAdventure adventure = new Pirates(1,2,CardAdventureType.Pirates, 3,3, Arrays.asList(
+                        new Pair<MeteorType, Direction>(MeteorType.HeavyCannonFire, East),
+                        new Pair<MeteorType, Direction>(MeteorType.HeavyCannonFire, East)
+                     ), "/images/cardAdventure/GT-pirates_1.jpg");
 
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
