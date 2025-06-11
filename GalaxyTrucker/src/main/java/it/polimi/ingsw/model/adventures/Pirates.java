@@ -51,7 +51,7 @@ public class Pirates extends CardAdventure implements Serializable {
     }
 
     /** @return a list of meteor type and direction pairs*/
-    //executeloss gestito da meteorswarm
+
     public List<Pair<MeteorType, Direction>> getMeteors() {
         return meteors;
     }
