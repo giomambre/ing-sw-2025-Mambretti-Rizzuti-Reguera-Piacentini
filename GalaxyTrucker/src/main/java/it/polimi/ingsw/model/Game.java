@@ -130,12 +130,12 @@ public class Game extends BaseGame {
                         Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue)
                 ),"/images/cardAdventure/GT-planets_1.4.jpg"
         ));
-        deck_adventure_liv1.add(new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
+        /*deck_adventure_liv1.add(new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, South),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
                 ),"/images/cardAdventure/GT-combatZone_1.jpg"
-        ));
+        ));*/
         deck_adventure_liv1.add(new AbandonedShip(1, 1, CardAdventureType.AbandonedShip, 3, 2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg"));
         deck_adventure_liv1.add(new AbandonedShip(1, 1, CardAdventureType.AbandonedShip, 4, 3,"/images/cardAdventure/GT-abandonedShip_1.2.jpg"));
         deck_adventure_liv1.add(new AbandonedStation(1, 1, CardAdventureType.AbandonedStation, 5,
@@ -225,14 +225,14 @@ public class Game extends BaseGame {
                         Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue, Cargo.Blue)
                 ),"/images/cardAdventure/GT-planets_2.4.jpg"
         ));
-        deck_adventure_liv2.add(new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+       /* deck_adventure_liv2.add(new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, North),
                         new Pair<>(MeteorType.LightCannonFire, West),
                         new Pair<>(MeteorType.LightCannonFire, East),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
                 ),"/images/cardAdventure/GT-combatZone_2.jpg"
-        ));
+        ));*/
         deck_adventure_liv2.add(new AbandonedShip(2, 1, CardAdventureType.AbandonedShip, 6, 4,"/images/cardAdventure/GT-abandonedShip_2.1.jpg"));
         deck_adventure_liv2.add(new AbandonedShip(2, 2, CardAdventureType.AbandonedShip, 8, 5,"/images/cardAdventure/GT-abandonedShip_2.2.jpg"));
         deck_adventure_liv2.add(new AbandonedStation(2, 1, CardAdventureType.AbandonedStation, 7,

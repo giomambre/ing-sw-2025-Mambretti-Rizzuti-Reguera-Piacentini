@@ -284,7 +284,7 @@ public class FlyghtController {
                 if (cell != null) {
                     highlightCell(row, col);
                     cell.setOnMouseClicked(e -> {
-                        ((Battery) ship.getComponent(row, col)).removeBattery();
+
                         if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
                             currentCoordsBatteryFuture.complete(new Pair<>(row, col));
                         }

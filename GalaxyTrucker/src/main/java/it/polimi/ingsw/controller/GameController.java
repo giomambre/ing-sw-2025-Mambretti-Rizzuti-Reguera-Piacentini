@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.*;
+import it.polimi.ingsw.network.Client;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -229,10 +230,7 @@ public class GameController {
     }
 
     public int throwDice() {
-        Random dice1 = new Random();
-        Random dice2 = new Random();
-
-        return (dice1.nextInt(6) + 1) + (dice2.nextInt(6) + 1);
+        return Client.throwDice();
     }
 
 
