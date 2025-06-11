@@ -71,8 +71,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "4.tcp.eu.ngrok.io";
-            int socketPort = 12807;
+            String host = "localhost";
+            int socketPort = 12345;
             int rmiPort = 12346;
             int choice = -1;
             do {
