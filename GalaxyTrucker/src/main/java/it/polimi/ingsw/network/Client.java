@@ -1085,8 +1085,6 @@ public class Client {
         if (virtualViewType==VirtualViewType.GUI){
             ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
             ((GUI) virtualView).getFlyghtController().updatePlayerShip();
-
-
         }
         virtualView.updateLocalPlayer(player_local);
 
@@ -1217,31 +1215,25 @@ public class Client {
                 List<Integer> coordList = new ArrayList<>();
                 Pair<Integer, Integer> pair;
                 for (int i = 0; i < meteor_coords.length; i++) {
-
                     coordList.add(Integer.parseInt(meteor_coords[i]));
                 }
 
 
                 int i = 0;
                 for (Pair<MeteorType, Direction> m : meteors) {
-                    int tmp = coordList.get(i);
-                    if(coordList.get(i) == -1){
 
-                        tmp = coordList.get(0);
-
-                    }
-                    virtualView.printMeteor(m, tmp);
+                    virtualView.printMeteor(m, coordList.get(i));
 
 
                     if (m.getValue() == Direction.North || m.getValue() == South) {
-                        if (tmp < 4 || tmp >= 11) {
+                        if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
 
                             continue;
                         }
 
                     } else {
-                        if (tmp < 5 || tmp >= 10) {
+                        if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
 
@@ -1250,7 +1242,7 @@ public class Client {
                         }
                     }
 
-                    pair = player_local.getShip().getFirstComponent(m.getValue(), tmp);
+                    pair = player_local.getShip().getFirstComponent(m.getValue(), coordList.get(i));
 
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
@@ -1504,8 +1496,10 @@ public class Client {
 
                     manageAdventure(
                             new MeteorSwarm(-1, 0, CardAdventureType.MeteorSwarm,
-                                    pirates.getMeteors()
-                                    ,""
+                                    List.of(
+                                            new Pair<>(MeteorType.LightCannonFire, South),
+                                            new Pair<>(MeteorType.HeavyCannonFire, South)
+                                    ),""
                             ), content);
 
 
