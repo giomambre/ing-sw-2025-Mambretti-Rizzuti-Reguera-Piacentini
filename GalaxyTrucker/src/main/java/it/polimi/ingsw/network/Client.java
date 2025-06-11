@@ -91,8 +91,6 @@ public class Client {
             } while (choice != 1 && choice != 2);
 
 
-
-
             try {
                 if (choice == 1) {
                     networkAdapter = new SocketAdapter(host, socketPort);
