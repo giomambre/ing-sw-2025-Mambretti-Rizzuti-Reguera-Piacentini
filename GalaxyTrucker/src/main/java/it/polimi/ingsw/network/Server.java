@@ -468,7 +468,7 @@ public class Server {
 
                 //CardAdventure adventure = controller.getRandomAdventure();
 
-               // CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
+               CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
 
 
                 /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -501,10 +501,14 @@ public class Server {
 //                                Cargo.Yellow
 //                        ),
 //                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
-                CardAdventure adventure = new Pirates(1,2,CardAdventureType.Pirates, 3,3, Arrays.asList(
-                        new Pair<MeteorType, Direction>(MeteorType.HeavyCannonFire, East),
-                        new Pair<MeteorType, Direction>(MeteorType.HeavyCannonFire, East)
-                     ), "/images/cardAdventure/GT-pirates_1.jpg");
+//                CardAdventure adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+//                        List.of(
+//                                new Pair<>(MeteorType.LightCannonFire, North),
+//                                new Pair<>(MeteorType.LightCannonFire, West),
+//                                new Pair<>(MeteorType.LightCannonFire, East),
+//                                new Pair<>(MeteorType.HeavyCannonFire, South)
+//                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
+//                );
 
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
