@@ -57,6 +57,7 @@ public class GUI implements View {
     Choosecolorcontroller choosecolorcontroller;
     Buildcontroller buildcontroller;
     Randomcardcontroller randomcardcontroller;
+    FinalRanksScreen finalRanksScreen;
     CrewmateSelectionController crewmateSelectionController;
     Stage stage;
     private String nicknamescelto;
@@ -621,7 +622,7 @@ public class GUI implements View {
 
     @Override
     public void printFinalRanks(List<Player> finalRanks) {
-
+        finalRanksScreen.displayFinalRanks(finalRanks);
     }
 
     @Override
@@ -1243,7 +1244,15 @@ public class GUI implements View {
 
     @Override
     public void executeEpidemic(Ship ship) {
-        flyghtController.executeEpidemic(ship);
+        Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic,"");
+        int row,col;
+        epidemic.execute(ship);
+        showMessage("è arrivata un epidemia, potresti aver perso astronauti");
+        for(row=0;row< ship.getROWS();row++){
+            for(col=0;col< ship.getCOLS();col++){
+                getFlyghtController().updateCrewmateOverlayAt(row, col, ship);
+            }
+        }
     }
 
     @Override

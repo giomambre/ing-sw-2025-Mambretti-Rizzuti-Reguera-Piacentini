@@ -1052,42 +1052,6 @@ public class FlyghtController {
 
     }
 
-    public void executeEpidemic(Ship ship){
-        Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic,"");
-
-        epidemic.execute(ship);
-
-        List<CardComponent> list_lu = new ArrayList<>();
-
-        epidemicLabel.setVisible(true);
-        continueButton.setVisible(true);
-        continueButton.setOnAction(e -> {
-            nextMeteor.complete(1);
-            epidemicLabel.setVisible(false);
-            continueButton.setVisible(false);
-            continueButton.setOnAction(null);
-        });
-
-        CardComponent[][] plance = ship.getShipBoard();
-
-        for(int i = 0 ; i < ship.getROWS() ; i++) {
-            for(int j = 0 ; j < ship.getCOLS() ; j++) {
-                CardComponent card = plance[i][j];
-
-                if(card.getComponentType().equals(MainUnitGreen) ||
-                        card.getComponentType().equals(MainUnitRed) ||
-                        card.getComponentType().equals(MainUnitBlue) ||
-                        card.getComponentType().equals(MainUnitYellow) ||
-                        card.getComponentType().equals(LivingUnit)) {
-                    LivingUnit lu = (LivingUnit) card;
-                    if(lu.getNum_crewmates() > 0) {
-                        list_lu.add(card);
-                    }
-                }
-            }
-        }
-
-    }
     private Node createOverlayForType(String type) {
         return createOverlayForType(type, -1); // Per astronauti/alieni
     }
@@ -1203,7 +1167,7 @@ public class FlyghtController {
     public void updateCrewmateOverlayAt(int row, int col, Ship ship) {
         CardComponent component = ship.getComponent(row, col);
 
-        if (component == null || component.getComponentType()== LivingUnit) return;
+        if (component == null || component.getComponentType()!= LivingUnit) return;
 
         LivingUnit unit = (LivingUnit) component;
 
