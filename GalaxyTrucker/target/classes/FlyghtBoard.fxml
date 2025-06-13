@@ -131,7 +131,7 @@
                 <Label style="-fx-font-size: 14px; -fx-font-family: 'Verdana' ;-fx-font-weight: bold; -fx-text-fill: #4B0149; " text="La tua Nave" />
 
                 <StackPane alignment="CENTER">
-                    <ImageView fitHeight="225" fitWidth="310" preserveRatio="false">
+                    <ImageView fitHeight="338" fitWidth="465" preserveRatio="false">
                         <image>
                             <Image url="@/images/backgrounds/bgShipBoard.jpg" />
                         </image>

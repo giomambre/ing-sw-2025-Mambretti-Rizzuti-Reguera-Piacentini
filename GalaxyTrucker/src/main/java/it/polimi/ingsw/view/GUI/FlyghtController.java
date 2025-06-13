@@ -109,7 +109,7 @@ public class FlyghtController {
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_SIZE = 80;
-    private static final int SHIP_CELL_SIZE = 40;
+    private static final int SHIP_CELL_SIZE = 60;
 
     public CompletableFuture<Integer> getNextMeteor() {
         if (nextMeteor == null) {
@@ -154,7 +154,7 @@ public class FlyghtController {
                         cell.setOnMouseClicked(null);
                         CardComponent component = ship.getShip_board()[i][j];
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty) {
-                            cell.setStyle("-fx-background-color: lightgray;");
+                            cell.setStyle("-fx-background-color: transparent;");
                         }
                         if (component != null && component.getComponentType() == ComponentType.LivingUnit ||  component.getComponentType() == MainUnitRed
                                 || component.getComponentType() == MainUnitYellow || component.getComponentType() == MainUnitGreen || component.getComponentType() == MainUnitBlue) {
@@ -261,7 +261,7 @@ public class FlyghtController {
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
                                 ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
                                 || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
-                            cell.setStyle("-fx-background-color: lightgray;");
+                            cell.setStyle("-fx-background-color: transparent;");
                         }
                         if (component != null && component.getComponentType() == Battery) {
                             if (((Battery) component).getStored() > 0) {
@@ -323,7 +323,7 @@ public class FlyghtController {
                                 component.getComponentType() == ComponentType.MainUnitGreen ||
                                 component.getComponentType() == ComponentType.MainUnitBlue ||
                                 component.getComponentType() == ComponentType.MainUnitYellow) {
-                            cell.setStyle("-fx-background-color: lightgray;");
+                            cell.setStyle("-fx-background-color: transparent;");
                         }
 
                         // Controlla i componenti di storage
@@ -660,23 +660,17 @@ public class FlyghtController {
 
                 ComponentType type = component.getComponentType();
 
-                if (type == MainUnitBlue || type == MainUnitRed || type == MainUnitGreen || type == MainUnitYellow) {
-                    addOverlay(i,j, "Astronaut");
-                }
-
-
-                if (type == LivingUnit) {
+                if (type == LivingUnit || type == MainUnitRed || type == MainUnitBlue || type == MainUnitGreen || type == MainUnitYellow) {
                     LivingUnit unit = (LivingUnit) component;
                     if (unit.getNum_crewmates() > 0) {
-                        if (unit.getCrewmate_type().equals(CrewmateType.Astronaut)) {
-                            addOverlay(i, j, "Astronaut");
-                        } else if (unit.getCrewmate_type().equals(CrewmateType.PinkAlien)) {
-                            addOverlay(i, j, "PinkAlien");
-                        } else if (unit.getCrewmate_type().equals(CrewmateType.BrownAlien)) {
-                            addOverlay(i, j, "BrownAlien");
+                        switch (unit.getCrewmate_type()) {
+                            case Astronaut -> addOverlay(i, j, "Astronaut", unit.getNum_crewmates());
+                            case PinkAlien -> addOverlay(i, j, "PinkAlien", unit.getNum_crewmates());
+                            case BrownAlien -> addOverlay(i, j, "BrownAlien", unit.getNum_crewmates());
                         }
                     }
                 }
+
 
                 if (type == ComponentType.Battery) {
                     Battery battery = (Battery) component;
@@ -715,7 +709,7 @@ public class FlyghtController {
         this.playerLaps = laps;
 
         Platform.runLater(() -> {
-            // Rimuovi tutte le pedine esistenti
+            // Rimuovi fortutte le pedine esistenti
             clearPlayerPawns();
 
             // Aggiungi le pedine per ogni posizione nella Map
@@ -1066,10 +1060,11 @@ public class FlyghtController {
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
                 container.setId("overlay-" + type);
-                for (int i = 0; i < 2; i++) {
+                int num = count > 0 ? count : 1;
+                for (int i = 0; i < num; i++) {
                     ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    img.setFitWidth(20);  // Riduci se necessario
-                    img.setFitHeight(20);
+                    img.setFitWidth(30);
+                    img.setFitHeight(30);
                     img.setPreserveRatio(true);
                     img.setSmooth(true);
                     img.setMouseTransparent(true);
@@ -1081,8 +1076,8 @@ public class FlyghtController {
             case "PinkAlien": {
                 path = "/images/icons/pinkAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(20);
-                img.setFitHeight(20);
+                img.setFitWidth(30);
+                img.setFitHeight(30);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -1091,8 +1086,8 @@ public class FlyghtController {
             case "BrownAlien": {
                 path = "/images/icons/brownAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(20);
-                img.setFitHeight(20);
+                img.setFitWidth(30);
+                img.setFitHeight(30);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -1106,8 +1101,8 @@ public class FlyghtController {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < count; i++) {
                     ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    batteryImg.setFitWidth(15);
-                    batteryImg.setFitHeight(15);
+                    batteryImg.setFitWidth(22.5);
+                    batteryImg.setFitHeight(22.5);
                     batteryImg.setPreserveRatio(true);
                     batteryImg.setSmooth(true);
                     batteryImg.setMouseTransparent(true);
@@ -1128,62 +1123,65 @@ public class FlyghtController {
     }
 
     public void addOverlay(int x, int y, String type) {
-        StackPane cell = getShipCellAt(x, y);
-        if (cell == null) return;
+            StackPane cell = getShipCellAt(x, y);
+            if (cell == null) return;
 
-        Node overlay = createOverlayForType(type);
-        if (overlay != null) {
-            cell.getChildren().add(overlay);
-        }
+            Node overlay = createOverlayForType(type);
+            if (overlay != null) {
+                cell.getChildren().add(overlay);
+            }
     }
 
     public void addOverlay(int x, int y, String type, int count) {
-        StackPane cell = getShipCellAt(x, y);
-        if (cell == null) return;
+            StackPane cell = getShipCellAt(x, y);
+            if (cell == null) return;
 
-        Node overlay = createOverlayForType(type, count);
-        if (overlay != null) {
-            cell.getChildren().add(overlay);
-        }
+            Node overlay = createOverlayForType(type, count);
+            if (overlay != null) {
+                cell.getChildren().add(overlay);
+            }
     }
+
 
     public void removeOverlay(int x, int y, String type) {
-        StackPane cell = getShipCellAt(x, y);
-        if (cell == null) return;
+            StackPane cell = getShipCellAt(x, y);
+            if (cell == null) return;
 
-        Node toRemove = null;
-        for (Node child : cell.getChildren()) {
-            if (isOverlayOfType(child, type)) {
-                toRemove = child;
-                break;
+            Node toRemove = null;
+            for (Node child : cell.getChildren()) {
+                if (isOverlayOfType(child, type)) {
+                    toRemove = child;
+                    break;
+                }
             }
-        }
 
-        if (toRemove != null) {
-            cell.getChildren().remove(toRemove);
-        }
+            if (toRemove != null) {
+                cell.getChildren().remove(toRemove);
+            }
     }
+
 
     public void updateCrewmateOverlayAt(int row, int col, Ship ship) {
-        CardComponent component = ship.getComponent(row, col);
+            CardComponent component = ship.getComponent(row, col);
 
-        if (component == null || component.getComponentType()!= LivingUnit) return;
+            if (component == null || component.getComponentType() != LivingUnit) return;
 
-        LivingUnit unit = (LivingUnit) component;
+            LivingUnit unit = (LivingUnit) component;
 
-        removeOverlay(row, col, "Astronaut");
-        removeOverlay(row, col, "PinkAlien");
-        removeOverlay(row, col, "BrownAlien");
+            removeOverlay(row, col, "Astronaut");
+            removeOverlay(row, col, "PinkAlien");
+            removeOverlay(row, col, "BrownAlien");
 
-        if (unit.getNum_crewmates() > 0) {
-            CrewmateType type = unit.getCrewmate_type();
-            switch (type) {
-                case Astronaut -> addOverlay(row, col, "Astronaut");
-                case PinkAlien -> addOverlay(row, col, "PinkAlien");
-                case BrownAlien -> addOverlay(row, col, "BrownAlien");
+            if (unit.getNum_crewmates() > 0) {
+                CrewmateType type = unit.getCrewmate_type();
+                switch (type) {
+                    case Astronaut -> addOverlay(row, col, "Astronaut", unit.getNum_crewmates());
+                    case PinkAlien -> addOverlay(row, col, "PinkAlien", unit.getNum_crewmates());
+                    case BrownAlien -> addOverlay(row, col, "BrownAlien", unit.getNum_crewmates());
+                }
             }
-        }
     }
+
 
 
 
