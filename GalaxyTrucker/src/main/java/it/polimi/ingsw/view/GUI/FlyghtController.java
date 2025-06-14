@@ -678,6 +678,13 @@ public class FlyghtController {
                         addOverlay(i, j, "Battery", battery.getStored());
                     }
                 }
+
+                if (type == ComponentType.RedStorage || type == ComponentType.BlueStorage) {
+                    Storage storage = (Storage) component;
+                    if (!storage.getCarried_cargos().isEmpty()) {
+                        updateCargoOverlayAt(i, j, ship);
+                    }
+                }
             }
         }
     }
@@ -1047,7 +1054,7 @@ public class FlyghtController {
     }
 
     private Node createOverlayForType(String type) {
-        return createOverlayForType(type, -1); // Per astronauti/alieni
+        return createOverlayForType(type, -1);
     }
 
     private Node createOverlayForType(String type, int count) {
@@ -1111,9 +1118,134 @@ public class FlyghtController {
                 return container;
             }
 
+            case "RedCargo": {
+                path = "/images/icons/redCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
+                for (int i = 0; i < count; i++) {
+                    ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    cargoImg.setFitWidth(20);
+                    cargoImg.setFitHeight(20);
+                    cargoImg.setPreserveRatio(true);
+                    cargoImg.setSmooth(true);
+                    cargoImg.setMouseTransparent(true);
+                    container.getChildren().add(cargoImg);
+                }
+                return container;
+            }
+
+            case "BlueCargo": {
+                path = "/images/icons/blueCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
+                for (int i = 0; i < count; i++) {
+                    ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    cargoImg.setFitWidth(20);
+                    cargoImg.setFitHeight(20);
+                    cargoImg.setPreserveRatio(true);
+                    cargoImg.setSmooth(true);
+                    cargoImg.setMouseTransparent(true);
+                    container.getChildren().add(cargoImg);
+                }
+                return container;
+            }
+
+            case "YellowCargo": {
+                path = "/images/icons/yellowCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
+                for (int i = 0; i < count; i++) {
+                    ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    cargoImg.setFitWidth(20);
+                    cargoImg.setFitHeight(20);
+                    cargoImg.setPreserveRatio(true);
+                    cargoImg.setSmooth(true);
+                    cargoImg.setMouseTransparent(true);
+                    container.getChildren().add(cargoImg);
+                }
+                return container;
+            }
+
+            case "GreenCargo": {
+                path = "/images/icons/greenCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                HBox container = new HBox(0);
+                container.setAlignment(Pos.CENTER);
+                container.setMouseTransparent(true);
+                container.setId("overlay-" + type);
+                for (int i = 0; i < count; i++) {
+                    ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+                    cargoImg.setFitWidth(20);
+                    cargoImg.setFitHeight(20);
+                    cargoImg.setPreserveRatio(true);
+                    cargoImg.setSmooth(true);
+                    cargoImg.setMouseTransparent(true);
+                    container.getChildren().add(cargoImg);
+                }
+                return container;
+            }
+
+
             default:
                 return null;
         }
+    }
+    public void updateCargoOverlayAt(int row, int col, Ship ship) {
+        CardComponent component = ship.getComponent(row, col);
+
+        if (component == null ||
+                (component.getComponentType() != ComponentType.RedStorage &&
+                        component.getComponentType() != ComponentType.BlueStorage)) {
+            return;
+        }
+
+        Storage storage = (Storage) component;
+
+        // Rimuovi tutti i cargo esistenti
+        removeOverlay(row, col, "RedCargo");
+        removeOverlay(row, col, "BlueCargo");
+        removeOverlay(row, col, "YellowCargo");
+        removeOverlay(row, col, "GreenCargo");
+
+        // Conta i cargo per tipo
+        Map<Cargo, Integer> cargoCount = new HashMap<>();
+        for (Cargo cargo : storage.getCarried_cargos()) {
+            cargoCount.put(cargo, cargoCount.getOrDefault(cargo, 0) + 1);
+        }
+
+        // Aggiungi gli overlay per ogni tipo di cargo
+        for (Map.Entry<Cargo, Integer> entry : cargoCount.entrySet()) {
+            Cargo cargoType = entry.getKey();
+            int count = entry.getValue();
+
+            switch (cargoType) {
+                case Red -> addOverlay(row, col, "RedCargo", count);
+                case Blue -> addOverlay(row, col, "BlueCargo", count);
+                case Yellow -> addOverlay(row, col, "YellowCargo", count);
+                case Green -> addOverlay(row, col, "GreenCargo", count);
+            }
+        }
+    }
+
+    // Aggiorna il metodo restoreOverlays per includere i cargo
+        public void refreshAllCargoOverlays(Ship ship) {
+        Platform.runLater(() -> {
+            for (int i = 0; i < ship.getROWS(); i++) {
+                for (int j = 0; j < ship.getCOLS(); j++) {
+                    CardComponent component = ship.getComponent(i, j);
+                    if (component != null &&
+                            (component.getComponentType() == ComponentType.RedStorage ||
+                                    component.getComponentType() == ComponentType.BlueStorage)) {
+                        updateCargoOverlayAt(i, j, ship);
+                    }
+                }
+            }
+        });
     }
 
     private boolean isOverlayOfType(Node node, String type) {
