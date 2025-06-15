@@ -13,6 +13,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -209,6 +211,19 @@ public class Buildcontroller {
                     if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
                         cell.setPrefSize(62,62);
                         cell.setStyle("-fx-background-color: transparent;");
+
+                        final Effect originalEffect = cell.getEffect();
+
+                        cell.setOnMouseEntered(e -> {
+                            javafx.scene.paint.Color overlayColor = new javafx.scene.paint.Color(0, 0, 0, 0.2);
+                            cell.setEffect(new ColorInput(0, 0, cell.getWidth(), cell.getHeight(), overlayColor));
+                        });
+
+                        cell.setOnMouseExited(e -> {
+                            cell.setEffect(originalEffect);
+                        });
+
+
                         final int a = i;
                         final int b = j;
                         cell.setOnMouseClicked(e -> {
@@ -415,6 +430,11 @@ public class Buildcontroller {
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
                 cell.getChildren().clear();
                 cell.getChildren().add(imageView);
+
+                cell.setOnMouseEntered(null);
+                cell.setOnMouseExited(null);
+                cell.setEffect(null);
+
                 shipGrid.requestLayout();
                 shipGrid.layout();
                 break;
