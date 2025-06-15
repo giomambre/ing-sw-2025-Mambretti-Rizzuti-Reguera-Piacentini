@@ -659,6 +659,8 @@ public class TUI implements View {
             }
             case Epidemic: {
                 System.out.println("\n EPIDEMIA: \n");
+                System.out.println("Ogni giocatore perde 1 astronauta per ogni Living Unit adiacente ");
+
                 break;
             }
             case MeteorSwarm: {

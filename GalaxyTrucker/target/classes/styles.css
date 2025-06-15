@@ -1,0 +1,75 @@
+.main-container {
+    -fx-background-color: #f0f0f0;
+    -fx-font-family: "Arial";
+}
+
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 20px;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.rank-label {
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-background-color: #ecf0f1;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 0 0 1px 0;
+    -fx-text-fill: #2c3e50;
+    -fx-min-width: 500px;
+    -fx-alignment: center-left;
+}
+
+.rank-label:hover {
+    -fx-background-color: #d5dbdb;
+}
+
+.first-place {
+    -fx-background-color: #f1c40f;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.second-place {
+    -fx-background-color: #95a5a6;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.third-place {
+    -fx-background-color: #e67e22;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.no-players-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #7f8c8d;
+    -fx-padding: 50px;
+}
+
+.back-button {
+    -fx-font-size: 16px;
+    -fx-padding: 12px 30px;
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.back-button:pressed {
+    -fx-background-color: #21618c;
+}

@@ -66,6 +66,10 @@ public class Client {
         Client.nickname = nickname;
     }
 
+    public static void setClientId(java.util.UUID id) {
+        clientId = id;
+    }
+
 
     public static void main(String[] args) {
         try {
@@ -73,7 +77,7 @@ public class Client {
             Scanner scanner = new Scanner(System.in);
             String host = "localhost";
             int socketPort = 12345;
-            int rmiPort = 12346;
+            int rmiPort = 1099;
             int choice = -1;
             do {
                 System.out.println("Scegli il tipo di connessione:");
@@ -96,7 +100,7 @@ public class Client {
                     networkAdapter = new SocketAdapter(host, socketPort);
                     System.out.println("Connessione tramite Socket...");
                 } else {
-                    networkAdapter = new RmiAdapter(host, rmiPort); // Assumendo un costruttore simile
+                    networkAdapter = new RmiAdapter(host, rmiPort);
                     System.out.println("Connessione tramite RMI...");
                 }
                 networkAdapter.connect(host, choice == 1 ? socketPort : rmiPort);
@@ -1687,11 +1691,11 @@ public class Client {
         return virtualView;
     }
 
-    public UUID getClientId() {
+    public static UUID getClientId() {
         return clientId;
     }
 
-    public BlockingQueue<Message> getInputQueue() {
+    public static BlockingQueue<Message> getInputQueue() {
         return inputQueue;
     }
 

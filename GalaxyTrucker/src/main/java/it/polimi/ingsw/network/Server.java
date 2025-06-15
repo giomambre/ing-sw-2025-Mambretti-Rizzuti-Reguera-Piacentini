@@ -2,7 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.GameManager;
-import it.polimi.ingsw.model.Game;
+
 import it.polimi.ingsw.model.Lobby;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
@@ -19,56 +19,101 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.spi.AbstractResourceBundleProvider;
+
 
 import static it.polimi.ingsw.controller.GameState.*;
-import static it.polimi.ingsw.model.enumerates.Direction.*;
+
 import static it.polimi.ingsw.network.Client.throwDice;
 import static it.polimi.ingsw.network.messages.MessageType.*;
 
-public class Server {
-    private static final int PORT = 12345;
-    private static Set<String> connectedNames = new HashSet<>();
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class Server implements RemoteServer {
+    private static final int SOCKET_PORT = 12345;
+    private static final int RMI_PORT = 1099;
+    private static Set<String> connectedNames = ConcurrentHashMap.newKeySet();
     private static Queue<Message> messageQueue = new ConcurrentLinkedQueue<>();
-    private final Map<UUID, ClientHandler> clients = new HashMap<>();
+    private final Map<UUID, ConnectionHandler> clients = new ConcurrentHashMap<>();
     private GameManager manager = new GameManager();
-    private Map<Integer, GameController> all_games = new HashMap<>();
+    private Map<Integer, GameController> all_games = new ConcurrentHashMap<>();
     GameController controller;
     public String util_string = "";
-    private boolean build120Ended = false;
-    private Map<Integer, LobbyTimer> lobbyTimers = new HashMap<>();
+    
+    private Map<Integer, LobbyTimer> lobbyTimers = new ConcurrentHashMap<>();
 
-    public void start() {
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-            System.out.println("Server in ascolto sulla porta " + PORT + "...");
-            // Avvia un thread per processare i messaggi in coda
+        public void start() {
+        new Thread(this::startSocketServer).start();
+        new Thread(this::startRmiServer).start();
+        new Thread(this::processMessages).start();
+        System.out.println("Server pronto.");
+    }
 
-            new Thread(this::processMessages).start();
-
-            while (true) {
+    private void startSocketServer() {
+        try (ServerSocket serverSocket = new ServerSocket(SOCKET_PORT)) {
+            System.out.println("Server Socket in ascolto sulla porta " + SOCKET_PORT + "...");
+            while (!Thread.currentThread().isInterrupted()) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Nuova connessione: " + clientSocket.getInetAddress());
-
-                ClientHandler handler = new ClientHandler(clientSocket, connectedNames, messageQueue);
+                System.out.println("Nuova connessione Socket: " + clientSocket.getInetAddress());
+                SocketConnectionHandler handler = new SocketConnectionHandler(clientSocket, messageQueue);
                 clients.put(handler.getClientId(), handler);
-
                 new Thread(handler).start();
-
-
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Errore server Socket: " + e.getMessage());
+        }
+    }
+
+    private void startRmiServer() {
+        try {
+            RemoteServer stub = (RemoteServer) UnicastRemoteObject.exportObject(this, 0);
+            Registry registry = LocateRegistry.createRegistry(RMI_PORT);
+            registry.rebind("RmiServer", stub);
+            System.out.println("Server RMI in ascolto sulla porta " + RMI_PORT);
+        } catch (RemoteException e) {
+            System.err.println("Errore avvio server RMI: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public UUID registerClient(RemoteClient client) throws RemoteException {
+        UUID clientId = UUID.randomUUID();
+        RmiConnectionHandler handler = new RmiConnectionHandler(client, clientId);
+        clients.put(clientId, handler);
+        System.out.println("Nuovo client RMI registrato con ID: " + clientId);
+        try {
+            handler.sendMessage(new StandardMessageClient(MessageType.ASSIGN_UUID, "", clientId));
+            handler.sendMessage(new Message(MessageType.REQUEST_NAME, ""));
+        } catch (IOException e) {
+            System.err.println("Disconnessione del client RMI durante la registrazione: " + clientId);
+            clients.remove(clientId);
+        }
+        return clientId;
+    }
+
+    @Override
+    public void sendMessage(Message message) throws RemoteException {
+        synchronized (messageQueue) {
+            messageQueue.add(message);
         }
     }
 
     private void processMessages() {
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             Message msg;
             synchronized (messageQueue) {
                 msg = messageQueue.poll();
             }
             if (msg != null) {
-                handleMessage(msg);
+                try {
+                    handleMessage(msg);
+                } catch (Exception e) {
+                    System.err.println("Errore durante la gestione del messaggio: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -86,13 +131,15 @@ public class Server {
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Nome già in uso. Inserisci un altro nickname.", msgClient.getId_client()));
 
                 } else {
-                    if (requestedName == "") {
+                    if (requestedName.isEmpty()) {
                         sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Stringa vuota non accettata. Inserisci un altro nickname.", msgClient.getId_client()));
                         break;
                     }
                     connectedNames.add(requestedName);
-                    ClientHandler handler = clients.get(msgClient.getId_client());
-                    handler.setNickname(requestedName);
+                                        ConnectionHandler handler = clients.get(msgClient.getId_client());
+                    if (handler != null) {
+                        handler.setNickname(requestedName);
+                    }
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_ACCEPTED, "✅ Nickname accettato: " + requestedName, msgClient.getId_client()));
 
                 }
@@ -127,7 +174,7 @@ public class Server {
                 synchronized (manager) {
 
                     if (manager.getAvaibleLobbies().contains(lobby_id)) {
-                        System.out.println("Successso player joined lobby :" + lobby_id);
+                        System.out.println("Successo player joined lobby :" + lobby_id);
                         manager.joinLobby(getNickname(msgClient.getId_client()), lobby_id);
                         Lobby lobby = manager.getLobby(lobby_id);
                         sendToClient(msgClient.getId_client(), new Message(MessageType.SELECT_LOBBY, "" + lobby_id));
@@ -468,7 +515,7 @@ public class Server {
 
                 //CardAdventure adventure = controller.getRandomAdventure();
 
-               CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
+        //       CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
 
 
                 /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -511,6 +558,7 @@ public class Server {
 //                );
 
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
+                CardAdventure adventure = controller.getRandomAdventure();
                 manageAdventure(adventure, controller);
 
 
@@ -643,7 +691,6 @@ public class Server {
 
 
                     case MeteorSwarm:
-                        ShipClientMessage meteor_msg = (ShipClientMessage) msg;
 
                         controller.removeFromAdventure("");
 
@@ -824,6 +871,7 @@ public class Server {
 
 
                         }
+                        break;
 
 
                     case Smugglers:
@@ -941,91 +989,65 @@ public class Server {
                             case "l":
                                 if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
                                     adventure = controller.getRandomAdventure();
-
                                     manageAdventure(adventure, controller);
-                                    return;
-
-
+                                } else {
+                                    curr_nick = controller.nextAdventurePlayer();
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PERSO contro i PIRATI ! \n", getNickname(adv_msg.getId_client())));
+                                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(PIRATES, controller.getPirates_coords(), controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Pirati ! \n", curr_nick));
                                 }
-                                curr_nick = controller.nextAdventurePlayer();
-                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PERSO contro i  PIRATI ! \n", getNickname(adv_msg.getId_client())));
-                                sendToClient(getId_client(curr_nick), new AdventureCardMessage(PIRATES, controller.getPirates_coords(), controller.getCurrentAdventure()));
-                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Pirati ! \n", curr_nick));
                                 break;
-
-
                         }
-                        sendToAllClients(controller.getLobby(), new PlayersShipsMessage(UPDATED_SHIPS, "", controller.getActivePlayers()));
-
                         break;
 
-
                     case Slavers:
-
-
                         esit = msg.getContent().split("\\s+");
 
                         switch (esit[0]) {
-
                             case "ww":
-
                                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA SCONFITTO gli SCHIAVISTI ! \n", getNickname(adv_msg.getId_client())));
-
                                 controller.movePlayer(getNickname(adv_msg.getId_client()), -controller.getCurrentAdventure().getCost_of_days());
-
-
                                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "\nIL PLAYER " + getNickname(adv_msg.getId_client())
                                         + " HA PRESO LA RICOMPENSA , ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo" + "\n", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
-
-
                                 adventure = controller.getRandomAdventure();
-
                                 manageAdventure(adventure, controller);
                                 break;
-
 
                             case "w":
                                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA SCONFITTO gli SCHIAVISTI, ma non ha riscosso la ricompensa  ! \n", getNickname(adv_msg.getId_client())));
                                 adventure = controller.getRandomAdventure();
-
                                 manageAdventure(adventure, controller);
                                 break;
 
-
                             case "d":
-
                                 if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
                                     adventure = controller.getRandomAdventure();
-
                                     manageAdventure(adventure, controller);
-                                    return;
-
-
+                                } else {
+                                    curr_nick = controller.nextAdventurePlayer();
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PAREGGIATO con gli SCHIAVISTI ! \n", getNickname(adv_msg.getId_client())));
+                                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(SLAVERS, "", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Schiavisti ! \n", curr_nick));
                                 }
-                                curr_nick = controller.nextAdventurePlayer();
-                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PAREGGIATO con gli SCHIAVISTI ! \n", getNickname(adv_msg.getId_client())));
-                                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SLAVERS, controller.getPirates_coords(), controller.getCurrentAdventure()));
-                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Schiavisti ! \n", curr_nick));
                                 break;
 
                             case "l":
                                 if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
                                     adventure = controller.getRandomAdventure();
-
                                     manageAdventure(adventure, controller);
-                                    return;
-
-
+                                } else {
+                                    curr_nick = controller.nextAdventurePlayer();
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PERSO contro gli SCHIAVISTI ! \n", getNickname(adv_msg.getId_client())));
+                                    sendToClient(getId_client(curr_nick), new AdventureCardMessage(SLAVERS, "", controller.getCurrentAdventure()));
+                                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Schiavisti ! \n", curr_nick));
                                 }
-                                curr_nick = controller.nextAdventurePlayer();
-                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " HA PERSO contro i  PIRATI ! \n", getNickname(adv_msg.getId_client())));
-                                sendToClient(getId_client(curr_nick), new AdventureCardMessage(SLAVERS, controller.getPirates_coords(), controller.getCurrentAdventure()));
-                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta affrontando i nemici Schiavisti ! \n", curr_nick));
                                 break;
-
-
                         }
                         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(UPDATED_SHIPS, "", controller.getActivePlayers()));
+                        break;
+
+                    case Epidemic:
+                    case Stardust:
 
                         break;
                 }
@@ -1156,6 +1178,7 @@ public class Server {
 
                 break;
 
+
             case Planets:
 
                 controller.initializeAdventure(adventure);
@@ -1202,7 +1225,7 @@ public class Server {
 
             case Smugglers:
 
-                Smugglers smugglers = (Smugglers) adventure;
+                
                 controller.initializeAdventure(adventure);
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 String curr_nick = controller.nextAdventurePlayer();
@@ -1212,7 +1235,7 @@ public class Server {
 
 
             case Pirates:
-                Pirates pirates = (Pirates) adventure;
+                
                 controller.initializeAdventure(adventure);
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 curr_nick = controller.nextAdventurePlayer();
@@ -1230,7 +1253,7 @@ public class Server {
 
 
             case Slavers:
-                Slavers slavers = (Slavers) adventure;
+                
                 controller.initializeAdventure(adventure);
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 curr_nick = controller.nextAdventurePlayer();
@@ -1264,20 +1287,17 @@ public class Server {
     }
 
 
-    public String getNickname(UUID id) {
-        ClientHandler client = clients.get(id);
-        return client.getNickname();
+        public String getNickname(UUID id) {
+        ConnectionHandler client = clients.get(id);
+        return (client != null) ? client.getNickname() : null;
     }
 
-    public UUID getId_client(String nickname) {
-
-        UUID id = UUID.randomUUID();
-        for (ClientHandler client : clients.values()) {
-            if (client.getNickname() != null && client.getNickname().equals(nickname)) {
-                id = client.getClientId();
-            }
-        }
-        return id;
+        public UUID getId_client(String nickname) {
+        return clients.entrySet().stream()
+                .filter(entry -> nickname.equals(entry.getValue().getNickname()))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
     }
 
 
@@ -1293,34 +1313,31 @@ public class Server {
     }
 
     private void sendToClient(UUID id, Message msg) {
-        ClientHandler client = clients.get(id);
+        ConnectionHandler client = clients.get(id);
         if (client != null) {
             try {
                 client.sendMessage(msg);
             } catch (IOException e) {
-                System.err.println("❌ Errore nell'invio del messaggio a " + id);
+                System.err.println(" Errore nell'invio del messaggio a " + id);
+
             }
         }
     }
 
 
-    private int getLobbyId(UUID id) {
-
+        private int getLobbyId(UUID id) {
         String nick = getNickname(id);
-
-        List<Lobby> ls = manager.getAllLobbies();
-        for (Lobby lobby : ls) {
-            if (lobby.getPlayers().contains(nick)) {
-                return lobby.getLobbyId();
-            }
-        }
-
-        return -1;
-
+        if (nick == null) return -1;
+        return manager.getAllLobbies().stream()
+                .filter(lobby -> lobby.getPlayers().contains(nick))
+                .map(Lobby::getLobbyId)
+                .findFirst()
+                .orElse(-1);
     }
 
-    public static void main(String[] args) {
-        new Server().start();
+        public static void main(String[] args) {
+        Server server = new Server();
+        server.start();
     }
 }
 
