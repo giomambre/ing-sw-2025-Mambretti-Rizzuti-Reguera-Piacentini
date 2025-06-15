@@ -481,7 +481,7 @@ public class Buildcontroller {
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
                                 ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
                         || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
-                            cell.setStyle("-fx-background-color: lightgray;");
+                            cell.setStyle("-fx-background-color: transparent;");
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
                     }
@@ -549,7 +549,7 @@ public class Buildcontroller {
                 // Pulisci la cella
                 cell.getChildren().clear();
                 cell.setOnMouseClicked(null);
-                cell.setStyle("-fx-background-color: lightgray; -fx-cursor: default;");
+                cell.setStyle("-fx-background-color: transparent; -fx-cursor: default;");
                 break;
             }
         }
