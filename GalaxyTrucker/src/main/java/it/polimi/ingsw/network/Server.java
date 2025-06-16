@@ -1081,7 +1081,9 @@ public class Server implements RemoteServer {
                 controller = all_games.get(getLobbyId(end_msg.getId_client()));
                 controller.removeFromAdventure(getNickname(end_msg.getId_client()));
                 controller.removeFromActivePlayers(getNickname(end_msg.getId_client()));
+
                 sendToClient(end_msg.getId_client(), new Message(END_FLIGHT, ""));
+                sendToAllClients(controller.getLobby(),new NotificationMessage(NOTIFICATION,"IL PLAYER " + getNickname(end_msg.getId_client())+ " è STATO KICKATO DALLA PARTITA PER NAVE INVALIDA", getNickname(end_msg.getId_client())));
                 break;
 
 
