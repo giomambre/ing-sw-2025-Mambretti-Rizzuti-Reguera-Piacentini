@@ -185,6 +185,7 @@ public class FlyghtController {
                         }
                         updateCrewmateOverlayAt(row, col, ship);
                         clearCrewmates(ship);
+                        updatePlayerShip();
                         cell.setOnMouseClicked(null);
                     });
                     cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
@@ -261,7 +262,7 @@ public class FlyghtController {
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
                                 ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
                                 || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
-                            cell.setStyle("-fx-background-color: transparent;");
+                            cell.setStyle(null);
                         }
                         if (component != null && component.getComponentType() == Battery) {
                             if (((Battery) component).getStored() > 0) {
@@ -301,7 +302,7 @@ public class FlyghtController {
     }
 
     public void showStorage(Ship ship, Cargo cargo) {
-        batteries.clear(); // Potresti voler rinominare questa lista in "storages" per chiarezza
+        batteries.clear();
         if (this.coordsBattery == null || this.coordsBattery.isDone()) {
             this.coordsBattery = new CompletableFuture<>();
         }
@@ -380,6 +381,7 @@ public class FlyghtController {
                                 currentCoordsBatteryFuture.complete(new Pair<>(row, col));
                             }
                             clearShipListeners(ship);
+                            updatePlayerShip();
                             cell.setOnMouseClicked(null);
                         });
                         cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
@@ -399,7 +401,6 @@ public class FlyghtController {
                     StackPane cell = (StackPane) playerShipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
                     if (cell != null) {
                         cell.setOnMouseClicked(null);
-                        cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
                         resetHighlights(i,j);
                     }
                 }
@@ -624,6 +625,7 @@ public class FlyghtController {
                     if (cell == null) continue;
 
                     cell.getChildren().clear();
+                    cell.setStyle("-fx-background-color: transparent;");
 
                     CardComponent component = shipBoard[i][j];
                     if (component != null &&
@@ -1017,11 +1019,9 @@ public class FlyghtController {
             if (rowIndex == null) rowIndex = 0;
 
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                // Se la cella contiene un'immagine, applica il bordo all'immagine
                 if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
                     imageView.setStyle("-fx-effect: dropshadow(gaussian, gold, 5, 0.8, 0, 0); -fx-border-color: gold; -fx-border-width: 3px;");
                 } else {
-                    // Se la cella è vuota, applica il bordo alla StackPane
                     cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
                 }
                 return;

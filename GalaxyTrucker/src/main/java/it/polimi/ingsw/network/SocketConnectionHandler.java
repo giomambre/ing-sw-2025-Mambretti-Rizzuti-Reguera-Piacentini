@@ -46,7 +46,7 @@ public class SocketConnectionHandler implements ConnectionHandler {
             try {
                 close();
             } catch (IOException ex) {
-                // Log dell'eccezione
+
             }
         }
     }

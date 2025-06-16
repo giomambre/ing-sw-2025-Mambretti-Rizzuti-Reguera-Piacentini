@@ -516,7 +516,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_7.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_8.jpg"));
 
 
         connectors.put(North, Universal);
@@ -524,7 +524,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_8.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_7.jpg"));
 
 
         connectors.put(North, Universal);
