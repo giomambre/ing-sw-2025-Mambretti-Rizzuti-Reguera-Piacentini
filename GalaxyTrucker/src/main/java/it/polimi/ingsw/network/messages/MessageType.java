@@ -63,5 +63,6 @@ public enum MessageType {
     EPIDEMIC,
     STURDUST,
     GAME_FINISHED,
+    PLAYER_DISCONNECTED,
 
 }

@@ -22,8 +22,7 @@ public class SocketAdapter implements NetworkAdapter {
     }
     @Override
     public void connect(String host, int port) throws IOException {
-        // Ignora host e port passati come argomenti se già impostati nel costruttore,
-        // altrimenti usali. Per semplicità usiamo quelli del costruttore.
+
         this.socket = new Socket(this.host, this.port);
         this.out = new ObjectOutputStream(socket.getOutputStream());
         this.in = new ObjectInputStream(socket.getInputStream());

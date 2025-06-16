@@ -31,6 +31,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Server implements RemoteServer {
     private static final int SOCKET_PORT = 12345;
@@ -44,11 +47,13 @@ public class Server implements RemoteServer {
     public String util_string = "";
     
     private Map<Integer, LobbyTimer> lobbyTimers = new ConcurrentHashMap<>();
+    private final ScheduledExecutorService heartbeatScheduler = Executors.newScheduledThreadPool(1);
 
         public void start() {
         new Thread(this::startSocketServer).start();
         new Thread(this::startRmiServer).start();
         new Thread(this::processMessages).start();
+        startHeartbeat();
         System.out.println("Server pronto.");
     }
 
@@ -1338,6 +1343,42 @@ public class Server implements RemoteServer {
         public static void main(String[] args) {
         Server server = new Server();
         server.start();
+    }
+
+    private void startHeartbeat() {
+        heartbeatScheduler.scheduleAtFixedRate(() -> {
+            for (Map.Entry<UUID, ConnectionHandler> entry : clients.entrySet()) {
+                if (entry.getValue() instanceof RmiConnectionHandler) {
+                    try {
+                        ((RmiConnectionHandler) entry.getValue()).getRemoteClient().ping();
+                        System.out.println("ok");
+                    } catch (RemoteException e) {
+                        System.out.println("Client RMI disconnesso: " + entry.getKey());
+                        handleClientDisconnection(entry.getKey());
+                    }
+                }
+            }
+        }, 0, 5, TimeUnit.SECONDS);
+    }
+
+    private void handleClientDisconnection(UUID clientId) {
+        ConnectionHandler handler = clients.remove(clientId);
+        if (handler != null) {
+            String nickname = handler.getNickname();
+            if (nickname != null) {
+                connectedNames.remove(nickname);
+                int lobbyId = getLobbyId(clientId);
+                if (lobbyId != -1) {
+                    Lobby lobby = manager.getLobby(lobbyId);
+                    if (lobby != null) {
+                        lobby.removePlayer(nickname);
+                        Message disconnectMessage = new NotificationMessage(MessageType.PLAYER_DISCONNECTED, nickname + " si è disconnesso.", nickname);
+                        sendToAllClients(lobby, disconnectMessage);
+                    }
+                }
+                System.out.println("Client " + nickname + " rimosso.");
+            }
+        }
     }
 }
 

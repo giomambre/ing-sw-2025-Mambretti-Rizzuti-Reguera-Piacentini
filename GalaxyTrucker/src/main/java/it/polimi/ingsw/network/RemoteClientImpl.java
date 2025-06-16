@@ -24,4 +24,9 @@ public class RemoteClientImpl extends UnicastRemoteObject implements RemoteClien
             throw new RemoteException("Interrupted while queuing message", e);
         }
     }
+
+    @Override
+    public void ping() throws RemoteException {
+        // Il server può chiamare questo metodo per verificare se il client è ancora attivo.
+    }
 }
