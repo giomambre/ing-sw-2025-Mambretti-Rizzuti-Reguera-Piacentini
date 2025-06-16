@@ -142,7 +142,7 @@ public class FlyghtController {
         if (this.astronautToRemove == null || this.astronautToRemove.isDone()) {
             this.astronautToRemove = new CompletableFuture<>();
         }
-        final CompletableFuture<Pair<Integer,Integer>> currentCoordsAstronautFuture = this.astronautToRemove; // Capture it for the lambda
+        final CompletableFuture<Pair<Integer,Integer>> currentCoordsAstronautFuture = this.astronautToRemove;
 
         Platform.runLater(() -> {
 
@@ -161,7 +161,7 @@ public class FlyghtController {
                             LivingUnit unit = (LivingUnit) component;
                             if (unit.getNum_crewmates() > 0) {
                                 livingUnits.add(new Pair<>(i, j));
-                                addOverlay(i, j, "Astronaut");
+                                //addOverlay(i, j, "Astronaut");
                             }
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -289,9 +289,8 @@ public class FlyghtController {
                         if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
                             currentCoordsBatteryFuture.complete(new Pair<>(row, col));
                         }
-
-                        updatePlayerShip();
                         clearShipListeners(ship);
+                        updatePlayerShip();
                         cell.setOnMouseClicked(null);
                     });
                     cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");

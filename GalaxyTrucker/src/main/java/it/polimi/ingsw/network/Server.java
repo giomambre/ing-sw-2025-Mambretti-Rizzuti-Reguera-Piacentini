@@ -557,8 +557,8 @@ public class Server implements RemoteServer {
 //                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
 //                );
 
-                //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                CardAdventure adventure = controller.getRandomAdventure();
+                CardAdventure adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
+                //CardAdventure adventure = controller.getRandomAdventure();
                 manageAdventure(adventure, controller);
 
 
