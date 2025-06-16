@@ -7,4 +7,6 @@ import java.rmi.RemoteException;
 
 public interface RemoteClient extends Remote {
     void receiveMessage(Message message) throws RemoteException;
+
+    void ping() throws RemoteException;
 }

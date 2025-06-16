@@ -27,7 +27,6 @@ public class RmiConnectionHandler implements ConnectionHandler {
 
     @Override
     public void close() {
-        // For RMI, closing is less explicit than with sockets.
     }
 
     @Override
@@ -47,6 +46,9 @@ public class RmiConnectionHandler implements ConnectionHandler {
 
     @Override
     public void run() {
-        // RMI is callback-based, so this thread can be idle.
+    }
+
+    public RemoteClient getRemoteClient() {
+        return remoteClient;
     }
 }
