@@ -596,6 +596,14 @@ public class Server implements RemoteServer {
                 }
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
 
+
+                if(controller.getActivePlayers().size() == 1){
+
+                    manageAdventure(null,controller); //va direttamente alla schermata finale
+
+                }
+
+
                 switch (controller.getCurrentAdventure().getType()) {
 
 
