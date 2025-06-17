@@ -1407,7 +1407,7 @@ public class TUI implements View {
             LivingUnit unit = (LivingUnit) ship.getComponent(pos.getKey(), pos.getValue());
             System.out.println("\t" + (idx) + ". Living Unit in (" + pos.getKey() + ", " + pos.getValue() + ") - Membri: " + unit.getNum_crewmates());
         }
-        int scelta = readValidInt("\nScelta ", 0, livingUnits.size()-1,true);
+        int scelta = readValidInt("\nScelta ", 0, livingUnits.size()-1,false);
         if (scelta == -1 ) return  new Pair<>(-1,-1);
 
         LivingUnit unit = (LivingUnit) ship.getComponent(livingUnits.get(scelta).getKey(),livingUnits.get(scelta).getValue());

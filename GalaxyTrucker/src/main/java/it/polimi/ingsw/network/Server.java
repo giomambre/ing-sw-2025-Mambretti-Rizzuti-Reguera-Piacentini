@@ -562,8 +562,10 @@ public class Server implements RemoteServer {
 //                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
 //                );
 
-                CardAdventure adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
-                //CardAdventure adventure = controller.getRandomAdventure();
+                //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
+                CardAdventure adventure = controller.getRandomAdventure();
+                adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
+
                 manageAdventure(adventure, controller);
 
 
@@ -1079,7 +1081,9 @@ public class Server implements RemoteServer {
                 controller = all_games.get(getLobbyId(end_msg.getId_client()));
                 controller.removeFromAdventure(getNickname(end_msg.getId_client()));
                 controller.removeFromActivePlayers(getNickname(end_msg.getId_client()));
+
                 sendToClient(end_msg.getId_client(), new Message(END_FLIGHT, ""));
+                sendToAllClients(controller.getLobby(),new NotificationMessage(NOTIFICATION,"IL PLAYER " + getNickname(end_msg.getId_client())+ " è STATO KICKATO DALLA PARTITA PER NAVE INVALIDA", getNickname(end_msg.getId_client())));
                 break;
 
 
