@@ -28,7 +28,7 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.BlueStorage;
 import static it.polimi.ingsw.model.enumerates.ComponentType.RedStorage;
 
 public class CargoSelector {
-
+    private GUI gui;
     private int selectedCargoIndex = -1;
     private CountDownLatch latch;
 
@@ -160,6 +160,7 @@ public class CargoSelector {
                 parentStage.close();
                 latch.countDown();
             });
+
         });
 
         // Effetti hover
