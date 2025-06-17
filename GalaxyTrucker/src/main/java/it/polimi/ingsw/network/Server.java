@@ -83,6 +83,8 @@ public class Server implements RemoteServer {
         }
     }
 
+
+
     @Override
     public UUID registerClient(RemoteClient client) throws RemoteException {
         UUID clientId = UUID.randomUUID();

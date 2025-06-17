@@ -108,20 +108,21 @@ public abstract class BaseGame {
      */
     public void setRewards() {
         //gives credits based on arrival order and carried cargos (only for players that ended the game)
-        for (Player p : active_players) {
-            if (p.equals(board.getRanking().get(0))) {
-                p.receiveCredits(4);
-            }
-            if (p.equals(board.getRanking().get(1))) {
-                p.receiveCredits(3);
-            }
-            if (p.equals(board.getRanking().get(2))) {
-                p.receiveCredits(2);
-            }
-            if (p.equals(board.getRanking().get(3))) {
-                p.receiveCredits(1);
-            }
+        int i = 0;
+        for (Player p : board.getRanking()) {
 
+            if(!active_players.contains(p)) continue;
+
+            switch(i) {
+
+                case 0 : p.receiveCredits(4); break;
+                case 1 : p.receiveCredits(3); break;
+                case 2 : p.receiveCredits(2); break;
+                case 3 : p.receiveCredits(1); break;
+
+
+            }
+            i++;
             for (int row = 0; row < 5; row++) {
                 for (int col = 0; col < 7; col++) {
                     if (p.getShip().getComponent(row, col).getComponentType().equals(BlueStorage)||p.getShip().getComponent(row, col).getComponentType().equals(RedStorage)){
