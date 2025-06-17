@@ -225,6 +225,10 @@ public class GUI implements View {
         this.player_local = localPlayer;
     }
 
+    public Player getPlayer_local() {
+        return player_local;
+    }
+
     @Override
     public void updateOtherPlayers(List<Player> otherPlayers) {
 

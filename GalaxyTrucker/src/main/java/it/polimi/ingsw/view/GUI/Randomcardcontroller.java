@@ -126,8 +126,12 @@ public class Randomcardcontroller {
         // che aggiornerà automaticamente tutte le GUI dei client
 
         if (!action.isDone()) {
+            if (gui.getPlayer_local().getShip().getExtra_components().contains(gui.getActualcard())) gui.getBuildcontroller().addReservedCard(gui.getActualcard());
             action.complete(3);
         }
+
+
+
 
         // Chiudi la finestra della carta random
         if (stage != null) {
