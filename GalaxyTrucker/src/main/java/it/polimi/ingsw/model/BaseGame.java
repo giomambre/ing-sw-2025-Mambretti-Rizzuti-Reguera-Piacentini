@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
@@ -28,7 +29,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.West;
  *
  * </ul>
  */
-public abstract class BaseGame {
+public abstract class BaseGame implements Serializable {
     protected List<Player> players = new ArrayList<>();
     protected List<Player> build_phase_players = new ArrayList<>();
     protected int numPlayers;
