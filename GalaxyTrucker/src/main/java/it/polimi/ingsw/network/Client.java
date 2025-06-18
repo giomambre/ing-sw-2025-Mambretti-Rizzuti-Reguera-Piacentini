@@ -75,8 +75,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "4.tcp.eu.ngrok.io";
-            int socketPort = 13267;
+            String host = "localhost";
+            int socketPort = 12345;
             int rmiPort = 1099;
             int choice = -1;
             do {
@@ -815,14 +815,14 @@ public class Client {
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
-
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+                    }
 
                 } else {
                     facedUp_deck_local.remove(cpm.getCardComponent());
                 }
-                if (virtualViewType == VirtualViewType.GUI) {
-                    ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
-                }
+
                 break;
 
             case FORCE_BUILD_PHASE_END:
