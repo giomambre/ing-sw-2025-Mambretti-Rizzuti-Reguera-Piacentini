@@ -251,6 +251,7 @@ public class FlyghtController {
             dontusebattery.setOnAction((ActionEvent event) -> {
                 currentCoordsBatteryFuture.complete(new Pair<>(-1,-1));
                 clearShipListeners(ship);
+                updatePlayerShip();
             });
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
