@@ -142,7 +142,7 @@ public class FlyghtController {
         if (this.astronautToRemove == null || this.astronautToRemove.isDone()) {
             this.astronautToRemove = new CompletableFuture<>();
         }
-        final CompletableFuture<Pair<Integer,Integer>> currentCoordsAstronautFuture = this.astronautToRemove; // Capture it for the lambda
+        final CompletableFuture<Pair<Integer,Integer>> currentCoordsAstronautFuture = this.astronautToRemove;
 
         Platform.runLater(() -> {
 
@@ -161,7 +161,7 @@ public class FlyghtController {
                             LivingUnit unit = (LivingUnit) component;
                             if (unit.getNum_crewmates() > 0) {
                                 livingUnits.add(new Pair<>(i, j));
-                                addOverlay(i, j, "Astronaut");
+                                //addOverlay(i, j, "Astronaut");
                             }
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -251,6 +251,7 @@ public class FlyghtController {
             dontusebattery.setOnAction((ActionEvent event) -> {
                 currentCoordsBatteryFuture.complete(new Pair<>(-1,-1));
                 clearShipListeners(ship);
+                updatePlayerShip();
             });
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
@@ -289,9 +290,8 @@ public class FlyghtController {
                         if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
                             currentCoordsBatteryFuture.complete(new Pair<>(row, col));
                         }
-
-                        updatePlayerShip();
                         clearShipListeners(ship);
+                        updatePlayerShip();
                         cell.setOnMouseClicked(null);
                     });
                     cell.setStyle(cell.getStyle() + " -fx-cursor: hand;");
@@ -1276,6 +1276,7 @@ public class FlyghtController {
 
 
     public void removeOverlay(int x, int y, String type) {
+        Platform.runLater(() -> {
             StackPane cell = getShipCellAt(x, y);
             if (cell == null) return;
 
@@ -1290,6 +1291,7 @@ public class FlyghtController {
             if (toRemove != null) {
                 cell.getChildren().remove(toRemove);
             }
+        });
     }
 
 

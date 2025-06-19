@@ -25,7 +25,7 @@ public class LobbyTimer {
             public void run() {
                 on120End.run();
             }
-        }, 120 * 1000);
+        }, 270 * 1000);
     }
 
     public LobbyTimer(int totalPlayers, Lobby lobby) {
@@ -47,7 +47,7 @@ public class LobbyTimer {
                 build120Ended = true;
                 on30End.run();
             }
-        }, 30 * 1000);
+        }, 90 * 1000);
     }
 
     /**

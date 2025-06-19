@@ -815,14 +815,14 @@ public class Client {
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
-
+                    if (virtualViewType == VirtualViewType.GUI) {
+                        ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+                    }
 
                 } else {
                     facedUp_deck_local.remove(cpm.getCardComponent());
                 }
-                if (virtualViewType == VirtualViewType.GUI) {
-                    ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
-                }
+
                 break;
 
             case FORCE_BUILD_PHASE_END:
@@ -890,7 +890,6 @@ public class Client {
                     virtualView.showMessage(bm.getContent());
                     virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
-
                 } else {
                     System.out.println();
                     if (virtualViewType == VirtualViewType.GUI) {
@@ -900,7 +899,6 @@ public class Client {
                         virtualView.showBasicBoard(local_board_positions, local_board_laps);
                     }
                 }
-
 
                 if (virtualViewType == VirtualViewType.TUI) {
                     ((TUI) virtualView).setLocal_board_position(local_board_positions);
@@ -1167,7 +1165,7 @@ public class Client {
                 if (choice) {
 
                     int num_crew_mates = ab_ship.getCrewmates_loss();
-                    player_local.setCredits(player_local.getCredits() + ab_ship.getCrewmates_loss());
+                    player_local.setCredits(player_local.getCredits() + ab_ship.getGiven_credits());
                     while (num_crew_mates != 0) {
                         if(virtualViewType == VirtualViewType.GUI) {
                             virtualView.showMessage("Mancano"+num_crew_mates+" crewmates da rimuovere");

@@ -497,7 +497,7 @@ public class Game extends BaseGame {
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
-        connectors.put(East, Single);
+        connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
         deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_5.jpg"));
@@ -1568,4 +1568,5 @@ public class Game extends BaseGame {
     public List<CardAdventure> getDeck_middle() {
         return deck_middle;
     }
+
 }

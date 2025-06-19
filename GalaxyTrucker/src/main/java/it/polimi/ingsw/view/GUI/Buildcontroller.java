@@ -89,9 +89,7 @@ public class Buildcontroller {
                     if (!faceupCardIndex.isDone()) {
                         faceupCardIndex.complete(index);
                     }
-                    if (!action.isDone()) {
-                        action.complete(2);
-                    }
+                    action.complete(2);
                 });
 
                 faceupCardPreview.getChildren().add(cardImage);

@@ -83,6 +83,8 @@ public class Server implements RemoteServer {
         }
     }
 
+
+
     @Override
     public UUID registerClient(RemoteClient client) throws RemoteException {
         UUID clientId = UUID.randomUUID();
@@ -523,13 +525,13 @@ public class Server implements RemoteServer {
         //       CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
 
 
-                /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
+                CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
                         Arrays.asList(
                                 Cargo.Red,
                                 Cargo.Yellow,
                                 Cargo.Yellow
                         ),
-                        3,"");*/
+                        3,"");
 
 
 //             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
@@ -563,8 +565,8 @@ public class Server implements RemoteServer {
 //                );
 
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                CardAdventure adventure = controller.getRandomAdventure();
-                adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
+                //CardAdventure adventure = controller.getRandomAdventure();
+                //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
 
                 manageAdventure(adventure, controller);
 
@@ -595,6 +597,14 @@ public class Server implements RemoteServer {
                     safePlayers.add(p.copyPlayer());
                 }
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+
+
+                if(controller.getActivePlayers().size() == 1){
+
+                    manageAdventure(null,controller); //va direttamente alla schermata finale
+
+                }
+
 
                 switch (controller.getCurrentAdventure().getType()) {
 

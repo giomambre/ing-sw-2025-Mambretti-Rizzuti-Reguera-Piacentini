@@ -225,6 +225,10 @@ public class GUI implements View {
         this.player_local = localPlayer;
     }
 
+    public Player getPlayer_local() {
+        return player_local;
+    }
+
     @Override
     public void updateOtherPlayers(List<Player> otherPlayers) {
 
@@ -1144,6 +1148,7 @@ public class GUI implements View {
             int pos = cargoSelector.askCargo(selectedStorage.getCarried_cargos());
 
             pair = new Pair<>(selection, pos);
+            flyghtController.updatePlayerShip();
             return pair;
 
         } catch (InterruptedException | ExecutionException e) {
@@ -1205,6 +1210,7 @@ public class GUI implements View {
     public void removeCargo(Ship ship) {
         CargoSelector cargoSelector = new CargoSelector();
         cargoSelector.removeCargo(ship);
+        flyghtController.updatePlayerShip();
     }
 
     @Override
