@@ -297,7 +297,7 @@ public class QuickGame extends BaseGame {
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
-        connectors.put(East, Single);
+        connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
         deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_5.jpg"));
@@ -305,10 +305,18 @@ public class QuickGame extends BaseGame {
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
-        connectors.put(East, Double);
+        connectors.put(East, Single);
         connectors.put(West, Universal);
 
         deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_6.jpg"));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Universal);
+
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_7.jpg"));
 
 
         connectors.put(North, Double);
@@ -316,16 +324,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_7.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Smooth);
-        connectors.put(East, Smooth);
-        connectors.put(West, Universal);
-
         deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_8.jpg"));
-
 
         connectors.put(North, Universal);
         connectors.put(South, Smooth);
@@ -1219,7 +1218,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_1.jpg")); //di defaul rivolti nord-est (da capire se fare sottoclasse)
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -1227,7 +1226,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_2.jpg"));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_2.jpg"));
 
 
         connectors.put(North, Double);
@@ -1235,7 +1234,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_3.jpg"));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_3.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1243,7 +1242,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_4.jpg"));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_4.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1251,7 +1250,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_5.jpg"));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_5.jpg"));
 
 
         connectors.put(North, Single);
@@ -1259,7 +1258,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Double);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_6.jpg"));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1267,7 +1266,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_7.jpg"));
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_7.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1275,9 +1274,7 @@ public class QuickGame extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/shield_8.jpg"));
-
-        //to add : adventure deck creation and allocation
+        deck_components.add(new CardComponent(Shield, connectors, "images/cardComponent/GT-shield_8.jpg"));
 
         Collections.shuffle(deck_components);
 

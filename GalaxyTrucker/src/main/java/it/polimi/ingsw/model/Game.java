@@ -468,7 +468,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_1.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_1.jpg"));
 
 
         connectors.put(North, Double);
@@ -476,7 +476,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_2.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_2.jpg"));
 
 
         connectors.put(North, Double);
@@ -484,7 +484,7 @@ public class Game extends BaseGame {
         connectors.put(East, Universal);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_3.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_3.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -492,7 +492,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_4.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_4.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -500,7 +500,15 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_5.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_5.jpg"));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Single);
+        connectors.put(West, Universal);
+
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -508,7 +516,7 @@ public class Game extends BaseGame {
         connectors.put(East, Double);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_6.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_7.jpg"));
 
 
         connectors.put(North, Double);
@@ -516,23 +524,14 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_8.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Smooth);
-        connectors.put(East, Smooth);
-        connectors.put(West, Universal);
-
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_7.jpg"));
-
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_8.jpg"));
 
         connectors.put(North, Universal);
         connectors.put(South, Smooth);
         connectors.put(East, Smooth);
         connectors.put(West, Universal);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_9.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "images/cardComponent/GT-blueStorage_2_9.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -540,7 +539,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3, "/images/cardComponent/GT-blueStorage_3_1.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_1.jpg"));
 
 
         connectors.put(North, Single);
@@ -548,7 +547,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3, "/images/cardComponent/GT-blueStorage_3_2.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_2.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -556,7 +555,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3, "/images/cardComponent/GT-blueStorage_3_3.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_3.jpg"));
 
 
         connectors.put(North, Double);
@@ -564,7 +563,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Smooth);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3, "/images/cardComponent/GT-blueStorage_3_4.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_4.jpg"));
 
 
         connectors.put(North, Single);
@@ -572,7 +571,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Single);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3, "/images/cardComponent/GT-blueStorage_3_5.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_5.jpg"));
 
 
         connectors.put(North, Double);
@@ -580,7 +579,7 @@ public class Game extends BaseGame {
         connectors.put(East, Smooth);
         connectors.put(West, Double);
 
-        deck_components.add(new Storage(BlueStorage, connectors, 3, "/images/cardComponent/GT-blueStorage_3_6.jpg"));
+        deck_components.add(new Storage(BlueStorage, connectors, 3, "images/cardComponent/GT-blueStorage_3_6.jpg"));
 
 
         connectors.put(North, Smooth);
@@ -1482,7 +1481,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_1.jpg")); //di defaul rivolti nord-est (da capire se fare sottoclasse)
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_1.jpg"));
 
 
         connectors.put(North, Single);
