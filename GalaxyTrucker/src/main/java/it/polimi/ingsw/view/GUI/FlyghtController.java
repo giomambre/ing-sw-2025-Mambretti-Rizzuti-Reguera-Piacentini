@@ -1276,6 +1276,7 @@ public class FlyghtController {
 
 
     public void removeOverlay(int x, int y, String type) {
+        Platform.runLater(() -> {
             StackPane cell = getShipCellAt(x, y);
             if (cell == null) return;
 
@@ -1290,6 +1291,7 @@ public class FlyghtController {
             if (toRemove != null) {
                 cell.getChildren().remove(toRemove);
             }
+        });
     }
 
 
