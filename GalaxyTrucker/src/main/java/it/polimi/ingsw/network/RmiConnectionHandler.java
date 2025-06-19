@@ -27,6 +27,7 @@ public class RmiConnectionHandler implements ConnectionHandler {
 
     @Override
     public void close() {
+        
     }
 
     @Override

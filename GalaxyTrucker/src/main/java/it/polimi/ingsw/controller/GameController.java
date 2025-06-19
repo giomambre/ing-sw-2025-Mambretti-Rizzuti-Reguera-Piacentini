@@ -167,6 +167,15 @@ public class GameController {
 
         }
 
+
+        for (Player p : adventureOrder) {
+
+            if (!getActivePlayers().contains(p)) {
+                adventureOrder.remove(p);
+            }
+
+        }
+
     }
 
 

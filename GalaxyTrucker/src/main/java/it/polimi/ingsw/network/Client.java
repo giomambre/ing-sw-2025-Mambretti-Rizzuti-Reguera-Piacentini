@@ -16,7 +16,7 @@ import it.polimi.ingsw.network.messages.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.util.Pair;
-
+import it.polimi.ingsw.model.enumerates.CrewmateType;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -575,6 +575,8 @@ public class Client {
                         CardComponent component = plance[i][j];
                         coords = new Pair<>(i, j);
                         if (component.getComponentType() == LivingUnit) {
+                            ((LivingUnit) component).setNum_crewmates(0);
+                            ((LivingUnit) component).setCrewmate_type(CrewmateType.None);
 
                             int select;
                             if (virtualViewType == VirtualViewType.GUI) {
