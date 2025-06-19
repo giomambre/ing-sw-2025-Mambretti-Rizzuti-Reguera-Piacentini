@@ -147,10 +147,11 @@ public class Buildcontroller {
         cardImage.setOnMouseClicked(e -> {
             if (!reservedCardIndex.isDone()) {
                 reservedCardPreview.getChildren().remove(cardImage);
-                reservedCardIndex.complete(index);
-                reservedCards.remove(index);
+                reservedCardIndex.complete(reservedCards.indexOf(card));
+                reservedCards.remove(card);
             }
             if (!action.isDone()) {
+                System.out.println("action done");
                 action.complete(3);
             }
         });
