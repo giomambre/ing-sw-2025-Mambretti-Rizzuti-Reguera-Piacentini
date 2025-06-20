@@ -39,6 +39,8 @@ public class Server implements RemoteServer {
     private static final int SOCKET_PORT = 12345;
     private static final int RMI_PORT = 1099;
     private static Set<String> connectedNames = ConcurrentHashMap.newKeySet();
+    private static Set<String> disconnectedNames = ConcurrentHashMap.newKeySet();
+
     private static Queue<Message> messageQueue = new ConcurrentLinkedQueue<>();
     private final Map<UUID, ConnectionHandler> clients = new ConcurrentHashMap<>();
     private GameManager manager = new GameManager();
@@ -63,7 +65,7 @@ public class Server implements RemoteServer {
             while (!Thread.currentThread().isInterrupted()) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Nuova connessione Socket: " + clientSocket.getInetAddress());
-                SocketConnectionHandler handler = new SocketConnectionHandler(clientSocket, messageQueue);
+                SocketConnectionHandler handler = new SocketConnectionHandler(clientSocket, messageQueue,this);
                 clients.put(handler.getClientId(), handler);
                 new Thread(handler).start();
             }
@@ -82,6 +84,10 @@ public class Server implements RemoteServer {
             System.err.println("Errore avvio server RMI: " + e.getMessage());
         }
     }
+
+
+
+
 
 
 
@@ -131,10 +137,27 @@ public class Server implements RemoteServer {
 
 
             case SENDED_NAME:
+
                 StandardMessageClient msgClient = (StandardMessageClient) msg;
                 String requestedName = msg.getContent();
                 System.out.println("nick name inviato : " + requestedName);
-                if (connectedNames.contains(requestedName)) {
+
+                if(disconnectedNames.contains(requestedName)) {
+
+                    sendToClient(msgClient.getId_client(), new NotificationMessage(NOTIFICATION, "✅ RICONESSIONE RIUSCITA ti sei unito alla lobby, ora attendi che sia di nuovo il tuo turno!", ""));
+
+                    ConnectionHandler handler = clients.get(msgClient.getId_client());
+                    if (handler != null) {
+                        handler.setNickname(requestedName);
+                    }
+                    controller = all_games.get(getLobbyId(msgClient.getId_client()));
+
+
+                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "✅ Il giocatore " + requestedName + " si è riconesso alla partita !", requestedName));
+
+                    handleClientReconnection(msgClient.getId_client());
+                    break;
+                }else if (connectedNames.contains(requestedName)) {
                     sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Nome già in uso. Inserisci un altro nickname.", msgClient.getId_client()));
 
                 } else {
@@ -142,12 +165,17 @@ public class Server implements RemoteServer {
                         sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_REJECTED, "❌ Stringa vuota non accettata. Inserisci un altro nickname.", msgClient.getId_client()));
                         break;
                     }
+
+                   else{
+                        sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_ACCEPTED, "✅ Nickname accettato: " + requestedName, msgClient.getId_client()));
+
+                    }
+
                     connectedNames.add(requestedName);
-                                        ConnectionHandler handler = clients.get(msgClient.getId_client());
+                    ConnectionHandler handler = clients.get(msgClient.getId_client());
                     if (handler != null) {
                         handler.setNickname(requestedName);
                     }
-                    sendToClient(msgClient.getId_client(), new StandardMessageClient(MessageType.NAME_ACCEPTED, "✅ Nickname accettato: " + requestedName, msgClient.getId_client()));
 
                 }
                 break;
@@ -241,15 +269,15 @@ public class Server implements RemoteServer {
 
                         // Invia BUILD_START
 
-                        sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, "Hai 120s per costruire"));
+                        sendToAllClients(controller.getLobby(), new Message(MessageType.BUILD_START, "Hai 270s per costruire"));
 
                         // Avvia 120s
 
                         lt.start120(() -> lt.handle120End(
                                 // callback per quando scadono i 120s E qualcuno ha già finito
-                                () -> sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE, "⏳ 30s rimanenti")),
+                                () -> sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE, "⏳ 90s rimanenti")),
                                 // callback per quando scadono i 120s E NESSUNO ha ancora finito
-                                () -> sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE, "⏱ 120 secondi terminati : in attesa del primo giocatore..."))
+                                () -> sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE, "⏱ 270 secondi terminati : in attesa del primo giocatore..."))
                                 ,
                                 () -> {
                                     sendToAllClients(lt.getLobby(), new Message(MessageType.TIME_UPDATE,
@@ -372,7 +400,6 @@ public class Server implements RemoteServer {
 
                             controller.setGamestate(SUPLLY_PHASE);
                             sendToAllClients(lt.getLobby(), new Message(ADD_CREWMATES, ""));
-                            System.out.println("mandato");
                         },
                         // on30StartNeeded
                         () -> {
@@ -407,7 +434,6 @@ public class Server implements RemoteServer {
 
 
                 controller.setBuild_order_players(lt.getFinishOrder());
-                System.out.println("FINISHED ORDER" + lt.getFinishOrder());
                 break;
 
 
@@ -507,7 +533,7 @@ public class Server implements RemoteServer {
                 if (controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
 
                     handleMessage(new StandardMessageClient(START_FLIGHT, "", select_msg.getId_client()));
-
+                    controller.setGamestate(FLYING_PHASE);
                 }
 
                 break;
@@ -1365,23 +1391,31 @@ public class Server implements RemoteServer {
                 if (entry.getValue() instanceof RmiConnectionHandler) {
                     try {
                         ((RmiConnectionHandler) entry.getValue()).getRemoteClient().ping();
-                        System.out.println("ok");
                     } catch (RemoteException e) {
                         System.out.println("Client RMI disconnesso: " + entry.getKey());
                         handleClientDisconnection(entry.getKey());
                     }
                 }
             }
-        }, 0, 5, TimeUnit.SECONDS);
+        }, 0, 4, TimeUnit.SECONDS);
     }
 
-    private void handleClientDisconnection(UUID clientId) {
+    public void handleClientDisconnection(UUID clientId) {
         ConnectionHandler handler = clients.remove(clientId);
+        controller = all_games.get(getLobbyId(clientId));
+
         if (handler != null) {
             String nickname = handler.getNickname();
-            if (nickname != null) {
-                connectedNames.remove(nickname);
+            if (nickname != null ) {
                 int lobbyId = getLobbyId(clientId);
+                try {
+                    controller.removeFromActivePlayers(nickname);
+                } catch (Exception e) {
+                    System.out.println("PARTITA ANCORA NON IN FASE DI VOLO");
+                }
+                clients.remove(clientId);
+                disconnectedNames.add(nickname);
+
                 if (lobbyId != -1) {
                     Lobby lobby = manager.getLobby(lobbyId);
                     if (lobby != null) {
@@ -1393,6 +1427,37 @@ public class Server implements RemoteServer {
                 System.out.println("Client " + nickname + " rimosso.");
             }
         }
+    }
+
+
+
+    public void handleClientReconnection(UUID clientId) {
+        controller = all_games.get(getLobbyId(clientId));
+
+        switch (controller.getGamestate()){
+
+            case BUILD_PHASE :
+
+               sendToClient(clientId, new Message(MessageType.BUILD_START, ""));
+               List<Player> safePlayers = new ArrayList<>();
+                for (Player p : controller.getPlayers()) {
+                    safePlayers.add(p.copyPlayer());
+                }
+                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+
+                break;
+
+               case SUPLLY_PHASE :
+                   sendToClient(clientId,new Message(ADD_CREWMATES, ""));
+                    break;
+
+
+
+        }
+
+
+
+
     }
 }
 

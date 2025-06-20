@@ -18,11 +18,12 @@ public class SocketConnectionHandler implements ConnectionHandler {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String nickname;
-
-    public SocketConnectionHandler(Socket clientSocket, Queue<Message> messageQueue) {
+    private Server server;
+    public SocketConnectionHandler(Socket clientSocket, Queue<Message> messageQueue, Server server) {
         this.clientSocket = clientSocket;
         this.messageQueue = messageQueue;
         this.clientId = UUID.randomUUID();
+        this.server = server;
     }
 
     @Override
@@ -41,6 +42,7 @@ public class SocketConnectionHandler implements ConnectionHandler {
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
+            server.handleClientDisconnection(clientId);
             System.out.println("❌ Connessione persa con " + clientId);
         } finally {
             try {

@@ -505,10 +505,18 @@ public class Game extends BaseGame {
 
         connectors.put(North, Smooth);
         connectors.put(South, Smooth);
-        connectors.put(East, Double);
+        connectors.put(East, Single);
         connectors.put(West, Universal);
 
         deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_6.jpg"));
+
+
+        connectors.put(North, Smooth);
+        connectors.put(South, Smooth);
+        connectors.put(East, Double);
+        connectors.put(West, Universal);
+
+        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_7.jpg"));
 
 
         connectors.put(North, Double);
@@ -517,15 +525,6 @@ public class Game extends BaseGame {
         connectors.put(West, Universal);
 
         deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_8.jpg"));
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Smooth);
-        connectors.put(East, Smooth);
-        connectors.put(West, Universal);
-
-        deck_components.add(new Storage(BlueStorage, connectors, 2, "/images/cardComponent/GT-blueStorage_2_7.jpg"));
-
 
         connectors.put(North, Universal);
         connectors.put(South, Smooth);
@@ -1482,7 +1481,7 @@ public class Game extends BaseGame {
         connectors.put(East, Single);
         connectors.put(West, Single);
 
-        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_1.jpg")); //di defaul rivolti nord-est (da capire se fare sottoclasse)
+        deck_components.add(new Shield(Shield, connectors, "/images/cardComponent/GT-shield_1.jpg"));
 
 
         connectors.put(North, Single);
