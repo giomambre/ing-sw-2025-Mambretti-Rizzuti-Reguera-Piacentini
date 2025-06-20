@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.adventures.*;
 import it.polimi.ingsw.model.components.CardComponent;
@@ -30,6 +29,7 @@ public class GameController {
     List<Player> build_order_players = new ArrayList<>();
     Map<String, Double> list_engine_power = new HashMap<>();
     Map<String, Double> list_cannon_power = new HashMap<>();
+    private static final Random random = new Random();
 
     Lobby lobby;
     GameState game_state;
@@ -239,7 +239,9 @@ public class GameController {
     }
 
     public int throwDice() {
-        return Client.throwDice();
+       
+        return (random.nextInt(6) + 1) + (random.nextInt(6) + 1);
+    
     }
 
 

@@ -1444,7 +1444,9 @@ public class Server implements RemoteServer {
                     safePlayers.add(p.copyPlayer());
                 }
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
-
+                for(CardComponent card : controller.getFacedUpCards()){
+                    sendToClient(clientId, new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "",clientId, card));
+                }
                 break;
 
                case SUPLLY_PHASE :

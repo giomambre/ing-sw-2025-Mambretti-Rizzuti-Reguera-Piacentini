@@ -863,6 +863,7 @@ public class Client {
                     case "3":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
                         break;
+
                 }
 
 
