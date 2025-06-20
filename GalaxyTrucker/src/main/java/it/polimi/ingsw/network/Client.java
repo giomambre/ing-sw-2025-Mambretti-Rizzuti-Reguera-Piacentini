@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
+import it.polimi.ingsw.view.GUI.Buildcontroller;
 import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.GUI.GuiApplication;
 import it.polimi.ingsw.view.TUI.TUI;
@@ -75,8 +76,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "5.tcp.eu.ngrok.io";
-            int socketPort = 15505;
+            String host = "localhost";
+            int socketPort = 12345;
             int rmiPort = 1099;
             int choice = -1;
             do {
@@ -160,21 +161,21 @@ public class Client {
 
 
                         switch (msg.getType()) {
-                            case  REQUEST_NAME, NAME_REJECTED,
-                                  NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
-                                  CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
-                                  INVALID_CONNECTORS, SELECT_PIECE:
-                                inputQueue.put(msg);
-                                break;
 
-                            case ENGINE_POWER, END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT,
-                                 INVALID_SHIP,
-                                 START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
-                                 FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
-                                 BUILD_PHASE_ENDED:
-                                notificationQueue.put(msg);
-                                break;
+                                case  REQUEST_NAME, NAME_REJECTED,
+                                      NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
+                                      CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
+                                      INVALID_CONNECTORS, SELECT_PIECE:
+                                    inputQueue.put(msg);
+                                    break;
 
+                                case ENGINE_POWER, END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT,
+                                     INVALID_SHIP,
+                                     START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
+                                     FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
+                                     BUILD_PHASE_ENDED:
+                                    notificationQueue.put(msg);
+                                    break;
 
                             default:
 
@@ -392,11 +393,17 @@ public class Client {
 
             case BUILD_START:
                 int deck_selected;
+
                 if (virtualViewType == VirtualViewType.GUI) {
                     try {
                         otherPlayersReady.get();
                         ((GUI) virtualView).createbuildscreen();
                         deck_selected = virtualView.selectDeck();
+                        if(msg instanceof ShipClientMessage){
+                            player_local = ((ShipClientMessage) msg).getPlayer();
+                            ((GUI) virtualView).getBuildcontroller().printShipImage(player_local.getShip().getShip_board());
+
+                        }
                     } catch (InterruptedException | ExecutionException e) {
                         e.printStackTrace();
                         return;
@@ -800,14 +807,9 @@ public class Client {
                     if (p.getNickname().equals(nickname)) {
 
 
-                        if(player_local == null && msg.getContent().equals("r")) {
-                            player_local=p;
-                            if(virtualViewType==VirtualViewType.GUI){
-                                ((GUI)virtualView).getBuildcontroller().printShipImage(p.getNickname(),p.getShip().getShipBoard());
-                            }
 
-                        }
                         player_local = p;
+
 
                     } else {
                         other_players_local.add(p);

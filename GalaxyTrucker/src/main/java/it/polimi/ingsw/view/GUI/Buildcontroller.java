@@ -500,7 +500,7 @@ public class Buildcontroller {
                         CardComponent component = ship.getShip_board()[i][j];
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
                                 ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
-                        || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
+                                || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
                             cell.setStyle("-fx-background-color: transparent;");
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -778,9 +778,9 @@ public class Buildcontroller {
         return nodeId != null && nodeId.equals("overlay-" + type);
     }
 
-    public void printShipImage(String nickname, CardComponent[][] shipBoard) {
+    public void printShipImage( CardComponent[][] shipBoard) {
 
-        shipGrid.getChildren().clear();
+       // shipGrid.getChildren().clear();
 
         for (int i = 0; i < shipBoard.length; i++) {
             for (int j = 0; j < shipBoard[0].length; j++) {
