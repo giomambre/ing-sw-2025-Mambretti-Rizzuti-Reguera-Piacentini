@@ -123,7 +123,7 @@ public class FlyghtController {
     }
 
     public void updateCreditLabel(int credits) {
-        playerCreditsLabel.setText("Crediti: " + credits);
+        Platform.runLater(() -> playerCreditsLabel.setText("Crediti: " + credits));
     }
 
     public CompletableFuture<Pair<Integer,Integer>> getAstronautToRemove() {
