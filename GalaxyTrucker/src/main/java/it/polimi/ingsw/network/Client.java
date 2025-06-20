@@ -772,7 +772,7 @@ public class Client {
                     System.out.println("Errore: colore non valido " + parts[1]);
                 }
                 if (parts[0].equals(nickname)) {
-                    if (virtualViewType == VirtualViewType.TUI){
+                    if (virtualViewType==VirtualViewType.TUI){
                         virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
                     }
                 } else {
@@ -828,7 +828,10 @@ public class Client {
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
                     if (virtualViewType == VirtualViewType.GUI) {
-                        ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+                        if (((GUI) virtualView).getBuildcontroller() != null) {
+                            ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+
+                        }
                     }
 
                 } else {
