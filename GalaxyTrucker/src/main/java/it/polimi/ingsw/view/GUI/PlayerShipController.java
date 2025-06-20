@@ -60,8 +60,8 @@ public class PlayerShipController {
 
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                     ImageView iv = new ImageView(img);
-                    iv.setFitWidth(53);
-                    iv.setFitHeight(53);
+                    iv.setFitWidth(66.25);
+                    iv.setFitHeight(66.25);
                     iv.setPreserveRatio(true);
                     iv.setRotate(component.getRotationAngle());
                     cell.getChildren().add(iv);

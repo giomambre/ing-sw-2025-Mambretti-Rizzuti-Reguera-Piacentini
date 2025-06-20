@@ -12,12 +12,12 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="425.0" prefWidth="400.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.PlayerShipController">
+<StackPane prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.PlayerShipController">
     <stylesheets>
         <URL value="@PlayerShipView.css" />
     </stylesheets>
     <children>
-      <ImageView fitHeight="290.0" fitWidth="400.0" StackPane.alignment="TOP_CENTER">
+      <ImageView fitHeight="362.5" fitWidth="500.0" StackPane.alignment="TOP_CENTER">
          <image>
              <Image url="@images/ship/grid.jpg" />
          </image>
@@ -26,27 +26,36 @@
          </StackPane.margin>
       </ImageView>
 
-          <VBox alignment="TOP_CENTER" prefHeight="425.0" prefWidth="400.0" spacing="10.0">
+          <VBox alignment="TOP_CENTER" spacing="10.0">
            <Label fx:id="playerNameLabel" />
-           <GridPane fx:id="shipGrid" alignment="CENTER" maxHeight="264.0" maxWidth="383.0" prefHeight="264.0" prefWidth="383.0">
-               <columnConstraints>
-                   <ColumnConstraints prefWidth="53" />
-                   <ColumnConstraints prefWidth="53" />
-               </columnConstraints>
-
-               <rowConstraints>
-                   <RowConstraints prefHeight="53.0" />
-                   <RowConstraints prefHeight="53.0" />
-               </rowConstraints>
-
+           <GridPane fx:id="shipGrid" alignment="CENTER" maxHeight="330.0" maxWidth="479.75" prefHeight="330.0" prefWidth="479.75">
                <VBox.margin>
-               <Insets left="15.0" right="15.0" top="36.0" />
-            </VBox.margin>
+                   <Insets top="36.0" />
+               </VBox.margin>
+               <columnConstraints>
+                   <ColumnConstraints percentWidth="66.25"/>
+                   <ColumnConstraints percentWidth="66.25"/>
+                   <ColumnConstraints percentWidth="66.25"/>
+                   <ColumnConstraints percentWidth="66.25"/>
+                   <ColumnConstraints percentWidth="66.25"/>
+                   <ColumnConstraints percentWidth="66.25"/>
+                   <ColumnConstraints percentWidth="66.25"/>
+               </columnConstraints>
+               <rowConstraints>
+                   <RowConstraints percentHeight="66.25"/>
+                   <RowConstraints percentHeight="66.25"/>
+                   <RowConstraints percentHeight="66.25"/>
+                   <RowConstraints percentHeight="66.25"/>
+                   <RowConstraints percentHeight="66.25"/>
+               </rowConstraints>
          </GridPane>
-           <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeStage" prefHeight="26.0" prefWidth="89.0" styleClass="player-button" text="CHIUDI" visible="false"/>
-              <Button fx:id="closeButtonFlyght" mnemonicParsing="false" onAction="#closeStageFlyght" prefHeight="26.0" prefWidth="89.0" styleClass="player-button" text="CHIUDI" visible="false">
+           <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeStage" prefHeight="32.5" prefWidth="111.25" styleClass="player-button" text="CHIUDI" visible="false">
             <VBox.margin>
-               <Insets top="30.0" />
+               <Insets top="50.0" />
+            </VBox.margin></Button>
+              <Button fx:id="closeButtonFlyght" mnemonicParsing="false" onAction="#closeStageFlyght" prefHeight="32.5" prefWidth="111.25" styleClass="player-button" text="CHIUDI" visible="false">
+            <VBox.margin>
+               <Insets bottom="5.0" />
             </VBox.margin></Button>
        </VBox>
    </children>

@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 import javafx.util.Duration;
@@ -44,6 +45,8 @@ public class Buildcontroller {
     private CardComponent[][] currentShipBoard;
     private List<Pair<Integer, Integer>> invalidConnectors;
     private CompletableFuture<Ship> shipUpdateFuture;
+    private Timeline blinkTimeline;
+
     @FXML
     private Label timerLabel;
 
@@ -51,7 +54,7 @@ public class Buildcontroller {
     private int timeLeft;
     private final int TIME_LIMIT_SECONDS = 180;
     @FXML
-    private HBox playersButtonBox;
+    private VBox playersButtonBox;
     @FXML
     private HBox crewmateButtonBox;
 
@@ -79,24 +82,53 @@ public class Buildcontroller {
 
     private Stage playerStage;
 
+    private void startBlinking() {
+        blinkTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.5), e -> {
+                    String currentStyle = timerLabel.getStyle();
+                    if (currentStyle.contains("transparent")) {
+                        timerLabel.setStyle("-fx-text-fill: red; -fx-font-size: 25;  -fx-font-family: 'Verdana'");
+                    } else {
+                        timerLabel.setStyle("-fx-text-fill: transparent; -fx-font-size: 25;  -fx-font-family: 'Verdana'");
+                    }
+                })
+        );
+        blinkTimeline.setCycleCount(Animation.INDEFINITE);
+        blinkTimeline.play();
+    }
+
+    private void stopBlinking() {
+        if (blinkTimeline != null) {
+            blinkTimeline.stop();
+            blinkTimeline = null;
+            timerLabel.setStyle("-fx-text-fill: red; -fx-font-size: 20; -fx-font-family: 'Verdana'");
+        }
+    }
+
+
     @FXML
     public void initialize() {
         timeLeft = 270;
-        timerLabel.setText(formatTime(timeLeft)); // Imposta il testo iniziale
+        timerLabel.setText(formatTime(timeLeft));
 
-        // Inizializza la Timeline QUI, una sola volta
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if (timeLeft > 0) {
                 timeLeft--;
                 timerLabel.setText(formatTime(timeLeft));
+
+                if (timeLeft == 30) {
+                    startBlinking();
+                }
             } else {
                 timeline.stop();
+                stopBlinking();
                 timerLabel.setText("Tempo Scaduto!");
                 System.out.println("Tempo di costruzione terminato!");
             }
         }));
-        timeline.setCycleCount(Animation.INDEFINITE); // Ripeti indefinitamente
+        timeline.setCycleCount(Animation.INDEFINITE);
     }
+
 
     public void starttimer(int seconds) {
         if (timeline.getStatus() == Animation.Status.RUNNING) {
@@ -129,8 +161,8 @@ public class Buildcontroller {
 
                 Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardImage = new ImageView(image);
-                cardImage.setFitWidth(62);
-                cardImage.setFitHeight(62);
+                cardImage.setFitWidth(77.5);
+                cardImage.setFitHeight(77.5);
                 cardImage.setPreserveRatio(true);
 
                 final int index = i;
@@ -188,8 +220,8 @@ public class Buildcontroller {
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
         ImageView cardImage = new ImageView(image);
-        cardImage.setFitWidth(62);
-        cardImage.setFitHeight(61);
+        cardImage.setFitWidth(77.5);
+        cardImage.setFitHeight(76.25);
         cardImage.setPreserveRatio(true);
 
         int index = reservedCards.size() - 1;
@@ -219,8 +251,8 @@ public class Buildcontroller {
 
         for (CardComponent card : reserved) {
             ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath()))));
-            view.setFitWidth(62);
-            view.setFitHeight(62);
+            view.setFitWidth(77.5);
+            view.setFitHeight(77.5);
             view.setPreserveRatio(true);
             reservedCardPreview.getChildren().add(view);
         }
@@ -240,9 +272,9 @@ public class Buildcontroller {
 
     public void initializeShipBoard() {
         shipGrid.getChildren().clear();
-        shipGrid.setPrefSize(432, 309);
-        shipGrid.setMinSize(432, 309);
-        shipGrid.setMaxSize(432, 309);
+        shipGrid.setPrefSize(540, 386.25);
+        shipGrid.setMinSize(540, 386.25);
+        shipGrid.setMaxSize(540, 386.25);
 
         CardComponent[][] shipboard=gui.getClient().getPlayer_local().getShip().getShipBoard();
         for (int i = 0; i < 5; i++) {
@@ -250,15 +282,15 @@ public class Buildcontroller {
 
                 StackPane cell = new StackPane();
 
-                cell.setPrefSize(62, 62);
-                cell.setMinSize(62, 62);
-                cell.setMaxSize(62, 62);
+                cell.setPrefSize(77.5, 77.5);
+                cell.setMinSize(77.5, 77.5);
+                cell.setMaxSize(77.5, 77.5);
 
                 if (shipboard[i][j].getComponentType()== ComponentType.NotAccessible) {
                     cell.setStyle("-fx-background-color: transparent;");
                 } else {
                     if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
-                        cell.setPrefSize(62,62);
+                        cell.setPrefSize(77.5,77.5);
                         cell.setStyle("-fx-background-color: transparent;");
 
                         final Effect originalEffect = cell.getEffect();
@@ -323,8 +355,8 @@ public class Buildcontroller {
                     if (imagePath != null) {
                         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
                         ImageView imageView = new ImageView(image);
-                        imageView.setFitWidth(62);
-                        imageView.setFitHeight(62);
+                        imageView.setFitWidth(77.5);
+                        imageView.setFitHeight(77.5);
                         imageView.setPreserveRatio(false);
                         cell.getChildren().add(imageView);
                     }
@@ -461,8 +493,8 @@ public class Buildcontroller {
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(62);
-        imageView.setFitHeight(62);
+        imageView.setFitWidth(77.5);
+        imageView.setFitHeight(77.5);
         imageView.setPreserveRatio(false);
 
         imageView.setRotate(card.getRotationAngle());
@@ -524,6 +556,8 @@ public class Buildcontroller {
             stage.setTitle("Nave di " + player.getNickname());
             stage.setScene(new Scene(root));
             setPlayerStage(stage);
+            playerStage.setX(0);
+            playerStage.setY(100);
             stage.show();
 
 
@@ -768,8 +802,8 @@ public class Buildcontroller {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < 2; i++) {
                     ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    img.setFitWidth(40);
-                    img.setFitHeight(40);
+                    img.setFitWidth(50);
+                    img.setFitHeight(50);
                     img.setPreserveRatio(true);
                     img.setSmooth(true);
                     img.setMouseTransparent(true);
@@ -781,8 +815,8 @@ public class Buildcontroller {
             case "PinkAlien": {
                 path = "/images/icons/pinkAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(40);
-                img.setFitHeight(40);
+                img.setFitWidth(50);
+                img.setFitHeight(50);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -791,8 +825,8 @@ public class Buildcontroller {
             case "BrownAlien": {
                 path = "/images/icons/brownAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(40);
-                img.setFitHeight(40);
+                img.setFitWidth(50);
+                img.setFitHeight(50);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -808,8 +842,8 @@ public class Buildcontroller {
 
                 for (int i = 0; i < count; i++) {
                     ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    batteryImg.setFitWidth(25);
-                    batteryImg.setFitHeight(25);
+                    batteryImg.setFitWidth(30);
+                    batteryImg.setFitHeight(30);
                     batteryImg.setPreserveRatio(true);
                     batteryImg.setSmooth(true);
                     batteryImg.setMouseTransparent(true);
@@ -841,8 +875,8 @@ public class Buildcontroller {
 
                 Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
                 ImageView imageView = new ImageView(image);
-                imageView.setFitWidth(62);
-                imageView.setFitHeight(62);
+                imageView.setFitWidth(77.5);
+                imageView.setFitHeight(77.5);
                 imageView.setPreserveRatio(false);
 
                 imageView.setRotate(card.getRotationAngle());
