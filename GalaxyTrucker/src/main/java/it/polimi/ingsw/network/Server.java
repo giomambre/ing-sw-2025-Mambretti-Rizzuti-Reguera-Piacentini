@@ -1133,9 +1133,7 @@ public class Server implements RemoteServer {
                 System.out.println("⚠ Messaggio sconosciuto ricevuto: " + msg.getType());
                 break;
 
-
         }
-
 
     }
 
@@ -1449,7 +1447,7 @@ public class Server implements RemoteServer {
                 for (Player p : controller.getPlayers()) {
                     safePlayers.add(p.copyPlayer());
                 }
-                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "r", safePlayers));
                 for(CardComponent card : controller.getFacedUpCards()){
                     sendToClient(clientId, new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "",clientId, card));
                 }

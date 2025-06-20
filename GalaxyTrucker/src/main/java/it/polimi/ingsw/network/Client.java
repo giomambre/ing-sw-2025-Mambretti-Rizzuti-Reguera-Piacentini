@@ -799,13 +799,15 @@ public class Client {
                 for (Player p : tmp) {
                     if (p.getNickname().equals(nickname)) {
 
-                        player_local = p;
-                        if(player_local==null){
+
+                        if(msg.getContent().equals("r")) {
                             player_local=p;
                             if(virtualViewType==VirtualViewType.GUI){
                                 ((GUI)virtualView).getBuildcontroller().printShipImage(p.getNickname(),p.getShip().getShipBoard());
                             }
+
                         }
+                        player_local = p;
 
                     } else {
                         other_players_local.add(p);
