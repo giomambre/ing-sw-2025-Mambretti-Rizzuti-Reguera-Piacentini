@@ -147,10 +147,11 @@ public class Buildcontroller {
         cardImage.setOnMouseClicked(e -> {
             if (!reservedCardIndex.isDone()) {
                 reservedCardPreview.getChildren().remove(cardImage);
-                reservedCardIndex.complete(index);
-                reservedCards.remove(index);
+                reservedCardIndex.complete(reservedCards.indexOf(card));
+                reservedCards.remove(card);
             }
             if (!action.isDone()) {
+                System.out.println("action done");
                 action.complete(3);
             }
         });
@@ -467,6 +468,7 @@ public class Buildcontroller {
             System.out.println("debug,nave di:"+player.getNickname());
             System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
             controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
+            controller.showCloseButton();
 
             Stage stage = new Stage();
             stage.setTitle("Nave di " + player.getNickname());
@@ -682,15 +684,6 @@ public class Buildcontroller {
     }
 
 
-    /*public Node getCardPosition(int x,int y) {
-        Node card = null;
-        for (Node node : shipGrid.getChildren()) {
-            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                card = node;
-            }
-        }
-        return card;
-    }*/
     public Node getCardPosition(int x, int y) {
         for (Node node : shipGrid.getChildren()) {
             // *** MODIFICA QUI: Gestione dei valori null per gli indici ***

@@ -438,6 +438,7 @@ public class GUI implements View {
 
                 // Dopo che tutto è pronto, inizializza i componenti
                 controller.updatePlayerShip();
+                controller.setupPlayerButtons(client.getOther_players_local());
 
                 // Se ci sono già posizioni dei giocatori, aggiornale
                 if (client != null && client.getOther_players_local() != null) {
@@ -495,7 +496,11 @@ public class GUI implements View {
 
                 controller.setGui(this);
                 Stage stage = new Stage(); // Crea la stage qui
-                controller.setStage(stage); // Passa la stage al controller
+                controller.setStage(stage);// Passa la stage al controller
+                if (player_local.getShip().getExtra_components().contains(card) || player_local.getShip().getExtra_components().size()>1) {
+                    controller.setBookButton();
+                }
+
                 //controller.setComboBox();
                 controller.showCardImage(card);
 

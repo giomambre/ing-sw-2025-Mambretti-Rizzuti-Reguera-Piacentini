@@ -67,6 +67,14 @@ public class Randomcardcontroller {
 
     }*/
 
+    public void setBookButton(){
+        bookButton.setDisable(true);
+    }
+
+    public void setDiscardButton(){
+        discardButton.setDisable(true);
+    }
+
     public void start(CardComponent card) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
         Parent root = loader.load();
@@ -78,7 +86,7 @@ public class Randomcardcontroller {
         randomCardStage.setScene(new Scene(root));
         randomCardStage.centerOnScreen();
         randomCardStage.show();
-        //controller.setComboBox();
+
 
         controller.showCardImage(card);
 
@@ -95,6 +103,8 @@ public class Randomcardcontroller {
 
     @FXML
     public void setFour(ActionEvent event) {
+
+
         gui.getBuildcontroller().addReservedCard(gui.getActualcard());
 
         if (!action.isDone()) {
@@ -126,8 +136,8 @@ public class Randomcardcontroller {
         // che aggiornerà automaticamente tutte le GUI dei client
 
         if (!action.isDone()) {
-            if (gui.getPlayer_local().getShip().getExtra_components().contains(gui.getActualcard())) gui.getBuildcontroller().addReservedCard(gui.getActualcard());
             action.complete(3);
+            if (gui.getPlayer_local().getShip().getExtra_components().contains(gui.getActualcard())) gui.getBuildcontroller().addReservedCard(gui.getActualcard());
         }
 
 

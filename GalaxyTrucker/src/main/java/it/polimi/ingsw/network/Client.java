@@ -1198,7 +1198,6 @@ public class Client {
 
                     }
                     if(virtualViewType == VirtualViewType.GUI){
-                        System.out.println("Credits: "+player_local.getCredits());
                         ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
                     }
                 } else {
@@ -1480,6 +1479,9 @@ public class Client {
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
                 }
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                }
 
 
                 break;
@@ -1523,13 +1525,22 @@ public class Client {
 
                     if(choice){
                         player_local.setCredits( player_local .getCredits() + pirates.getCredits());
-                        virtualView.showMessage("\nHAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                        }
+                        if(virtualViewType == VirtualViewType.TUI) {
+                            virtualView.showMessage("\nHAI GUADAGNATO " + pirates.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     }else{
 
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "w", clientId, player_local));
 
+                    }
+
+                    if(virtualViewType == VirtualViewType.GUI){
+                        ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
                     }
 
                     break;
@@ -1589,7 +1600,12 @@ public class Client {
 
                     if (choice) {
                         player_local.setCredits( player_local .getCredits() + slavers.getCredits());
-                        virtualView.showMessage("HAI GUADAGNATO " + slavers.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                        }
+                        if(virtualViewType == VirtualViewType.TUI) {
+                            virtualView.showMessage("HAI GUADAGNATO " + slavers.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     } else {
