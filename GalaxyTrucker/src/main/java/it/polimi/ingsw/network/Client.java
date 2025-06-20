@@ -800,7 +800,7 @@ public class Client {
                     if (p.getNickname().equals(nickname)) {
 
 
-                        if(msg.getContent().equals("r")) {
+                        if(player_local == null && msg.getContent().equals("r")) {
                             player_local=p;
                             if(virtualViewType==VirtualViewType.GUI){
                                 ((GUI)virtualView).getBuildcontroller().printShipImage(p.getNickname(),p.getShip().getShipBoard());
