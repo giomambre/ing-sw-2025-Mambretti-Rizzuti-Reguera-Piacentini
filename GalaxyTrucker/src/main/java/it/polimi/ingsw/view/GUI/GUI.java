@@ -438,6 +438,7 @@ public class GUI implements View {
 
                 // Dopo che tutto è pronto, inizializza i componenti
                 controller.updatePlayerShip();
+                controller.setupPlayerButtons(client.getOther_players_local());
 
                 // Se ci sono già posizioni dei giocatori, aggiornale
                 if (client != null && client.getOther_players_local() != null) {

@@ -74,6 +74,7 @@
 
                 </VBox>
 
+                <HBox fx:id="playersButtonBox" alignment="CENTER_LEFT" spacing="10" />
 
 
                 <VBox alignment="CENTER" spacing="10.0">

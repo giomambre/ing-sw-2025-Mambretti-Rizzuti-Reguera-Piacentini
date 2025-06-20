@@ -468,6 +468,7 @@ public class Buildcontroller {
             System.out.println("debug,nave di:"+player.getNickname());
             System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
             controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
+            controller.showCloseButton();
 
             Stage stage = new Stage();
             stage.setTitle("Nave di " + player.getNickname());
@@ -683,15 +684,6 @@ public class Buildcontroller {
     }
 
 
-    /*public Node getCardPosition(int x,int y) {
-        Node card = null;
-        for (Node node : shipGrid.getChildren()) {
-            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                card = node;
-            }
-        }
-        return card;
-    }*/
     public Node getCardPosition(int x, int y) {
         for (Node node : shipGrid.getChildren()) {
             // *** MODIFICA QUI: Gestione dei valori null per gli indici ***
