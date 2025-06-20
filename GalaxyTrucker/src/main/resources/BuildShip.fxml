@@ -41,9 +41,14 @@
             <HBox fx:id="playersButtonBox" alignment="CENTER_LEFT" spacing="10" />
             <HBox fx:id="crewmateButtonBox" alignment="CENTER_LEFT" spacing="10" />
 
+
             <Button fx:id="endbutton" onAction="#setFour" styleClass="ship-button" text="Termina Assemblaggio" />
 
             <Pane prefHeight="340" prefWidth="468" StackPane.alignment="CENTER">
+                <VBox>
+                <Label fx:id="timer" text="Tempo rimanente:" style="-fx-font-size: 48px; -fx-text-fill: white;" /> <HBox alignment="CENTER" spacing="10.0"/>
+                <Label fx:id="timerLabel" text="04:30" style="-fx-font-size: 48px; -fx-text-fill: white;" /> <HBox alignment="CENTER" spacing="10.0"/>
+                </VBox>
                 <GridPane fx:id="shipGrid" alignment="CENTER" layoutX="552.0" layoutY="13.0" prefHeight="309.0" prefWidth="432.0">
                <columnConstraints>
                   <ColumnConstraints />

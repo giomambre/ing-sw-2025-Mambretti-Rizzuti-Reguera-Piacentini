@@ -867,8 +867,15 @@ public class Client {
                 break;
 
             case TIME_UPDATE:
-
-                virtualView.showMessage("\n" + msg.getContent());
+                System.out.println("SONO QUI PER MODIF TIMER CIAO");
+                if(virtualViewType == VirtualViewType.GUI){
+                    if(msg.getContent().equals("⏳ 90s rimanenti") || msg.getContent().equals("🔔 Un giocatore ha finito! ")){
+                        ((GUI)virtualView).getBuildcontroller().starttimer(90);
+                    }
+                }
+                if(virtualViewType==VirtualViewType.TUI) {
+                    virtualView.showMessage("\n" + msg.getContent());
+                }
 
                 break;
 

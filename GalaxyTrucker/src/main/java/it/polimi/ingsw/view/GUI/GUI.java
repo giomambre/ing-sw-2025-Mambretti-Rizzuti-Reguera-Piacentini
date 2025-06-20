@@ -388,6 +388,7 @@ public class GUI implements View {
                 controller.setupPlayerButtons(client.getOther_players_local());
                 controller.initializeShipBoard();
                 controller.updateFaceUpCardsDisplay();
+                controller.starttimer(270);
 
                 future.complete(null);
             } catch (Exception ex) {

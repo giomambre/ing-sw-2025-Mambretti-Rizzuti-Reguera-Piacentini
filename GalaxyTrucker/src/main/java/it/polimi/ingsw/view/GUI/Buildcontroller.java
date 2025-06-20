@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
@@ -22,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -40,6 +45,12 @@ public class Buildcontroller {
     private List<Pair<Integer, Integer>> invalidConnectors;
     private CompletableFuture<Ship> shipUpdateFuture;
     @FXML
+    private Label timerLabel;
+
+    private Timeline timeline;
+    private int timeLeft;
+    private final int TIME_LIMIT_SECONDS = 180;
+    @FXML
     private HBox playersButtonBox;
     @FXML
     private HBox crewmateButtonBox;
@@ -55,6 +66,7 @@ public class Buildcontroller {
 
     @FXML private HBox reservedCardPreview;
     @FXML private HBox faceupCardPreview;
+    @FXML private Label timer;
 
     private final List<CardComponent> reservedCards = new ArrayList<>();
 
@@ -66,6 +78,41 @@ public class Buildcontroller {
     private CompletableFuture<Integer> faceupCardIndex = new CompletableFuture<>();
 
     private Stage playerStage;
+
+    @FXML
+    public void initialize() {
+        timeLeft = 270;
+        timerLabel.setText(formatTime(timeLeft)); // Imposta il testo iniziale
+
+        // Inizializza la Timeline QUI, una sola volta
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timerLabel.setText(formatTime(timeLeft));
+            } else {
+                timeline.stop();
+                timerLabel.setText("Tempo Scaduto!");
+                System.out.println("Tempo di costruzione terminato!");
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE); // Ripeti indefinitamente
+    }
+
+    public void starttimer(int seconds) {
+        if (timeline.getStatus() == Animation.Status.RUNNING) {
+            timeline.stop();
+        }
+            timeLeft = seconds; // Reset del tempo
+            timerLabel.setText(formatTime(timeLeft)); // Aggiorna immediatamente
+            timeline.playFromStart(); // Avvia il timer dall'inizio
+
+    }
+
+    private String formatTime(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, remainingSeconds);
+    }
 
     // Metodo aggiornato per sincronizzare con facedUp_deck_local del Client
     public void updateFaceUpCardsDisplay() {
