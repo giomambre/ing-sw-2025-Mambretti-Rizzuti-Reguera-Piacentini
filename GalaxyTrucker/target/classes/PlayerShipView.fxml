@@ -43,7 +43,8 @@
                <Insets left="15.0" right="15.0" top="36.0" />
             </VBox.margin>
          </GridPane>
-           <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeStage" prefHeight="26.0" prefWidth="89.0" styleClass="player-button" text="CHIUDI">
+           <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeStage" prefHeight="26.0" prefWidth="89.0" styleClass="player-button" text="CHIUDI" visible="false"/>
+              <Button fx:id="closeButtonFlyght" mnemonicParsing="false" onAction="#closeStageFlyght" prefHeight="26.0" prefWidth="89.0" styleClass="player-button" text="CHIUDI" visible="false">
             <VBox.margin>
                <Insets top="30.0" />
             </VBox.margin></Button>

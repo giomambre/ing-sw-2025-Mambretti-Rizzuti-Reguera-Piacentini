@@ -75,8 +75,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "localhost";
-            int socketPort = 12345;
+            String host = "5.tcp.eu.ngrok.io";
+            int socketPort = 15505;
             int rmiPort = 1099;
             int choice = -1;
             do {
@@ -419,6 +419,11 @@ public class Client {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                             break;
                         }
+                        if (index >= facedUp_deck_local.size()) {
+                            virtualView.showMessage("La carta selezionata non è più disponibile.");
+                            elaborate(new Message(MessageType.BUILD_START, ""));
+                            break;
+                        }
                         UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
                         networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
 
@@ -432,6 +437,11 @@ public class Client {
 
                             int index = virtualView.askFacedUpCard(facedUp_deck_local);
                             if (index == -1) {
+                                elaborate(new Message(MessageType.BUILD_START, ""));
+                                break;
+                            }
+                            if (index >= facedUp_deck_local.size()) {
+                                virtualView.showMessage("La carta selezionata non è più disponibile.");
                                 elaborate(new Message(MessageType.BUILD_START, ""));
                                 break;
                             }
@@ -746,7 +756,7 @@ public class Client {
 
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
-            virtualView.showMessage("\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
+            virtualView.showMessage("\n\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
             virtualView.printFinalRanks(pm.getPlayers());
             break;
 
@@ -1483,9 +1493,7 @@ public class Client {
                     ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
                 }
 
-
                 break;
-
 
             case Pirates:
                 Pirates pirates = (Pirates) adventure;
@@ -1544,10 +1552,6 @@ public class Client {
                     }
 
                     break;
-
-
-
-
 
                 }
 
