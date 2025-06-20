@@ -103,8 +103,11 @@ public class Buildcontroller {
             timeline.stop();
         }
             timeLeft = seconds; // Reset del tempo
-            timerLabel.setText(formatTime(timeLeft)); // Aggiorna immediatamente
-            timeline.playFromStart(); // Avvia il timer dall'inizio
+        Platform.runLater(() -> {
+            timerLabel.setText(formatTime(timeLeft));
+            timeline.playFromStart();
+        });
+
 
     }
 
