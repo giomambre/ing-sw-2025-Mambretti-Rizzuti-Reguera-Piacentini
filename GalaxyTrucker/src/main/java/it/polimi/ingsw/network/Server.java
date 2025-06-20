@@ -1442,12 +1442,17 @@ public class Server implements RemoteServer {
 
             case BUILD_PHASE :
 
-               sendToClient(clientId, new Message(MessageType.BUILD_START, ""));
+               Player player = null;
                List<Player> safePlayers = new ArrayList<>();
                 for (Player p : controller.getPlayers()) {
                     safePlayers.add(p.copyPlayer());
+                    if(p.getNickname().equals(getNickname(clientId))){
+                        player = p.copyPlayer();
+                    }
                 }
-                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "r", safePlayers));
+                sendToClient(clientId, new ShipClientMessage(MessageType.BUILD_START, "",clientId,player));
+
+                sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 for(CardComponent card : controller.getFacedUpCards()){
                     sendToClient(clientId, new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "",clientId, card));
                 }

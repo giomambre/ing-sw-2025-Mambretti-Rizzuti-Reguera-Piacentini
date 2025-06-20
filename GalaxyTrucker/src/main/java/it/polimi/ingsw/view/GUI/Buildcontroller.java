@@ -826,38 +826,48 @@ public class Buildcontroller {
     }
 
     public void printShipImage( CardComponent[][] shipBoard) {
+        Platform.runLater(() -> {
 
-       // shipGrid.getChildren().clear();
+            for (Node node : shipGrid.getChildren()) {
+                Integer colIndex = GridPane.getColumnIndex(node);
+                Integer rowIndex = GridPane.getRowIndex(node);
 
-        for (int i = 0; i < shipBoard.length; i++) {
-            for (int j = 0; j < shipBoard[0].length; j++) {
-                StackPane cell = new StackPane();
-                cell.setPrefSize(53, 53);
+                CardComponent card = shipBoard[rowIndex][colIndex];
 
-                CardComponent component = shipBoard[i][j];
-                if(component==null||component.getComponentType()== ComponentType.NotAccessible||component.getComponentType()==ComponentType.Empty){
-                    if (component == null) {
-                        System.out.println("DEBUG: shipBoard[" + i + "][" + j + "] is null");
-                    }
-                    cell.setStyle("-fx-background-color: transparent;");
+                String imagePath = card.getImagePath();
+
+                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(62);
+                imageView.setFitHeight(62);
+                imageView.setPreserveRatio(false);
+
+                imageView.setRotate(card.getRotationAngle());
+
+
+
+                if (colIndex == null) colIndex = 0;
+                if (rowIndex == null) rowIndex = 0;
+
+                if (card.getComponentType()!= ComponentType.Empty && card.getComponentType()!= ComponentType.NotAccessible &&  node instanceof StackPane cell) {
+                    cell.getChildren().clear();
+                    cell.getChildren().add(imageView);
+
+                    cell.setOnMouseEntered(null);
+                    cell.setOnMouseExited(null);
+                    cell.setEffect(null);
+
+                    shipGrid.requestLayout();
+                    shipGrid.layout();
 
                 }
-                else  {
-                    System.out.println("DEBUG: Componente a [" + i + "][" + j + "] ImagePath: " + component.getImagePath() + ", Angolo di rotazione: " + component.getRotationAngle());
-
-                    Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
-                    ImageView iv = new ImageView(img);
-                    iv.setFitWidth(53);
-                    iv.setFitHeight(53);
-                    iv.setPreserveRatio(true);
-                    iv.setRotate(component.getRotationAngle());
-                    cell.getChildren().add(iv);
-                }
-
-                shipGrid.add(cell, j, i);
             }
-        }
+
+            CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
+
+        });
     }
+
 
 
 

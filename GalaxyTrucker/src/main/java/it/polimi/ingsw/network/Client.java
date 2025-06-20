@@ -76,8 +76,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "localhost";
-            int socketPort = 12345;
+            String host = "4.tcp.eu.ngrok.io";
+            int socketPort = 11667;
             int rmiPort = 1099;
             int choice = -1;
             do {
@@ -395,17 +395,21 @@ public class Client {
                 int deck_selected;
 
                 if (virtualViewType == VirtualViewType.GUI) {
+
                     try {
+
                         otherPlayersReady.get();
                         ((GUI) virtualView).createbuildscreen();
-                        deck_selected = virtualView.selectDeck();
                         if(msg instanceof ShipClientMessage){
+
                             player_local = ((ShipClientMessage) msg).getPlayer();
                             ((GUI) virtualView).getBuildcontroller().printShipImage(player_local.getShip().getShip_board());
 
                         }
+                        deck_selected = virtualView.selectDeck();
+
+
                     } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
                         return;
                     }
                 } else {

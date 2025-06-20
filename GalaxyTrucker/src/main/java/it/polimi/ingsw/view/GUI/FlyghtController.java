@@ -1314,13 +1314,14 @@ public class FlyghtController {
     }
 
     public void addOverlay(int x, int y, String type, int count) {
-            StackPane cell = getShipCellAt(x, y);
+        Platform.runLater(() -> {StackPane cell = getShipCellAt(x, y);
             if (cell == null) return;
 
             Node overlay = createOverlayForType(type, count);
             if (overlay != null) {
                 cell.getChildren().add(overlay);
-            }
+            }});
+
     }
 
 
