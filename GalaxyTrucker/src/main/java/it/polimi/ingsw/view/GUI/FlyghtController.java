@@ -53,7 +53,7 @@ public class FlyghtController {
     private CompletableFuture<Pair<Integer, Integer>> coordsBattery;
     private CompletableFuture<Boolean> useCard;
     private CompletableFuture<Pair<Integer, Integer>> astronautToRemove;
-    private CompletableFuture<Integer> nextMeteor;
+    private Stage playerStage;
 
     // FXML Components
     @FXML
@@ -106,24 +106,73 @@ public class FlyghtController {
     @FXML
     private Button continueButton;
 
+    @FXML
+    private HBox playersButtonBox;
+
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_SIZE = 80;
     private static final int SHIP_CELL_SIZE = 60;
 
-    public CompletableFuture<Integer> getNextMeteor() {
-        if (nextMeteor == null) {
-            nextMeteor = new CompletableFuture<>();
-        }
-        return nextMeteor;
+
+    public void setPlayerStage(Stage playerStage) {
+        this.playerStage = playerStage;
+    }
+    public Stage getPlayerStage() {
+        return playerStage;
     }
 
-    public void resetNextMeteor() {
-        nextMeteor = new CompletableFuture<>();
+    public void setupPlayerButtons(List<Player> otherPlayers) {
+        Platform.runLater(() -> {
+            playersButtonBox.getChildren().clear();
+            for (Player p : otherPlayers) {
+                Button playerButton = new Button(p.getNickname());
+                playerButton.setOnAction(e -> showShipForPlayer(p.getNickname()));
+                playerButton.getStyleClass().add("player-button");
+                playersButtonBox.getChildren().add(playerButton);
+            }
+        });
+    }
+
+    public void showShipForPlayer(String nickname) {
+        Optional<Player> optionalPlayer = gui.getClient().getOther_players_local().stream()
+                .filter(p -> p.getNickname().equals(nickname))
+                .findFirst();
+
+        if (optionalPlayer.isEmpty()) {
+            gui.showMessage("Giocatore non trovato!");
+            return;
+        }
+
+        Player player = optionalPlayer.get();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PlayerShipView.fxml"));
+            Parent root = loader.load();
+
+            PlayerShipController controller = loader.getController();
+            controller.setFlyghtcontroller(this);
+
+            System.out.println("debug,nave di:"+player.getNickname());
+            System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
+            controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
+            controller.showCloseButtonFlyght();
+
+            Stage stage = new Stage();
+            stage.setTitle("Nave di " + player.getNickname());
+            stage.setScene(new Scene(root));
+            setPlayerStage(stage);
+            stage.show();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            gui.showMessage("Errore nel caricamento della schermata nave.");
+        }
     }
 
     public void updateCreditLabel(int credits) {
-        playerCreditsLabel.setText("Crediti: " + credits);
+        Platform.runLater(() -> playerCreditsLabel.setText("Crediti: " + credits));
     }
 
     public CompletableFuture<Pair<Integer,Integer>> getAstronautToRemove() {
@@ -1265,13 +1314,14 @@ public class FlyghtController {
     }
 
     public void addOverlay(int x, int y, String type, int count) {
-            StackPane cell = getShipCellAt(x, y);
+        Platform.runLater(() -> {StackPane cell = getShipCellAt(x, y);
             if (cell == null) return;
 
             Node overlay = createOverlayForType(type, count);
             if (overlay != null) {
                 cell.getChildren().add(overlay);
-            }
+            }});
+
     }
 
 

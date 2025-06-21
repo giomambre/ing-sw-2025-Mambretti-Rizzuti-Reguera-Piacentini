@@ -294,7 +294,7 @@ public class Player implements Serializable {
         Map<Direction, ConnectorType> connectors = new HashMap<>();
         connectors.put(North, Smooth);
         connectors.put(East, Smooth);
-        connectors.put(South, Universal);
+        connectors.put(South, Smooth);
         connectors.put(West, Smooth);
         ship.addComponent(new Battery(ComponentType.Battery, connectors,2 , ""), 0, 2 );
 

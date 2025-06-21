@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.*;
+import it.polimi.ingsw.view.GUI.Buildcontroller;
 import it.polimi.ingsw.view.GUI.GUI;
 import it.polimi.ingsw.view.GUI.GuiApplication;
 import it.polimi.ingsw.view.TUI.TUI;
@@ -94,7 +95,6 @@ public class Client {
                 }
             } while (choice != 1 && choice != 2);
 
-
             try {
                 if (choice == 1) {
                     networkAdapter = new SocketAdapter(host, socketPort);
@@ -160,21 +160,21 @@ public class Client {
 
 
                         switch (msg.getType()) {
-                            case  REQUEST_NAME, NAME_REJECTED,
-                                  NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
-                                  CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
-                                  INVALID_CONNECTORS, SELECT_PIECE:
-                                inputQueue.put(msg);
-                                break;
 
-                            case ENGINE_POWER, END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT,
-                                 INVALID_SHIP,
-                                 START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
-                                 FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
-                                 BUILD_PHASE_ENDED:
-                                notificationQueue.put(msg);
-                                break;
+                                case  UTIL,REQUEST_NAME, NAME_REJECTED,
+                                      NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
+                                      CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
+                                      INVALID_CONNECTORS, SELECT_PIECE:
+                                    inputQueue.put(msg);
+                                    break;
 
+                                case ENGINE_POWER, END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT,
+                                     INVALID_SHIP,WIN,
+                                     START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
+                                     FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
+                                     BUILD_PHASE_ENDED:
+                                    notificationQueue.put(msg);
+                                    break;
 
                             default:
 
@@ -392,13 +392,23 @@ public class Client {
 
             case BUILD_START:
                 int deck_selected;
+
                 if (virtualViewType == VirtualViewType.GUI) {
+
                     try {
+
                         otherPlayersReady.get();
                         ((GUI) virtualView).createbuildscreen();
+                        if(msg instanceof ShipClientMessage){
+
+                            player_local = ((ShipClientMessage) msg).getPlayer();
+                            ((GUI) virtualView).getBuildcontroller().printShipImage(player_local.getShip().getShip_board());
+
+                        }
                         deck_selected = virtualView.selectDeck();
+
+
                     } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
                         return;
                     }
                 } else {
@@ -419,6 +429,11 @@ public class Client {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                             break;
                         }
+                        if (index >= facedUp_deck_local.size()) {
+                            virtualView.showMessage("La carta selezionata non è più disponibile.");
+                            elaborate(new Message(MessageType.BUILD_START, ""));
+                            break;
+                        }
                         UUID selectedCardId = facedUp_deck_local.get(index).getCard_uuid();
                         networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASK_CARD, selectedCardId.toString(), clientId));
 
@@ -432,6 +447,11 @@ public class Client {
 
                             int index = virtualView.askFacedUpCard(facedUp_deck_local);
                             if (index == -1) {
+                                elaborate(new Message(MessageType.BUILD_START, ""));
+                                break;
+                            }
+                            if (index >= facedUp_deck_local.size()) {
+                                virtualView.showMessage("La carta selezionata non è più disponibile.");
                                 elaborate(new Message(MessageType.BUILD_START, ""));
                                 break;
                             }
@@ -670,6 +690,15 @@ public class Client {
 
                 break;
 
+            case UTIL :
+                ShipClientMessage util = (ShipClientMessage) msg;
+                player_local = util.getPlayer();
+                if(virtualViewType == VirtualViewType.GUI) {
+
+                    ((GUI) virtualView).createbuildscreen();
+                    ((GUI) virtualView).getBuildcontroller().printShipImage(player_local.getShip().getShip_board());
+                }
+                break;
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if (icm.getInvalids().isEmpty()) {
@@ -677,7 +706,6 @@ public class Client {
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
-
                         ((GUI)virtualView).getBuildcontroller().printInvalidsConnector(player_local.getShip(), icm.getInvalids());
 
                         try {
@@ -716,7 +744,8 @@ public class Client {
                     else {
                         LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
                         num_crew_mates--;
-                        virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
+                        if(virtualViewType == VirtualViewType.TUI)
+                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                     }
 
                 }
@@ -746,7 +775,7 @@ public class Client {
 
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
-            virtualView.showMessage("\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
+            virtualView.showMessage("\n\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
             virtualView.printFinalRanks(pm.getPlayers());
             break;
 
@@ -762,7 +791,7 @@ public class Client {
                     System.out.println("Errore: colore non valido " + parts[1]);
                 }
                 if (parts[0].equals(nickname)) {
-                    if (virtualViewType == VirtualViewType.TUI){
+                    if (virtualViewType==VirtualViewType.TUI){
                         virtualView.showMessage("\nHai scelto il colore : " + parts[1]);
                     }
                 } else {
@@ -789,7 +818,10 @@ public class Client {
                 for (Player p : tmp) {
                     if (p.getNickname().equals(nickname)) {
 
+
+
                         player_local = p;
+
 
                     } else {
                         other_players_local.add(p);
@@ -818,7 +850,10 @@ public class Client {
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
                     if (virtualViewType == VirtualViewType.GUI) {
-                        ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+                        if (((GUI) virtualView).getBuildcontroller() != null) {
+                            ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
+
+                        }
                     }
 
                 } else {
@@ -844,8 +879,15 @@ public class Client {
                 break;
 
             case TIME_UPDATE:
-
-                virtualView.showMessage("\n" + msg.getContent());
+                System.out.println("SONO QUI PER MODIF TIMER CIAO");
+                if(virtualViewType == VirtualViewType.GUI){
+                    if(msg.getContent().equals("⏳ 90s rimanenti") || msg.getContent().equals("🔔 Un giocatore ha finito! ")){
+                        ((GUI)virtualView).getBuildcontroller().starttimer(90);
+                    }
+                }
+                if(virtualViewType==VirtualViewType.TUI) {
+                    virtualView.showMessage("\n" + msg.getContent());
+                }
 
                 break;
 
@@ -863,6 +905,7 @@ public class Client {
                     case "3":
                         virtualView.showMessage("\nHai terminato la costruzione della nave per quarto");
                         break;
+
                 }
 
 
@@ -915,12 +958,15 @@ public class Client {
 
 
             case INVALID_SHIP:
-                virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo : " + msg.getContent());
+                virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo :  NAVE INVALIDA (non ha i motore o astronauti)" + msg.getContent());
                 System.exit(0);
 
 
                 break;
 
+            case WIN:
+                virtualView.showMessage("HAI VINTO (gli altri player non sono riusciti a creare una nave valida !");
+                break;
 
             case START_FLIGHT:
 
@@ -1197,7 +1243,6 @@ public class Client {
 
                     }
                     if(virtualViewType == VirtualViewType.GUI){
-                        System.out.println("Credits: "+player_local.getCredits());
                         ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
                     }
                 } else {
@@ -1479,10 +1524,11 @@ public class Client {
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
                 }
-
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                }
 
                 break;
-
 
             case Pirates:
                 Pirates pirates = (Pirates) adventure;
@@ -1522,7 +1568,12 @@ public class Client {
 
                     if(choice){
                         player_local.setCredits( player_local .getCredits() + pirates.getCredits());
-                        virtualView.showMessage("\nHAI GUADAGNATO "+ pirates.getCredits() +" crediti , ora ne hai " + player_local.getCredits());
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                        }
+                        if(virtualViewType == VirtualViewType.TUI) {
+                            virtualView.showMessage("\nHAI GUADAGNATO " + pirates.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     }else{
@@ -1531,11 +1582,11 @@ public class Client {
 
                     }
 
+                    if(virtualViewType == VirtualViewType.GUI){
+                        ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                    }
+
                     break;
-
-
-
-
 
                 }
 
@@ -1588,7 +1639,12 @@ public class Client {
 
                     if (choice) {
                         player_local.setCredits( player_local .getCredits() + slavers.getCredits());
-                        virtualView.showMessage("HAI GUADAGNATO " + slavers.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().updateCreditLabel(player_local.getCredits());
+                        }
+                        if(virtualViewType == VirtualViewType.TUI) {
+                            virtualView.showMessage("HAI GUADAGNATO " + slavers.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
                     } else {

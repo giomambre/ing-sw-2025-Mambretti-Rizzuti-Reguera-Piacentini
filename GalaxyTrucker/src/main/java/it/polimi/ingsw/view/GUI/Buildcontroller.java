@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
@@ -20,8 +24,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -29,7 +35,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
-import static it.polimi.ingsw.model.enumerates.Direction.West;
 
 public class Buildcontroller {
     private GUI gui;
@@ -39,8 +44,16 @@ public class Buildcontroller {
     private CardComponent[][] currentShipBoard;
     private List<Pair<Integer, Integer>> invalidConnectors;
     private CompletableFuture<Ship> shipUpdateFuture;
+    private Timeline blinkTimeline;
+
     @FXML
-    private HBox playersButtonBox;
+    private Label timerLabel;
+
+    private Timeline timeline;
+    private int timeLeft;
+    private final int TIME_LIMIT_SECONDS = 180;
+    @FXML
+    private VBox playersButtonBox;
     @FXML
     private HBox crewmateButtonBox;
 
@@ -55,6 +68,7 @@ public class Buildcontroller {
 
     @FXML private HBox reservedCardPreview;
     @FXML private HBox faceupCardPreview;
+    @FXML private Label timer;
 
     private final List<CardComponent> reservedCards = new ArrayList<>();
 
@@ -66,6 +80,73 @@ public class Buildcontroller {
     private CompletableFuture<Integer> faceupCardIndex = new CompletableFuture<>();
 
     private Stage playerStage;
+
+    private void startBlinking() {
+        blinkTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.5), e -> {
+                    String currentStyle = timerLabel.getStyle();
+                    if (currentStyle.contains("transparent")) {
+                        timerLabel.setStyle("-fx-text-fill: red; -fx-font-size: 25;  -fx-font-family: 'Verdana'");
+                    } else {
+                        timerLabel.setStyle("-fx-text-fill: transparent; -fx-font-size: 25;  -fx-font-family: 'Verdana'");
+                    }
+                })
+        );
+        blinkTimeline.setCycleCount(Animation.INDEFINITE);
+        blinkTimeline.play();
+    }
+
+    private void stopBlinking() {
+        if (blinkTimeline != null) {
+            blinkTimeline.stop();
+            blinkTimeline = null;
+            timerLabel.setStyle("-fx-text-fill: red; -fx-font-size: 20; -fx-font-family: 'Verdana'");
+        }
+    }
+
+
+    @FXML
+    public void initialize() {
+        timeLeft = 270;
+        timerLabel.setText(formatTime(timeLeft));
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timerLabel.setText(formatTime(timeLeft));
+
+                if (timeLeft == 30) {
+                    startBlinking();
+                }
+            } else {
+                timeline.stop();
+                stopBlinking();
+                timerLabel.setText("Tempo Scaduto!");
+                System.out.println("Tempo di costruzione terminato!");
+            }
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+    }
+
+
+    public void starttimer(int seconds) {
+        if (timeline.getStatus() == Animation.Status.RUNNING) {
+            timeline.stop();
+        }
+            timeLeft = seconds; // Reset del tempo
+        Platform.runLater(() -> {
+            timerLabel.setText(formatTime(timeLeft));
+            timeline.playFromStart();
+        });
+
+
+    }
+
+    private String formatTime(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, remainingSeconds);
+    }
 
     // Metodo aggiornato per sincronizzare con facedUp_deck_local del Client
     public void updateFaceUpCardsDisplay() {
@@ -79,8 +160,8 @@ public class Buildcontroller {
 
                 Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardImage = new ImageView(image);
-                cardImage.setFitWidth(62);
-                cardImage.setFitHeight(62);
+                cardImage.setFitWidth(77.5);
+                cardImage.setFitHeight(77.5);
                 cardImage.setPreserveRatio(true);
 
                 final int index = i;
@@ -138,8 +219,8 @@ public class Buildcontroller {
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath())));
         ImageView cardImage = new ImageView(image);
-        cardImage.setFitWidth(62);
-        cardImage.setFitHeight(61);
+        cardImage.setFitWidth(77.5);
+        cardImage.setFitHeight(76.25);
         cardImage.setPreserveRatio(true);
 
         int index = reservedCards.size() - 1;
@@ -169,8 +250,8 @@ public class Buildcontroller {
 
         for (CardComponent card : reserved) {
             ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath()))));
-            view.setFitWidth(62);
-            view.setFitHeight(62);
+            view.setFitWidth(77.5);
+            view.setFitHeight(77.5);
             view.setPreserveRatio(true);
             reservedCardPreview.getChildren().add(view);
         }
@@ -190,9 +271,9 @@ public class Buildcontroller {
 
     public void initializeShipBoard() {
         shipGrid.getChildren().clear();
-        shipGrid.setPrefSize(432, 309);
-        shipGrid.setMinSize(432, 309);
-        shipGrid.setMaxSize(432, 309);
+        shipGrid.setPrefSize(540, 386.25);
+        shipGrid.setMinSize(540, 386.25);
+        shipGrid.setMaxSize(540, 386.25);
 
         CardComponent[][] shipboard=gui.getClient().getPlayer_local().getShip().getShipBoard();
         for (int i = 0; i < 5; i++) {
@@ -200,15 +281,15 @@ public class Buildcontroller {
 
                 StackPane cell = new StackPane();
 
-                cell.setPrefSize(62, 62);
-                cell.setMinSize(62, 62);
-                cell.setMaxSize(62, 62);
+                cell.setPrefSize(77.5, 77.5);
+                cell.setMinSize(77.5, 77.5);
+                cell.setMaxSize(77.5, 77.5);
 
                 if (shipboard[i][j].getComponentType()== ComponentType.NotAccessible) {
                     cell.setStyle("-fx-background-color: transparent;");
                 } else {
                     if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
-                        cell.setPrefSize(62,62);
+                        cell.setPrefSize(77.5,77.5);
                         cell.setStyle("-fx-background-color: transparent;");
 
                         final Effect originalEffect = cell.getEffect();
@@ -273,8 +354,8 @@ public class Buildcontroller {
                     if (imagePath != null) {
                         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
                         ImageView imageView = new ImageView(image);
-                        imageView.setFitWidth(62);
-                        imageView.setFitHeight(62);
+                        imageView.setFitWidth(77.5);
+                        imageView.setFitHeight(77.5);
                         imageView.setPreserveRatio(false);
                         cell.getChildren().add(imageView);
                     }
@@ -343,29 +424,38 @@ public class Buildcontroller {
         return crewmate;
     }
 
-    public void highlightCell(Pair<Integer, Integer> coords) {
-        int y = coords.getKey();
-        int x = coords.getValue();
+   public void highlightCell(Pair<Integer, Integer> coords) {
+    int y = coords.getKey();
+    int x = coords.getValue();
+    System.out.println("Attempting to highlight cell at: " + x + "," + y);
 
-        for (Node node : shipGrid.getChildren()) {
-            Integer colIndex = GridPane.getColumnIndex(node);
-            Integer rowIndex = GridPane.getRowIndex(node);
+    for (Node node : shipGrid.getChildren()) {
+        Integer colIndex = GridPane.getColumnIndex(node);
+        Integer rowIndex = GridPane.getRowIndex(node);
 
-            if (colIndex == null) colIndex = 0;
-            if (rowIndex == null) rowIndex = 0;
+        if (colIndex == null) colIndex = 0;
+        if (rowIndex == null) rowIndex = 0;
 
-            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                // Se la cella contiene un'immagine, applica il bordo all'immagine
-                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
-                    imageView.setStyle("-fx-effect: dropshadow(gaussian, gold, 5, 0.8, 0, 0); -fx-border-color: gold; -fx-border-width: 3px;");
-                } else {
-                    // Se la cella è vuota, applica il bordo alla StackPane
-                    cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
-                }
-                return;
+        if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+            System.out.println("Found cell at " + x + "," + y + ", applying highlight");
+            // Applica uno stile più visibile
+            String style = "-fx-background-color: rgba(255, 0, 0, 0.3); " +
+                          "-fx-border-color: red; " +
+                          "-fx-border-width: 3px; " +
+                          "-fx-border-style: solid;";
+            
+            if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
+                System.out.println("Cell has ImageView, applying style to image");
+                imageView.setStyle(style);
+            } else {
+                System.out.println("Applying style to StackPane");
+                cell.setStyle(style);
             }
+            return;
         }
     }
+    System.out.println("Cell not found at " + x + "," + y);
+}
 
     public void resetHighlights(Pair<Integer, Integer> coords) {
         int y = coords.getKey();
@@ -411,8 +501,8 @@ public class Buildcontroller {
 
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(62);
-        imageView.setFitHeight(62);
+        imageView.setFitWidth(77.5);
+        imageView.setFitHeight(77.5);
         imageView.setPreserveRatio(false);
 
         imageView.setRotate(card.getRotationAngle());
@@ -468,11 +558,14 @@ public class Buildcontroller {
             System.out.println("debug,nave di:"+player.getNickname());
             System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
             controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
+            controller.showCloseButton();
 
             Stage stage = new Stage();
             stage.setTitle("Nave di " + player.getNickname());
             stage.setScene(new Scene(root));
             setPlayerStage(stage);
+            playerStage.setX(0);
+            playerStage.setY(100);
             stage.show();
 
 
@@ -499,7 +592,7 @@ public class Buildcontroller {
                         CardComponent component = ship.getShip_board()[i][j];
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty
                                 ||  component.getComponentType() == ComponentType.MainUnitRed || component.getComponentType() == ComponentType.MainUnitGreen
-                        || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
+                                || component.getComponentType() == ComponentType.MainUnitBlue || component.getComponentType() == ComponentType.MainUnitYellow) {
                             cell.setStyle("-fx-background-color: transparent;");
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -541,7 +634,7 @@ public class Buildcontroller {
             if (!connectors.isEmpty()) {
                 gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
             } else {
-                // Se la lista passata è già vuota all'inizio (es. dopo l'ultimo clic)
+                // Se la lista passata è già vuota all'inizio
                 // Assicurati che il messaggio di successo sia comunque mostrato.
                 // Questa parte potrebbe essere ridondante se la logica di 'if (updatedInvalids.isEmpty())' è sempre raggiunta.
                 // Potrebbe essere utile se la funzione viene chiamata con una lista vuota dall'esterno.
@@ -683,15 +776,6 @@ public class Buildcontroller {
     }
 
 
-    /*public Node getCardPosition(int x,int y) {
-        Node card = null;
-        for (Node node : shipGrid.getChildren()) {
-            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                card = node;
-            }
-        }
-        return card;
-    }*/
     public Node getCardPosition(int x, int y) {
         for (Node node : shipGrid.getChildren()) {
             // *** MODIFICA QUI: Gestione dei valori null per gli indici ***
@@ -726,8 +810,8 @@ public class Buildcontroller {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < 2; i++) {
                     ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    img.setFitWidth(40);
-                    img.setFitHeight(40);
+                    img.setFitWidth(50);
+                    img.setFitHeight(50);
                     img.setPreserveRatio(true);
                     img.setSmooth(true);
                     img.setMouseTransparent(true);
@@ -739,8 +823,8 @@ public class Buildcontroller {
             case "PinkAlien": {
                 path = "/images/icons/pinkAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(40);
-                img.setFitHeight(40);
+                img.setFitWidth(50);
+                img.setFitHeight(50);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -749,8 +833,8 @@ public class Buildcontroller {
             case "BrownAlien": {
                 path = "/images/icons/brownAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(40);
-                img.setFitHeight(40);
+                img.setFitWidth(50);
+                img.setFitHeight(50);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -766,8 +850,8 @@ public class Buildcontroller {
 
                 for (int i = 0; i < count; i++) {
                     ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    batteryImg.setFitWidth(25);
-                    batteryImg.setFitHeight(25);
+                    batteryImg.setFitWidth(30);
+                    batteryImg.setFitHeight(30);
                     batteryImg.setPreserveRatio(true);
                     batteryImg.setSmooth(true);
                     batteryImg.setMouseTransparent(true);
@@ -785,6 +869,52 @@ public class Buildcontroller {
         String nodeId = node.getId();
         return nodeId != null && nodeId.equals("overlay-" + type);
     }
+
+    public void printShipImage( CardComponent[][] shipBoard) {
+        Platform.runLater(() -> {
+
+            for (Node node : shipGrid.getChildren()) {
+                Integer colIndex = GridPane.getColumnIndex(node);
+                Integer rowIndex = GridPane.getRowIndex(node);
+
+                CardComponent card = shipBoard[rowIndex][colIndex];
+
+                String imagePath = card.getImagePath();
+
+                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(77.5);
+                imageView.setFitHeight(77.5);
+                imageView.setPreserveRatio(false);
+
+                imageView.setRotate(card.getRotationAngle());
+
+
+
+                if (colIndex == null) colIndex = 0;
+                if (rowIndex == null) rowIndex = 0;
+
+                if (card.getComponentType()!= ComponentType.Empty && card.getComponentType()!= ComponentType.NotAccessible &&  node instanceof StackPane cell) {
+
+
+                    cell.getChildren().clear();
+                    cell.getChildren().add(imageView);
+
+                    cell.setOnMouseEntered(null);
+                    cell.setOnMouseExited(null);
+                    cell.setEffect(null);
+
+                    shipGrid.requestLayout();
+                    shipGrid.layout();
+
+                }
+            }
+
+            CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
+
+        });
+    }
+
 
 
 

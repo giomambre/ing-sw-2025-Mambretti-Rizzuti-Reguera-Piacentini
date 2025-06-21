@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.model.enumerates.Direction.*;
@@ -17,7 +18,7 @@ import static it.polimi.ingsw.model.enumerates.ComponentType.*;
  *     <li>clock_time: the time measured twisting the hourglass once</li>
  * </ul>
  */
-public class Game extends BaseGame {
+public class Game extends BaseGame implements Serializable {
 
     private List<CardAdventure> deck_left = new ArrayList<>();
     private List<CardAdventure> deck_right = new ArrayList<>();

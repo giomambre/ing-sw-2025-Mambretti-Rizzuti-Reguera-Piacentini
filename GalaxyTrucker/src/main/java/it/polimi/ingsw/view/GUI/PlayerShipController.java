@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.enumerates.ComponentType;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,10 +21,19 @@ public class PlayerShipController {
     @FXML
     private Button closeButton;
 
+    @FXML
+    private Button closeButtonFlyght;
+
     private Buildcontroller buildcontroller;
+
+    private FlyghtController flyghtcontroller;
 
     public void setBuildcontroller(Buildcontroller buildcontroller) {
         this.buildcontroller = buildcontroller;
+    }
+
+    public void setFlyghtcontroller(FlyghtController flyghtcontroller) {
+        this.flyghtcontroller = flyghtcontroller;
     }
 
     public void setPlayerShip(String nickname, CardComponent[][] shipBoard) {
@@ -50,8 +60,8 @@ public class PlayerShipController {
 
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                     ImageView iv = new ImageView(img);
-                    iv.setFitWidth(53);
-                    iv.setFitHeight(53);
+                    iv.setFitWidth(66.25);
+                    iv.setFitHeight(66.25);
                     iv.setPreserveRatio(true);
                     iv.setRotate(component.getRotationAngle());
                     cell.getChildren().add(iv);
@@ -62,7 +72,24 @@ public class PlayerShipController {
         }
     }
 
+    public void showCloseButton() {
+        Platform.runLater(() -> {
+            closeButton.setVisible(true);
+        });
+    }
+
+    public void showCloseButtonFlyght() {
+        Platform.runLater(() -> {
+            closeButtonFlyght.setVisible(true);
+        });
+    }
+
     public void closeStage(){
         buildcontroller.getPlayerStage().close();
     }
+    public void closeStageFlyght(){
+        flyghtcontroller.getPlayerStage().close();
+    }
+
+
 }
