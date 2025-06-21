@@ -1476,7 +1476,8 @@ public class Server implements RemoteServer {
                    sendToClient(clientId, new ShipClientMessage(ADD_CREWMATES, "",clientId,player));
                     break;
                 case FIXING_SHIPS:
-                    controller.finishSupplyPhase(getNickname(clientId));
+
+
                     List<Pair<Integer, Integer>> invalids_connections;
 
 

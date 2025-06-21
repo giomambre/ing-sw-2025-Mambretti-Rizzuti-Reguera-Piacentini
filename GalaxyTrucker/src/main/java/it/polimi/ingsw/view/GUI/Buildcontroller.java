@@ -35,7 +35,6 @@ import java.util.concurrent.CompletableFuture;
 
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
-import static it.polimi.ingsw.model.enumerates.Direction.West;
 
 public class Buildcontroller {
     private GUI gui;
@@ -425,29 +424,38 @@ public class Buildcontroller {
         return crewmate;
     }
 
-    public void highlightCell(Pair<Integer, Integer> coords) {
-        int y = coords.getKey();
-        int x = coords.getValue();
+   public void highlightCell(Pair<Integer, Integer> coords) {
+    int y = coords.getKey();
+    int x = coords.getValue();
+    System.out.println("Attempting to highlight cell at: " + x + "," + y);
 
-        for (Node node : shipGrid.getChildren()) {
-            Integer colIndex = GridPane.getColumnIndex(node);
-            Integer rowIndex = GridPane.getRowIndex(node);
+    for (Node node : shipGrid.getChildren()) {
+        Integer colIndex = GridPane.getColumnIndex(node);
+        Integer rowIndex = GridPane.getRowIndex(node);
 
-            if (colIndex == null) colIndex = 0;
-            if (rowIndex == null) rowIndex = 0;
+        if (colIndex == null) colIndex = 0;
+        if (rowIndex == null) rowIndex = 0;
 
-            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                // Se la cella contiene un'immagine, applica il bordo all'immagine
-                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
-                    imageView.setStyle("-fx-effect: dropshadow(gaussian, gold, 5, 0.8, 0, 0); -fx-border-color: gold; -fx-border-width: 3px;");
-                } else {
-                    // Se la cella è vuota, applica il bordo alla StackPane
-                    cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
-                }
-                return;
+        if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+            System.out.println("Found cell at " + x + "," + y + ", applying highlight");
+            // Applica uno stile più visibile
+            String style = "-fx-background-color: rgba(255, 0, 0, 0.3); " +
+                          "-fx-border-color: red; " +
+                          "-fx-border-width: 3px; " +
+                          "-fx-border-style: solid;";
+            
+            if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
+                System.out.println("Cell has ImageView, applying style to image");
+                imageView.setStyle(style);
+            } else {
+                System.out.println("Applying style to StackPane");
+                cell.setStyle(style);
             }
+            return;
         }
     }
+    System.out.println("Cell not found at " + x + "," + y);
+}
 
     public void resetHighlights(Pair<Integer, Integer> coords) {
         int y = coords.getKey();
@@ -626,7 +634,7 @@ public class Buildcontroller {
             if (!connectors.isEmpty()) {
                 gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
             } else {
-                // Se la lista passata è già vuota all'inizio (es. dopo l'ultimo clic)
+                // Se la lista passata è già vuota all'inizio
                 // Assicurati che il messaggio di successo sia comunque mostrato.
                 // Questa parte potrebbe essere ridondante se la logica di 'if (updatedInvalids.isEmpty())' è sempre raggiunta.
                 // Potrebbe essere utile se la funzione viene chiamata con una lista vuota dall'esterno.
@@ -887,6 +895,8 @@ public class Buildcontroller {
                 if (rowIndex == null) rowIndex = 0;
 
                 if (card.getComponentType()!= ComponentType.Empty && card.getComponentType()!= ComponentType.NotAccessible &&  node instanceof StackPane cell) {
+
+
                     cell.getChildren().clear();
                     cell.getChildren().add(imageView);
 
