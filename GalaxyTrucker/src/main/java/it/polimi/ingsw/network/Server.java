@@ -451,8 +451,9 @@ public class Server implements RemoteServer {
 
                 msgClient = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(msgClient.getId_client()));
+                controller.setGamestate(FIXING_SHIPS);
                 controller.finishSupplyPhase(getNickname(msgClient.getId_client()));
-                List<Pair<Integer, Integer>> invalids_connections = new ArrayList<>();
+                List<Pair<Integer, Integer>> invalids_connections;
 
                 //    if (controller.getFinished_supply_players().size() == controller.getLobby().getPlayers().size()) {  //quando tutti hanno fatto l equipaggiamento della ciurma
 
@@ -481,7 +482,7 @@ public class Server implements RemoteServer {
                 }
                 List<Player> safePlayers = new ArrayList<>();
                 for (Player p : controller.getPlayers()) {
-                    safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                    safePlayers.add(p.copyPlayer());
                 }
                 sendToClient(update_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 System.out.println(getNickname(update_msg.getId_client()) + " " + controller.getValidPieces(getNickname(update_msg.getId_client())).size());
@@ -494,11 +495,13 @@ public class Server implements RemoteServer {
 
                     safePlayers = new ArrayList<>();
                     for (Player p : controller.getPlayers()) {
-                        safePlayers.add(p.copyPlayer());  // funzione che crea una "safe copy"
+                        safePlayers.add(p.copyPlayer());
                     }
                     sendToClient(update_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                     sendToClient(update_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
-                    controller.addWaitingFlyPlayer(getNickname(update_msg.getId_client()));
+                    if(!controller.getWaitingFlyPlayers().contains(getNickname(update_msg.getId_client()))) {
+                        controller.addWaitingFlyPlayer(getNickname(update_msg.getId_client()));
+                    }
 
 
                 } else if (controller.getValidPieces(getNickname(update_msg.getId_client())).isEmpty()) {
@@ -507,7 +510,13 @@ public class Server implements RemoteServer {
 
                 }
 
+                if(controller.getBuild_order_players().size() == 1){
 
+                    Player p = controller.getBuild_order_players().get(0);
+                    sendToClient(getId_client(p.getNickname()),new Message(WIN,""));
+                    break;
+
+                }
                 if (controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
 
                     handleMessage(new StandardMessageClient(START_FLIGHT, "", update_msg.getId_client()));
@@ -528,7 +537,10 @@ public class Server implements RemoteServer {
                 }
                 sendToClient(select_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 sendToClient(select_msg.getId_client(), new Message(WAITING_FLIGHT, ""));
-                controller.addWaitingFlyPlayer(getNickname(select_msg.getId_client()));
+                if(!controller.getWaitingFlyPlayers().contains(getNickname(select_msg.getId_client()))) {
+                    controller.addWaitingFlyPlayer(getNickname(select_msg.getId_client()));
+                }
+
 
                 if (controller.getWaitingFlyPlayers().size() == controller.getBuild_order_players().size()) {
 
@@ -1437,19 +1449,21 @@ public class Server implements RemoteServer {
 
     public void handleClientReconnection(UUID clientId) {
         controller = all_games.get(getLobbyId(clientId));
+        Player player = null;
+        List<Player> safePlayers = new ArrayList<>();
+        for (Player p : controller.getPlayers()) {
+            safePlayers.add(p.copyPlayer());
+            if(p.getNickname().equals(getNickname(clientId))){
+                player = p.copyPlayer();
+            }
+        }
+        sendToClient(clientId,new ShipClientMessage(UTIL, "", clientId, player));
+        sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
 
         switch (controller.getGamestate()){
 
             case BUILD_PHASE :
 
-               Player player = null;
-               List<Player> safePlayers = new ArrayList<>();
-                for (Player p : controller.getPlayers()) {
-                    safePlayers.add(p.copyPlayer());
-                    if(p.getNickname().equals(getNickname(clientId))){
-                        player = p.copyPlayer();
-                    }
-                }
                 sendToClient(clientId, new ShipClientMessage(MessageType.BUILD_START, "",clientId,player));
 
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
@@ -1459,10 +1473,18 @@ public class Server implements RemoteServer {
                 break;
 
                case SUPLLY_PHASE :
-                   sendToClient(clientId,new Message(ADD_CREWMATES, ""));
+                   sendToClient(clientId, new ShipClientMessage(ADD_CREWMATES, "",clientId,player));
                     break;
+                case FIXING_SHIPS:
+                    controller.finishSupplyPhase(getNickname(clientId));
+                    List<Pair<Integer, Integer>> invalids_connections;
 
 
+                    invalids_connections = controller.checkShipConnectors(getNickname(clientId));
+
+
+                    sendToClient(clientId, new InvalidConnectorsMessage(INVALID_CONNECTORS, "", invalids_connections));
+                    break;
 
         }
 

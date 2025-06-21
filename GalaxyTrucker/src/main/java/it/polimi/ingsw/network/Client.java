@@ -161,7 +161,7 @@ public class Client {
 
                         switch (msg.getType()) {
 
-                                case  REQUEST_NAME, NAME_REJECTED,
+                                case  UTIL,REQUEST_NAME, NAME_REJECTED,
                                       NAME_ACCEPTED, CREATE_LOBBY, SEE_LOBBIES, SELECT_LOBBY, GAME_STARTED, BUILD_START,
                                       CARD_COMPONENT_RECEIVED, CARD_UNAVAILABLE, UNAVAILABLE_PLACE, ADD_CREWMATES,
                                       INVALID_CONNECTORS, SELECT_PIECE:
@@ -169,7 +169,7 @@ public class Client {
                                     break;
 
                                 case ENGINE_POWER, END_FLIGHT, NEW_ADVENTURE_DRAWN, UPDATE_BOARD, WAITING_FLIGHT,
-                                     INVALID_SHIP,
+                                     INVALID_SHIP,WIN,
                                      START_FLIGHT, FORCE_BUILD_PHASE_END, COLOR_SELECTED, DISMISSED_CARD,
                                      FACED_UP_CARD_UPDATED, UPDATED_SHIPS, DECK_CARD_ADVENTURE_UPDATED, TIME_UPDATE,
                                      BUILD_PHASE_ENDED:
@@ -690,6 +690,15 @@ public class Client {
 
                 break;
 
+            case UTIL :
+                ShipClientMessage util = (ShipClientMessage) msg;
+                player_local = util.getPlayer();
+                if(virtualViewType == VirtualViewType.GUI) {
+
+                    ((GUI) virtualView).createbuildscreen();
+                    ((GUI) virtualView).getBuildcontroller().printShipImage(player_local.getShip().getShip_board());
+                }
+                break;
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if (icm.getInvalids().isEmpty()) {
@@ -697,7 +706,6 @@ public class Client {
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
-
                         ((GUI)virtualView).getBuildcontroller().printInvalidsConnector(player_local.getShip(), icm.getInvalids());
 
                         try {
@@ -736,7 +744,8 @@ public class Client {
                     else {
                         LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
                         num_crew_mates--;
-                        virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
+                        if(virtualViewType == VirtualViewType.TUI)
+                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                     }
 
                 }
@@ -949,12 +958,15 @@ public class Client {
 
 
             case INVALID_SHIP:
-                virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo : " + msg.getContent());
+                virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo :  NAVE INVALIDA (non ha i motore o astronauti)" + msg.getContent());
                 System.exit(0);
 
 
                 break;
 
+            case WIN:
+                virtualView.showMessage("HAI VINTO (gli altri player non sono riusciti a creare una nave valida !");
+                break;
 
             case START_FLIGHT:
 
