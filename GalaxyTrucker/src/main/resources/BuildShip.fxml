@@ -47,8 +47,9 @@
             </VBox.margin></Button>
 
             <Pane prefHeight="425.0" prefWidth="585.0" StackPane.alignment="CENTER">
-                <GridPane fx:id="shipGrid" alignment="CENTER" layoutX="465.0" layoutY="19.0" prefHeight="386.25" prefWidth="540.0">
-               <columnConstraints>
+                <GridPane fx:id="shipGrid" alignment="CENTER"
+                          layoutX="497.5" layoutY="19.0"
+                          prefHeight="386.25" prefWidth="540.0">               <columnConstraints>
                    <ColumnConstraints percentWidth="77.5"/>
                    <ColumnConstraints percentWidth="77.5"/>
                    <ColumnConstraints percentWidth="77.5"/>

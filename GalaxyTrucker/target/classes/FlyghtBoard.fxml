@@ -19,8 +19,6 @@
 
             <children>
 
-                <Label fx:id="currentPlayerLabel" style="-fx-font-size: 18px; -fx-font-family: 'Verdana' ;-fx-font-weight: bold; -fx-text-fill: #4B0149; " text="Turno di: Giocatore" />
-
                 <HBox fx:id="playersInfoBox" alignment="CENTER" spacing="20.0">
 
                     <children>

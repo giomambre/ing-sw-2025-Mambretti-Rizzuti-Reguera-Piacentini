@@ -560,7 +560,7 @@ public class Server implements RemoteServer {
 
                 //CardAdventure adventure = controller.getRandomAdventure();
 
-        //       CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
+               CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
 
 
                 /*CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -570,7 +570,7 @@ public class Server implements RemoteServer {
                                 Cargo.Yellow
                         ),
                         3,"");*/
-                CardAdventure adventure=new AbandonedShip(1,2,CardAdventureType.AbandonedShip,3,1,"/images/cardAdventure/GT-abandonedShip_2.1.jpg");
+                //CardAdventure adventure=new AbandonedShip(1,2,CardAdventureType.AbandonedShip,3,1,"/images/cardAdventure/GT-abandonedShip_2.1.jpg");
 
 
 //             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
