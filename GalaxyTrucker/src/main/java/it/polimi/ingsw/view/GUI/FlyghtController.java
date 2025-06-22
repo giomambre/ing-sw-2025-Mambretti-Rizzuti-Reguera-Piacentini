@@ -109,12 +109,24 @@ public class FlyghtController {
     @FXML
     private VBox playersButtonBox;
 
+    @FXML
+    private Label infoLabel;
+
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_WIDTH = 80;
     private static final int CELL_HEIGHT = 50;
     private static final int SHIP_CELL_SIZE = 75;
 
+    public void showMessageLabel(String message) {
+        Platform.runLater(() -> {
+                infoLabel.setVisible(true);
+                infoLabel.setText(message);
+        });
+    }
+    public void hideInfoLabel() {
+        Platform.runLater(() -> infoLabel.setVisible(false));
+    }
 
     public void setPlayerStage(Stage playerStage) {
         this.playerStage = playerStage;
@@ -469,16 +481,6 @@ public class FlyghtController {
         return null;
     }
 
-//    public CompletableFuture<Boolean> getUseCard() {
-//        if (useCard == null) {
-//            useCard = new CompletableFuture<>();
-//        }
-//        return useCard;
-//    }
-
-//    public void resetUseCard() {
-//        useCard = new CompletableFuture<>();
-//    }
 
     public CompletableFuture<Boolean> getUseDoubleCannon() {
         if (useDoubleCannon == null) {
@@ -491,18 +493,6 @@ public class FlyghtController {
         useDoubleCannon = new CompletableFuture<>();
     }
 
-//    public void showChoice(){
-//        Platform.runLater(() -> {
-//            choiceLabel.setText("Decidere se accettare o meno l'avventura");
-//            choiceLabel.setVisible(true);
-//            accept.setVisible(true);
-//            accept.setOnAction((ActionEvent event) -> {useCard.complete(true);
-//                hideChoice();});
-//            reject.setVisible(true);
-//            reject.setOnAction((ActionEvent event) -> {useCard.complete(false);
-//                hideChoice();});
-//        });
-//    }
 
     public void showdc(int x, int y) {
         Platform.runLater(() -> {
