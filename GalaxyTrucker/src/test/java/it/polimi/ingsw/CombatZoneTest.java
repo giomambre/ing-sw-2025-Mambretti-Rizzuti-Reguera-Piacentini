@@ -225,45 +225,7 @@ public class CombatZoneTest {
         public void combatZoneTest(){
 
 
-            meteors = List.of(
-                    new Pair(MeteorType.LightCannonFire, West),
-                    new Pair<>(MeteorType.HeavyCannonFire, South), new Pair<>(MeteorType.HeavyCannonFire, North)
-            );
 
-            combatZone = new CombatZone(2,2, CardAdventureType.CombatZone,2,0,3,meteors,"");
-            meteors = ((CombatZone)combatZone).getMeteors();
-
-            meteorSwarm = new MeteorSwarm(2,0, CardAdventureType.MeteorSwarm, meteors,"");
-            meteorSwarm.setBoard(board);
-            System.out.println(ship1.printShipPlance());
-
-            for (Pair<MeteorType, Direction> pair : meteors) {
-                ((MeteorSwarm)meteorSwarm).execute(player1, pair.getValue(), pair.getKey(), true, ship1.getComponent(0,2) , 8, true);
-            }
-
-            System.out.println(ship1.printShipPlance());
-
-            ((CombatZone)combatZone).executeLessCrewmates1(player1);
-            assertEquals(board.getBoard().get(5),player1);
-
-
-            Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
-            astronaut_losses.put(ship1.getComponent(3,2),1);
-
-
-            ((CombatZone)combatZone).executeLessEnginePower1(player1, astronaut_losses);
-            assertEquals(1, ((LivingUnit)ship1.getComponent(3,2)).getNum_crewmates());
-
-
-            Map<CardComponent, Map<Cargo, Integer>> cargo_loss = new HashMap<>();
-
-            Map<Cargo, Integer> cargoMap= new HashMap<>();
-            cargoMap.put(Blue, 0);
-            cargo_loss.put(ship1.getComponent(4,2), cargoMap);
-            ((Storage)ship1.getComponent(4,2)).addCargo(cargoMap);
-
-            ((CombatZone)combatZone).executeLessEnginePower2(player1, cargo_loss);
-            assertEquals(0, ((Storage)ship1.getComponent(4,2)).getCargoCount());
 
 
 

@@ -44,7 +44,7 @@ public class AbandonedShip extends CardAdventure implements Serializable {
      * @param player the player who uses the card
      * @param astronaut_losses  map linking living unit components to the number of crewmates to be removed
      */
-    public void execute(Player player, Map<CardComponent,Integer> astronaut_losses) {
+    /*public void execute(Player player, Map<CardComponent,Integer> astronaut_losses) {
 
         Ship ship_player = player.getShip();
         player.receiveCredits(given_credits);
@@ -66,7 +66,7 @@ public class AbandonedShip extends CardAdventure implements Serializable {
                     }
                 }
             }
-}
+}*/
 
     /** @return the number of lost crewmates*/
     public int getCrewmates_loss() {

@@ -20,7 +20,6 @@ public class GameController {
     private int adv_index = 0;
     String pirates_coords = "";
     String planets = "";
-    List<Player> finishedAdventure = new ArrayList<>();
     List<Player> adventureOrder = new ArrayList<>();
     List<Player> finished_supply_players = new ArrayList<>();
     List<String> waiting_fly_players = new ArrayList<>();
@@ -123,7 +122,7 @@ public class GameController {
 
     }
 
-    public String getLeastEngineValue() {
+  /*  public String getLeastEngineValue() {
         String result = "";
         Double min = Double.MAX_VALUE;
         for (Map.Entry<String, Double> entry : list_engine_power.entrySet()) {
@@ -134,7 +133,7 @@ public class GameController {
         }
         return result;
     }
-
+*/
     public Map<String, Double> getEngineValues() {
         return list_engine_power;
     }
@@ -340,9 +339,9 @@ public class GameController {
         return game.getBoard();
     }
 
-    public String getPlayerNickname(Player player) {
+  /*  public String getPlayerNickname(Player player) {
         return player.getNickname();
-    }
+    }*/
 
     public synchronized CardComponent getRandomCard() {
 
@@ -378,7 +377,7 @@ public class GameController {
         game.getBoard().putPlayersOnBoard(players);
     }
 
-    public List<Player> ordinaPlayers(List<Player> players, List<String> order) {
+   /* public List<Player> ordinaPlayers(List<Player> players, List<String> order) {
 
 
         Map<String, Player> playerMap = new HashMap<>();
@@ -394,7 +393,7 @@ public class GameController {
         }
 
         return order_player;
-    }
+    }*/
 
 
     public CardAdventure getRandomAdventure() {
@@ -476,6 +475,7 @@ public class GameController {
     }
 
 
+/*
     public synchronized CardComponent pickComponentFacedUp(int index) {
 
         if (index < 0 || index > game.getPlayers().size()) throw new IllegalArgumentException("Index out of bounds");
@@ -483,6 +483,7 @@ public class GameController {
         return game.getFacedUpCard(index);
 
     }
+*/
 
     public void crewmatesSupply(String nickname, int x, int y, CrewmateType type) {
 
@@ -510,7 +511,7 @@ public class GameController {
 
     }
 
-    public void rotateCard(CardComponent card) {
+  /*  public void rotateCard(CardComponent card) {
         card.rotate();
     }
 
@@ -527,7 +528,7 @@ public class GameController {
 
         return ship.getShipBoard();
     }
-
+*/
 
     public List<Pair<Integer, Integer>> checkShipConnectors(String nickname) {
 
@@ -579,33 +580,8 @@ public class GameController {
         return game.getCards_faced_up();
     }
 
-    public void addBuildPhasePlayer(String nickname) {
-        Player p = game.getPlayer(nickname);
-        if (!game.getBuildPhasePlayers().contains(p)) {
-            game.addBuildPhasePlayer(p);
-        } else throw new IllegalArgumentException("");
-    }
 
-    public void executeAbandonedShip(String nickname, Map<CardComponent, Integer> astronaut_losses, AbandonedShip abandonedShip) {
-        Player p = game.getPlayer(nickname);
-        Ship ship = p.getShip();
-        int total_crewmates = 0;
-
-        for (int i = 0; i < ship.getROWS(); i++) {
-            for (int j = 0; j < ship.getCOLS(); j++) {
-                if (ship.getComponent(i, j).getComponentType() == ComponentType.LivingUnit)
-                    total_crewmates += ((LivingUnit) ship.getComponent(i, j)).getNum_crewmates();
-            }
-        }
-
-        if (total_crewmates > abandonedShip.getCrewmates_loss()) {
-            abandonedShip.execute(p, astronaut_losses);
-        } else {
-            throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
-        }
-
-    }
-
+/*
     public List<Cargo> getCargoReward(CardAdventure cardAdventure) {
         CardAdventureType type = cardAdventure.getType();
         switch (type) {
@@ -618,7 +594,7 @@ public class GameController {
         }
     }
 
-/*
+
     public void executeAbandonedStation(String nickname, Map<CardComponent, Map<Cargo, Integer>> new_cargo_positions, AbandonedStation abandonedStation) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
@@ -636,7 +612,7 @@ public class GameController {
             throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
         }
     }
-*/
+
 
     //Serie di metodi di Combat Zone che vanno gestiti poi dal controller in base a quale id esce
     public List<Pair<MeteorType, Direction>> getCombatZoneMeteors(CombatZone combatZone) {
@@ -646,7 +622,7 @@ public class GameController {
     public void executeMeteors(String nickname, CardAdventure meteor, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage) {
         Player p = game.getPlayer(nickname);
         //((MeteorSwarm) meteor).execute(p, direction, meteor_type, shield_usage, battery, position, double_cannon_usage);
-    }
+    }*/
 
     public String calculateLessCrewmates() {
         List<Player> players = getActivePlayers();
@@ -673,7 +649,7 @@ public class GameController {
     }
 
 
-    public void executeLessCrewmates1(String nickname, CombatZone combatZone) {
+  /*  public void executeLessCrewmates1(String nickname, CombatZone combatZone) {
         Player p = game.getPlayer(nickname);
         combatZone.executeLessCrewmates1(p);
     }
@@ -731,15 +707,15 @@ public class GameController {
     }
 
 
-  /*  public void executeWinSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
+   public void executeWinSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
         Player p = game.getPlayer(nickname);
         smugglers.executeWin(p, new_cargo_position, choice);
-    }*/
+    }
 
     public void executeLossSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
         Player p = game.getPlayer(nickname);
         smugglers.executeLoss(p, cargo_position);
-    }
+    }*/
 
     public void executeStardust(Stardust stardust) {
         initializeAdventure(stardust);

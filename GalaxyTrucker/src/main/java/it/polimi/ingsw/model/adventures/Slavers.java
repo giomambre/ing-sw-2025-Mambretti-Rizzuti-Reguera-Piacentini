@@ -45,10 +45,10 @@ public class Slavers extends CardAdventure implements Serializable {
      *
      * @param player the player who defeated the pirates
      */
-    public void executeWin(Player player) {
+  /*  public void executeWin(Player player) {
         board.movePlayer(player, -getCost_of_days());
         player.receiveCredits(credits);
-    }
+    }*/
 
     /**
      * This method is called when the player is defeated by the slavers.
@@ -57,7 +57,7 @@ public class Slavers extends CardAdventure implements Serializable {
      * @param player the player who has been defeated
      * @param astronaut_losses a map linking living unit components to the number of crewmates to remove
      */
-    public void executeLoss(Player player, Map<CardComponent,Integer> astronaut_losses) {
+  /*  public void executeLoss(Player player, Map<CardComponent,Integer> astronaut_losses) {
 
         Ship ship_player = player.getShip();
         for (int i = 0; i < ship_player.getROWS(); i++) {
@@ -73,7 +73,7 @@ public class Slavers extends CardAdventure implements Serializable {
                 }
             }
         }
-    }
+    }*/
 
     /** @return the cannon strength*/
     public int getCannons_strenght() {

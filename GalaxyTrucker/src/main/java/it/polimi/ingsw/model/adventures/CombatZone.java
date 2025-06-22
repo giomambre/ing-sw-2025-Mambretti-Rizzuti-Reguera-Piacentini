@@ -63,7 +63,7 @@ public class CombatZone extends CardAdventure implements Serializable {
      * @param player the player with the weakest engine power
      * @param astronaut_losses a map linking ship components to the number of crew members to remove
      */
-    public void executeLessEnginePower1(Player player, Map<CardComponent,Integer> astronaut_losses) {
+   /* public void executeLessEnginePower1(Player player, Map<CardComponent,Integer> astronaut_losses) {
 
         Ship ship_player = player.getShip();
         for (int i = 0; i < ship_player.getROWS(); i++) {
@@ -80,7 +80,7 @@ public class CombatZone extends CardAdventure implements Serializable {
             }
         }
     }
-
+*/
     // LessCrewmates2 e LessCannonPower1 vengono gestiti con la execute di meteorswarm
     /**
      * This method applies a cargo loss penalty to the player with the weakest engine power.
@@ -88,7 +88,7 @@ public class CombatZone extends CardAdventure implements Serializable {
      * @param player the player with the weakest engine power
      * @param cargo_position a map linking storage components to a sub-map of cargo types and their quantities to remove
      */
-    public void executeLessEnginePower2(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
+   /* public void executeLessEnginePower2(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
 
         Ship ship_player = player.getShip();
         for (int i = 0; i < ship_player.getROWS(); i++) {
@@ -106,18 +106,12 @@ public class CombatZone extends CardAdventure implements Serializable {
             }
         }
     }
-
+*/
     /**@return a list of pair of meteor type and its direction*/
     public List<Pair<MeteorType, Direction>> getMeteors() {
         return meteors;
     }
 
-    /**
-     * This method decreases the number of flight days for the player who has the lowest cannon strength.
-     */
-    public void executeLessCannonPower2(Player player) {
-        board.movePlayer(player, -getCost_of_days());
-    }
 
     public int getId(){
         return id;

@@ -61,32 +61,11 @@ public abstract class CardAdventure implements Serializable {
     }
 
     /**
-     * Starts the resolution of this adventure.
-     *
-     * @param players the list of players involved in the adventure
-     */
-    public void startAdventure(List <Player> players) {
-        if (face_down) {
-            changeFace();
-        }
-            // logica specifica nelle sottoclassi
-    }
-
-    //da gestire la logica che le carte avventura si girano una a una quando si risolvono
-
-    /**
      * This method flips the card to reveal it (if face down).
      * Called when the adventure is about to be resolved.
      */
     public void changeFace(){this.face_down = !this.face_down;}
 
-    /**
-     * Checks if the card is currently face down.
-     * @return true if the card is face down, false if face up
-     */
-    public boolean isFaceDown() {
-        return face_down;
-    }
 
     /**@return type of adventure card*/
     public CardAdventureType getType() {

@@ -46,7 +46,7 @@ public class AbandonedStation extends  CardAdventure implements Serializable {
      * @param new_cargo_positions a map linking storage components to the cargo types and quantities to be added
      */
 //eventuale controllo se nessuno accetta la carte, da fare nel controller, tutto rimane invariato nel model
-    public void execute(Player player, Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions) {
+   /* public void execute(Player player, Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions) {
         Ship ship_player = player.getShip();
         board.movePlayer(player, -getCost_of_days());
         for (int i = 0; i < ship_player.getROWS(); i++) {
@@ -64,7 +64,7 @@ public class AbandonedStation extends  CardAdventure implements Serializable {
             }
         }
 
-    }
+    }*/
 
     /**@return list of cargo rewards*/
     public List<Cargo> getCargo() {
@@ -77,7 +77,5 @@ public class AbandonedStation extends  CardAdventure implements Serializable {
     public int getNeeded_crewmates() {
         return needed_crewmates;
     }
-public void setNeeded_crewmates(int needed_crewmates) {
-        this.needed_crewmates = needed_crewmates;
-}
+
 }

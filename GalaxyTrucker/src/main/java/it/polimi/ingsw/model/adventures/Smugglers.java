@@ -50,7 +50,7 @@ public class Smugglers extends CardAdventure implements Serializable {
      * @param new_cargo_position a map linking ship components to the cargos and quantities to be added
      * @param choice a boolean indicating the player's desire to receive the reward or not.
      */
-    public void executeWin(Player player, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
+   /* public void executeWin(Player player, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
         if (choice) {
             Ship ship_player = player.getShip();
             board.movePlayer(player, -getCost_of_days());
@@ -71,7 +71,7 @@ public class Smugglers extends CardAdventure implements Serializable {
             }
         }
 
-    }
+    }*/
 
     /**
      * This method is called when the player's cannon strenght is lower than the enemy's.
@@ -82,7 +82,7 @@ public class Smugglers extends CardAdventure implements Serializable {
      * @param player the player who suffers the penalty
      * @param cargo_position a map linking storage components to the cargos and quantities to be removed
      */
-    public void executeLoss(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
+    /*public void executeLoss(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
         Ship ship_player = player.getShip();
         for (int i = 0; i < ship_player.getROWS(); i++) {
             for (int j = 0; j < ship_player.getCOLS(); j++) {
@@ -100,7 +100,7 @@ public class Smugglers extends CardAdventure implements Serializable {
 
 
         }
-    }
+    }*/
 
     /** @return the cannon strength*/
     public int getCannons_strenght() {

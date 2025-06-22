@@ -41,7 +41,7 @@ public class Planets extends CardAdventure implements Serializable {
      * @param player the player receiving the rewards
      * @param planets a map of the carried cargos as value and the card component where he wants to put it.
      */
-    public  void execute(Player player, Map<CardComponent, Map<Cargo, Integer>> planets) {
+    /*public  void execute(Player player, Map<CardComponent, Map<Cargo, Integer>> planets) {
         Map<Cargo, Integer> rewards = new HashMap<>();
 
             board.movePlayer(player,-getCost_of_days());
@@ -60,7 +60,7 @@ public class Planets extends CardAdventure implements Serializable {
             }
 
 
-    }
+    }*/
 
     /**@return the full list of cargo rewards associated with all planets*/
     public List<List<Cargo>> getCargo_reward() {

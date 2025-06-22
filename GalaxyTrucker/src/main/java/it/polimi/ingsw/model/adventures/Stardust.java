@@ -27,8 +27,8 @@ public class Stardust extends CardAdventure implements Serializable {
      *
      * @param player
      */
-    public void execute(Player player) {
+    /*public void execute(Player player) {
         Ship ship = player.getShip();
         board.movePlayer(player, -ship.calculateExposedConnectors());
-    }
+    }*/
 }
