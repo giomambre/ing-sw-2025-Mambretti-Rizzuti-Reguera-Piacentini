@@ -51,3 +51,43 @@
     -fx-translate-y: 1;
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.4), 2, 0.2, 0, 0);
 }
+
+/* NUOVA CLASSE PER LA SHIP GRID */
+.ship-grid {
+    -fx-background-image: url("images/ship/grid.jpg");
+    -fx-background-size: 100% 100%;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 0;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
+}
+
+/* Versione con scaling più aggressivo se l'immagine è ancora piccola */
+.ship-grid-large {
+    -fx-background-image: url("images/ship/grid.jpg");
+    -fx-background-size: 110% 110%;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 0;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
+}
+
+/* Versione che scala l'immagine oltre i bordi per coprire completamente */
+.ship-grid-cover {
+    -fx-background-image: url("images/ship/grid.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 0;
+    -fx-hgap: 0;
+    -fx-vgap: 0;
+}
+
+/* Se vuoi che le celle abbiano bordi trasparenti per vedere meglio l'allineamento */
+.ship-grid .grid-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 0.5px;
+}
