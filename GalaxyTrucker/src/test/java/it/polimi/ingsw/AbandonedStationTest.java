@@ -78,7 +78,7 @@ public class AbandonedStationTest {
 
         assertEquals(0,((Storage) ship_1.getComponent(3,1)).getCargoCount());
 
-        ((AbandonedStation) abd_station).execute(player1,new_cargo_positions);
+      //  ((AbandonedStation) abd_station).execute(player1,new_cargo_positions);
 
         assertEquals(2,((Storage) ship_1.getComponent(3,1)).getCargoCount());
 

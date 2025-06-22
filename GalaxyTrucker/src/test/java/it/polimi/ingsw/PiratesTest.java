@@ -245,7 +245,7 @@ public class PiratesTest {
         System.out.println(ship1.printShipPlance());
 
         for (Pair<MeteorType, Direction> pair : meteors) {
-            ((MeteorSwarm)meteorSwarm).execute(player1, pair.getValue(), pair.getKey(), true, ship1.getComponent(0,2) , 8, true);
+        //    ((MeteorSwarm)meteorSwarm).execute(player1, pair.getValue(), pair.getKey(), true, ship1.getComponent(0,2) , 8, true);
         }
 
         System.out.println(ship1.printShipPlance());

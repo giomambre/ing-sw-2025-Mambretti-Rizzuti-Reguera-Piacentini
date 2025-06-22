@@ -775,11 +775,9 @@ public class Client {
 
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
-            virtualView.showMessage("\n\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
+            virtualView.showMessage("\n\n\n\n ---------- IL TUO VOLO FINISCE QUI!, aspetta la fine per la classifica ----------\n\n");
             virtualView.printFinalRanks(pm.getPlayers());
-            if(virtualViewType == VirtualViewType.TUI) {
-                System.exit(1);
-            }
+
             break;
 
 
@@ -963,8 +961,8 @@ public class Client {
 
 
             case INVALID_SHIP:
-                virtualView.showMessage("\nSEI STATO ESCLUSO DAL GIOCO, motivo :  NAVE INVALIDA (non ha i motore o astronauti)" + msg.getContent());
-                System.exit(0);
+                virtualView.showMessage("\nSEI STATO ESCLUSO DAL VOLO, motivo :  NAVE INVALIDA (non ha i motore o astronauti)" + msg.getContent());
+
 
 
                 break;
@@ -1384,7 +1382,7 @@ public class Client {
                             if (pieces.isEmpty()) {
                                 virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
                                 networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                                System.exit(0);
+
                             } else if (pieces.size() > 1) {
                                 int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
                                 player_local.getShip().choosePiece(piece);
@@ -1619,7 +1617,7 @@ public class Client {
 
                             networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
                             networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT,"",clientId));
-                            System.exit(0);
+
 
                         }
                         else {
@@ -1688,7 +1686,7 @@ public class Client {
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
                     networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                    System.exit(0);
+
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
                     player_local.getShip().choosePiece(piece);
@@ -1716,7 +1714,7 @@ public class Client {
         if (pieces.isEmpty()) {
             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
             networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-            System.exit(0);
+
         } else if (pieces.size() > 1) {
             int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
             player_local.getShip().choosePiece(piece);

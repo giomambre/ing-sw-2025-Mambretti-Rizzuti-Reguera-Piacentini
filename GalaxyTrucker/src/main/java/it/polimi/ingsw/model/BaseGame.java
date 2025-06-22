@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.enumerates.*;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 import static it.polimi.ingsw.model.enumerates.ComponentType.Shield;
@@ -66,15 +67,6 @@ public abstract class BaseGame implements Serializable {
      */
     public abstract void createDeckAdventure();
 
-    /**
-     * Gives the final ranking of the players based on the criteria of SetRewards method.
-     *
-     * @param players
-     */
-    public void setRanking(List<Player> players) {
-        players.sort(Comparator.comparingInt(Player::getCredits).reversed());
-        this.ranking=players;
-    }
 
     /**
      * called by the controller to give to each player a local copy of the decks present on the board
@@ -112,75 +104,52 @@ public abstract class BaseGame implements Serializable {
         int i = 0;
         for (Player p : board.getRanking()) {
 
-            if(!active_players.contains(p)) continue;
-
-            switch(i) {
-
-                case 0 : p.receiveCredits(4); break;
-                case 1 : p.receiveCredits(3); break;
-                case 2 : p.receiveCredits(2); break;
-                case 3 : p.receiveCredits(1); break;
+            if(active_players.contains(p)) {
 
 
+                switch (i) {
+
+                    case 0:
+                        p.receiveCredits(4);
+                        break;
+                    case 1:
+                        p.receiveCredits(3);
+                        break;
+                    case 2:
+                        p.receiveCredits(2);
+                        break;
+                    case 3:
+                        p.receiveCredits(1);
+                        break;
+
+
+                }
             }
             i++;
-            for (int row = 0; row < 5; row++) {
-                for (int col = 0; col < 7; col++) {
-                    if (p.getShip().getComponent(row, col).getComponentType().equals(BlueStorage)||p.getShip().getComponent(row, col).getComponentType().equals(RedStorage)){
-                        Storage storage=(Storage) p.getShip().getComponent(row, col);
-                        List<Cargo> cargos= storage.getCarried_cargos();
-                        for (Cargo c : cargos){
-                            switch (c){
-                                case Red:
 
-                                    p.receiveCredits(4);
-                                    break;
-
-                                case Yellow:
-
-                                    p.receiveCredits(3);
-                                    break;
-
-                                case Green:
-                                    p.receiveCredits(2);
-                                    break;
-
-                                case Blue:
-                                    p.receiveCredits(1);
-                                    break;
-
-                                default:
-                                    break;
-
-                            }
-                        }
-                    }
-                }
-
-            }
         }
         //gives credits to the players who have the best ship (only for players that ended the game)
         List<Player> best_ships = new ArrayList<>();
-        best_ships.add(active_players.get(0));
+        best_ships.add(active_players.getFirst());
         for (Player p : active_players) {
-            if (p.getExposed_connectors() < best_ships.get(0).getExposed_connectors()) {
+            if (p.getExposed_connectors() < best_ships.getFirst().getExposed_connectors()) {
                 best_ships.clear();
                 best_ships.add(p);
             }
-            if (p.getExposed_connectors() == best_ships.get(0).getExposed_connectors()) {
+            if (p.getExposed_connectors() == best_ships.getFirst().getExposed_connectors()) {
                 best_ships.add(p);
             }
         }
-        for (Player p : best_ships) {
+        best_ships = best_ships.stream()
+                .distinct()
+                .collect(Collectors.toList());        for (Player p : best_ships) {
             p.receiveCredits(2);
         }
 
 
 
-
-        //gives the reward for the cargo delivered by the players who gave up
         for (Player p : players) {
-            if(!active_players.contains(p)){
+
                 int reward_cargo=0;
                 for (int row = 0; row < 5; row++) {
                     for (int col = 0; col < 7; col++) {
@@ -214,33 +183,18 @@ public abstract class BaseGame implements Serializable {
                                 }
                             }
                         }
-                    }
+
 
                 }
-                p.receiveCredits((reward_cargo+1)/2);
-            }
-        }
 
-        //remove credits due to extra components on the plance (secured but not used and/or eliminated)
+            }
+            if(active_players.contains(p)) p.receiveCredits(reward_cargo);
+            else p.receiveCredits((reward_cargo)/2);
+
+        }
         for (Player p : players) {
             p.LostCredits(p.getShip().getExtra_components().size());
         }
-    }
-
-    /**
-     *this method is used to initialise the deck of CardComponents before building the ship
-     *
-     * @param deck_components the entire list of CardComponent used to build the ships
-     */
-    public void setDeck_components(List<CardComponent> deck_components) {
-        this.deck_components = deck_components;
-    }
-
-    /**
-     * @return a list containing the deck of CardCardComponents
-     */
-    public List<CardComponent> getDeck_components() {
-        return deck_components;
     }
 
     /**

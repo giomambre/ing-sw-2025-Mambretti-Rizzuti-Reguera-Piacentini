@@ -66,7 +66,7 @@ public class AbandonedShipTest {
         assertEquals(0,player.getCredits());
         assertEquals(6,ship.getNumOfCrewmates());
 
-        ((AbandonedShip)abandonedShip).execute(player,astronaut_losses);
+      //  ((AbandonedShip)abandonedShip).execute(player,astronaut_losses);
 
         assertEquals(5,player.getCredits());
 

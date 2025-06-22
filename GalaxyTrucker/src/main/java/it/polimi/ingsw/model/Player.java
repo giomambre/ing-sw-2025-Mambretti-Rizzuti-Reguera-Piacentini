@@ -2,6 +2,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.*;
+import it.polimi.ingsw.view.TUI.TUI;
+import it.polimi.ingsw.view.View;
 
 import java.io.Serializable;
 import java.util.*;
@@ -365,8 +367,13 @@ public class Player implements Serializable {
         connectors.put(East, Universal);
         connectors.put(South, Smooth);
         connectors.put(West, Double);
+        Storage s = new Storage(RedStorage, connectors,2, "");
+        Map<Cargo,Integer> map = new HashMap<Cargo,Integer>();
+        map.put(Cargo.Red,0);
+        s.addCargo(map);
+        ship.addComponent(s, 2, 4);
 
-        ship.addComponent(new Storage(RedStorage, connectors,1, ""), 2, 4);
+
 
         connectors.put(North, Single);
         connectors.put(East, Double);
@@ -400,7 +407,22 @@ public class Player implements Serializable {
         connectors.put(South, Single);
         connectors.put(West, Universal);
 
-        ship.addComponent(new Storage(BlueStorage, connectors,2, ""), 3, 4);
+        s = new Storage(BlueStorage, connectors,3, "");
+
+        map.clear();
+        map.put(Cargo.Blue,0);
+        map.put(Cargo.Green,1);
+        map.put(Cargo.Yellow,2);
+
+        s.addCargo(map);
+
+
+
+
+        ship.addComponent(s, 3, 4);
+
+
+
 
         connectors.put(North, Universal);
         connectors.put(East, Single);
