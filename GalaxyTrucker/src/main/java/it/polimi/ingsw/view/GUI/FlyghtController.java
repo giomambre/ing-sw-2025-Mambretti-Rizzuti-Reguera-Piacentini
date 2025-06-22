@@ -107,12 +107,13 @@ public class FlyghtController {
     private Button continueButton;
 
     @FXML
-    private HBox playersButtonBox;
+    private VBox playersButtonBox;
 
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
-    private static final int CELL_SIZE = 80;
-    private static final int SHIP_CELL_SIZE = 60;
+    private static final int CELL_WIDTH = 80;
+    private static final int CELL_HEIGHT = 50;
+    private static final int SHIP_CELL_SIZE = 75;
 
 
     public void setPlayerStage(Stage playerStage) {
@@ -574,9 +575,9 @@ public class FlyghtController {
      */
     private void setupBoardGrid() {
         boardGrid.getChildren().clear();
-        boardGrid.setPrefSize(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
-        boardGrid.setMinSize(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
-        boardGrid.setMaxSize(BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE);
+        boardGrid.setPrefSize(BOARD_SIZE * CELL_WIDTH, BOARD_SIZE * CELL_HEIGHT);
+        boardGrid.setMinSize(BOARD_SIZE * CELL_WIDTH, BOARD_SIZE * CELL_HEIGHT);
+        boardGrid.setMaxSize(BOARD_SIZE * CELL_WIDTH, BOARD_SIZE * CELL_HEIGHT);
 
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
@@ -591,9 +592,9 @@ public class FlyghtController {
      */
     private StackPane createBoardCell(int row, int col) {
         StackPane cell = new StackPane();
-        cell.setPrefSize(CELL_SIZE, CELL_SIZE);
-        cell.setMinSize(CELL_SIZE, CELL_SIZE);
-        cell.setMaxSize(CELL_SIZE, CELL_SIZE);
+        cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
+        cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
+        cell.setMaxSize(CELL_WIDTH, CELL_HEIGHT);
 
         // Stile della cella (non cliccabile)
         cell.setStyle("-fx-border-color: black; -fx-border-width: 1px; " +
@@ -1119,8 +1120,8 @@ public class FlyghtController {
                 int num = count > 0 ? count : 1;
                 for (int i = 0; i < num; i++) {
                     ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    img.setFitWidth(30);
-                    img.setFitHeight(30);
+                    img.setFitWidth(37.5);
+                    img.setFitHeight(37.5);
                     img.setPreserveRatio(true);
                     img.setSmooth(true);
                     img.setMouseTransparent(true);
@@ -1132,8 +1133,8 @@ public class FlyghtController {
             case "PinkAlien": {
                 path = "/images/icons/pinkAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(30);
-                img.setFitHeight(30);
+                img.setFitWidth(37.5);
+                img.setFitHeight(37.5);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -1142,8 +1143,8 @@ public class FlyghtController {
             case "BrownAlien": {
                 path = "/images/icons/brownAlien.png";
                 ImageView img = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                img.setFitWidth(30);
-                img.setFitHeight(30);
+                img.setFitWidth(37.5);
+                img.setFitHeight(37.5);
                 img.setMouseTransparent(true);
                 img.setId("overlay-" + type);
                 return img;
@@ -1157,8 +1158,8 @@ public class FlyghtController {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < count; i++) {
                     ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    batteryImg.setFitWidth(22.5);
-                    batteryImg.setFitHeight(22.5);
+                    batteryImg.setFitWidth(27);
+                    batteryImg.setFitHeight(27);
                     batteryImg.setPreserveRatio(true);
                     batteryImg.setSmooth(true);
                     batteryImg.setMouseTransparent(true);
@@ -1175,8 +1176,8 @@ public class FlyghtController {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < count; i++) {
                     ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    cargoImg.setFitWidth(20);
-                    cargoImg.setFitHeight(20);
+                    cargoImg.setFitWidth(25);
+                    cargoImg.setFitHeight(25);
                     cargoImg.setPreserveRatio(true);
                     cargoImg.setSmooth(true);
                     cargoImg.setMouseTransparent(true);
@@ -1193,8 +1194,8 @@ public class FlyghtController {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < count; i++) {
                     ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    cargoImg.setFitWidth(20);
-                    cargoImg.setFitHeight(20);
+                    cargoImg.setFitWidth(25);
+                    cargoImg.setFitHeight(25);
                     cargoImg.setPreserveRatio(true);
                     cargoImg.setSmooth(true);
                     cargoImg.setMouseTransparent(true);
@@ -1211,8 +1212,8 @@ public class FlyghtController {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < count; i++) {
                     ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    cargoImg.setFitWidth(20);
-                    cargoImg.setFitHeight(20);
+                    cargoImg.setFitWidth(25);
+                    cargoImg.setFitHeight(25);
                     cargoImg.setPreserveRatio(true);
                     cargoImg.setSmooth(true);
                     cargoImg.setMouseTransparent(true);
@@ -1229,8 +1230,8 @@ public class FlyghtController {
                 container.setId("overlay-" + type);
                 for (int i = 0; i < count; i++) {
                     ImageView cargoImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    cargoImg.setFitWidth(20);
-                    cargoImg.setFitHeight(20);
+                    cargoImg.setFitWidth(25);
+                    cargoImg.setFitHeight(25);
                     cargoImg.setPreserveRatio(true);
                     cargoImg.setSmooth(true);
                     cargoImg.setMouseTransparent(true);
