@@ -1072,23 +1072,24 @@ public class GUI implements View {
         ImageView cardImageView = new ImageView();
 
         // Carica l'immagine della carta
-        String imagePath = card.getImagePath(); // Assumendo che CardComponent abbia questo metodo
-        Image cardImage = new Image(imagePath);
-        cardImageView.setImage(cardImage);
+        String imagePath = card.getImagePath();
+        if(!imagePath.isEmpty()) {// Assumendo che CardComponent abbia questo metodo
+            Image cardImage = new Image(imagePath);
+            cardImageView.setImage(cardImage);
+        }
+            // Imposta dimensioni dell'immagine
+            cardImageView.setFitWidth(150);
+            cardImageView.setFitHeight(200);
+            cardImageView.setPreserveRatio(true);
 
-        // Imposta dimensioni dell'immagine
-        cardImageView.setFitWidth(150);
-        cardImageView.setFitHeight(200);
-        cardImageView.setPreserveRatio(true);
+            // Applica la rotazione in base alla direzione
+            cardImageView.setRotate(card.getRotationAngle());
 
-        // Applica la rotazione in base alla direzione
-        cardImageView.setRotate(card.getRotationAngle());
-
-        // Container per l'immagine con bordo
-        StackPane imageContainer = new StackPane();
-        imageContainer.getChildren().add(cardImageView);
-        imageContainer.setStyle("-fx-border-color: white; -fx-border-width: 2px; -fx-background-color: white;");
-        imageContainer.setPadding(new Insets(10));
+            // Container per l'immagine con bordo
+            StackPane imageContainer = new StackPane();
+            imageContainer.getChildren().add(cardImageView);
+            imageContainer.setStyle("-fx-border-color: white; -fx-border-width: 2px; -fx-background-color: white;");
+            imageContainer.setPadding(new Insets(10));
 
         // Bottone OK
         Button okButton = new Button("OK");

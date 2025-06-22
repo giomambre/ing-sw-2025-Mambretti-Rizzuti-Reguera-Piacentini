@@ -765,7 +765,7 @@ public class Server implements RemoteServer {
                         }
 
 
-                        if (controller.getAdv_index() == 0) {
+                        if (controller.getAdv_index() == controller.getAdv_index()) {
                             adventure = controller.getRandomAdventure();
                             manageAdventure(adventure, controller);
                         }
@@ -1493,7 +1493,7 @@ public class Server implements RemoteServer {
                             handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "0", clientId, player_disc));
                             break;
 
-                        case AbandonedStation, AbandonedShip, Planets:
+                        case AbandonedStation, AbandonedShip, Planets,MeteorSwarm:
                             handleMessage((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_disc)));
                             break;
 
@@ -1501,6 +1501,8 @@ public class Server implements RemoteServer {
                         case Pirates, Smugglers, Slavers:
                             handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_disc));
                             break;
+
+
 
 
                     }

@@ -1552,10 +1552,9 @@ public class Client {
 
                     manageAdventure(
                             new MeteorSwarm(-1, 0, CardAdventureType.MeteorSwarm,
-                                    List.of(
-                                            new Pair<>(MeteorType.LightCannonFire, South),
-                                            new Pair<>(MeteorType.HeavyCannonFire, South)
-                                    ),""
+
+                                           pirates.getMeteors()
+                                    ,""
                             ), content);
 
 

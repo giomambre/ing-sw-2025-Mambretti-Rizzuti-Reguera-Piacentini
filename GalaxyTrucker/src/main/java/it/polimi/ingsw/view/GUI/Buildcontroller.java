@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
 import it.polimi.ingsw.model.components.CardComponent;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.*;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -35,6 +36,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
+import static it.polimi.ingsw.model.enumerates.ConnectorType.Universal;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
 public class Buildcontroller {
@@ -323,31 +325,31 @@ public class Buildcontroller {
 
 
                     Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-                    connectors.put(North, Empty_Connector);
-                    connectors.put(South, Empty_Connector);
-                    connectors.put(East, Empty_Connector);
-                    connectors.put(West, Empty_Connector);
+                    connectors.put(North, Universal);
+                    connectors.put(South, Universal);
+                    connectors.put(East, Universal);
+                    connectors.put(West, Universal);
 
 
                     switch (color) {
                         case BLUE:
                             imagePath = "/images/cardComponent/GT-mainUnitBlue.jpg";
-                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitBlue,connectors,imagePath);
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitBlue,connectors,imagePath);
 
                             break;
                         case RED:
                             imagePath = "/images/cardComponent/GT-mainUnitRed.jpg";
-                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitRed,connectors,imagePath);
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitRed,connectors,imagePath);
 
                             break;
                         case GREEN:
                             imagePath = "/images/cardComponent/GT-mainUnitGreen.jpg";
-                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitGreen,connectors,imagePath);
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitGreen,connectors,imagePath);
 
                             break;
                         case YELLOW:
                             imagePath = "/images/cardComponent/GT-mainUnitYellow.jpg";
-                            shipboard[i][j] = new CardComponent(ComponentType.MainUnitYellow,connectors,imagePath);
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitYellow,connectors,imagePath);
 
                             break;
                     }
