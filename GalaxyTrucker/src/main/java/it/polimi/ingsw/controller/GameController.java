@@ -24,16 +24,29 @@ public class GameController {
     List<Player> adventureOrder = new ArrayList<>();
     List<Player> finished_supply_players = new ArrayList<>();
     List<String> waiting_fly_players = new ArrayList<>();
-    List<Player> disconnected_players = new ArrayList<>();
+    List<String> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
     List<Player> build_order_players = new ArrayList<>();
     Map<String, Double> list_engine_power = new HashMap<>();
     Map<String, Double> list_cannon_power = new HashMap<>();
     private static final Random random = new Random();
-
+    int in_pause = 0;
     Lobby lobby;
     GameState game_state;
     BaseGame game;
+    private String curr_adventure_player = "";
+
+    public List<String> getDisconnected_players() {
+        return disconnected_players;
+    }
+
+    public String getCurr_adventure_player() {
+        return curr_adventure_player;
+    }
+
+    public void setCurr_adventure_player(String curr_adventure_player) {
+        this.curr_adventure_player = curr_adventure_player;
+    }
 
     public GameController(Lobby lobby) {
         this.lobby = lobby;
@@ -46,6 +59,18 @@ public class GameController {
         this.game_state = SETTINGS;
 
 
+    }
+
+    public void setIn_pause(int in_pause) {
+        this.in_pause = in_pause;
+    }
+
+    public void reConnect(String nickname) {
+        disconnected_players.remove(nickname);
+    }
+
+    public void disconnect(String nickname) {
+        disconnected_players.add(nickname);
     }
 
     public String getPirates_coords() {
@@ -84,11 +109,11 @@ public class GameController {
         return list_cannon_power;
     }
 
-    public String getLeastCannon(){
+    public String getLeastCannon() {
 
         String result = "";
         Double min = Double.MAX_VALUE;
-        for (Map.Entry<String , Double> entry : list_cannon_power.entrySet()) {
+        for (Map.Entry<String, Double> entry : list_cannon_power.entrySet()) {
             if (entry.getValue() < min) {
                 min = entry.getValue();
                 result = entry.getKey();
@@ -101,7 +126,7 @@ public class GameController {
     public String getLeastEngineValue() {
         String result = "";
         Double min = Double.MAX_VALUE;
-        for (Map.Entry<String , Double> entry : list_engine_power.entrySet()) {
+        for (Map.Entry<String, Double> entry : list_engine_power.entrySet()) {
             if (entry.getValue() < min) {
                 min = entry.getValue();
                 result = entry.getKey();
@@ -110,17 +135,21 @@ public class GameController {
         return result;
     }
 
-    public Map<String,Double> getEngineValues() {
+    public Map<String, Double> getEngineValues() {
         return list_engine_power;
     }
 
     public void removeFromAdventure(String nickname) {
-        adv_index--;
+
+        if (adventureOrder.contains(getPlayer(nickname))) {
+            adventureOrder.remove(getPlayer(nickname));
+
+        } else adv_index--;
+
+
     }
 
     public void initializeAdventure(CardAdventure adventure) {
-
-
 
 
         adv_index = 0;
@@ -132,7 +161,7 @@ public class GameController {
                 AbandonedStation abandonedStation = (AbandonedStation) adventure;
                 for (Player p : game.getBoard().getRanking()) {
 
-                    if (p.getShip().getNumOfCrewmates() >= abandonedStation.getNeeded_crewmates()) {
+                    if (p.getShip().getNumOfCrewmates() >= abandonedStation.getNeeded_crewmates() && !disconnected_players.contains(p.getNickname())) {
 
                         adventureOrder.add(p);
                     }
@@ -145,7 +174,7 @@ public class GameController {
                 AbandonedShip AbandonedShip = (AbandonedShip) adventure;
                 for (Player p : game.getBoard().getRanking()) {
 
-                    if (p.getShip().getNumOfCrewmates() > AbandonedShip.getCrewmates_loss()) {
+                    if (p.getShip().getNumOfCrewmates() > AbandonedShip.getCrewmates_loss() && !disconnected_players.contains(p.getNickname())) {
 
                         adventureOrder.add(p);
                     }
@@ -154,12 +183,13 @@ public class GameController {
                 break;
             case Planets:
                 planets = "";
+
                 adventureOrder = game.getBoard().getRanking();
 
                 break;
 
             case MeteorSwarm:
-                adv_index =getActivePlayers().size();
+                adv_index = getActivePlayers().size();
 
             default:
                 adventureOrder = game.getBoard().getRanking();
@@ -170,7 +200,7 @@ public class GameController {
 
         for (Player p : adventureOrder) {
 
-            if (!getActivePlayers().contains(p)) {
+            if (!getActivePlayers().contains(p) && disconnected_players.contains(p.getNickname())) {
                 adventureOrder.remove(p);
             }
 
@@ -179,6 +209,9 @@ public class GameController {
     }
 
 
+    public int getIn_pause() {
+        return in_pause;
+    }
 
     public String getPlanets() {
         return planets;
@@ -190,6 +223,16 @@ public class GameController {
         } else {
             planets = planets + " " + planet;
         }
+    }
+
+    public Player getPlayer(String nickname) {
+        for (Player p : getActivePlayers()) {
+
+            if (p.getNickname().equals(nickname)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     public List<Player> getAdventureOrder() {
@@ -239,9 +282,9 @@ public class GameController {
     }
 
     public int throwDice() {
-       
+
         return (random.nextInt(6) + 1) + (random.nextInt(6) + 1);
-    
+
     }
 
 
@@ -362,7 +405,7 @@ public class GameController {
 
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
-        Map<Pair<Integer,Integer>, Boolean> battery_usage = new HashMap<>();
+        Map<Pair<Integer, Integer>, Boolean> battery_usage = new HashMap<>();
         if (ship.calculateEnginePower(battery_usage) == 0) {
             System.out.println("Im sorry but you dont have any Engine you cannot start the game.");
             return -1;
@@ -667,7 +710,6 @@ public class GameController {
     }
 
 
-
     public List<Cargo> getCargosPlanets(Planets planets, int choice) {
         return planets.getCargos(choice);
     }
@@ -676,7 +718,6 @@ public class GameController {
         Player p = game.getPlayer(nickname);
         planets.execute(p, cargos);
     }
-
 
 
     public void executeWinSlavers(String nickname, Slavers slavers) {
@@ -702,15 +743,15 @@ public class GameController {
 
     public void executeStardust(Stardust stardust) {
         initializeAdventure(stardust);
-        for(Player p : adventureOrder) {
+        for (Player p : adventureOrder) {
 
-        movePlayer(p.getNickname(),-p.getShip().calculateExposedConnectors());
+            movePlayer(p.getNickname(), -p.getShip().calculateExposedConnectors());
 
 
         }
     }
 
-    public void setRewards(){
+    public void setRewards() {
 
         game.setRewards();
 
@@ -718,7 +759,7 @@ public class GameController {
     }
 
 
-    public  List<Player> winOrder() {
+    public List<Player> winOrder() {
         List<Player> orderedList = new ArrayList<>(game.getActive_players());
 
 
@@ -733,18 +774,18 @@ public class GameController {
 
 
     }
-        public void addCredits(String nickname, int credits){
 
-            for(Player p : getActivePlayers()) {
+    public void addCredits(String nickname, int credits) {
 
-                if(p.getNickname().equals(nickname)) {
+        for (Player p : getActivePlayers()) {
 
-                    p.setCredits(p.getCredits() + credits);
+            if (p.getNickname().equals(nickname)) {
 
-                }
+                p.setCredits(p.getCredits() + credits);
 
             }
 
+        }
 
 
     }
