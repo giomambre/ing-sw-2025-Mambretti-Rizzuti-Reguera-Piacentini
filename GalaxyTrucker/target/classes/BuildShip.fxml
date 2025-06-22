@@ -27,61 +27,59 @@
             </image>
         </ImageView>
 
-        <ImageView fitHeight="425" fitWidth="585" preserveRatio="false" StackPane.alignment="TOP_CENTER">
-            <image>
-                <Image url="@images/ship/grid.jpg" />
-            </image>
-            <StackPane.margin>
-                <Insets top="130.0" />
-            </StackPane.margin>
-        </ImageView>
-
         <VBox alignment="TOP_CENTER" spacing="20" StackPane.alignment="CENTER">
 
             <HBox fx:id="crewmateButtonBox" alignment="CENTER_LEFT" spacing="10" />
 
-
             <Button fx:id="endbutton" onAction="#setFour" styleClass="ship-button" text="Termina Assemblaggio">
-            <VBox.margin>
-               <Insets top="15.0" />
-            </VBox.margin></Button>
+                <VBox.margin>
+                    <Insets top="15.0" />
+                </VBox.margin>
+            </Button>
 
             <Pane prefHeight="425.0" prefWidth="585.0" StackPane.alignment="CENTER">
-                <GridPane fx:id="shipGrid" alignment="CENTER" layoutX="465.0" layoutY="19.0" prefHeight="386.25" prefWidth="540.0">
-               <columnConstraints>
-                   <ColumnConstraints percentWidth="77.5"/>
-                   <ColumnConstraints percentWidth="77.5"/>
-                   <ColumnConstraints percentWidth="77.5"/>
-                   <ColumnConstraints percentWidth="77.5"/>
-                   <ColumnConstraints percentWidth="77.5"/>
-                   <ColumnConstraints percentWidth="77.5"/>
-                   <ColumnConstraints percentWidth="77.5"/>
-               </columnConstraints>
-               <rowConstraints>
-                   <RowConstraints percentHeight="77.5"/>
-                   <RowConstraints percentHeight="77.5"/>
-                   <RowConstraints percentHeight="77.5"/>
-                   <RowConstraints percentHeight="77.5"/>
-                   <RowConstraints percentHeight="77.5"/>
-               </rowConstraints></GridPane>
+                <!-- GridPane con background image CSS - NON più ImageView separata -->
+                <GridPane fx:id="shipGrid" alignment="CENTER"
+                          layoutX="497.5" layoutY="19.0"
+                          prefHeight="386.25" prefWidth="540.0"
+                          styleClass="ship-grid-large"
+                          hgap="0" vgap="0">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="77.5"/>
+                        <ColumnConstraints percentWidth="77.5"/>
+                        <ColumnConstraints percentWidth="77.5"/>
+                        <ColumnConstraints percentWidth="77.5"/>
+                        <ColumnConstraints percentWidth="77.5"/>
+                        <ColumnConstraints percentWidth="77.5"/>
+                        <ColumnConstraints percentWidth="77.5"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints percentHeight="77.5"/>
+                        <RowConstraints percentHeight="77.5"/>
+                        <RowConstraints percentHeight="77.5"/>
+                        <RowConstraints percentHeight="77.5"/>
+                        <RowConstraints percentHeight="77.5"/>
+                    </rowConstraints>
+                </GridPane>
 
-                     <VBox alignment="CENTER" layoutX="839.0" layoutY="-5.0" prefHeight="36.0" prefWidth="199.0">
-                   <Label style="-fx-font-family: 'Verdana'; -fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: rgba(254, 246, 213, 0.0);" text="Carte Prenotate" />
-                   <HBox fx:id="reservedCardPreview" alignment="CENTER" managed="false" visible="false" />
-               </VBox>
-            <VBox.margin>
-               <Insets top="32.0" />
-            </VBox.margin>
+                <VBox alignment="CENTER" layoutX="839.0" layoutY="-5.0" prefHeight="36.0" prefWidth="199.0">
+                    <Label style="-fx-font-family: 'Verdana'; -fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: rgba(254, 246, 213, 0.0);" text="Carte Prenotate" />
+                    <HBox fx:id="reservedCardPreview" alignment="CENTER" managed="false" visible="false" />
+                </VBox>
+                <VBox.margin>
+                    <Insets top="32.0" />
+                </VBox.margin>
             </Pane>
 
             <Button fx:id="randomcard" onAction="#setOne" styleClass="ship-button" text="carta random">
                 <VBox.margin>
                     <Insets top="30.0" />
-                </VBox.margin></Button>
+                </VBox.margin>
+            </Button>
 
-               <VBox alignment="CENTER" maxWidth="750" spacing="5">
+            <VBox alignment="CENTER" maxWidth="750" spacing="5">
                 <Label style="-fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-text-fill: #fef6d5; -fx-font-size: 18;" text="Carte Scartate (Face-Up)" />
-                <ScrollPane fx:id="faceUpScrollPane" fitToHeight="true" hbarPolicy="AS_NEEDED" managed="false" maxWidth="650" pannable="true" prefHeight="115" prefWidth="650" style="-fx-background: rgba(255, 255, 255, 0.3); -fx-background-color: rgba(255, 255, 255, 0.3);                             -fx-border-color: rgba(255, 255, 255, 0.5); -fx-border-width: 1px; -fx-border-radius: 10px; -fx-background-radius: 10px;" vbarPolicy="NEVER" visible="false">
+                <ScrollPane fx:id="faceUpScrollPane" fitToHeight="true" hbarPolicy="AS_NEEDED" managed="false" maxWidth="650" pannable="true" prefHeight="115" prefWidth="650" style="-fx-background: rgba(255, 255, 255, 0.3); -fx-background-color: rgba(255, 255, 255, 0.3); -fx-border-color: rgba(255, 255, 255, 0.5); -fx-border-width: 1px; -fx-border-radius: 10px; -fx-background-radius: 10px;" vbarPolicy="NEVER" visible="false">
                     <content>
                         <HBox fx:id="faceupCardPreview" alignment="CENTER" pickOnBounds="false" spacing="10" style="-fx-background-color: transparent;" />
                     </content>
@@ -90,16 +88,17 @@
 
         </VBox>
 
-               <VBox maxWidth="450.0" spacing="15.0" StackPane.alignment="TOP_LEFT">
-             <StackPane.margin>
-                 <Insets left="30.0" top="30.0" />
-             </StackPane.margin>
-             <Label style="-fx-font-family: 'Verdana'; -fx-font-size: 20; -fx-text-fill: #fef6d5;" text="Navi degli altri:">
-            <VBox.margin>
-            </VBox.margin>
-         </Label>
-             <VBox fx:id="playersButtonBox" spacing="15.0" />
-         </VBox>
+        <VBox maxWidth="450.0" spacing="15.0" StackPane.alignment="TOP_LEFT">
+            <StackPane.margin>
+                <Insets left="30.0" top="30.0" />
+            </StackPane.margin>
+            <Label style="-fx-font-family: 'Verdana'; -fx-font-size: 20; -fx-text-fill: #fef6d5;" text="Navi degli altri:">
+                <VBox.margin>
+                </VBox.margin>
+            </Label>
+            <VBox fx:id="playersButtonBox" spacing="15.0" />
+        </VBox>
+
         <VBox alignment="TOP_CENTER" maxHeight="200.0" maxWidth="200" mouseTransparent="true" spacing="5" StackPane.alignment="TOP_RIGHT">
             <StackPane.margin>
                 <Insets right="100.0" top="35.0" />

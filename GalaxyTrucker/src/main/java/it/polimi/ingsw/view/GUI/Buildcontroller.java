@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -424,38 +425,41 @@ public class Buildcontroller {
         return crewmate;
     }
 
-   public void highlightCell(Pair<Integer, Integer> coords) {
-    int y = coords.getKey();
-    int x = coords.getValue();
-    System.out.println("Attempting to highlight cell at: " + x + "," + y);
+    public void highlightCell(Pair<Integer, Integer> coords) {
+        int y = coords.getKey();
+        int x = coords.getValue();
+        System.out.println("Attempting to highlight cell at: " + x + "," + y);
 
-    for (Node node : shipGrid.getChildren()) {
-        Integer colIndex = GridPane.getColumnIndex(node);
-        Integer rowIndex = GridPane.getRowIndex(node);
+        for (Node node : shipGrid.getChildren()) {
+            Integer colIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
 
-        if (colIndex == null) colIndex = 0;
-        if (rowIndex == null) rowIndex = 0;
+            if (colIndex == null) colIndex = 0;
+            if (rowIndex == null) rowIndex = 0;
 
-        if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-            System.out.println("Found cell at " + x + "," + y + ", applying highlight");
-            // Applica uno stile più visibile
-            String style = "-fx-background-color: rgba(255, 0, 0, 0.3); " +
-                          "-fx-border-color: red; " +
-                          "-fx-border-width: 3px; " +
-                          "-fx-border-style: solid;";
-            
-            if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
-                System.out.println("Cell has ImageView, applying style to image");
-                imageView.setStyle(style);
-            } else {
-                System.out.println("Applying style to StackPane");
+            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                System.out.println("Found cell at " + x + "," + y + ", applying highlight");
+
+                String style = "-fx-background-color: rgba(255, 0, 0, 0.3);" +
+                        "-fx-border-color: red;" +
+                        "-fx-border-width: 3px;" +
+                        "-fx-border-style: solid;";
                 cell.setStyle(style);
+
+                for (Node child : cell.getChildren()) {
+                    if (child instanceof ImageView imageView) {
+                        DropShadow ds = new DropShadow();
+                        ds.setColor(javafx.scene.paint.Color.RED);
+                        ds.setRadius(10);
+                        ds.setSpread(0.7);
+                        imageView.setEffect(ds);
+                    }
+                }
+                return;
             }
-            return;
         }
+        System.out.println("Cell not found at " + x + "," + y);
     }
-    System.out.println("Cell not found at " + x + "," + y);
-}
 
     public void resetHighlights(Pair<Integer, Integer> coords) {
         int y = coords.getKey();
@@ -469,18 +473,17 @@ public class Buildcontroller {
             if (rowIndex == null) rowIndex = 0;
 
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                // Se la cella contiene un'immagine, rimuovi gli effetti dall'immagine
-                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
-                    imageView.setStyle(""); // Rimuovi tutti gli stili
-                } else {
-                    // Se la cella è vuota, rimuovi il bordo dalla StackPane
-                    cell.setStyle("-fx-background-color: lightyellow;");
+                cell.setStyle("");
+                for (Node child : cell.getChildren()) {
+                    if (child instanceof ImageView iv) {
+                        iv.setEffect(null);
+                    }
                 }
                 return;
             }
         }
-
     }
+
 
 
     public int placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
