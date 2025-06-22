@@ -28,7 +28,7 @@ public class GameController {
     List<Player> build_order_players = new ArrayList<>();
     Map<String, Double> list_engine_power = new HashMap<>();
     Map<String, Double> list_cannon_power = new HashMap<>();
-    private static final Random random = new Random();
+    private  Random random = new Random();
     int in_pause = 0;
     Lobby lobby;
     GameState game_state;
@@ -141,70 +141,56 @@ public class GameController {
     public void removeFromAdventure(String nickname) {
 
         if (adventureOrder.contains(getPlayer(nickname))) {
+
             adventureOrder.remove(getPlayer(nickname));
 
         } else adv_index--;
 
-
     }
 
     public void initializeAdventure(CardAdventure adventure) {
-
-
         adv_index = 0;
         this.adventure = adventure;
 
-        adventureOrder = new ArrayList<>();
+        List<Player> ranking = game.getBoard().getRanking();
+
         switch (adventure.getType()) {
             case AbandonedStation:
+                adventureOrder = new ArrayList<>();
                 AbandonedStation abandonedStation = (AbandonedStation) adventure;
-                for (Player p : game.getBoard().getRanking()) {
-
+                for (Player p : ranking) {
                     if (p.getShip().getNumOfCrewmates() >= abandonedStation.getNeeded_crewmates() && !disconnected_players.contains(p.getNickname())) {
-
                         adventureOrder.add(p);
                     }
-
                 }
                 break;
-
 
             case AbandonedShip:
-                AbandonedShip AbandonedShip = (AbandonedShip) adventure;
-                for (Player p : game.getBoard().getRanking()) {
-
-                    if (p.getShip().getNumOfCrewmates() > AbandonedShip.getCrewmates_loss() && !disconnected_players.contains(p.getNickname())) {
-
+                adventureOrder = new ArrayList<>();
+                AbandonedShip abandonedShip = (AbandonedShip) adventure;
+                for (Player p : ranking) {
+                    if (p.getShip().getNumOfCrewmates() > abandonedShip.getCrewmates_loss() && !disconnected_players.contains(p.getNickname())) {
                         adventureOrder.add(p);
                     }
-
                 }
                 break;
+
             case Planets:
                 planets = "";
-
-                adventureOrder = game.getBoard().getRanking();
-
+                adventureOrder = new ArrayList<>(ranking);
                 break;
 
             case MeteorSwarm:
                 adv_index = getActivePlayers().size();
-
-            default:
-                adventureOrder = game.getBoard().getRanking();
+                adventureOrder = new ArrayList<>(ranking);
                 break;
 
+            default:
+                adventureOrder = new ArrayList<>(ranking);
+                break;
         }
 
-
-        for (Player p : adventureOrder) {
-
-            if (!getActivePlayers().contains(p) && disconnected_players.contains(p.getNickname())) {
-                adventureOrder.remove(p);
-            }
-
-        }
-
+        adventureOrder.removeIf(p -> !getActivePlayers().contains(p) || disconnected_players.contains(p.getNickname()));
     }
 
 
@@ -735,7 +721,7 @@ public class GameController {
     }
 
 
-    public List<Player> winOrder() {
+/*    public List<Player> winOrder() {
         List<Player> orderedList = new ArrayList<>(game.getActive_players());
 
 
@@ -749,7 +735,7 @@ public class GameController {
         return orderedList;
 
 
-    }
+    }*/
 
     public void addCredits(String nickname, int credits) {
 

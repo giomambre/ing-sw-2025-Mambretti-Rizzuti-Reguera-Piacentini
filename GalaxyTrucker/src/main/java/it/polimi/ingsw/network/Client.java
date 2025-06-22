@@ -777,6 +777,9 @@ public class Client {
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
             virtualView.showMessage("\n\n\n\n ---------- IL GIOCO é FINITO ----------\n\n");
             virtualView.printFinalRanks(pm.getPlayers());
+            if(virtualViewType == VirtualViewType.TUI) {
+                System.exit(1);
+            }
             break;
 
 
@@ -848,7 +851,9 @@ public class Client {
             case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
+                    System.out.println("cioasdasd");
                     facedUp_deck_local.add(cpm.getCardComponent());
+
                     if (virtualViewType == VirtualViewType.GUI) {
                         if (((GUI) virtualView).getBuildcontroller() != null) {
                             ((GUI) virtualView).getBuildcontroller().updateFaceUpCardsDisplay();
@@ -1116,7 +1121,9 @@ public class Client {
 
                 break;
 
-
+            case PLAYER_DISCONNECTED:
+                System.out.println(msg.getContent());
+                break;
 
             default:
 
@@ -1275,7 +1282,7 @@ public class Client {
                     if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-
+                            i++;
                             continue;
                         }
 
@@ -1283,7 +1290,7 @@ public class Client {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-
+                            i++;
                             continue;
 
                         }

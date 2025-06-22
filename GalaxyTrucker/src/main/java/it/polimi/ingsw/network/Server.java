@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static it.polimi.ingsw.controller.GameState.*;
 
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.Direction.South;
 import static it.polimi.ingsw.network.Client.throwDice;
 import static it.polimi.ingsw.network.messages.MessageType.*;
 
@@ -565,8 +567,15 @@ public class Server implements RemoteServer {
                                 Cargo.Yellow
                         ),
                         3,"");*/
-                CardAdventure adventure = new AbandonedShip(1, 2, CardAdventureType.AbandonedShip, 3, 1, "/images/cardAdventure/GT-abandonedShip_2.1.jpg");
-
+                CardAdventure adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
+                        List.of(
+                                new Pair<>(MeteorType.SmallMeteor, North),
+                                new Pair<>(MeteorType.SmallMeteor, North),
+                                new Pair<>(MeteorType.SmallMeteor, West),
+                                new Pair<>(MeteorType.SmallMeteor, East),
+                                new Pair<>(MeteorType.SmallMeteor, South)
+                        ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
+                );
 
 //             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
 //                     Cargo.Red,
