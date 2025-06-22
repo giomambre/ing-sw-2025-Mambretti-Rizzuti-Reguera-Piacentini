@@ -567,7 +567,7 @@ public class Server implements RemoteServer {
                                 Cargo.Yellow
                         ),
                         3,"");*/
-                CardAdventure adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
+                /*CardAdventure adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(
                                 new Pair<>(MeteorType.SmallMeteor, North),
                                 new Pair<>(MeteorType.SmallMeteor, North),
@@ -575,7 +575,9 @@ public class Server implements RemoteServer {
                                 new Pair<>(MeteorType.SmallMeteor, East),
                                 new Pair<>(MeteorType.SmallMeteor, South)
                         ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
-                );
+                );*/
+
+                CardAdventure adventure= new AbandonedShip(1,0,CardAdventureType.AbandonedShip,2,2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg");
 
 //             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
 //                     Cargo.Red,

@@ -1217,13 +1217,14 @@ public class Client {
 
                 choice = virtualView.acceptAdventure("ACCETTI L'AVVENTURA?");
 
+
                 if (choice) {
 
                     int num_crew_mates = ab_ship.getCrewmates_loss();
                     player_local.setCredits(player_local.getCredits() + ab_ship.getGiven_credits());
                     while (num_crew_mates != 0) {
                         if(virtualViewType == VirtualViewType.GUI) {
-                            virtualView.showMessage("Mancano"+num_crew_mates+" crewmates da rimuovere");
+                            ((GUI)virtualView).getFlyghtController().showMessageLabel("Mancano"+num_crew_mates+" crewmates da rimuovere");
                             ((GUI) virtualView).getFlyghtController().showCrewmates(player_local.getShip());
                             try {
                                 Pair<Integer, Integer> lu =  ((GUI) virtualView).coordsCrewmate();
@@ -1231,7 +1232,7 @@ public class Client {
                                 else {
                                     LivingUnit l = (LivingUnit) player_local.getShip().getComponent(lu.getKey(), lu.getValue());
                                     num_crew_mates--;
-                                    virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
+                                    ((GUI)virtualView).getFlyghtController().showMessageLabel("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                                 }
                             } catch (Exception e) {
                                 System.err.println("Errore durante la selezione del crewmate: " + e.getMessage());
