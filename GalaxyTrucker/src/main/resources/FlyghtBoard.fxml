@@ -57,36 +57,32 @@
                                 <Insets top="15.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="choiceLabel" style="-fx-text-fill: grey; -fx-font-family: verdana; -fx-font-size: 14;" text="Vuoi usare questa carta avventura?" visible="false">
+                        <Label fx:id="choiceLabel" style="-fx-text-fill: #4B0149; -fx-font-family: verdana; -fx-font-size: 14;" text="Vuoi usare questa carta avventura?" visible="false">
                             <VBox.margin>
                                 <Insets top="-28.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="epidemicLabel" style="-fx-text-fill: grey; -fx-font-size: 14; -fx-font-family: verdana;" text="sono stati RIMOSSI 1 ASTRONAUTA per ogni Living Unit ADIACENTE" visible="false">
+                        <Label fx:id="epidemicLabel" style="-fx-text-fill: #4B0149; -fx-font-size: 14; -fx-font-family: verdana;" text="sono stati RIMOSSI 1 ASTRONAUTA per ogni Living Unit ADIACENTE" visible="false">
                             <VBox.margin>
                                 <Insets top="-28.0" />
+                            </VBox.margin>
+                        </Label>
+                        <Label fx:id="infoLabel" style="-fx-text-fill: #4B0149; -fx-font-family: verdana; -fx-font-size: 14;" text="Decidere se usare o no il cannone" visible="false">
+                            <VBox.margin>
+                                <Insets />
                             </VBox.margin>
                         </Label>
                         <Button fx:id="continueButton" text="Sì" visible="false" />
-                        <Label fx:id="infoLabel" style="-fx-text-fill: #4B0149; -fx-font-family: verdana; -fx-font-size: 14;" text="Decidere se usare o no il cannone" visible="false">
-                            <VBox.margin>
-                                <Insets top="15.0" />
-                            </VBox.margin>
-                        </Label>
-                        <HBox>
-                            <children>
-                                <Button fx:id="accept" styleClass="player-button" text="Sì" visible="false"  />
-                                <Button fx:id="reject" styleClass="player-button" text="No" visible="false" />
-                            </children>
-                        </HBox>
                         <HBox alignment="CENTER" spacing="10.0">
                             <children>
                                 <Button fx:id="yesdc" styleClass="player-button" text="Sì" visible="false" />
                                 <Button fx:id="nodc" styleClass="player-button" text="No" visible="false" />
+                                <Button fx:id="accept" styleClass="player-button" text="Sì" visible="false" />
+                                <Button fx:id="reject" styleClass="player-button" text="No" visible="false" />
                             </children>
-                            <VBox.margin>
-                                <Insets top="-30.0" />
-                            </VBox.margin>
+                     <VBox.margin>
+                        <Insets top="-15.0" />
+                     </VBox.margin>
                         </HBox>
                         <Button fx:id="dontusebattery" styleClass="player-button" text="Non usare nessuna batteria" visible="false">
                             <VBox.margin>
