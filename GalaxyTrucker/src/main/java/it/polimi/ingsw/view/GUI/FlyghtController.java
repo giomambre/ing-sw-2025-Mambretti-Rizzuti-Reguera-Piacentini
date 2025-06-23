@@ -639,11 +639,10 @@ public class FlyghtController {
      */
     private void setupAdventureCardArea() {
         adventureCardArea.getChildren().clear();
-        adventureCardArea.setPrefWidth(200);
         adventureCardArea.setSpacing(10);
 
         Label titleLabel = new Label("Carte Avventura");
-        titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        titleLabel.setStyle("-fx-font-size: 18; -fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-text-fill: #D8B7DD;");
         adventureCardArea.getChildren().add(titleLabel);
     }
 
@@ -977,8 +976,8 @@ public class FlyghtController {
                 Image image = new Image(Objects.requireNonNull(
                         getClass().getResourceAsStream(card.getImagePath())));
                 ImageView cardView = new ImageView(image);
-                cardView.setFitWidth(80);
-                cardView.setFitHeight(120);
+                cardView.setFitWidth(120);
+                cardView.setFitHeight(180);
                 cardView.setPreserveRatio(true);
 
                 cardView.setOnMouseClicked(e -> {
