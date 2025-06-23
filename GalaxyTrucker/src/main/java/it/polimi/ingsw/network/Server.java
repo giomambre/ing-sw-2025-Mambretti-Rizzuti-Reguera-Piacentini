@@ -809,10 +809,13 @@ public class Server implements RemoteServer {
                                 manageAdventure(adventure, controller);
                             } else {
 
-                                sendToClient(getId_client(controller.nextAdventurePlayer()), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
+                                String next_p = controller.nextAdventurePlayer();
+
+                                sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta scegliendo se prendere un PIANETA ! \n", next_p));
+
+                                sendToClient(getId_client(next_p), new AdventureCardMessage(PLANETS, controller.getPlanets(), controller.getCurrentAdventure()));
 
                             }
-
 
                         }
                         break;
@@ -1346,7 +1349,7 @@ public class Server implements RemoteServer {
 
                 coords_m = new StringBuilder();
 
-                for (int k = 0; k < 2; k++) {
+                for (int k = 0; k < 3; k++) {
 
                     coords_m.append(throwDice()).append(" ");
 

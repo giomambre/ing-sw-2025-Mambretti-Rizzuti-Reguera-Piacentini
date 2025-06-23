@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="un po di test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +89,7 @@
     "Application.Multiple Istance Client.executor": "Run",
     "Application.RmiClient.executor": "Run",
     "Application.RmiServer.executor": "Run",
-    "Application.Server.executor": "Debug",
+    "Application.Server.executor": "Run",
     "Application.TestGui.executor": "Run",
     "Application.Unnamed (1).executor": "Run",
     "Application.Unnamed.executor": "Run",
@@ -457,15 +454,7 @@
       <workItem from="1750516664309" duration="12858000" />
       <workItem from="1750589150261" duration="7243000" />
       <workItem from="1750610297798" duration="5126000" />
-      <workItem from="1750693901546" duration="4056000" />
-    </task>
-    <task id="LOCAL-00130" summary="modifiche + contrabbandieri">
-      <option name="closed" value="true" />
-      <created>1748856894334</created>
-      <option name="number" value="00130" />
-      <option name="presentableId" value="LOCAL-00130" />
-      <option name="project" value="LOCAL" />
-      <updated>1748856894334</updated>
+      <workItem from="1750693901546" duration="5049000" />
     </task>
     <task id="LOCAL-00131" summary="PIRATI fatta">
       <option name="closed" value="true" />
@@ -851,7 +840,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750697346987</updated>
     </task>
-    <option name="localTasksCounter" value="179" />
+    <task id="LOCAL-00179" summary="un po di test">
+      <option name="closed" value="true" />
+      <created>1750698007516</created>
+      <option name="number" value="00179" />
+      <option name="presentableId" value="LOCAL-00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1750698007516</updated>
+    </task>
+    <option name="localTasksCounter" value="180" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
