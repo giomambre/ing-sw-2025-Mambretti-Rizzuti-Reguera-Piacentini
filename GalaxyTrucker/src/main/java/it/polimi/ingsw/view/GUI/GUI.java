@@ -630,9 +630,45 @@ public class GUI implements View {
         }
     }
 
+    public void createrankingscreen(List<Player> finalRanks) {
+        if (this.finalRanksScreen != null) {
+            Platform.runLater(() -> {
+                stage.toFront();
+                stage.requestFocus();
+                stage.show(); // riportala in primo piano
+            });
+            return;
+        }
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ranking.fxml"));
+                Parent root = loader.load();
+
+                FinalRanksScreen controller = loader.getController(); // usa controller FXML
+                controller.setGUI(this); // passa la GUI, con il client corretto
+                this.finalRanksScreen = controller;
+
+                Scene scene = new Scene(root);
+                stage.setTitle("Final Ranking");
+                stage.setScene(scene);
+                stage.centerOnScreen();
+                stage.show();
+
+                stage.setOnCloseRequest((event) -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+                controller.displayFinalRanks(finalRanks);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+
+            }
+        });
+
+    }
+
     @Override
     public void printFinalRanks(List<Player> finalRanks) {
-        finalRanksScreen.displayFinalRanks(finalRanks);
     }
 
     @Override

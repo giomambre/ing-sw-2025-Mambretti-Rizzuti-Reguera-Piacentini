@@ -775,6 +775,9 @@ public class Client {
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
             virtualView.showMessage("\n\n\n\n ---------- IL TUO VOLO FINISCE QUI!, aspetta la fine per la classifica ----------\n\n");
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).createrankingscreen(pm.getPlayers());
+                }
             virtualView.printFinalRanks(pm.getPlayers());
 
             break;

@@ -569,7 +569,7 @@ public class Server implements RemoteServer {
                         3,"");*/
 
 
-                CardAdventure adventure= new AbandonedShip(1,0,CardAdventureType.AbandonedShip,2,2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg");
+                /*CardAdventure adventure= new AbandonedShip(1,0,CardAdventureType.AbandonedShip,2,2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg");*/
 
 //             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
 //                     Cargo.Red,
@@ -592,14 +592,14 @@ public class Server implements RemoteServer {
 //                                Cargo.Yellow
 //                        ),
 //                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
-                 adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+                /* adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                         List.of(
                                 new Pair<>(MeteorType.LightCannonFire, North),
                                 new Pair<>(MeteorType.LightCannonFire, West),
                                 new Pair<>(MeteorType.LightCannonFire, East),
                                 new Pair<>(MeteorType.HeavyCannonFire, South)
                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
-                );
+                );*/
 
                  adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(
@@ -612,7 +612,7 @@ public class Server implements RemoteServer {
                 );
 
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                //CardAdventure adventure = controller.getRandomAdventure();
+                CardAdventure adventure = controller.getRandomAdventure();
                 //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
 
                 manageAdventure(adventure, controller);
