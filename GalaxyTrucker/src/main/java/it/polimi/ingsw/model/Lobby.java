@@ -92,7 +92,4 @@ public class Lobby {
      *
      * @param count the new value of the static lobby counter
      */
-    public static void setCount(int count) {
-        Lobby.count = count;
-    }
 }
