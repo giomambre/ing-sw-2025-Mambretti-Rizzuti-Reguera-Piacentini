@@ -1,110 +1,88 @@
 package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.Player;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FinalRanksScreen {
 
-    private VBox rankingContainer;
-    private Label titleLabel;
-    private Button backButton;
+    public GUI gui;
+   @FXML
+   private GridPane rankingGridPane;
+
+
     private BorderPane mainLayout;
 
-    public FinalRanksScreen() {
-        setupUI();
-        mainLayout = createMainLayout();
+    public void setGUI(GUI gui) {
+        this.gui = gui;
     }
 
-    public BorderPane getLayout() {
-        return mainLayout;
-    }
 
-    private void setupUI() {
-        // Titolo principale
-        titleLabel = new Label("CLASSIFICA FINALE");
-        titleLabel.getStyleClass().add("title-label");
 
-        // Container per la classifica
-        rankingContainer = new VBox(10);
-        rankingContainer.setPadding(new Insets(20));
-        rankingContainer.setAlignment(Pos.TOP_CENTER);
+    public void displayFinalRanks(List<Player> players) {
 
-        // Pulsante per tornare indietro
-        backButton = new Button("Torna al Menu");
-        backButton.getStyleClass().add("back-button");
-        backButton.setOnAction(e -> handleBackButton());
-    }
+        rankingGridPane.getChildren().clear();
 
-    private BorderPane createMainLayout() {
-        BorderPane mainLayout = new BorderPane();
-        mainLayout.getStyleClass().add("main-container");
+        List<Player> sortedPlayers = players.stream()
+                .sorted(Comparator.comparingInt(Player::getCredits).reversed()) // Ordina per crediti decrescenti
+                .collect(Collectors.toList());
 
-        // Header con titolo
-        VBox header = new VBox(titleLabel);
-        header.setAlignment(Pos.CENTER);
-        header.setPadding(new Insets(20, 20, 10, 20));
 
-        // ScrollPane per la classifica
-        ScrollPane scrollPane = new ScrollPane(rankingContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("scroll-pane");
+        addStyledLabelToGrid(rankingGridPane, "Posizione", 0, 0, true);
+        addStyledLabelToGrid(rankingGridPane, "Giocatore", 1, 0, true);
+        addStyledLabelToGrid(rankingGridPane, "Crediti", 2, 0, true);
 
-        // Footer con pulsante
-        VBox footer = new VBox(backButton);
-        footer.setAlignment(Pos.CENTER);
-        footer.setPadding(new Insets(10, 20, 20, 20));
+        int row = 1;
+        for (Player player : sortedPlayers) {
 
-        mainLayout.setTop(header);
-        mainLayout.setCenter(scrollPane);
-        mainLayout.setBottom(footer);
+            addStyledLabelToGrid(rankingGridPane, String.valueOf(row), 0, row, false);
 
-        return mainLayout;
-    }
+            addStyledLabelToGrid(rankingGridPane, player.getNickname(), 1, row, false);
 
-    public void displayFinalRanks(List<Player> finalRanks) {
-        rankingContainer.getChildren().clear();
+            addStyledLabelToGrid(rankingGridPane, String.valueOf(player.getCredits()), 2, row, false);
 
-        if (finalRanks.isEmpty()) {
-            Label noPlayersLabel = new Label("Nessun giocatore da mostrare.");
-            noPlayersLabel.getStyleClass().add("no-players-label");
-            rankingContainer.getChildren().add(noPlayersLabel);
-        } else {
-            for (int i = 0; i < finalRanks.size(); i++) {
-                Player player = finalRanks.get(i);
-                Label playerRank = createPlayerRankLabel(i + 1, player);
-                rankingContainer.getChildren().add(playerRank);
-            }
+            row++;
+        }
+
+
+        while (rankingGridPane.getRowConstraints().size() < row) {
+            javafx.scene.layout.RowConstraints rc = new javafx.scene.layout.RowConstraints();
+            rc.setMinHeight(10.0);
+            rc.setPrefHeight(30.0);
+            rc.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
+            rankingGridPane.getRowConstraints().add(rc);
         }
     }
 
-    private Label createPlayerRankLabel(int position, Player player) {
-        String rankText = String.format("%d. %s - Crediti: %d",
-                position, player.getNickname(), player.getCredits());
 
-        Label rankLabel = new Label(rankText);
-        rankLabel.getStyleClass().add("rank-label");
+private void addStyledLabelToGrid(GridPane grid, String text, int col, int row, boolean isHeader) {
+    Label label = new Label(text);
+    label.setTextFill(Color.WHITE); // Colore predefinito per il testo
 
-        // Stile speciale per i primi 3 posti
-        if (position == 1) {
-            rankLabel.getStyleClass().add("first-place");
-        } else if (position == 2) {
-            rankLabel.getStyleClass().add("second-place");
-        } else if (position == 3) {
-            rankLabel.getStyleClass().add("third-place");
-        }
-
-        return rankLabel;
+    if (isHeader) {
+        label.setFont(Font.font("System Bold", 18)); // Font per le intestazioni
+        label.setTextFill(Color.LIGHTGRAY); // Colore specifico per le intestazioni
+    } else {
+        label.setFont(Font.font("System", 16)); // Font per i dati dei giocatori
     }
-
-    private void handleBackButton() {
-        // Implementa la logica per tornare al menu principale
-
-    }
+    grid.add(label, col, row);
 }
+
+}
+
+
+
+

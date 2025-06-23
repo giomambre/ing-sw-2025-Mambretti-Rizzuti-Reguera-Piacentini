@@ -243,6 +243,7 @@ public class GameController {
 
         Player player = adventureOrder.get(adv_index);
         adv_index++;
+        setCurr_adventure_player(player.getNickname());
         return player.getNickname();
 
 
