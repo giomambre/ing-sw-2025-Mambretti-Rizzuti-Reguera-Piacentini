@@ -753,11 +753,6 @@ public class Client {
                 break;
 
 
-            case END_FLIGHT:
-                Message end_msg = msg;
-                virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
-                virtualView.earlyEndFlightResume(player_local);
-                break;
 
 
         }
@@ -771,6 +766,11 @@ public class Client {
 
         switch (msg.getType()) {
 
+            case END_FLIGHT:
+                Message end_msg = msg;
+                virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
+                virtualView.earlyEndFlightResume(player_local);
+                break;
 
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
@@ -1103,14 +1103,17 @@ public class Client {
 
                 while(num_cargo_loss > 0){
 
-
-
                     virtualView.removeCargo(player_local.getShip());
 
                     num_cargo_loss--;
 
                 }
-                networkAdapter.sendMessage(new StandardMessageClient(MessageType.CARGO_LOSS,"cz",clientId));
+
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.CARGO_LOSS,"cz",clientId));
+
+
+
+
 
                 break;
 
@@ -1267,6 +1270,8 @@ public class Client {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
                             i++;
+                            if(virtualViewType==VirtualViewType.TUI)
+                                virtualView.nextMeteor();
                             continue;
                         }
 
@@ -1274,6 +1279,8 @@ public class Client {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
                             virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
+                            if(virtualViewType==VirtualViewType.TUI)
+                                virtualView.nextMeteor();
                             i++;
                             continue;
 
@@ -1285,7 +1292,8 @@ public class Client {
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
                         virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-
+                        if(virtualViewType==VirtualViewType.TUI)
+                            virtualView.nextMeteor();
                         continue;
 
 
@@ -1588,7 +1596,6 @@ public class Client {
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
 
 
-
                 if(power_c < slavers.getCannons_strenght()) {
 
 
@@ -1600,9 +1607,12 @@ public class Client {
                         if (player_local.getShip().getNumOfCrewmates() == 0){
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
-                            networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
-                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT,"",clientId));
 
+                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "l",clientId ));
+
+                            networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+
+                            return;
 
                         }
                         else {

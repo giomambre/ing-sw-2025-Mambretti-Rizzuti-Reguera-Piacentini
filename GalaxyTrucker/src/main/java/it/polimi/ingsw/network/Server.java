@@ -315,9 +315,9 @@ public class Server implements RemoteServer {
 
                 if (controller.getGamestate() != BUILD_PHASE) return;
 
-                synchronized (controller) {
 
-                    if (msgClient.getContent().isEmpty()) { //ha richiesto una carta casuale
+
+                if (msgClient.getContent().isEmpty()) { //ha richiesto una carta casuale
 
                         sendToClient(msgClient.getId_client(), new CardComponentMessage(MessageType.CARD_COMPONENT_RECEIVED, "", msgClient.getId_client(), controller.getRandomCard()));
 
@@ -335,7 +335,7 @@ public class Server implements RemoteServer {
                             i++;
                         }
                         sendToClient(msgClient.getId_client(), new Message(MessageType.CARD_UNAVAILABLE, ""));
-                    }
+
                 }
                 break;
 
@@ -345,13 +345,13 @@ public class Server implements RemoteServer {
                 controller = all_games.get(getLobbyId(card_msg.getId_client()));
                 if (controller.getGamestate() == BUILD_PHASE) {
 
-                    synchronized (controller) {
+
 
                         controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
                         System.out.println(controller.getFacedUpCards().toString());
                         sendToAllClients(controller.getLobby(), new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "", card_msg.getId_client(), card_msg.getCardComponent()));
 
-                    }
+
                 }
                 break;
 
@@ -567,15 +567,7 @@ public class Server implements RemoteServer {
                                 Cargo.Yellow
                         ),
                         3,"");*/
-                /*CardAdventure adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
-                        List.of(
-                                new Pair<>(MeteorType.SmallMeteor, North),
-                                new Pair<>(MeteorType.SmallMeteor, North),
-                                new Pair<>(MeteorType.SmallMeteor, West),
-                                new Pair<>(MeteorType.SmallMeteor, East),
-                                new Pair<>(MeteorType.SmallMeteor, South)
-                        ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
-                );*/
+
 
                 CardAdventure adventure= new AbandonedShip(1,0,CardAdventureType.AbandonedShip,2,2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg");
 
@@ -609,6 +601,16 @@ public class Server implements RemoteServer {
                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
                 );
 
+                 adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
+                        List.of(
+                                new Pair<>(MeteorType.SmallMeteor, North),
+                                new Pair<>(MeteorType.SmallMeteor, North),
+                                new Pair<>(MeteorType.SmallMeteor, West),
+                                new Pair<>(MeteorType.SmallMeteor, East),
+                                new Pair<>(MeteorType.SmallMeteor, South)
+                        ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
+                );
+
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 //CardAdventure adventure = controller.getRandomAdventure();
                 //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
@@ -634,6 +636,9 @@ public class Server implements RemoteServer {
             case ADVENTURE_COMPLETED:
                 ShipClientMessage adv_msg = (ShipClientMessage) msg;
                 controller = all_games.get(getLobbyId(adv_msg.getId_client()));
+
+
+
 
                 if (adv_msg.getPlayer().getShip() != null) {
                     Ship s = adv_msg.getPlayer().getShip();
@@ -663,9 +668,8 @@ public class Server implements RemoteServer {
                         int eng_power = (int) Double.parseDouble(adv_msg.getContent());
 
                         controller.movePlayer(getNickname(adv_msg.getId_client()), eng_power);
-                        sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + getNickname(adv_msg.getId_client())
-                                + " HA DICHIRATO UNA POTENZA MOTORE :  " + eng_power, controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
-                        System.out.println("OpenSpace completato");
+                        sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "" + eng_power, controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+                        sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " ha dichiarato una potenza di " + " eng_power" + " \n", getNickname(adv_msg.getId_client())));
                         if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
                             adventure = controller.getRandomAdventure();
@@ -675,7 +679,7 @@ public class Server implements RemoteServer {
                         } else {
                             String next_p = controller.nextAdventurePlayer();
 
-                            sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta dichiarando la potenza motoreA ! \n", next_p));
+                            sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + next_p + " sta dichiarando la potenza motore ! \n", next_p));
 
                             sendToClient(getId_client(next_p), new AdventureCardMessage(OPEN_SPACE, "", controller.getCurrentAdventure()));
 
@@ -761,13 +765,12 @@ public class Server implements RemoteServer {
 
                         if (controller.getActivePlayers().size() <= 1) {
 
-                        //gioco finito
                         manageAdventure(null,controller);
 
                         }
 
 
-                        if (controller.getAdv_index() == controller.getAdv_index()) {
+                        if (controller.getAdventureOrder().isEmpty()) {
                             adventure = controller.getRandomAdventure();
                             manageAdventure(adventure, controller);
                         }
@@ -1141,6 +1144,10 @@ public class Server implements RemoteServer {
                     manageAdventure(adventure, controller);
 
 
+                }else{
+
+
+
                 }
                 break;
 
@@ -1151,7 +1158,6 @@ public class Server implements RemoteServer {
                 controller.removeFromAdventure(getNickname(end_msg.getId_client()));
                 controller.removeFromActivePlayers(getNickname(end_msg.getId_client()));
 
-                sendToClient(end_msg.getId_client(), new Message(END_FLIGHT, ""));
                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "IL PLAYER " + getNickname(end_msg.getId_client()) + " è STATO KICKATO DALLA PARTITA PER NAVE INVALIDA", getNickname(end_msg.getId_client())));
                 if (controller.getActivePlayers().size() <= 1) {
                     controller.setRewards();
@@ -1173,9 +1179,10 @@ public class Server implements RemoteServer {
     public void manageAdventure(CardAdventure adventure, GameController controller) {
 
 
+
         for (Player p : controller.getPlayers()) { //kick dei i giocatori doppiati
 
-            if (!controller.getActivePlayers().contains(p)) {
+            if (!controller.getActivePlayers().contains(p) || p.getShip().findShipPieces().isEmpty()) {
 
                 sendToClient(getId_client(p.getNickname()), new Message(END_FLIGHT, ""));
                 controller.removeFromActivePlayers(p.getNickname());
@@ -1390,6 +1397,10 @@ public class Server implements RemoteServer {
                 manageAdventure(controller.getRandomAdventure(), controller);
                 break;
 
+
+            default:
+                break;
+
         }
 
 
@@ -1522,9 +1533,9 @@ public class Server implements RemoteServer {
 
                         case CombatZone:
                             if (controller.getCurr_combatzone().equals("eng")) {
-                                handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng 0", clientId, player_disc));
+                                handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng 0.0", clientId, player_disc));
                             } else if (controller.getCurr_combatzone().equals("can")) {
-                                handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can 0", clientId, player_disc));
+                                handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can 0.0", clientId, player_disc));
 
                             }
 
