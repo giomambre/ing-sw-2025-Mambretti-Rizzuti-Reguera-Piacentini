@@ -601,7 +601,7 @@ public class Server implements RemoteServer {
                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
                 );*/
 
-                 adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
+             /*    adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(
                                 new Pair<>(MeteorType.SmallMeteor, North),
                                 new Pair<>(MeteorType.SmallMeteor, North),
@@ -610,7 +610,7 @@ public class Server implements RemoteServer {
                                 new Pair<>(MeteorType.SmallMeteor, South)
                         ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
                 );
-
+*/
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 CardAdventure adventure = controller.getRandomAdventure();
                 //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
@@ -638,7 +638,11 @@ public class Server implements RemoteServer {
                 controller = all_games.get(getLobbyId(adv_msg.getId_client()));
 
 
+                if(controller.getGamestate() == FINISHED_GAME){
 
+                    break;
+
+                }
 
                 if (adv_msg.getPlayer().getShip() != null) {
                     Ship s = adv_msg.getPlayer().getShip();
@@ -1161,8 +1165,8 @@ public class Server implements RemoteServer {
                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "IL PLAYER " + getNickname(end_msg.getId_client()) + " è STATO KICKATO DALLA PARTITA PER NAVE INVALIDA", getNickname(end_msg.getId_client())));
                 if (controller.getActivePlayers().size() <= 1) {
                     controller.setRewards();
-                    sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getActivePlayers()));
-
+                    sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getPlayers()));
+                    controller.setGamestate(FINISHED_GAME);
                 }
                 break;
 
@@ -1178,6 +1182,8 @@ public class Server implements RemoteServer {
 
     public void manageAdventure(CardAdventure adventure, GameController controller) {
 
+
+        if(controller.getGamestate() == FINISHED_GAME) return;
 
 
         for (Player p : controller.getPlayers()) { //kick dei i giocatori doppiati
@@ -1195,7 +1201,9 @@ public class Server implements RemoteServer {
         if (adventure == null || controller.getActivePlayers().size() <= 1) {
 
             controller.setRewards();
-            sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getActivePlayers()));
+            sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getPlayers()));
+            controller.setGamestate(FINISHED_GAME);
+
             return;
         }
 

@@ -1271,7 +1271,7 @@ public class Client {
 
                     if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
-                            virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
+                            virtualView.showMessage("\nMETEORITE NON HA COLPITO LA NAVE!!\n");
                             i++;
                             if(virtualViewType==VirtualViewType.TUI)
                                 virtualView.nextMeteor();
@@ -1281,7 +1281,7 @@ public class Client {
                     } else {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
-                            virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
+                            virtualView.showMessage("\nMETEORITE NON HA COLPITO LA NAVE!!\n");
                             if(virtualViewType==VirtualViewType.TUI)
                                 virtualView.nextMeteor();
                             i++;
@@ -1294,7 +1294,7 @@ public class Client {
 
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
-                        virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
+                        virtualView.showMessage("\nMETEORITE NON HA COLPITO LA NAVE!!\n");
                         if(virtualViewType==VirtualViewType.TUI)
                             virtualView.nextMeteor();
                         continue;
@@ -1353,10 +1353,6 @@ public class Client {
                             break;
 
 
-
-
-
-
                         case LightCannonFire:
 
 
@@ -1378,6 +1374,7 @@ public class Client {
                             if (pieces.isEmpty()) {
                                 virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
                                 networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+                                break;
 
                             } else if (pieces.size() > 1) {
                                 int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
