@@ -29,6 +29,7 @@ public class GameController {
     Map<String, Double> list_engine_power = new HashMap<>();
     Map<String, Double> list_cannon_power = new HashMap<>();
     private  Random random = new Random();
+    String curr_combatzone = "";
     int in_pause = 0;
     Lobby lobby;
     GameState game_state;
@@ -41,6 +42,15 @@ public class GameController {
 
     public String getCurr_adventure_player() {
         return curr_adventure_player;
+    }
+
+
+    public String getCurr_combatzone() {
+        return curr_combatzone;
+    }
+
+    public void setCurr_combatzone(String curr_combatzone) {
+        this.curr_combatzone = curr_combatzone;
     }
 
     public void setCurr_adventure_player(String curr_adventure_player) {

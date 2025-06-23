@@ -836,6 +836,8 @@ public class Server implements RemoteServer {
                                         controller.initializeAdventure(controller.getCurrentAdventure());
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK, "1", controller.getEngineValues()));
+                                        controller.setCurr_combatzone("can");
+
                                         controller.getEngineValues().clear();
 
                                         break;
@@ -858,6 +860,8 @@ public class Server implements RemoteServer {
                                     if (controller.getListCannonPower().size() == controller.getActivePlayers().size()) {
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "1", controller.getEngineValues()));
+                                        controller.setCurr_combatzone("cw");
+
                                         controller.getListCannonPower().clear();
                                         break;
 
@@ -887,6 +891,7 @@ public class Server implements RemoteServer {
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "0", controller.getListCannonPower()));
                                         controller.movePlayer(controller.getLeastCannon(), -controller.getCurrentAdventure().getCost_of_days());
+                                        controller.setCurr_combatzone("eng");
 
                                         sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "IL PLAYER " + controller.getLeastCannon()
                                                 + " HA pagato la penitenza , ha perso :  " + controller.getCurrentAdventure().getCost_of_days() + " giorni di volo", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
@@ -900,6 +905,7 @@ public class Server implements RemoteServer {
                                         break;
 
                                     }
+                                    controller.setCurr_combatzone("eng");
 
                                     curr_nick = controller.nextAdventurePlayer();
                                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
@@ -919,6 +925,8 @@ public class Server implements RemoteServer {
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK, "0", controller.getEngineValues()));
                                         controller.getEngineValues().clear();
+                                        controller.setCurr_combatzone("cw");
+
                                         adventure = controller.getRandomAdventure();
                                         manageAdventure(adventure, controller);
 
@@ -1294,6 +1302,8 @@ public class Server implements RemoteServer {
                     controller.initializeAdventure(adventure);
                     String curr_nick = controller.nextAdventurePlayer();
                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "engine", adventure));
+                    controller.setCurr_combatzone("eng");
+
                     sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua POTENZA MOTORE ! \n", curr_nick));
 
 
@@ -1304,6 +1314,8 @@ public class Server implements RemoteServer {
                     controller.setCurr_adventure_player(curr_nick);
 
                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", adventure));
+                    controller.setCurr_combatzone("can");
+
                     sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua POTENZA CANNONI ! \n", curr_nick));
 
 
@@ -1496,7 +1508,7 @@ public class Server implements RemoteServer {
                             handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "0", clientId, player_disc));
                             break;
 
-                        case AbandonedStation, AbandonedShip, Planets,MeteorSwarm:
+                        case AbandonedStation, AbandonedShip, Planets, MeteorSwarm:
                             handleMessage((new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_disc)));
                             break;
 
@@ -1505,13 +1517,17 @@ public class Server implements RemoteServer {
                             handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_disc));
                             break;
 
+                        case CombatZone:
+                            if (controller.getCurr_combatzone().equals("eng")) {
+                                handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng 0", clientId, player_disc));
+                            } else if (controller.getCurr_combatzone().equals("can")) {
+                                handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can 0", clientId, player_disc));
 
+                            }
 
-
+                            break;
                     }
-
                 }
-
                 if (lobbyId != -1) {
                     Lobby lobby = manager.getLobby(lobbyId);
                     if (lobby != null) {
