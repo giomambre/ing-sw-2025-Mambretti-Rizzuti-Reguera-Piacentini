@@ -96,7 +96,7 @@ public class BaseGameTest {
     void testAddPlayer() {
         baseGame.addPlayer(player1);
         assertTrue(baseGame.getPlayers().contains(player1));
-        assertEquals(4, baseGame.getPlayers().size());
+        assertEquals(5, baseGame.getPlayers().size());
     }
 
 

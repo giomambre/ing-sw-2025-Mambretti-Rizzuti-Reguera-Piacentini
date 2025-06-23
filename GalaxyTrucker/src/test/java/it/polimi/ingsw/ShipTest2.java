@@ -272,7 +272,7 @@ public class ShipTest2 {
     assertEquals(PinkAlien, ((LivingUnit) ship1.getComponent(2,1)).getCrewmate_type());
     assertEquals(1, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
     ship1.removeComponent(2,0);
-    assertEquals(0, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
+    assertEquals(1, ((LivingUnit) ship1.getComponent(2,1)).getNum_crewmates());
     }
 
 

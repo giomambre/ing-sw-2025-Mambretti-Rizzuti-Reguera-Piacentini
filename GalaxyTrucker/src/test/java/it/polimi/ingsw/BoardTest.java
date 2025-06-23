@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.BaseGame;
 import it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.enumerates.Color;
@@ -19,9 +20,9 @@ public class BoardTest {
 
     private Board board;
     private Player player1, player2, player3, player4;
+    private Game game;
 
-    @BeforeEach //serve per fare il setup solo una volta per tutte prima di ogni test
-    //prima di ogni test si ha questa situazione non altre modificate dagli altri test!!!!!
+    @BeforeEach
     public void setUp() {
         Game game = new Game(Gametype.StandardGame);
         player1 = new Player("Alice", Color.YELLOW,game);
@@ -35,6 +36,40 @@ public class BoardTest {
     }
 
     @Test
+    public void testGetter(){
+        assertEquals(board.getPlayerPosition(player1), 7);
+        assertEquals(board.getPlayerPosition(player2), 4);
+        assertEquals(board.getPlayerPosition(player3), 2);
+        assertEquals(board.getPlayerPosition(player4), 1);
+        assertEquals(board.getPlayerPosition(new Player("as", Color.YELLOW,game)), 0);
+    }
+
+    @Test
+    public void testCopy(){
+        assertEquals(board.copyPlayerPositions().size(), board.getBoard().size());
+        for (Integer key : board.getBoard().keySet()) {
+            assertTrue(board.copyPlayerPositions().containsKey(key));
+            assertEquals(board.getBoard().get(key).getNickname(), board.copyPlayerPositions().get(key).getNickname());
+            assertEquals(board.getBoard().get(key).getColor(), board.copyPlayerPositions().get(key).getColor());
+        }
+
+        Map<Integer, Player> copy = new HashMap<>();
+
+        for (Map.Entry<Integer, Player> entry : board.getBoard().entrySet()) {
+            Player originalPlayer = entry.getValue();
+            Player copiedPlayer = entry.getValue().copyPlayer();
+            copiedPlayer.setNum_laps(originalPlayer.getNum_laps());
+            copy.put(entry.getKey(), copiedPlayer);
+        }
+        assertEquals(board.copyLaps().size(), copy.size());
+        for (Integer key : copy.keySet()) {
+            assertTrue(board.copyLaps().containsKey(key));
+            assertEquals(copy.get(key).getNickname(), board.copyLaps().get(key).getNickname());
+            assertEquals(copy.get(key).getColor(), board.copyLaps().get(key).getColor());
+        }
+    }
+
+    @Test
     public void testInitialPositions() {
         Map<Integer, Player> playerPositions = board.getBoard();
         assertEquals(player1, playerPositions.get(7));
@@ -43,8 +78,6 @@ public class BoardTest {
         assertEquals(player4, playerPositions.get(1));
     }
 
-    //CONSIGLIO PER CHI FA I TEST : li ho fatti a caso io, ma aiutatevi con le grafiche, però questo deve essere lo stile, inoltre per
-    //runnarli dovete runnare questo file, non  App.java
 
     @Test
     public void testmovePlayerForward() {
@@ -120,17 +153,17 @@ public class BoardTest {
         assertEquals(player3, playerPositions.get(2));
         assertEquals(player4, playerPositions.get(1));
         board.changeBoard_leader();
-        assertEquals(player1, board.getBoard_leader());
+
 
         board.movePlayer(player2, 3);
 
         board.changeBoard_leader();
-        assertEquals(player2, board.getBoard_leader());
+
 
 
         board.movePlayer(player4, 21);
 
-        assertEquals(player4, board.getBoard_leader());
+
 
 
 

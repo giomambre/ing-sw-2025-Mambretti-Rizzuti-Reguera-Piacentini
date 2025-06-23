@@ -23,7 +23,7 @@ public class Board implements Serializable {
     }
 
     public void putPlayersOnBoard(List<Player> players){
-        int[] starting_positions = {7, 4, 2, 1}; // the first player that end the build is the first in the active player list
+        int[] starting_positions = {7, 4, 2, 1};
         int i = 0;
         for (Player player : players) {
             player_position.put(starting_positions[i], player);
@@ -31,12 +31,6 @@ public class Board implements Serializable {
         }
     }
 
-    /**
-     * @return leader
-     */
-    public Player getBoard_leader() {
-        return board_leader;
-    }
 
     /**
      * this method is called to eventually change the board leader.
@@ -47,55 +41,7 @@ public class Board implements Serializable {
         this.board_leader = getRanking().getFirst();
     }
 
-    /**
-     * this method is called to check who's the current board leader on the board that is passed as parameter
-     *
-     * @param player_position The map on which we want to find out who's the leader at the moment
-     * @return returns the current leader
-     */
-    public Player checkLeader(Map<Integer, Player> player_position) {
 
-
-        List<Player> players = new ArrayList<>(player_position.values());
-
-        //  trova i giocatori con il maggior numero di giri
-        int maxLaps = -1;
-        List<Player> leading_players = new ArrayList<>();
-        for (Player player : players) {
-            System.out.println(player + " " + player.getNum_laps());
-            int laps = player.getNum_laps();
-            if (laps > maxLaps) {
-                maxLaps = laps;
-                leading_players.clear();
-                leading_players.add(player);
-            } else if (laps == maxLaps) {
-                leading_players.add(player);
-            }
-        }
-
-        // Se c'è un solo leader per numero di giri, restituiscilo
-        if (leading_players.size() == 1) {
-            return leading_players.get(0);
-        }
-
-        // Altrimenti, tra i giocatori con lo stesso numero di giri,
-        // trova quello nella posizione più avanzata
-        int maxPosition = Integer.MIN_VALUE;
-        Player leader = null;
-
-        for (Map.Entry<Integer, Player> entry : player_position.entrySet()) {
-            int position = entry.getKey();
-            Player player = entry.getValue();
-
-            // Considera solo i giocatori che sono tra i potenziali leader
-            if (leading_players.contains(player) && position > maxPosition) {
-                maxPosition = position;
-                leader = player;
-            }
-        }
-
-        return leader;
-    }
 
     /**
      * @param p player
@@ -214,18 +160,6 @@ public class Board implements Serializable {
                 .toList();
     }
 
-    public Map<Integer, Player> getLaps() {
-        Map<Integer, Player> player_laps = new HashMap<>();
-
-        // Iteriamo attraverso tutte le posizioni e giocatori nella mappa player_position
-        for (Map.Entry<Integer, Player> entry : player_position.entrySet()) {
-            Player player = entry.getValue();
-            // Aggiungiamo il giocatore alla mappa risultante con il suo numero di giri
-            player_laps.put(player.getNum_laps(), player);
-        }
-
-        return player_laps;
-    }
 
     /**
      * This function removes the players that got lapped by the group leader.
@@ -262,8 +196,8 @@ public class Board implements Serializable {
         Map<Integer, Player> copy = new HashMap<>();
         for (Map.Entry<Integer, Player> entry : this.player_position.entrySet()) {
             Player originalPlayer = entry.getValue();
-            Player copiedPlayer = entry.getValue().copyPlayer(); // costruttore di copia
-            copiedPlayer.setNum_laps(originalPlayer.getNum_laps()); // assicurati che setNum_laps esista
+            Player copiedPlayer = entry.getValue().copyPlayer();
+            copiedPlayer.setNum_laps(originalPlayer.getNum_laps());
             copy.put(entry.getKey(), copiedPlayer);
         }
         return copy;
