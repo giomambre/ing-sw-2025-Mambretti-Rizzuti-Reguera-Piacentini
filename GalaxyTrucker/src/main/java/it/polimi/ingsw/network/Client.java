@@ -76,8 +76,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "4.tcp.eu.ngrok.io";
-            int socketPort = 10287;
+            String host = "localhost";
+            int socketPort = 12345;
             int rmiPort = 1099;
             int choice = -1;
             do {
@@ -915,15 +915,13 @@ public class Client {
 
 
             case WAITING_FLIGHT:
-                virtualView.showMessage("""
-                        
-                        Hai completato la fase di controllo ora rimani in attesa degli altri giocatori.
-                        Questa è la tua nave.
-                        \s""");
 
-                virtualView.printShip(player_local.getShip().getShipBoard());
 
-                virtualView.showMessage("\n\n\tRIMANI IN ATTESA CHE GLI ALTRI PLAYER FINISCANO IL CONTROLLO !");
+
+                virtualView.showMessage("Hai completato la fase di controllo ora rimani in attesa degli altri giocatori\n");
+
+
+
                 break;
 
 
@@ -963,7 +961,6 @@ public class Client {
                 virtualView.showMessage("\nSEI STATO ESCLUSO DAL VOLO, motivo :  NAVE INVALIDA (non ha i motore o astronauti)" + msg.getContent());
 
 
-
                 break;
 
             case WIN:
@@ -972,7 +969,6 @@ public class Client {
 
             case START_FLIGHT:
 
-                virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
 
                 break;
 
