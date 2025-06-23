@@ -21,14 +21,4 @@ public class Stardust extends CardAdventure implements Serializable {
         super(level, cost_of_days, type,path);
     }
 
-    /**
-     * This method uses the {@code calculateExposedConnectors} method from the {@code Ship} class
-     * and applies the result by calling {@code movePlayer} from the {@code Board}.
-     *
-     * @param player
-     */
-    /*public void execute(Player player) {
-        Ship ship = player.getShip();
-        board.movePlayer(player, -ship.calculateExposedConnectors());
-    }*/
 }

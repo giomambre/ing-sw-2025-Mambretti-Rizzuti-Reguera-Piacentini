@@ -40,68 +40,6 @@ public class Smugglers extends CardAdventure implements Serializable {
         this.cargo_loss = cargo_loss;
     }
 
-    /**
-     * This method is called when the player's cannon strenght is greater than the enemy's.
-     * If the player chooses to claim the reward, the method first retrieves the player's ship using {@code getShip}.
-     * It moves the player back by the number of days defined by {@code getCost_of_days}
-     * and finally allows adding the cargo to the indicated positions on the ship using {@code addCargo}.
-     *
-     * @param player
-     * @param new_cargo_position a map linking ship components to the cargos and quantities to be added
-     * @param choice a boolean indicating the player's desire to receive the reward or not.
-     */
-   /* public void executeWin(Player player, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
-        if (choice) {
-            Ship ship_player = player.getShip();
-            board.movePlayer(player, -getCost_of_days());
-            for (int i = 0; i < ship_player.getROWS(); i++) {
-                for (int j = 0; j < ship_player.getCOLS(); j++) {
-
-                    CardComponent card = ship_player.getComponent(i, j);
-                    for (CardComponent storage : new_cargo_position.keySet()) {
-
-                        if (card.equals(storage)) {
-                            ((Storage) storage).addCargo(new_cargo_position.get(storage));
-                        }
-
-
-                    }
-                }
-
-            }
-        }
-
-    }*/
-
-    /**
-     * This method is called when the player's cannon strenght is lower than the enemy's.
-     * The method first retrieves the player's ship using {@code getShip},
-     * then moves the player back by the number of days defined by {@code getCost_of_days},
-     * and finally removes cargo from the specified components using {@code removeCargo}.
-     *
-     * @param player the player who suffers the penalty
-     * @param cargo_position a map linking storage components to the cargos and quantities to be removed
-     */
-    /*public void executeLoss(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
-        Ship ship_player = player.getShip();
-        for (int i = 0; i < ship_player.getROWS(); i++) {
-            for (int j = 0; j < ship_player.getCOLS(); j++) {
-
-                CardComponent card = ship_player.getComponent(i, j);
-                for (CardComponent storage : cargo_position.keySet()) {
-
-                    if (card.equals(storage)) {
-                        ((Storage) storage).removeCargo(cargo_position.get(storage));
-                    }
-
-
-                }
-            }
-
-
-        }
-    }*/
-
     /** @return the cannon strength*/
     public int getCannons_strenght() {
         return cannons_strenght;

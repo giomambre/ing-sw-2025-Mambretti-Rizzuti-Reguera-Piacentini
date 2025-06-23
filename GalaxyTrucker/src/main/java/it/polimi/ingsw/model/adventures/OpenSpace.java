@@ -38,19 +38,7 @@
          * @param players the list of players whose engine power is evaluated
          * @param batteryUsageMap  map specifying, for each player, which components use batteries
          */
- /*       public void execute(List<Player> players, Map<Player, Map<CardComponent, Boolean>> batteryUsageMap) {
 
-
-            for (Player player : players) {
-                Map<CardComponent, Boolean> playerBatteryUsage = batteryUsageMap.getOrDefault(player, new HashMap<>());
-
-                int power = (int) player.getShip().calculateEnginePower(playerBatteryUsage); // Passiamo la mappa con l'uso delle batterie
-                board.movePlayer(player,power);
-
-            }
-
-
-        }*/
 
 
 

@@ -34,33 +34,7 @@ public class Planets extends CardAdventure implements Serializable {
         this.cargo_reward = cargo_reward;
     }
 
-    /**
-     * This function gives cargo rewards to the player who landed on each planet.
-     * The player receives rewards, and the cargo is added to the specified components if they are valid storage units.
-     *
-     * @param player the player receiving the rewards
-     * @param planets a map of the carried cargos as value and the card component where he wants to put it.
-     */
-    /*public  void execute(Player player, Map<CardComponent, Map<Cargo, Integer>> planets) {
-        Map<Cargo, Integer> rewards = new HashMap<>();
 
-            board.movePlayer(player,-getCost_of_days());
-            Ship ship_player = player.getShip();
-
-            for (int i = 0; i < ship_player.getROWS(); i++) {
-                for (int j = 0; j < ship_player.getCOLS(); j++) {
-
-                    CardComponent card = ship_player.getComponent(i, j);
-
-                    if (planets.containsKey(card)) {
-                            rewards = planets.get(card);
-                            ((Storage) card).addCargo(rewards);
-                    }
-                }
-            }
-
-
-    }*/
 
     /**@return the full list of cargo rewards associated with all planets*/
     public List<List<Cargo>> getCargo_reward() {

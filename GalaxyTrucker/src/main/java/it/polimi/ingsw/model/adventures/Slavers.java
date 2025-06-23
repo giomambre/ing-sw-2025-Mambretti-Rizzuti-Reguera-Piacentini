@@ -38,42 +38,6 @@ public class Slavers extends CardAdventure implements Serializable {
         this.credits=credits;
     }
 
-    /**
-     * This method is called when the player defeats the slavers.
-     * It moves the player back by the number of days indicated on the card
-     * and grants them the corresponding number of credits.
-     *
-     * @param player the player who defeated the pirates
-     */
-  /*  public void executeWin(Player player) {
-        board.movePlayer(player, -getCost_of_days());
-        player.receiveCredits(credits);
-    }*/
-
-    /**
-     * This method is called when the player is defeated by the slavers.
-     * It removes a specific number of crewmates from the living unit components indicated in the {@code astronaut_losses} map.
-     *
-     * @param player the player who has been defeated
-     * @param astronaut_losses a map linking living unit components to the number of crewmates to remove
-     */
-  /*  public void executeLoss(Player player, Map<CardComponent,Integer> astronaut_losses) {
-
-        Ship ship_player = player.getShip();
-        for (int i = 0; i < ship_player.getROWS(); i++) {
-            for (int j = 0; j < ship_player.getCOLS(); j++) {
-                CardComponent component = ship_player.getComponent(i, j);
-
-                for (CardComponent unit : astronaut_losses.keySet()) {
-                    if (component.equals(unit)) {
-
-                        ((LivingUnit) component).removeCrewmates(astronaut_losses.get(unit)); // occhio al cast Exception
-
-                    }
-                }
-            }
-        }
-    }*/
 
     /** @return the cannon strength*/
     public int getCannons_strenght() {

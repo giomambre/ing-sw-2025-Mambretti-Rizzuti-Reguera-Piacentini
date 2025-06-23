@@ -50,68 +50,11 @@ public class CombatZone extends CardAdventure implements Serializable {
         this.id = id;
     }
 
-    /**
-     * This method decreases the number of flight days for the player who has the fewest crew.
-     */
-    public void executeLessCrewmates1(Player player) {
-        board.movePlayer(player, -getCost_of_days());
-    }
 
-    /**
-     * This method applies a crew loss penalty to the player with the weakest engine power.
-     *
-     * @param player the player with the weakest engine power
-     * @param astronaut_losses a map linking ship components to the number of crew members to remove
-     */
-   /* public void executeLessEnginePower1(Player player, Map<CardComponent,Integer> astronaut_losses) {
-
-        Ship ship_player = player.getShip();
-        for (int i = 0; i < ship_player.getROWS(); i++) {
-            for (int j = 0; j < ship_player.getCOLS(); j++) {
-                CardComponent component = ship_player.getComponent(i, j);
-
-                for (CardComponent unit : astronaut_losses.keySet()) {
-                    if (component.equals(unit)){
-
-                        ((LivingUnit) component).removeCrewmates(astronaut_losses.get(unit)); // occhio al cast Exception
-
-                    }
-                }
-            }
-        }
-    }
-*/
-    // LessCrewmates2 e LessCannonPower1 vengono gestiti con la execute di meteorswarm
-    /**
-     * This method applies a cargo loss penalty to the player with the weakest engine power.
-     *
-     * @param player the player with the weakest engine power
-     * @param cargo_position a map linking storage components to a sub-map of cargo types and their quantities to remove
-     */
-   /* public void executeLessEnginePower2(Player player, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
-
-        Ship ship_player = player.getShip();
-        for (int i = 0; i < ship_player.getROWS(); i++) {
-            for (int j = 0; j < ship_player.getCOLS(); j++) {
-
-                CardComponent card = ship_player.getComponent(i, j);
-                for (CardComponent storage : cargo_position.keySet()) {
-
-                    if (card.equals(storage)) {
-                        ((Storage) storage).removeCargo(cargo_position.get(storage));
-                    }
-
-
-                }
-            }
-        }
-    }
-*/
     /**@return a list of pair of meteor type and its direction*/
     public List<Pair<MeteorType, Direction>> getMeteors() {
         return meteors;
     }
-
 
     public int getId(){
         return id;

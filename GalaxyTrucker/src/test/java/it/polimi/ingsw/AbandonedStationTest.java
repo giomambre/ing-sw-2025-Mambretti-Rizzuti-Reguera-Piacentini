@@ -23,28 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AbandonedStationTest {
 
-    Player player1, player2, player3;
-    Board board;
     CardAdventure abd_station ;
-    Map<Direction, ConnectorType> connectors = new HashMap<>();
 
     @BeforeEach
     void setUp() {
-        Game game = new Game(Gametype.StandardGame);
-        player1 = new Player("Alice", YELLOW,game);
-        player2 = new Player("Mambre", BLUE,game);
-        player3 = new Player("isabel", RED,game);
-        board = new Board(24,game);
-        board.putPlayersOnBoard(Arrays.asList (player1,player2,player3));
-        player1.getShip().initializeShipPlance();
-        player2.getShip().initializeShipPlance();
-        player3.getShip().initializeShipPlance();
-
-
-        connectors.put(North, Universal);
-        connectors.put(South, Double);
-        connectors.put(East, Smooth);
-        connectors.put(West, Smooth);
 
         List<Cargo> cargos = new ArrayList<>();
         cargos.add(Cargo.Green);
@@ -52,42 +34,12 @@ public class AbandonedStationTest {
 
 
         abd_station = new AbandonedStation(1,1,AbandonedStation,5,cargos,"");
-        abd_station.setBoard(board);
-
-
-
-
     }
 
     @Test
     void testAbandonedStation() {
-        Ship ship_1 = player1.getShip();
-
-        ship_1.addComponent(new Storage(RedStorage,connectors,2,""),3,1);
-        ship_1.addComponent(new Storage(BlueStorage,connectors,3,""),4,1);
-
-        assertEquals(board.getBoard().get(7),player1);
-
-        Map<CardComponent, Map<Cargo,Integer>> new_cargo_positions = new HashMap<>();
-
-        Map<Cargo,Integer> new_cargo = new HashMap();
-        ship_1.getComponent(3,1);
-        new_cargo.put(((AbandonedStation) abd_station).getCargo().get(0),0);
-        new_cargo.put(((AbandonedStation) abd_station).getCargo().get(1),1);
-        new_cargo_positions.put(ship_1.getComponent(3,1),new_cargo);
-
-        assertEquals(0,((Storage) ship_1.getComponent(3,1)).getCargoCount());
-
-      //  ((AbandonedStation) abd_station).execute(player1,new_cargo_positions);
-
-        assertEquals(2,((Storage) ship_1.getComponent(3,1)).getCargoCount());
-
-        assertEquals(((Storage) ship_1.getComponent(3,1)).getCargo(0),Cargo.Green);
-        assertEquals(((Storage) ship_1.getComponent(3,1)).getCargo(1),Cargo.Yellow);
-
-        assertEquals(board.getBoard().get(6),player1);
-        assertNull(board.getBoard().get(7));
-
+        assertEquals(((AbandonedStation)abd_station).getCargo(), Arrays.asList(Cargo.Green,Cargo.Yellow));
+        assertEquals(((AbandonedStation)abd_station).getNeeded_crewmates(), 5);
 
     }
 

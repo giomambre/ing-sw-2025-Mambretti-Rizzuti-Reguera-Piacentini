@@ -38,17 +38,7 @@ public class Pirates extends CardAdventure implements Serializable {
         this.meteors = meteors;
     }
 
-    /**
-     * This method is called when the player defeats the prates.
-     * It moves the player back by the number of days indicated on the card
-     * and grants them the corresponding number of credits.
-     *
-     * @param player the player who defeated the pirates
-     */
-    public void executeWin(Player player) {
-        board.movePlayer(player, -getCost_of_days());
-        player.receiveCredits(credits);
-    }
+
 
     /** @return a list of meteor type and direction pairs*/
 

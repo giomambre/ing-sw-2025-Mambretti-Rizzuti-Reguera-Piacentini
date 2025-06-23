@@ -24,63 +24,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AbandonedShipTest {
     private CardAdventure abandonedShip;
-    private Player player;
-    private Ship ship;
-    private Board board;
+
 
     @BeforeEach
     void setUp() {
-        Game game = new Game(Gametype.StandardGame);
-        player = new Player("Cice", YELLOW,game);
-        ship = player.getShip();
-        ship.initializeShipPlance();
-        board = new Board(24,game);
-        board.putPlayersOnBoard(Arrays.asList(player));
-        Map<Direction, ConnectorType> connectors = new HashMap<>();
-        connectors.put(North, Universal);
-        connectors.put(South, Engine_Connector);
-        connectors.put(East, Smooth);
-        connectors.put(West, Smooth);
+        abandonedShip = new AbandonedShip(2,5,AbandonedShip,5,3,"");
 
-        ship.addComponent(new LivingUnit(LivingUnit, connectors,""),3,1);
-        ((LivingUnit)ship.getComponent(3,1)).addAstronauts();
-
-        ship.addComponent(new LivingUnit(LivingUnit, connectors,""),3,2);
-        ((LivingUnit)ship.getComponent(3,2)).addAlien(CrewmateType.BrownAlien);
-
-        ship.addComponent(new LivingUnit(LivingUnit, connectors,""),3,3);
-        ((LivingUnit)ship.getComponent(3,3)).addAlien(CrewmateType.PinkAlien);
 
     }
 
     @Test
 
     public void testAbandonedShip() {
-        abandonedShip = new AbandonedShip(2,5,AbandonedShip,5,3,"");
-        abandonedShip.setBoard(board);
-        Map<CardComponent,Integer> astronaut_losses = new HashMap<>();
-        astronaut_losses.put(ship.getComponent(3,1),2);
-        astronaut_losses.put(ship.getComponent(3,2),1);
-        astronaut_losses.put(ship.getComponent(3,3),0);
 
-        assertEquals(0,player.getCredits());
-        assertEquals(6,ship.getNumOfCrewmates());
-
-      //  ((AbandonedShip)abandonedShip).execute(player,astronaut_losses);
-
-        assertEquals(5,player.getCredits());
-
-        assertEquals(3,ship.getNumOfCrewmates());
-        assertEquals(0,((LivingUnit)ship.getComponent(3,1)).getNum_crewmates());
-        assertEquals(0,((LivingUnit)ship.getComponent(3,2)).getNum_crewmates());
-        assertEquals(1,((LivingUnit)ship.getComponent(3,3)).getNum_crewmates());
-        assertEquals(2,((LivingUnit)ship.getComponent(2,3)).getNum_crewmates());
-
-         Map<Integer, Player> playerPositions = board.getBoard();
-         assertNull(playerPositions.get(7));
-         assertEquals(player,playerPositions.get(2));
-
-
+        assertEquals(((AbandonedShip)abandonedShip).getCrewmates_loss(),3);
+        assertEquals(((AbandonedShip)abandonedShip).getGiven_credits(),5);
 
     }
 

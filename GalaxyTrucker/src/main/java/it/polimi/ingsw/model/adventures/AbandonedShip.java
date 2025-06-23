@@ -44,29 +44,7 @@ public class AbandonedShip extends CardAdventure implements Serializable {
      * @param player the player who uses the card
      * @param astronaut_losses  map linking living unit components to the number of crewmates to be removed
      */
-    /*public void execute(Player player, Map<CardComponent,Integer> astronaut_losses) {
 
-        Ship ship_player = player.getShip();
-        player.receiveCredits(given_credits);
-        board.movePlayer(player,- getCost_of_days());
-
-        for (int i = 0; i < ship_player.getROWS(); i++) {
-            for (int j = 0; j < ship_player.getCOLS(); j++) {
-                CardComponent component = ship_player.getComponent(i, j);
-
-                    for (CardComponent unit : astronaut_losses.keySet()) {
-                        if (component.equals(unit)){
-                            if (((LivingUnit) component).getNum_crewmates()<astronaut_losses.get(unit))
-                                throw new IllegalArgumentException("Non puoi rimuovere crewmates da questa living unit");
-
-                            else {
-                                ((LivingUnit) component).removeCrewmates(astronaut_losses.get(unit));
-                            }
-                        }
-                    }
-                }
-            }
-}*/
 
     /** @return the number of lost crewmates*/
     public int getCrewmates_loss() {

@@ -28,75 +28,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SmugglersTest {
     CardAdventure smugglers;
-    Player player;
-    Ship ship;
-    Board board;
+    List<Cargo> cargo_reward;
+
 
     @BeforeEach
     public void setup() {
-        Game game = new Game(Gametype.StandardGame);
-        player = new Player("Cice", YELLOW,game);
-        ship = player.getShip();
-        ship.initializeShipPlance();
-        board = new Board(24,game );
-        board.putPlayersOnBoard(Arrays.asList(player));
-        Map<Direction, ConnectorType> connectors = new HashMap<>();
-        connectors.put(North, Universal);
-        connectors.put(South, Engine_Connector);
-        connectors.put(East, Smooth);
-        connectors.put(West, Smooth);
-
-        ship.addComponent(new Storage(ComponentType.BlueStorage, connectors, 3,""),3,1);
-        Map<Cargo, Integer> cargos = new HashMap<>();
-        cargos.put(Blue, 2);
-        ((Storage)ship.getComponent(3,1)).addCargo(cargos);
-
-        ship.addComponent(new Storage(ComponentType.RedStorage, connectors, 3,""),3,2);
-        cargos.put(Cargo.Red, 1);
-        ((Storage)ship.getComponent(3,2)).addCargo(cargos);
-
-        ship.addComponent(new Storage(ComponentType.BlueStorage, connectors, 3,""),3,3);
-
-        List<Cargo> cargo_rewards = new ArrayList<>();
-        cargo_rewards.add(Cargo.Blue);
-        cargo_rewards.add(Cargo.Blue);
-
-        smugglers = new Smugglers(2,2,CardAdventureType.Smugglers, 3,cargo_rewards, 2,"");
-        smugglers.setBoard(board);
-
+        cargo_reward = new ArrayList<>(List.of(Blue, Green));
+        smugglers = new Smugglers(2, 2, CardAdventureType.Smugglers, 3, cargo_reward, 2, "");
     }
 
     @Test
-    public void testExecuteWin() {
-
-        Map<CardComponent, Map<Cargo, Integer>> choosen_planets = new HashMap<>();
-
-        Map<Cargo, Integer> cargoMap= new HashMap<>();
-        cargoMap.put(Blue, 0);
-        cargoMap.put(Green, 1);
-
-        choosen_planets.put(ship.getComponent(3,3), cargoMap);
-
-      //  ((Smugglers)smugglers).executeWin(player, choosen_planets,true);
-
-        assertEquals(2, ((Storage)ship.getComponent(3,3)).getCargoCount());
-        Assertions.assertEquals(board.getBoard().get(5),player);
-        assertNull(board.getBoard().get(7));
+    public void testSmugglers() {
+        assertEquals(((Smugglers) smugglers).getCannons_strenght(), 3);
+        assertEquals(((Smugglers) smugglers).getCargo_loss(), 2);
+        assertEquals(((Smugglers)smugglers).getCargo_rewards(), cargo_reward);
     }
 
-    @Test
-    public void testExecuteLoss() {
-
-        Map<CardComponent, Map<Cargo, Integer>> cargo_loss = new HashMap<>();
-
-        Map<Cargo, Integer> cargoMap= new HashMap<>();
-        cargoMap.put(Blue, 2);
-
-        cargo_loss.put(ship.getComponent(3,1), cargoMap);
-      //  ((Smugglers)smugglers).executeLoss(player, cargo_loss);
-
-        assertEquals(0, ((Storage)ship.getComponent(3,1)).getCargoCount());
-        Assertions.assertEquals(board.getBoard().get(7),player);
-
-    }
 }
