@@ -600,14 +600,14 @@ public class Server implements RemoteServer {
 //                                Cargo.Yellow
 //                        ),
 //                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
-//                CardAdventure adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
-//                        List.of(
-//                                new Pair<>(MeteorType.LightCannonFire, North),
-//                                new Pair<>(MeteorType.LightCannonFire, West),
-//                                new Pair<>(MeteorType.LightCannonFire, East),
-//                                new Pair<>(MeteorType.HeavyCannonFire, South)
-//                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
-//                );
+                 adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+                        List.of(
+                                new Pair<>(MeteorType.LightCannonFire, North),
+                                new Pair<>(MeteorType.LightCannonFire, West),
+                                new Pair<>(MeteorType.LightCannonFire, East),
+                                new Pair<>(MeteorType.HeavyCannonFire, South)
+                       ),"/images/cardAdventure/GT-combatZone_2.jpg"
+                );
 
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 //CardAdventure adventure = controller.getRandomAdventure();
@@ -1142,7 +1142,7 @@ public class Server implements RemoteServer {
 
                 sendToClient(end_msg.getId_client(), new Message(END_FLIGHT, ""));
                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "IL PLAYER " + getNickname(end_msg.getId_client()) + " è STATO KICKATO DALLA PARTITA PER NAVE INVALIDA", getNickname(end_msg.getId_client())));
-                if (controller.getActivePlayers().size() == 1) {
+                if (controller.getActivePlayers().size() <= 1) {
                     controller.setRewards();
                     sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getActivePlayers()));
 
@@ -1167,6 +1167,7 @@ public class Server implements RemoteServer {
             if (!controller.getActivePlayers().contains(p)) {
 
                 sendToClient(getId_client(p.getNickname()), new Message(END_FLIGHT, ""));
+                controller.removeFromActivePlayers(p.getNickname());
                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + p.getNickname() + " è stato kickato dalla partita ! \n", p.getNickname()));
 
             }
@@ -1548,11 +1549,10 @@ public class Server implements RemoteServer {
 
 
         for(Map.Entry<UUID, ConnectionHandler> entry : clients.entrySet()) {
-
-            if(getNickname(entry.getKey()).equals(player.getNickname()) && !entry.getKey().equals(clientId)) {
+            String nickname = getNickname(entry.getKey());
+            if(nickname != null && nickname.equals(player.getNickname()) && !entry.getKey().equals(clientId)) {
                 clients.remove(entry.getKey());
             }
-
         }
         sendToClient(clientId, new ShipClientMessage(UTIL, "", clientId, player));
         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));

@@ -39,8 +39,8 @@ public class SmugglersTest {
 
     @Test
     public void testSmugglers() {
-        assertEquals(((Smugglers) smugglers).getCannons_strenght(), 3);
-        assertEquals(((Smugglers) smugglers).getCargo_loss(), 2);
+        assertEquals(3, ((Smugglers) smugglers).getCannons_strenght());
+        assertEquals(2, ((Smugglers) smugglers).getCargo_loss());
         assertEquals(((Smugglers)smugglers).getCargo_rewards(), cargo_reward);
     }
 

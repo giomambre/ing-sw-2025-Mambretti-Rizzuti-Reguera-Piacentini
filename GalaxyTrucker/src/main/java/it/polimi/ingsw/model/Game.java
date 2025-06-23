@@ -129,12 +129,12 @@ public class Game extends BaseGame implements Serializable {
                         Arrays.asList(Cargo.Blue, Cargo.Blue, Cargo.Blue)
                 ),"/images/cardAdventure/GT-planets_1.4.jpg"
         ));
-        /*deck_adventure_liv1.add(new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
+        deck_adventure_liv1.add(new CombatZone(1, 3, CardAdventureType.CombatZone, 1, 2, 0,
                 List.of(
                         new Pair<>(MeteorType.LightCannonFire, South),
                         new Pair<>(MeteorType.HeavyCannonFire, South)
                 ),"/images/cardAdventure/GT-combatZone_1.jpg"
-        ));*/
+        ));
         deck_adventure_liv1.add(new AbandonedShip(1, 1, CardAdventureType.AbandonedShip, 3, 2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg"));
         deck_adventure_liv1.add(new AbandonedShip(1, 1, CardAdventureType.AbandonedShip, 4, 3,"/images/cardAdventure/GT-abandonedShip_1.2.jpg"));
         deck_adventure_liv1.add(new AbandonedStation(1, 1, CardAdventureType.AbandonedStation, 5,

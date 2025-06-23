@@ -757,7 +757,6 @@ public class Client {
                 Message end_msg = msg;
                 virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
                 virtualView.earlyEndFlightResume(player_local);
-                // da riveder messa qua giusto per avere un idea
                 break;
 
 

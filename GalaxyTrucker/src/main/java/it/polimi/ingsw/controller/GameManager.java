@@ -45,21 +45,6 @@ public class GameManager {
         return avaibleLobbies;
     }
 
-    public void startGame(int id_lobby) {
-        Lobby lobby = getLobby(id_lobby);
-        if (lobby != null && !lobby.isLobbyFull()) {
-            throw new IllegalStateException("Impossibile avviare il gioco. La lobby non è piena.");
-        }
-        // Logica per avviare il gioco qui
-    }
-
-    public void disconnectPlayer(String nickname) {
-        for (Lobby lobby : all_lobbies) {
-            if (lobby.isPlayerInLobby(nickname)) {
-                lobby.removePlayer(nickname);
-            }
-        }
-    }
 
     public List<Lobby> getAllLobbies() {
         return all_lobbies;

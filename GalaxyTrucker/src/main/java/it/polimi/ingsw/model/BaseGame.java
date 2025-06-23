@@ -76,21 +76,6 @@ public abstract class BaseGame implements Serializable {
     public abstract Map<Direction,List<CardAdventure>> seeDecksOnBoard();
 
 
-    /**
-     * Sets the adventure deck with the given list of adventure cards.
-     *
-     * @param deck_adventure
-     */
-    public void setDeck_adventure(List<CardAdventure> deck_adventure) {
-        this.deck_adventure = deck_adventure;
-    }
-
-    /**
-     * @return list of adventure cards
-     */
-    public List<CardAdventure> getDeck_adventure() {
-        return deck_adventure;
-    }
 
     /**
      * This method is called at the end of the game to give to each player its rewards.Based on:

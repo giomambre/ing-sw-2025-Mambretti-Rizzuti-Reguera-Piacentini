@@ -1,9 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.model.BaseGame;
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.*;
 import it.polimi.ingsw.model.enumerates.*;
@@ -94,6 +92,7 @@ public class BaseGameTest {
 
     @Test
     void testAddPlayer() {
+
         baseGame.addPlayer(player1);
         assertTrue(baseGame.getPlayers().contains(player1));
         assertEquals(5, baseGame.getPlayers().size());

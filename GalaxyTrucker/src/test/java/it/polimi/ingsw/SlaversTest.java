@@ -35,8 +35,8 @@ public class SlaversTest {
 
     @Test
     public void testSlavers() {
-        assertEquals(((Slavers)slavers).getCannons_strenght(), 3);
-        assertEquals(((Slavers)slavers).getAstronaut_loss(), 3);
-        assertEquals(((Slavers)slavers).getCredits(), 9);
+        assertEquals(3, ((Slavers)slavers).getCannons_strenght());
+        assertEquals(3, ((Slavers)slavers).getAstronaut_loss());
+        assertEquals(9, ((Slavers)slavers).getCredits());
     }
 }

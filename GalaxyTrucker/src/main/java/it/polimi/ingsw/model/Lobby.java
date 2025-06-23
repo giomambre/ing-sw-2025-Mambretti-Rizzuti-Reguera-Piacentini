@@ -87,9 +87,5 @@ public class Lobby {
         return players;
     }
 
-    /**
-     * Sets the global lobby counter.
-     *
-     * @param count the new value of the static lobby counter
-     */
+
 }
