@@ -851,7 +851,6 @@ public class Client {
             case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
-                    System.out.println("cioasdasd");
                     facedUp_deck_local.add(cpm.getCardComponent());
 
                     if (virtualViewType == VirtualViewType.GUI) {
@@ -1368,18 +1367,9 @@ public class Client {
                             virtualView.printShip(player_local.getShip().getShipBoard());
 
 
-                            List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
 
 
-                            if (pieces.isEmpty()) {
-                                virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-                                networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                                break;
 
-                            } else if (pieces.size() > 1) {
-                                int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
-                                player_local.getShip().choosePiece(piece);
-                            }
                             break;
 
 
@@ -1387,6 +1377,17 @@ public class Client {
                     i++;
             int dummy = virtualView.nextMeteor();
 
+                }
+                List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+
+                if (pieces.isEmpty()) {
+                    virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+                    break;
+
+                } else if (pieces.size() > 1) {
+                    int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                    player_local.getShip().choosePiece(piece);
                 }
 
 
