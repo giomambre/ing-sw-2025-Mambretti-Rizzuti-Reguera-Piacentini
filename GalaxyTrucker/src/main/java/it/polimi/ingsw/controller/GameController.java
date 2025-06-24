@@ -252,10 +252,15 @@ public class GameController {
 
     public String nextAdventurePlayer() {
 
+        if(adv_index > 0) {
+            Player player = adventureOrder.get(adv_index - 1);
+            adv_done.add(player);
+
+        }
+
         Player player = adventureOrder.get(adv_index);
         adv_index++;
         setCurr_adventure_player(player.getNickname());
-        adv_done.add(player);
         return player.getNickname();
 
 
