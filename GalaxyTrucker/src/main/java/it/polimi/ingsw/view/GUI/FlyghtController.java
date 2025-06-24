@@ -1293,15 +1293,7 @@ public class FlyghtController {
         return nodeId != null && nodeId.equals("overlay-" + type);
     }
 
-    public void addOverlay(int x, int y, String type) {
-            StackPane cell = getShipCellAt(x, y);
-            if (cell == null) return;
 
-            Node overlay = createOverlayForType(type);
-            if (overlay != null) {
-                cell.getChildren().add(overlay);
-            }
-    }
 
     public void addOverlay(int x, int y, String type, int count) {
         Platform.runLater(() -> {StackPane cell = getShipCellAt(x, y);
