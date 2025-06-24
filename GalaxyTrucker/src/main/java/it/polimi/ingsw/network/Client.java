@@ -533,7 +533,8 @@ public class Client {
                 if (sel == 3) {
 
                     if (player_local.getShip().getExtra_components().contains(card_msg.getCardComponent())) {
-                        virtualView.showMessage("\nCarta rimessa nelle carte prenotate");
+                            virtualView.showMessage("\nCarta rimessa nelle carte prenotate");
+
                         elaborate(new Message(MessageType.BUILD_START, ""));
 
                         return;
@@ -573,7 +574,9 @@ public class Client {
                         elaborate(new Message(MessageType.BUILD_START, ""));
 
                     } else {
-                        virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");
+                        if(virtualViewType == VirtualViewType.TUI) {
+                            virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");
+                        }
 
                         player_local.getShip().getExtra_components().add(card_msg.getCardComponent());
 
@@ -702,7 +705,6 @@ public class Client {
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if (icm.getInvalids().isEmpty()) {
-                    virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
@@ -774,7 +776,7 @@ public class Client {
 
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
-            virtualView.showMessage("\n\n\n\n ---------- IL TUO VOLO FINISCE QUI!, aspetta la fine per la classifica ----------\n\n");
+            virtualView.showMessage("\n\n\n\n ---------- PARTITA TERMINATA ----------\n\n");
                 if (virtualViewType == VirtualViewType.GUI) {
                     ((GUI) virtualView).createrankingscreen(pm.getPlayers());
                 }
@@ -834,7 +836,6 @@ public class Client {
                     virtualView.updateLocalPlayer(player_local);
                     if (!Client.otherPlayersReady.isDone()) {
                         Client.otherPlayersReady.complete(null);
-                        System.out.println(">>> [DEBUG] CompletableFuture completata con altri giocatori: " + other_players_local);
                     }
                 }
                 if (virtualViewType == VirtualViewType.TUI) {
@@ -884,7 +885,6 @@ public class Client {
                 break;
 
             case TIME_UPDATE:
-                System.out.println("SONO QUI PER MODIF TIMER CIAO");
                 if(virtualViewType == VirtualViewType.GUI){
                     if(msg.getContent().equals("⏳ 90s rimanenti") || msg.getContent().equals("🔔 Un giocatore ha finito! ")){
                         ((GUI)virtualView).getBuildcontroller().starttimer(90);
@@ -930,7 +930,6 @@ public class Client {
                     ((GUI) virtualView).getBuildcontroller().disableShipGridCells();
 
                 }
-                virtualView.showMessage("Hai completato la fase di controllo ora rimani in attesa degli altri giocatori\n");
 
 
 
@@ -1209,7 +1208,7 @@ public class Client {
                 }
 
                 double power_m = ship.calculateEnginePower(battery_usage_os);
-                virtualView.showMessage("\n\nPOTENZA MOTORE : " + power_m);
+                virtualView.showMessage("\n\nLA TUA POTENZA MOTORE : " + power_m);
                 networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power_m), clientId, player_local));
 
                 break;
@@ -1638,7 +1637,6 @@ public class Client {
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
 
-
                             networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
 
                             return;
@@ -1647,7 +1645,6 @@ public class Client {
                         else {
                             player_local.getShip().getComponent(lu.getKey(), lu.getValue());
                             num_crew_mates--;
-                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                         }
 
                     }
@@ -1700,7 +1697,7 @@ public class Client {
 
                 player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
 
-                virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+                virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!!!! \n");
                 virtualView.printShip(player_local.getShip().getShipBoard());
 
 
@@ -1729,7 +1726,7 @@ public class Client {
 
     public static void removeComp(Pair<Integer, Integer> pair) throws IOException {
         player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
-        virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+        virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!!!! \n");
         virtualView.printShip(player_local.getShip().getShipBoard());
 
         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
