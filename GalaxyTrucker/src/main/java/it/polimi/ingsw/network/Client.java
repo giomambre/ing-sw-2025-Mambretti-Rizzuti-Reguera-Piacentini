@@ -850,7 +850,8 @@ public class Client {
                 break;
             case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
-                if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
+                UUID uuidFromMessage = cpm.getCardComponent().getCard_uuid();
+                if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(uuidFromMessage))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
 
                     if (virtualViewType == VirtualViewType.GUI) {
@@ -861,7 +862,7 @@ public class Client {
                     }
 
                 } else {
-                    facedUp_deck_local.remove(cpm.getCardComponent());
+                    facedUp_deck_local.removeIf(card -> card.getCard_uuid().equals(uuidFromMessage));
                 }
 
                 break;
@@ -1257,7 +1258,6 @@ public class Client {
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
                             networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
-                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT,"",clientId));
 
 
                         }
@@ -1412,8 +1412,7 @@ public class Client {
 
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                    break;
+
 
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
@@ -1639,7 +1638,6 @@ public class Client {
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
 
-                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "l",clientId ));
 
                             networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
 
@@ -1710,8 +1708,6 @@ public class Client {
 
 
                 if (pieces.isEmpty()) {
-                    virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
 
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
@@ -1738,8 +1734,6 @@ public class Client {
 
         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
         if (pieces.isEmpty()) {
-            virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
 
         } else if (pieces.size() > 1) {
             int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());

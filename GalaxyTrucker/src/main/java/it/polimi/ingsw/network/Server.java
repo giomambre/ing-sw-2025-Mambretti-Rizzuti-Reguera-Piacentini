@@ -469,12 +469,12 @@ public class Server implements RemoteServer {
                 Ship ship = update_msg.getPlayer().getShip();
                 controller = all_games.get(getLobbyId(update_msg.getId_client()));
 
-                synchronized (controller) {
+
 
                     controller.setShipPlance(getNickname(update_msg.getId_client()), ship);
 
 
-                }
+
                 List<Player> safePlayers = new ArrayList<>();
                 for (Player p : controller.getPlayers()) {
                     safePlayers.add(p.copyPlayer());

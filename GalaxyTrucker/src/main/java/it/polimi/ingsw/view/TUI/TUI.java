@@ -256,11 +256,10 @@ public class TUI implements View {
         for (Direction d : local_adventure_deck.keySet()) {
             out.println("\n=== ADVENTURE DELLA PILA " + d.toString().toUpperCase() + " ===");
 
-            for (CardAdventure c : local_adventure_deck.get(d)) {
                 out.println();
-                printCardAdventure(c);
+                printCardAdventure(local_adventure_deck.get(d).getFirst());
                 out.println();
-            }
+
         }
 
     }
