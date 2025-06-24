@@ -630,9 +630,45 @@ public class GUI implements View {
         }
     }
 
+    public void createrankingscreen(List<Player> finalRanks) {
+        if (this.finalRanksScreen != null) {
+            Platform.runLater(() -> {
+                stage.toFront();
+                stage.requestFocus();
+                stage.show(); // riportala in primo piano
+            });
+            return;
+        }
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ranking.fxml"));
+                Parent root = loader.load();
+
+                FinalRanksScreen controller = loader.getController(); // usa controller FXML
+                controller.setGUI(this); // passa la GUI, con il client corretto
+                this.finalRanksScreen = controller;
+
+                Scene scene = new Scene(root);
+                stage.setTitle("Final Ranking");
+                stage.setScene(scene);
+                stage.centerOnScreen();
+                stage.show();
+
+                stage.setOnCloseRequest((event) -> {
+                    Platform.exit();
+                    System.exit(0);
+                });
+                controller.displayFinalRanks(finalRanks);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+
+            }
+        });
+
+    }
+
     @Override
     public void printFinalRanks(List<Player> finalRanks) {
-        finalRanksScreen.displayFinalRanks(finalRanks);
     }
 
     @Override
@@ -773,7 +809,7 @@ public class GUI implements View {
                 VBox mainContainer = new VBox(15);
                 mainContainer.setAlignment(Pos.CENTER);
                 mainContainer.setPadding(new Insets(20));
-                mainContainer.setStyle("-fx-background-color: #2c3e50;");
+                mainContainer.setStyle("-fx-background-color: #043a7e;");
 
                 String imagePath = getMeteorImagePath(meteor.getKey());
 
@@ -781,33 +817,32 @@ public class GUI implements View {
                 try {
                     Image image = new Image(getClass().getResourceAsStream(imagePath));
                     meteorImage.setImage(image);
-                    meteorImage.setFitWidth(150);
-                    meteorImage.setFitHeight(150);
+                    meteorImage.setFitWidth(102);
+                    meteorImage.setFitHeight(162);
                     meteorImage.setPreserveRatio(true);
                     rotateMeteorImage(meteorImage, meteor.getValue());
                 } catch (Exception e) {
-                    meteorImage.setFitWidth(150);
-                    meteorImage.setFitHeight(150);
+                    meteorImage.setFitWidth(102);
+                    meteorImage.setFitHeight(162);
                     System.err.println("Impossibile caricare l'immagine: " + imagePath);
                     e.printStackTrace();
                 }
 
                 Label meteorTypeLabel = new Label(getMeteorTypeText(meteor.getKey()));
-                meteorTypeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-                meteorTypeLabel.setStyle("-fx-text-fill: #e74c3c;");
+                meteorTypeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+                meteorTypeLabel.setStyle("-fx-text-fill: #ECD9A3;");
 
                 Label directionLabel = new Label("in arrivo " + getDirectionText(meteor.getValue()));
-                directionLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 14));
-                directionLabel.setStyle("-fx-text-fill: #ecf0f1;");
+                directionLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, 14));
+                directionLabel.setStyle("-fx-text-fill: #ECD9A3;");
 
                 Label coordLabel = new Label("alla coordinata: " + coord);
-                coordLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-                coordLabel.setStyle("-fx-text-fill: #f39c12;");
+                coordLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+                coordLabel.setStyle("-fx-text-fill: #ECD9A3;");
 
                 // Bottone Continua
                 Button continueButton = new Button("Continua");
-                continueButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-                continueButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 10px 20px;");
+                continueButton.setId("continue-button");
                 continueButton.setPrefWidth(120);
 
                 // Event handler per il bottone
@@ -825,6 +860,7 @@ public class GUI implements View {
 
                 Scene scene = new Scene(mainContainer, 300, 400); // Altezza aumentata per il bottone
                 meteorStage.setScene(scene);
+                scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
 
                 meteorStage.show();
 
@@ -989,11 +1025,11 @@ public class GUI implements View {
 //            mainContainer.setStyle("-fx-background-color: #2c3e50;");
 //
 //            Label messageLabel = new Label("Premi Continua per proseguire.");
-//            messageLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+//            messageLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 //            messageLabel.setStyle("-fx-text-fill: #ecf0f1;");
 //
 //            Button continueButton = new Button("Continua");
-//            continueButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+//            continueButton.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 //            continueButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;");
 //            continueButton.setPrefWidth(100);
 //
@@ -1062,18 +1098,18 @@ public class GUI implements View {
         VBox root = new VBox(20);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #2E8B57;");
+        root.setStyle("-fx-background-color: #043a7e;");
 
         // Label informativa
         Label infoLabel = new Label("La carta è stata colpita in direzione: " + direction.toString());
-        infoLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
+        infoLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #ECD9A3;");
 
         // ImageView per la carta
         ImageView cardImageView = new ImageView();
 
         // Carica l'immagine della carta
         String imagePath = card.getImagePath();
-        if(!imagePath.isEmpty()) {// Assumendo che CardComponent abbia questo metodo
+        if(!imagePath.isEmpty()) {
             Image cardImage = new Image(imagePath);
             cardImageView.setImage(cardImage);
         }
@@ -1088,12 +1124,11 @@ public class GUI implements View {
             // Container per l'immagine con bordo
             StackPane imageContainer = new StackPane();
             imageContainer.getChildren().add(cardImageView);
-            imageContainer.setStyle("-fx-border-color: white; -fx-border-width: 2px; -fx-background-color: white;");
-            imageContainer.setPadding(new Insets(10));
+            imageContainer.setStyle("-fx-border-color: transparent; -fx-background-color: transparent;");
 
         // Bottone OK
         Button okButton = new Button("OK");
-        okButton.setStyle("-fx-font-size: 14px; -fx-min-width: 80px; -fx-min-height: 35px;");
+        okButton.setId("continue-button");
         okButton.setOnAction(e -> {
             stage.close();
             if (latch != null) {
@@ -1105,8 +1140,10 @@ public class GUI implements View {
         root.getChildren().addAll(infoLabel, imageContainer, okButton);
 
         // Crea la scena
-        Scene scene = new Scene(root, 300, 400);
+        Scene scene = new Scene(root, 400, 400);
         stage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
+
 
         // Centra lo stage rispetto al parent
         stage.centerOnScreen();

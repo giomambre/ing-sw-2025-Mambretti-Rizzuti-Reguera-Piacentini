@@ -76,8 +76,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "4.tcp.eu.ngrok.io";
-            int socketPort = 10287;
+            String host = "localhost";
+            int socketPort = 12345;
             int rmiPort = 1099;
             int choice = -1;
             do {
@@ -753,11 +753,6 @@ public class Client {
                 break;
 
 
-            case END_FLIGHT:
-                Message end_msg = msg;
-                virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
-                virtualView.earlyEndFlightResume(player_local);
-                break;
 
 
         }
@@ -771,10 +766,18 @@ public class Client {
 
         switch (msg.getType()) {
 
+            case END_FLIGHT:
+                Message end_msg = msg;
+                virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
+                virtualView.earlyEndFlightResume(player_local);
+                break;
 
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
             virtualView.showMessage("\n\n\n\n ---------- IL TUO VOLO FINISCE QUI!, aspetta la fine per la classifica ----------\n\n");
+                if (virtualViewType == VirtualViewType.GUI) {
+                    ((GUI) virtualView).createrankingscreen(pm.getPlayers());
+                }
             virtualView.printFinalRanks(pm.getPlayers());
 
             break;
@@ -848,7 +851,6 @@ public class Client {
             case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
                 if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
-                    System.out.println("cioasdasd");
                     facedUp_deck_local.add(cpm.getCardComponent());
 
                     if (virtualViewType == VirtualViewType.GUI) {
@@ -915,15 +917,13 @@ public class Client {
 
 
             case WAITING_FLIGHT:
-                virtualView.showMessage("""
-                        
-                        Hai completato la fase di controllo ora rimani in attesa degli altri giocatori.
-                        Questa è la tua nave.
-                        \s""");
 
-                virtualView.printShip(player_local.getShip().getShipBoard());
 
-                virtualView.showMessage("\n\n\tRIMANI IN ATTESA CHE GLI ALTRI PLAYER FINISCANO IL CONTROLLO !");
+
+                virtualView.showMessage("Hai completato la fase di controllo ora rimani in attesa degli altri giocatori\n");
+
+
+
                 break;
 
 
@@ -963,7 +963,6 @@ public class Client {
                 virtualView.showMessage("\nSEI STATO ESCLUSO DAL VOLO, motivo :  NAVE INVALIDA (non ha i motore o astronauti)" + msg.getContent());
 
 
-
                 break;
 
             case WIN:
@@ -972,7 +971,6 @@ public class Client {
 
             case START_FLIGHT:
 
-                virtualView.showMessage("\n\n\n\n---------------   INIZIO FASE DI VOLO   ---------------");
 
                 break;
 
@@ -1107,14 +1105,17 @@ public class Client {
 
                 while(num_cargo_loss > 0){
 
-
-
                     virtualView.removeCargo(player_local.getShip());
 
                     num_cargo_loss--;
 
                 }
-                networkAdapter.sendMessage(new StandardMessageClient(MessageType.CARGO_LOSS,"cz",clientId));
+
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.CARGO_LOSS,"cz",clientId));
+
+
+
+
 
                 break;
 
@@ -1269,15 +1270,19 @@ public class Client {
 
                     if (m.getValue() == Direction.North || m.getValue() == South) {
                         if (coordList.get(i) < 4 || coordList.get(i) >= 11) {
-                            virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
+                            virtualView.showMessage("\nMETEORITE NON HA COLPITO LA NAVE!!\n");
                             i++;
+                            if(virtualViewType==VirtualViewType.TUI)
+                                virtualView.nextMeteor();
                             continue;
                         }
 
                     } else {
                         if (coordList.get(i) < 5 || coordList.get(i) >= 10) {
 
-                            virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
+                            virtualView.showMessage("\nMETEORITE NON HA COLPITO LA NAVE!!\n");
+                            if(virtualViewType==VirtualViewType.TUI)
+                                virtualView.nextMeteor();
                             i++;
                             continue;
 
@@ -1288,8 +1293,9 @@ public class Client {
 
                     if (pair.getKey() == 0 && pair.getValue() == 0) {
 
-                        virtualView.showMessage("\nMETEORITE NON HA BECCATO LA NAVE!!\n");
-
+                        virtualView.showMessage("\nMETEORITE NON HA COLPITO LA NAVE!!\n");
+                        if(virtualViewType==VirtualViewType.TUI)
+                            virtualView.nextMeteor();
                         continue;
 
 
@@ -1346,10 +1352,6 @@ public class Client {
                             break;
 
 
-
-
-
-
                         case LightCannonFire:
 
 
@@ -1365,17 +1367,9 @@ public class Client {
                             virtualView.printShip(player_local.getShip().getShipBoard());
 
 
-                            List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
 
 
-                            if (pieces.isEmpty()) {
-                                virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-                                networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
 
-                            } else if (pieces.size() > 1) {
-                                int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
-                                player_local.getShip().choosePiece(piece);
-                            }
                             break;
 
 
@@ -1383,6 +1377,17 @@ public class Client {
                     i++;
             int dummy = virtualView.nextMeteor();
 
+                }
+                List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
+
+                if (pieces.isEmpty()) {
+                    virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
+                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
+                    break;
+
+                } else if (pieces.size() > 1) {
+                    int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
+                    player_local.getShip().choosePiece(piece);
                 }
 
 
@@ -1592,7 +1597,6 @@ public class Client {
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
 
 
-
                 if(power_c < slavers.getCannons_strenght()) {
 
 
@@ -1604,9 +1608,12 @@ public class Client {
                         if (player_local.getShip().getNumOfCrewmates() == 0){
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
-                            networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
-                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT,"",clientId));
 
+                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "l",clientId ));
+
+                            networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
+
+                            return;
 
                         }
                         else {
