@@ -749,7 +749,7 @@ public class Client {
                     }
 
                 }
-                networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASTRONAUT_LOSS, "", clientId));
+                networkAdapter.sendMessage(new ShipClientMessage(MessageType.ASTRONAUT_LOSS, "", clientId,player_local));
                 break;
 
 
@@ -850,7 +850,8 @@ public class Client {
                 break;
             case FACED_UP_CARD_UPDATED:
                 CardComponentMessage cpm = (CardComponentMessage) msg;
-                if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(cpm.getCardComponent().getCard_uuid()))) {
+                UUID uuidFromMessage = cpm.getCardComponent().getCard_uuid();
+                if (facedUp_deck_local.stream().noneMatch(c -> c.getCard_uuid().equals(uuidFromMessage))) {
                     facedUp_deck_local.add(cpm.getCardComponent());
 
                     if (virtualViewType == VirtualViewType.GUI) {
@@ -861,7 +862,7 @@ public class Client {
                     }
 
                 } else {
-                    facedUp_deck_local.remove(cpm.getCardComponent());
+                    facedUp_deck_local.removeIf(card -> card.getCard_uuid().equals(uuidFromMessage));
                 }
 
                 break;
@@ -919,7 +920,16 @@ public class Client {
             case WAITING_FLIGHT:
 
 
+                if(virtualViewType == VirtualViewType.GUI) {
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 7; j++) {
+                            Pair pair=new Pair<>(i,j);
+                            ((GUI) virtualView).getBuildcontroller().resetHighlights(pair);
+                        }
+                    }
+                    ((GUI) virtualView).getBuildcontroller().disableShipGridCells();
 
+                }
                 virtualView.showMessage("Hai completato la fase di controllo ora rimani in attesa degli altri giocatori\n");
 
 
@@ -934,13 +944,13 @@ public class Client {
 
                 if (!bm.getContent().isEmpty()) {
                     System.out.println();
-                    virtualView.showMessage(bm.getContent());
+                    if(virtualViewType == VirtualViewType.TUI)
+                        virtualView.showMessage(bm.getContent());
                     virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
                 } else {
                     System.out.println();
                     if (virtualViewType == VirtualViewType.GUI) {
-                        System.out.print("sono qui");
                         ((GUI) virtualView).createFlyghtScreen(local_board_positions, local_board_laps);
                     }else {
                         virtualView.showBasicBoard(local_board_positions, local_board_laps);
@@ -1054,6 +1064,25 @@ public class Client {
 
                 break;
 
+
+            case LESS_CW :
+                StringBuilder coords_m = new StringBuilder();
+                for (int i = 0; i < 2; i++) {
+
+                    coords_m.append(throwDice()).append(" ");
+
+                }
+
+                manageAdventure(
+                        new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                                List.of(
+                                        new Pair<>(MeteorType.LightCannonFire, South),
+                                        new Pair<>(MeteorType.HeavyCannonFire, South)
+                                ),""
+                        ), coords_m.toString());
+                networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_local));
+                break;
+
             case CANNON_POWER_RANK:
                 rank = (RankingMessage) msg;
 
@@ -1064,7 +1093,7 @@ public class Client {
                 if (less_cannon.equals(nickname)) {
 
                     if(msg.getContent().equals("1")) {
-                        StringBuilder coords_m = new StringBuilder();
+                         coords_m = new StringBuilder();
                         for (int i = 0; i < 2; i++) {
 
                             coords_m.append(throwDice()).append(" ");
@@ -1078,13 +1107,15 @@ public class Client {
                                                 new Pair<>(MeteorType.HeavyCannonFire, South)
                                         ),""
                                 ), coords_m.toString());
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_local));
 
 
                     }else{
-                        virtualView.showMessage("HAI PERSO 4 GIORNI DI VOLO : ");
+                        virtualView.showMessage("\nHAI PERSO 4 GIORNI DI VOLO : \n");
 
                         break;
                     }
+
 
 
                     break;
@@ -1227,7 +1258,6 @@ public class Client {
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
                             networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
-                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT,"",clientId));
 
 
                         }
@@ -1382,8 +1412,7 @@ public class Client {
 
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
-                    break;
+
 
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
@@ -1609,7 +1638,6 @@ public class Client {
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
 
-                            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "l",clientId ));
 
                             networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
 
@@ -1680,8 +1708,6 @@ public class Client {
 
 
                 if (pieces.isEmpty()) {
-                    virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-                    networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
 
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
@@ -1708,8 +1734,6 @@ public class Client {
 
         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
         if (pieces.isEmpty()) {
-            virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-            networkAdapter.sendMessage(new StandardMessageClient(MessageType.END_FLIGHT, "", clientId));
 
         } else if (pieces.size() > 1) {
             int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());

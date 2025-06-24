@@ -21,6 +21,7 @@ public enum MessageType {
     CARD_UNAVAILABLE,
     DISMISSED_CARD,
     UPDATED_SHIPS,
+    LESS_CW,
     WIN,
     UTIL,
     PLACE_CARD,

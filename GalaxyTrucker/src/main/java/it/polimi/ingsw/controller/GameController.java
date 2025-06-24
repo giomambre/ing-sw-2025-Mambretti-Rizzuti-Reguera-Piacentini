@@ -26,6 +26,7 @@ public class GameController {
     List<String> disconnected_players = new ArrayList<>();
     List<Color> available_colors = new ArrayList<>();
     List<Player> build_order_players = new ArrayList<>();
+    List<Player> adv_done = new ArrayList<>();
     Map<String, Double> list_engine_power = new HashMap<>();
     Map<String, Double> list_cannon_power = new HashMap<>();
     private  Random random = new Random();
@@ -34,6 +35,7 @@ public class GameController {
     Lobby lobby;
     GameState game_state;
     BaseGame game;
+    int adventureOrderSize = 0;
     private String curr_adventure_player = "";
 
     public List<String> getDisconnected_players() {
@@ -132,7 +134,7 @@ public class GameController {
 
     }
 
-  /*  public String getLeastEngineValue() {
+    public String getLeastEngineValue() {
         String result = "";
         Double min = Double.MAX_VALUE;
         for (Map.Entry<String, Double> entry : list_engine_power.entrySet()) {
@@ -143,7 +145,7 @@ public class GameController {
         }
         return result;
     }
-*/
+
     public Map<String, Double> getEngineValues() {
         return list_engine_power;
     }
@@ -158,10 +160,15 @@ public class GameController {
 
     }
 
+    public List<Player> getAdv_done() {
+        return adv_done;
+    }
+
     public void initializeAdventure(CardAdventure adventure) {
         adv_index = 0;
         this.adventure = adventure;
-
+        if(!adv_done.isEmpty())
+            adv_done.clear();
         List<Player> ranking = game.getBoard().getRanking();
 
         switch (adventure.getType()) {
@@ -201,6 +208,7 @@ public class GameController {
         }
 
         adventureOrder.removeIf(p -> !getActivePlayers().contains(p) || disconnected_players.contains(p.getNickname()));
+        adventureOrderSize = adventureOrder.size();
     }
 
 
@@ -233,6 +241,9 @@ public class GameController {
     public List<Player> getAdventureOrder() {
         return adventureOrder;
     }
+    public int getAdventureSize(){
+        return adventureOrderSize;
+    }
 
     public int getAdv_index() {
         return adv_index;
@@ -244,6 +255,7 @@ public class GameController {
         Player player = adventureOrder.get(adv_index);
         adv_index++;
         setCurr_adventure_player(player.getNickname());
+        adv_done.add(player);
         return player.getNickname();
 
 

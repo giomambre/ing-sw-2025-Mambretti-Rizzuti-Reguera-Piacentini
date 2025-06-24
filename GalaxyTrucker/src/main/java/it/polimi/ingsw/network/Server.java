@@ -469,12 +469,12 @@ public class Server implements RemoteServer {
                 Ship ship = update_msg.getPlayer().getShip();
                 controller = all_games.get(getLobbyId(update_msg.getId_client()));
 
-                synchronized (controller) {
+
 
                     controller.setShipPlance(getNickname(update_msg.getId_client()), ship);
 
 
-                }
+
                 List<Player> safePlayers = new ArrayList<>();
                 for (Player p : controller.getPlayers()) {
                     safePlayers.add(p.copyPlayer());
@@ -557,7 +557,7 @@ public class Server implements RemoteServer {
 
                 //CardAdventure adventure = controller.getRandomAdventure();
 
-                //       CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
+                CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
 
 
                 /*CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -592,14 +592,14 @@ public class Server implements RemoteServer {
 //                                Cargo.Yellow
 //                        ),
 //                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
-                /* adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+                 adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                         List.of(
                                 new Pair<>(MeteorType.LightCannonFire, North),
                                 new Pair<>(MeteorType.LightCannonFire, West),
                                 new Pair<>(MeteorType.LightCannonFire, East),
                                 new Pair<>(MeteorType.HeavyCannonFire, South)
                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
-                );*/
+                );
 
              /*    adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(
@@ -612,7 +612,7 @@ public class Server implements RemoteServer {
                 );
 */
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                CardAdventure adventure = controller.getRandomAdventure();
+                //CardAdventure adventure = controller.getRandomAdventure();
                 //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
 
                 manageAdventure(adventure, controller);
@@ -622,12 +622,13 @@ public class Server implements RemoteServer {
 
 
             case ASTRONAUT_LOSS:
-                StandardMessageClient str_msg = (StandardMessageClient) msg;
-
+                ShipClientMessage str_msg = (ShipClientMessage) msg;
                 controller = all_games.get(getLobbyId(str_msg.getId_client()));
+                controller.setShipPlance(getNickname(str_msg.getId_client()),str_msg.getPlayer().getShip());
 
                 String curr_nick = controller.nextAdventurePlayer();
                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la potenza cannoni ! \n", curr_nick));
+                controller.setCurr_combatzone("can");
 
                 sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
                 controller.getEngineValues().clear();
@@ -662,6 +663,12 @@ public class Server implements RemoteServer {
 
                 }
 
+                if(msg.getContent().equals("cz_done")){
+
+                    manageAdventure(controller.getRandomAdventure(), controller);
+                    break;
+                }
+
 
                 switch (controller.getCurrentAdventure().getType()) {
 
@@ -672,8 +679,8 @@ public class Server implements RemoteServer {
                         int eng_power = (int) Double.parseDouble(adv_msg.getContent());
 
                         controller.movePlayer(getNickname(adv_msg.getId_client()), eng_power);
-                        sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "" + eng_power, controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
-                        sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " ha dichiarato una potenza di " + " eng_power" + " \n", getNickname(adv_msg.getId_client())));
+                        sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "" , controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
+                        sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + getNickname(adv_msg.getId_client()) + " ha dichiarato una potenza di " +  eng_power + " \n", getNickname(adv_msg.getId_client())));
                         if (controller.getAdv_index() >= controller.getAdventureOrder().size()) {
 
                             adventure = controller.getRandomAdventure();
@@ -844,9 +851,9 @@ public class Server implements RemoteServer {
 
                                     if (controller.getEngineValues().size() == controller.getActivePlayers().size()) {
                                         controller.initializeAdventure(controller.getCurrentAdventure());
-
+                                        controller.setCurr_adventure_player(controller.getLeastEngineValue());
                                         sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK, "1", controller.getEngineValues()));
-                                        controller.setCurr_combatzone("can");
+                                        controller.setCurr_combatzone("eng_r");
 
                                         controller.getEngineValues().clear();
 
@@ -870,8 +877,8 @@ public class Server implements RemoteServer {
                                     if (controller.getListCannonPower().size() == controller.getActivePlayers().size()) {
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(CANNON_POWER_RANK, "1", controller.getEngineValues()));
-                                        controller.setCurr_combatzone("cw");
-
+                                        controller.setCurr_combatzone("can_r");
+                                        controller.setCurr_adventure_player(controller.getLeastCannon());
                                         controller.getListCannonPower().clear();
                                         break;
 
@@ -912,6 +919,7 @@ public class Server implements RemoteServer {
                                         sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la sua POTENZA MOTORI ! \n", curr_nick));
 
 
+
                                         break;
 
                                     }
@@ -937,8 +945,7 @@ public class Server implements RemoteServer {
                                         controller.getEngineValues().clear();
                                         controller.setCurr_combatzone("cw");
 
-                                        adventure = controller.getRandomAdventure();
-                                        manageAdventure(adventure, controller);
+
 
                                         break;
 
@@ -1143,13 +1150,12 @@ public class Server implements RemoteServer {
                 controller = all_games.get(getLobbyId(cl_msg.getId_client()));
                 if (type[0].equals("cz")) {
 
-                    adventure = controller.getRandomAdventure();
 
-                    manageAdventure(adventure, controller);
+                    String nick_less_cw = controller.calculateLessCrewmates();
 
+                    sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + nick_less_cw + " ha il minor numero di Astronuti e sta ricevendo le Cannonate ! \n", nick_less_cw));
 
-                }else{
-
+                    sendToClient(getId_client(nick_less_cw),new Message(LESS_CW,""));
 
 
                 }
@@ -1513,7 +1519,12 @@ public class Server implements RemoteServer {
             if (nickname != null) {
                 int lobbyId = getLobbyId(clientId);
                 try {
+                    CardAdventureType curr_type = controller.getCurrentAdventure().getType();
+                    if(!controller.getAdv_done().contains(player_disc) ) {
+
                         controller.removeFromAdventure(nickname);
+
+                    }
 
                 } catch (Exception e) {
                     System.out.println("PARTITA ANCORA NON IN FASE DI VOLO");
@@ -1544,11 +1555,21 @@ public class Server implements RemoteServer {
                             } else if (controller.getCurr_combatzone().equals("can")) {
                                 handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can 0.0", clientId, player_disc));
 
+                            }else if(controller.getCurr_combatzone().equals("eng_r")) {
+                                if(((CombatZone) controller.getCurrentAdventure()).getId() == 1)
+                                    handleMessage(new ShipClientMessage(ASTRONAUT_LOSS, "", clientId, player_disc));
+                                if(((CombatZone) controller.getCurrentAdventure()).getId() == 0)
+                                    handleMessage(new ShipClientMessage(CARGO_LOSS, "cz", clientId, player_disc));
+
+
+                            } else if (controller.getCurr_combatzone().equals("can_r")) {
+
                             }
 
                             break;
                     }
                 }
+
                 if (lobbyId != -1) {
                     Lobby lobby = manager.getLobby(lobbyId);
                     if (lobby != null) {

@@ -51,10 +51,11 @@ public class Epidemic extends CardAdventure implements Serializable {
                 CardComponent component = ship.getComponent(row, col);
 
                 if (isValidLivingUnit(component, mainUnit)) {
-                    removeCrewmatesIfConnected(ship, row, col, row + 1, col, North, South);
+                    System.out.println("sono a " + row + "," + col);
+                    removeCrewmatesIfConnected(ship, row, col, row + 1, col, South, North);
                     removeCrewmatesIfConnected(ship, row, col, row, col + 1, East, West);
-                    removeCrewmatesIfConnected(ship, row, col, row, col - 1, West, East);
-                    removeCrewmatesIfConnected(ship, row, col, row - 1, col, South, North);
+                    //removeCrewmatesIfConnected(ship, row, col, row, col - 1, West, East);
+                    //removeCrewmatesIfConnected(ship, row, col, row - 1, col, North, South);
                 }
             }
         }
@@ -89,6 +90,7 @@ public class Epidemic extends CardAdventure implements Serializable {
             LivingUnit unit2 = (LivingUnit) ship.getComponent(row2, col2);
 
             if (unit1.getNum_crewmates() > 0 && unit2.getNum_crewmates() > 0) {
+                System.out.println("Rimuovo a " + row1 + "," + col1);
                 unit1.removeCrewmates(1);
                 unit2.removeCrewmates(1);
             }
@@ -124,7 +126,9 @@ public class Epidemic extends CardAdventure implements Serializable {
         CardComponent comp1 = ship.getComponent(row1, col1);
         CardComponent comp2 = ship.getComponent(row2, col2);
 
-        return isValidLivingUnit(comp2, comp1.getComponentType()) &&
+        CardComponent mainunit = ship.getComponent(2, 3);
+
+        return isValidLivingUnit(comp2, mainunit.getComponentType()) &&
                 comp1.getValidConnectors(comp1.getConnector(conn1)).contains(comp2.getConnector(conn2));
     }
 
