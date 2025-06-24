@@ -18,6 +18,8 @@ public class Numplayercontroller {
     private Spinner<Integer> playerNumberSpinner;
     @FXML
     private Button confirmButton;
+    @FXML
+    private Button goBack;
 
     private CompletableFuture<Integer> playerNumber = new CompletableFuture<>();
     private GUI gui;
@@ -60,6 +62,9 @@ public class Numplayercontroller {
     public void setPlayerNumber(ActionEvent event) {
         gui.showMessage("In attesa di player nella lobby");
         this.playerNumber.complete(playerNumberSpinner.getValue());
+        goBack.setDisable(true);
+        confirmButton.setDisable(true);
+
     }
     @FXML
     public void setOne(ActionEvent event) {

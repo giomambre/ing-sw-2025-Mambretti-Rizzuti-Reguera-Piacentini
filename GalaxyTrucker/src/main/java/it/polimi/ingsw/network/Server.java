@@ -557,7 +557,7 @@ public class Server implements RemoteServer {
 
                 //CardAdventure adventure = controller.getRandomAdventure();
 
-                //       CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
+                CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
 
 
                 /*CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
@@ -612,7 +612,7 @@ public class Server implements RemoteServer {
                 );
 */
                 //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                CardAdventure adventure = controller.getRandomAdventure();
+                //CardAdventure adventure = controller.getRandomAdventure();
                 //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
 
                 manageAdventure(adventure, controller);
