@@ -320,6 +320,9 @@ public class Buildcontroller {
                 if (i == 2 && j == 3) {
                     Color color = gui.getClient().getPlayer_local().getColor();
                     String imagePath = null;
+                    cell.setOnMouseEntered(null);
+                    cell.setOnMouseExited(null);
+                    cell.setEffect(null);
 
 
                     Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
