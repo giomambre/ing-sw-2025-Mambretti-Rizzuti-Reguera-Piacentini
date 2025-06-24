@@ -399,6 +399,7 @@ public class Client {
 
                         otherPlayersReady.get();
                         ((GUI) virtualView).createbuildscreen();
+                        ((GUI)virtualView).getBuildcontroller().setLocal_adventure_deck(local_adventure_deck);
                         if(msg instanceof ShipClientMessage){
 
                             player_local = ((ShipClientMessage) msg).getPlayer();
