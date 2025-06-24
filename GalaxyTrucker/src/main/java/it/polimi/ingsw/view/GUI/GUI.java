@@ -1263,7 +1263,7 @@ public class GUI implements View {
         showMessage("è arrivata un epidemia, potresti aver perso astronauti");
         for(row=0;row< ship.getROWS();row++){
             for(col=0;col< ship.getCOLS();col++){
-                getFlyghtController().updateCrewmateOverlayAt(row, col, ship);
+                getFlyghtController().updatePlayerShip();
             }
         }
     }
