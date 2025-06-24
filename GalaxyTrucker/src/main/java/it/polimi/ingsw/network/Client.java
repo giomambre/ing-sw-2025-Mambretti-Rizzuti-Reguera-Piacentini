@@ -749,7 +749,7 @@ public class Client {
                     }
 
                 }
-                networkAdapter.sendMessage(new StandardMessageClient(MessageType.ASTRONAUT_LOSS, "", clientId));
+                networkAdapter.sendMessage(new ShipClientMessage(MessageType.ASTRONAUT_LOSS, "", clientId,player_local));
                 break;
 
 
@@ -943,13 +943,13 @@ public class Client {
 
                 if (!bm.getContent().isEmpty()) {
                     System.out.println();
-                    virtualView.showMessage(bm.getContent());
+                    if(virtualViewType == VirtualViewType.TUI)
+                        virtualView.showMessage(bm.getContent());
                     virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
                 } else {
                     System.out.println();
                     if (virtualViewType == VirtualViewType.GUI) {
-                        System.out.print("sono qui");
                         ((GUI) virtualView).createFlyghtScreen(local_board_positions, local_board_laps);
                     }else {
                         virtualView.showBasicBoard(local_board_positions, local_board_laps);
@@ -1063,6 +1063,25 @@ public class Client {
 
                 break;
 
+
+            case LESS_CW :
+                StringBuilder coords_m = new StringBuilder();
+                for (int i = 0; i < 2; i++) {
+
+                    coords_m.append(throwDice()).append(" ");
+
+                }
+
+                manageAdventure(
+                        new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                                List.of(
+                                        new Pair<>(MeteorType.LightCannonFire, South),
+                                        new Pair<>(MeteorType.HeavyCannonFire, South)
+                                ),""
+                        ), coords_m.toString());
+                networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_local));
+                break;
+
             case CANNON_POWER_RANK:
                 rank = (RankingMessage) msg;
 
@@ -1073,7 +1092,7 @@ public class Client {
                 if (less_cannon.equals(nickname)) {
 
                     if(msg.getContent().equals("1")) {
-                        StringBuilder coords_m = new StringBuilder();
+                         coords_m = new StringBuilder();
                         for (int i = 0; i < 2; i++) {
 
                             coords_m.append(throwDice()).append(" ");
@@ -1087,13 +1106,15 @@ public class Client {
                                                 new Pair<>(MeteorType.HeavyCannonFire, South)
                                         ),""
                                 ), coords_m.toString());
+                        networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_local));
 
 
                     }else{
-                        virtualView.showMessage("HAI PERSO 4 GIORNI DI VOLO : ");
+                        virtualView.showMessage("\nHAI PERSO 4 GIORNI DI VOLO : \n");
 
                         break;
                     }
+
 
 
                     break;
