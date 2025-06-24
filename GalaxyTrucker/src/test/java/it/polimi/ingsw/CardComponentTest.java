@@ -9,12 +9,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static it.polimi.ingsw.model.enumerates.ConnectorType.*;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Smooth;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 import static it.polimi.ingsw.model.enumerates.Direction.West;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CardComponentTest {
 
@@ -40,6 +42,30 @@ public class CardComponentTest {
         component.rotate();
         component.rotate();
         assertEquals(Universal, component.getConnector_type(South));
+
+        component.setRotationAngle(90);
+        assertEquals(90, component.getRotationAngle());
+    }
+
+    @Test
+    public void testConnector(){
+        component.copy();
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            component.getValidConnectors(Empty_Connector);
+        });
+
+        assertEquals("You cant use an empty connector", exception.getMessage());
+
+        assertEquals(connectors, component.getConnectors());
+        assertEquals("", component.getImagePath());
+
+    }
+
+    @Test
+    public void testUuid(){
+        UUID uuid = UUID.randomUUID();
+        component.setCard_uuid(uuid);
+        assertEquals(uuid, component.getCard_uuid());
     }
 
 

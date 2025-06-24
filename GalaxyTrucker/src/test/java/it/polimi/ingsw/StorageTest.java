@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.components.Storage;
 import it.polimi.ingsw.model.enumerates.Cargo;
 import it.polimi.ingsw.model.enumerates.ConnectorType;
@@ -40,8 +41,8 @@ public class StorageTest {
 
     @Test
     public void testStorage() {
-
         Storage storage = (Storage) player.getShip().getComponent(3,1);
+        storage.copy();
         assertEquals(Cargo.Empty,storage.getCargo(0));
         assertEquals(Cargo.Empty,storage.getCargo(1));
         assertEquals(Cargo.Empty,storage.getCargo(2));
@@ -56,12 +57,15 @@ public class StorageTest {
         Map<Cargo, Integer> cargoMap = new HashMap<>();
         cargoMap.put(Cargo.Green,0);
         cargoMap.put(Cargo.Red,1);
-        ((Storage) player.getShip().getComponent(3,1)).addCargo(cargoMap); // da capire come gestire la ClassCastException penso nel Controller
+        ((Storage) player.getShip().getComponent(3,1)).addCargo(cargoMap);
 
         Storage storage = (Storage) player.getShip().getComponent(3,1);
         assertEquals(Cargo.Green,storage.getCargo(0));
         assertEquals(Cargo.Red,storage.getCargo(1));
         assertEquals(Cargo.Empty,storage.getCargo(2));
+
+
+
 
 
     }
@@ -75,13 +79,21 @@ public class StorageTest {
 
         Storage storage = (Storage) player.getShip().getComponent(3,1);
 
-        cargoMap = new HashMap<>();
-        cargoMap.put(Cargo.Green,0);
-        ((Storage) player.getShip().getComponent(3,1)).removeCargo(cargoMap);
 
-        assertEquals(Cargo.Empty,storage.getCargo(0));
-        assertEquals(Cargo.Red,storage.getCargo(1));
-        assertEquals(Cargo.Empty,storage.getCargo(2));
+        ((Storage) player.getShip().getComponent(3,1)).removeCargo(Cargo.Red);
+
+        assertEquals(Cargo.Green,storage.getCargo(0));
+        assertEquals(Cargo.Empty,storage.getCargo(1));
+
+        storage.addCargo(Cargo.Red,2);
+        assertEquals(Cargo.Red,storage.getCargo(2));
+
+        assertEquals(2,storage.getCargoCount());
+        assertEquals(3,storage.getSize());
+        assertEquals(true,storage.containsCargo(Cargo.Red));
+
+        storage.setCarried_cargos(List.of(Cargo.Red));
+
     }
 
 

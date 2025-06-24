@@ -194,9 +194,7 @@ public class CardComponent implements Serializable {
         return imagePath;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+
 }
 
 
