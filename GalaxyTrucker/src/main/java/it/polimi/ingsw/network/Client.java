@@ -919,7 +919,16 @@ public class Client {
             case WAITING_FLIGHT:
 
 
+                if(virtualViewType == VirtualViewType.GUI) {
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 7; j++) {
+                            Pair pair=new Pair<>(i,j);
+                            ((GUI) virtualView).getBuildcontroller().resetHighlights(pair);
+                        }
+                    }
+                    ((GUI) virtualView).getBuildcontroller().disableShipGridCells();
 
+                }
                 virtualView.showMessage("Hai completato la fase di controllo ora rimani in attesa degli altri giocatori\n");
 
 
