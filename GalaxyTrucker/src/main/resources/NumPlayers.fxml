@@ -35,7 +35,7 @@
             <Spinner fx:id="playerNumberSpinner" styleClass="spinner" prefHeight="40.0" prefWidth="184.0" style="-fx-background-color: #fef6d5;" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                <children>
-                  <Button onAction="#setOne" prefHeight="53.0" prefWidth="161.0" text="Indietro" />
+                  <Button fx:id="goBack" onAction="#setOne" prefHeight="53.0" prefWidth="161.0" text="Indietro" />
                   <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#setPlayerNumber" text="Continua" />
                </children>
             </HBox>

@@ -107,7 +107,6 @@ public class Buildcontroller {
         }
     }
 
-
     @FXML
     public void initialize() {
         timeLeft = 270;
@@ -141,7 +140,6 @@ public class Buildcontroller {
             timerLabel.setText(formatTime(timeLeft));
             timeline.playFromStart();
         });
-
 
     }
 
@@ -919,6 +917,23 @@ public class Buildcontroller {
 
         });
     }
+
+    public void disableShipGridCells() {
+        for (javafx.scene.Node node : shipGrid.getChildren()) {
+
+            StackPane cell = (StackPane) node;
+
+            cell.setOnMouseClicked(null);
+            cell.setOnMouseEntered(null);
+            cell.setOnMouseExited(null);
+
+            //cell.setOpacity(0.7);
+            //cell.setStyle("-fx-background-color: #A9A9A9;");
+        }
+        System.out.println("Celle della shipGrid disabilitate.");
+    }
+
+
 
 
 
