@@ -4,15 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="un po di test">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="fixato prima carta avventura e altro (spero)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -462,55 +456,13 @@
       <workItem from="1750610297798" duration="5126000" />
       <workItem from="1750693901546" duration="6498000" />
       <workItem from="1750700788011" duration="54000" />
-      <workItem from="1750704720659" duration="5595000" />
-    </task>
-    <task id="LOCAL-00135" summary="some fixes">
-      <option name="closed" value="true" />
-      <created>1748966852999</created>
-      <option name="number" value="00135" />
-      <option name="presentableId" value="LOCAL-00135" />
-      <option name="project" value="LOCAL" />
-      <updated>1748966853000</updated>
-    </task>
-    <task id="LOCAL-00136" summary="some fixes">
-      <option name="closed" value="true" />
-      <created>1748966956810</created>
-      <option name="number" value="00136" />
-      <option name="presentableId" value="LOCAL-00136" />
-      <option name="project" value="LOCAL" />
-      <updated>1748966956810</updated>
-    </task>
-    <task id="LOCAL-00137" summary="some fixes">
-      <option name="closed" value="true" />
-      <created>1749031624138</created>
-      <option name="number" value="00137" />
-      <option name="presentableId" value="LOCAL-00137" />
-      <option name="project" value="LOCAL" />
-      <updated>1749031624138</updated>
-    </task>
-    <task id="LOCAL-00138" summary="some fixes">
-      <option name="closed" value="true" />
-      <created>1749032765172</created>
-      <option name="number" value="00138" />
-      <option name="presentableId" value="LOCAL-00138" />
-      <option name="project" value="LOCAL" />
-      <updated>1749032765172</updated>
-    </task>
-    <task id="LOCAL-00139" summary="ultime carte avventura, devo ancora testarle">
-      <option name="closed" value="true" />
-      <created>1749056629387</created>
-      <option name="number" value="00139" />
-      <option name="presentableId" value="LOCAL-00139" />
-      <option name="project" value="LOCAL" />
-      <updated>1749056629388</updated>
-    </task>
-    <task id="LOCAL-00140" summary="ultime carte avventura, devo ancora testarle">
-      <option name="closed" value="true" />
-      <created>1749148545955</created>
-      <option name="number" value="00140" />
-      <option name="presentableId" value="LOCAL-00140" />
-      <option name="project" value="LOCAL" />
-      <updated>1749148545956</updated>
+      <workItem from="1750704720659" duration="6541000" />
+      <workItem from="1750759839963" duration="140000" />
+      <workItem from="1750766094365" duration="5755000" />
+      <workItem from="1750774178889" duration="1456000" />
+      <workItem from="1750782213211" duration="2161000" />
+      <workItem from="1750786342240" duration="74000" />
+      <workItem from="1750792722627" duration="2986000" />
     </task>
     <task id="LOCAL-00141" summary="finito tutto, da testare ancora bene ci sono qualche problemi">
       <option name="closed" value="true" />
@@ -856,7 +808,55 @@
       <option name="project" value="LOCAL" />
       <updated>1750709507484</updated>
     </task>
-    <option name="localTasksCounter" value="184" />
+    <task id="LOCAL-00184" summary="un po di test">
+      <option name="closed" value="true" />
+      <created>1750710347270</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1750710347270</updated>
+    </task>
+    <task id="LOCAL-00185" summary="un po di test">
+      <option name="closed" value="true" />
+      <created>1750759928101</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1750759928101</updated>
+    </task>
+    <task id="LOCAL-00186" summary="fixes">
+      <option name="closed" value="true" />
+      <created>1750771879531</created>
+      <option name="number" value="00186" />
+      <option name="presentableId" value="LOCAL-00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1750771879532</updated>
+    </task>
+    <task id="LOCAL-00187" summary="fixato prima carta avventura e altro (spero)">
+      <option name="closed" value="true" />
+      <created>1750775630891</created>
+      <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
+      <option name="project" value="LOCAL" />
+      <updated>1750775630891</updated>
+    </task>
+    <task id="LOCAL-00188" summary="fixato prima carta avventura e altro (spero)">
+      <option name="closed" value="true" />
+      <created>1750784372038</created>
+      <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
+      <option name="project" value="LOCAL" />
+      <updated>1750784372038</updated>
+    </task>
+    <task id="LOCAL-00189" summary="fixato prima carta avventura e altro (spero)">
+      <option name="closed" value="true" />
+      <created>1750786406599</created>
+      <option name="number" value="00189" />
+      <option name="presentableId" value="LOCAL-00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1750786406599</updated>
+    </task>
+    <option name="localTasksCounter" value="190" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -904,8 +904,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Iniziata zona di guerra" />
-    <MESSAGE value="piccolo fix" />
     <MESSAGE value="ZONA DI GUERRA CONTINUA..." />
     <MESSAGE value="ZONA DI GUERRA finita e epidemic pure" />
     <MESSAGE value="finendo carte avventura" />
@@ -929,7 +927,9 @@
     <MESSAGE value="tolto il superfluo" />
     <MESSAGE value="qualche fix" />
     <MESSAGE value="un po di test" />
-    <option name="LAST_COMMIT_MESSAGE" value="un po di test" />
+    <MESSAGE value="fixes" />
+    <MESSAGE value="fixato prima carta avventura e altro (spero)" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixato prima carta avventura e altro (spero)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -946,11 +946,6 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="8" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java</url>
-          <line>1574</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/BaseGame.java</url>
           <line>127</line>
