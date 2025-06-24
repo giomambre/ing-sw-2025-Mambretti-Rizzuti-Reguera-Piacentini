@@ -639,6 +639,7 @@ public class Server implements RemoteServer {
                 controller = all_games.get(getLobbyId(adv_msg.getId_client()));
 
 
+
                 if(controller.getGamestate() == FINISHED_GAME){
 
                     break;
@@ -840,6 +841,15 @@ public class Server implements RemoteServer {
                         StandardMessageClient cbz_msg = (StandardMessageClient) msg;
 
 
+                        if (controller.getActivePlayers().size() - controller.getDisconnected_players().size() == 1) {
+                            controller.setIn_pause(1);
+
+                            sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "SEI RIMASTO SOLO TU, IN PARTITA IN PAUSA! \n", "useless"));
+                            return;
+
+                        }
+
+
                         if (combatZone.getId() == 1) {
 
                             switch (type[0]) {
@@ -923,7 +933,6 @@ public class Server implements RemoteServer {
                                         break;
 
                                     }
-                                    controller.setCurr_combatzone("eng");
 
                                     curr_nick = controller.nextAdventurePlayer();
                                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
@@ -942,6 +951,7 @@ public class Server implements RemoteServer {
                                     if (controller.getEngineValues().size() == controller.getActivePlayers().size()) {
 
                                         sendToAllClients(controller.getLobby(), new RankingMessage(ENGINE_POWER_RANK, "0", controller.getEngineValues()));
+                                        controller.setCurr_adventure_player(controller.getLeastEngineValue());
                                         controller.getEngineValues().clear();
                                         controller.setCurr_combatzone("cw");
 
@@ -1515,11 +1525,9 @@ public class Server implements RemoteServer {
         if (handler != null) {
             String nickname = handler.getNickname();
             controller.disconnect(nickname);
-
             if (nickname != null) {
                 int lobbyId = getLobbyId(clientId);
                 try {
-                    CardAdventureType curr_type = controller.getCurrentAdventure().getType();
                     if(!controller.getAdv_done().contains(player_disc) ) {
 
                         controller.removeFromAdventure(nickname);
@@ -1564,7 +1572,13 @@ public class Server implements RemoteServer {
 
                             } else if (controller.getCurr_combatzone().equals("can_r")) {
 
-                            }
+                                if(((CombatZone) controller.getCurrentAdventure()).getId() == 1)
+                                    handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
+
+
+
+                            }else if(controller.getCurr_combatzone().equals("cw"))
+                                    handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
 
                             break;
                     }
