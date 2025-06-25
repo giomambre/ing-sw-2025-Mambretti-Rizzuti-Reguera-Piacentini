@@ -191,7 +191,7 @@
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\examples" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientMultiplo">
+  <component name="RunManager" selected="JUnit.java in PSP17">
     <configuration name="ClientMultiplo" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.network.Client" />
       <module name="PSP17" />
@@ -245,14 +245,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="controllerTests in PSP17" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="PSP17" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/src/test/java/controllerTests" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ingsw in PSP17" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="PSP17" />
       <option name="TEST_OBJECT" value="directory" />
@@ -261,13 +253,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="java in PSP17" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="PSP17" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.java in PSP17" />
         <item itemvalue="JUnit.BaseGameTest.testAddPlayer" />
         <item itemvalue="JUnit.ingsw in PSP17" />
         <item itemvalue="JUnit.SlaversTest" />
         <item itemvalue="JUnit.SmugglersTest" />
-        <item itemvalue="JUnit.controllerTests in PSP17" />
       </list>
     </recent_temporary>
   </component>

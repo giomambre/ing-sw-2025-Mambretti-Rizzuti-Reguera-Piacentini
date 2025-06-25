@@ -78,21 +78,6 @@ public class Ship implements Serializable {
     }
 
 
-    public int getTotalBattery() {
-        int total = 0;
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
-                CardComponent card = ship_board[row][col];
-                if (card.getComponentType() == Battery) {
-
-                    if (((Battery) card).getStored() > 0)
-                        total += ((Battery) card).getStored();
-                }
-            }
-        }
-
-        return total;
-    }
 
     /**
      * This method is used to initialize the plance
