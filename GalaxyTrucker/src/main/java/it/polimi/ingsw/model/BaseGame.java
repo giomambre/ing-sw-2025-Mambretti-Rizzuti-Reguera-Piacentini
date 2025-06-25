@@ -283,10 +283,6 @@ public abstract class BaseGame implements Serializable {
         return numPlayers;
     }
 
-    /**@return list of active players, that is, those who have not left the game*/
-    public List<Player> getActive_players() {
-        return active_players;
-    }
 
     /**@return list of player's nicknames*/
     public List<String> getNicknames() {
@@ -320,14 +316,6 @@ public abstract class BaseGame implements Serializable {
         return cards_faced_up;
     }
 
-    /**
-     * Sets the list of component cards that are face up.
-     *
-     * @param cards_faced_up
-     */
-    public void setCards_faced_up(List<CardComponent> cards_faced_up) {
-        this.cards_faced_up = cards_faced_up;
-    }
 
     /**
      * Sets the list of players who are currently active in the game.
@@ -359,9 +347,6 @@ public abstract class BaseGame implements Serializable {
      */
     public abstract CardAdventure getRandomCardAdventure() ;
 
-    public void addBuildPhasePlayer(Player player) {
-        build_phase_players.add(player);
-    }
 
     public List<Player> getBuildPhasePlayers() {
         return build_phase_players;

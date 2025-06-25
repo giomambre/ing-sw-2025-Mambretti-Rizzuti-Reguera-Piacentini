@@ -29,7 +29,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
-import static it.polimi.ingsw.model.enumerates.Direction.South;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.Direction.East;
 
 public class Client {
     private static ObjectInputStream in;
@@ -399,6 +400,7 @@ public class Client {
 
                         otherPlayersReady.get();
                         ((GUI) virtualView).createbuildscreen();
+                        ((GUI) virtualView).getBuildcontroller().setLocal_adventure_deck(local_adventure_deck);
                         if(msg instanceof ShipClientMessage){
 
                             player_local = ((ShipClientMessage) msg).getPlayer();
@@ -533,7 +535,8 @@ public class Client {
                 if (sel == 3) {
 
                     if (player_local.getShip().getExtra_components().contains(card_msg.getCardComponent())) {
-                        virtualView.showMessage("\nCarta rimessa nelle carte prenotate");
+                            virtualView.showMessage("\nCarta rimessa nelle carte prenotate");
+
                         elaborate(new Message(MessageType.BUILD_START, ""));
 
                         return;
@@ -573,7 +576,9 @@ public class Client {
                         elaborate(new Message(MessageType.BUILD_START, ""));
 
                     } else {
-                        virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");
+                        if(virtualViewType == VirtualViewType.TUI) {
+                            virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");
+                        }
 
                         player_local.getShip().getExtra_components().add(card_msg.getCardComponent());
 
@@ -702,7 +707,6 @@ public class Client {
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
                 if (icm.getInvalids().isEmpty()) {
-                    virtualView.showMessage("\n Tutti i connettori sono disposti in maniera giusta, si passa al prossimo controllo");
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.FIXED_SHIP_CONNECTORS, "", clientId, player_local.copyPlayer()));
                 } else {
                     if(virtualViewType == VirtualViewType.GUI) {
@@ -774,7 +778,7 @@ public class Client {
 
             case GAME_FINISHED:
             PlayersShipsMessage pm = (PlayersShipsMessage) msg;
-            virtualView.showMessage("\n\n\n\n ---------- IL TUO VOLO FINISCE QUI!, aspetta la fine per la classifica ----------\n\n");
+            virtualView.showMessage("\n\n\n\n ---------- PARTITA TERMINATA ----------\n\n");
                 if (virtualViewType == VirtualViewType.GUI) {
                     ((GUI) virtualView).createrankingscreen(pm.getPlayers());
                 }
@@ -834,7 +838,6 @@ public class Client {
                     virtualView.updateLocalPlayer(player_local);
                     if (!Client.otherPlayersReady.isDone()) {
                         Client.otherPlayersReady.complete(null);
-                        System.out.println(">>> [DEBUG] CompletableFuture completata con altri giocatori: " + other_players_local);
                     }
                 }
                 if (virtualViewType == VirtualViewType.TUI) {
@@ -884,7 +887,6 @@ public class Client {
                 break;
 
             case TIME_UPDATE:
-                System.out.println("SONO QUI PER MODIF TIMER CIAO");
                 if(virtualViewType == VirtualViewType.GUI){
                     if(msg.getContent().equals("⏳ 90s rimanenti") || msg.getContent().equals("🔔 Un giocatore ha finito! ")){
                         ((GUI)virtualView).getBuildcontroller().starttimer(90);
@@ -930,7 +932,6 @@ public class Client {
                     ((GUI) virtualView).getBuildcontroller().disableShipGridCells();
 
                 }
-                virtualView.showMessage("Hai completato la fase di controllo ora rimani in attesa degli altri giocatori\n");
 
 
 
@@ -946,6 +947,12 @@ public class Client {
                     System.out.println();
                     if(virtualViewType == VirtualViewType.TUI)
                         virtualView.showMessage(bm.getContent());
+                    else
+                    if(VirtualViewType.GUI == virtualViewType) {
+                        if(((GUI)virtualView).getFlyghtController()!=null)
+                            ((GUI)virtualView).addLogEvent(bm.getContent());
+                    }
+
                     virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
                 } else {
@@ -989,6 +996,7 @@ public class Client {
                 AdventureCardMessage ad = (AdventureCardMessage) msg;
                 if(virtualViewType == VirtualViewType.GUI) {
                     ((GUI)virtualView).getFlyghtController().addAdventureCard(ad.getAdventure());
+                    ((GUI)virtualView).addLogEvent("\n NUOVA CARTA AVVENTURA PESCATA\n" + ad.getAdventure().getType() );
                 }
                 virtualView.printCardAdventure(ad.getAdventure());
                 dummy = virtualView.nextMeteor();
@@ -1002,7 +1010,11 @@ public class Client {
                 String curr_nick = nm.getNickname();
                 if(!curr_nick.equals(nickname)){
 
-                    virtualView.showMessage("\n"+nm.getContent());
+                    if(VirtualViewType.GUI == virtualViewType) {
+                        if(((GUI)virtualView).getFlyghtController()!=null)
+                            ((GUI)virtualView).addLogEvent(nm.getContent());
+                    }else
+                        virtualView.showMessage("\n"+nm.getContent());
                     break;
 
                 }
@@ -1016,9 +1028,10 @@ public class Client {
             case ENGINE_POWER:
                 String[] enginePower = msg.getContent().split("\\s+");
                 if (!enginePower[0].equals(nickname)) {
-
-                    virtualView.showMessage("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1]);
-
+                    if(virtualViewType == VirtualViewType.TUI)
+                        virtualView.showMessage("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1]);
+                    else
+                        ((GUI)virtualView).addLogEvent("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1]);
 
                 }
                 break;
@@ -1026,10 +1039,10 @@ public class Client {
             case CANNON_POWER:
                 String[] canonPower = msg.getContent().split("\\s+");
                 if (!canonPower[0].equals(nickname)) {
-
-                    virtualView.showMessage("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1]);
-
-
+                    if(virtualViewType == VirtualViewType.TUI)
+                        virtualView.showMessage("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1]);
+                    else
+                        ((GUI)virtualView).addLogEvent("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1]);
                 }
                 break;
 
@@ -1076,7 +1089,9 @@ public class Client {
                 manageAdventure(
                         new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
                                 List.of(
-                                        new Pair<>(MeteorType.LightCannonFire, South),
+                                        new Pair<>(MeteorType.LightCannonFire, North),
+                                        new Pair<>(MeteorType.LightCannonFire, West),
+                                        new Pair<>(MeteorType.LightCannonFire, East),
                                         new Pair<>(MeteorType.HeavyCannonFire, South)
                                 ),""
                         ), coords_m.toString());
@@ -1088,7 +1103,7 @@ public class Client {
 
                 String less_cannon = rank.getWeakerPlayer();
 
-                virtualView.ShowRanking(rank.getRanks(), "POTENZA MOTORI ");
+                virtualView.ShowRanking(rank.getRanks(), "POTENZA CANNONI ");
 
                 if (less_cannon.equals(nickname)) {
 
@@ -1209,7 +1224,7 @@ public class Client {
                 }
 
                 double power_m = ship.calculateEnginePower(battery_usage_os);
-                virtualView.showMessage("\n\nPOTENZA MOTORE : " + power_m);
+                virtualView.showMessage("\n\nLA TUA POTENZA MOTORE : " + power_m);
                 networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power_m), clientId, player_local));
 
                 break;
@@ -1638,7 +1653,6 @@ public class Client {
                             virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO! (NON HAI PIU EQUIPAGGIO) ---- ");
 
 
-
                             networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "l", clientId, player_local));
 
                             return;
@@ -1647,7 +1661,6 @@ public class Client {
                         else {
                             player_local.getShip().getComponent(lu.getKey(), lu.getValue());
                             num_crew_mates--;
-                            virtualView.showMessage("\nRIMOZIONE AVVENUTA CON SUCCESSO ! \n");
                         }
 
                     }
@@ -1700,7 +1713,7 @@ public class Client {
 
                 player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
 
-                virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+                virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!!!! \n");
                 virtualView.printShip(player_local.getShip().getShipBoard());
 
 
@@ -1729,7 +1742,7 @@ public class Client {
 
     public static void removeComp(Pair<Integer, Integer> pair) throws IOException {
         player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
-        virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!! \n");
+        virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!!!! \n");
         virtualView.printShip(player_local.getShip().getShipBoard());
 
         List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
@@ -1751,7 +1764,6 @@ public class Client {
             if (scelta == -1) {
                 break;
             }
-            System.out.println("debug scelgo" +scelta);
 
             Cargo c = planet_cargos.get(scelta);
             new_position = virtualView.addCargo(player_local.getShip(), c);

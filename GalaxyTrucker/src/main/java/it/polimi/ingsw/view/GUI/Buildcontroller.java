@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Ship;
+import it.polimi.ingsw.model.adventures.CardAdventure;
 import it.polimi.ingsw.model.components.CardComponent;
 import it.polimi.ingsw.model.components.LivingUnit;
 import it.polimi.ingsw.model.enumerates.*;
@@ -27,11 +28,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -48,6 +51,11 @@ public class Buildcontroller {
     private List<Pair<Integer, Integer>> invalidConnectors;
     private CompletableFuture<Ship> shipUpdateFuture;
     private Timeline blinkTimeline;
+    private Map<Direction, List<CardAdventure>> local_adventure_deck;
+
+    public void setLocal_adventure_deck(Map<Direction, List<CardAdventure>> local_adventure_deck) {
+        this.local_adventure_deck = local_adventure_deck;
+    }
 
     @FXML
     private Label timerLabel;
@@ -83,6 +91,51 @@ public class Buildcontroller {
     private CompletableFuture<Integer> faceupCardIndex = new CompletableFuture<>();
 
     private Stage playerStage;
+
+    @FXML
+    private void showSouthDeckCard() {
+        String imagePath=local_adventure_deck.get(South).getFirst().getImagePath();
+        openCardDisplayScreen("South Deck",imagePath);
+    }
+
+    @FXML
+    private void showEastDeckCard() {
+        String imagePath=local_adventure_deck.get(East).getFirst().getImagePath();
+        openCardDisplayScreen("East Deck",imagePath);
+    }
+
+    @FXML
+    private void showWestDeckCard() {
+        String imagePath=local_adventure_deck.get(West).getFirst().getImagePath();
+        openCardDisplayScreen("West Deck",imagePath);
+    }
+
+    /**
+     * Metodo di supporto per aprire una nuova schermata per mostrare la carta in cima al mazzo.
+     * @param deckName Il nome del mazzo (es. "South Deck")
+     * @param cardImagePath Il percorso relativo dell'immagine della carta all'interno del progetto.
+     * Ad esempio: "/it/polimi/ingsw/view/GUI/images/cards/my_card.png"
+     */
+    private void openCardDisplayScreen(String deckName, String cardImagePath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/CardDisplay.fxml"));
+            Parent root = loader.load();
+
+            CardDisplayController cardDisplayController = loader.getController();
+            cardDisplayController.setDeckName(deckName);
+            cardDisplayController.setCard(cardImagePath); // Passa il percorso dell'immagine e la descrizione
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Prima Carta del " + deckName);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Gestisci l'errore (es. mostra un alert all'utente)
+        }
+    }
+
 
     private void startBlinking() {
         blinkTimeline = new Timeline(
@@ -124,7 +177,6 @@ public class Buildcontroller {
                 timeline.stop();
                 stopBlinking();
                 timerLabel.setText("Tempo Scaduto!");
-                System.out.println("Tempo di costruzione terminato!");
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -323,6 +375,7 @@ public class Buildcontroller {
                     cell.setOnMouseEntered(null);
                     cell.setOnMouseExited(null);
                     cell.setEffect(null);
+                    cell.setOnMouseClicked(null);
 
 
                     Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -461,7 +514,6 @@ public class Buildcontroller {
                 return;
             }
         }
-        System.out.println("Cell not found at " + x + "," + y);
     }
 
     public void resetHighlights(Pair<Integer, Integer> coords) {
@@ -561,8 +613,7 @@ public class Buildcontroller {
             PlayerShipController controller = loader.getController();
             controller.setBuildcontroller(this);
 
-            System.out.println("debug,nave di:"+player.getNickname());
-            System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
+
             controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
             controller.showCloseButton();
 
@@ -694,11 +745,9 @@ public class Buildcontroller {
             System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
             return;
         }
-        System.out.println("CARTA TROVATA");
 
         StackPane cell = (StackPane) cardNode; // Ora il cast è sicuro e corretto
         Node overlay = createoverlayfortype(type);
-        System.out.println("overlay trovato");
         if (overlay != null) { // Aggiungi l'overlay solo se è stato creato con successo
             cell.getChildren().add(overlay);
         } else {
@@ -713,7 +762,6 @@ public class Buildcontroller {
             System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
             return;
         }
-        System.out.println("CARTA TROVATA");
 
         StackPane cell = (StackPane) cardNode;
 
@@ -933,7 +981,6 @@ public class Buildcontroller {
             //cell.setOpacity(0.7);
             //cell.setStyle("-fx-background-color: #A9A9A9;");
         }
-        System.out.println("Celle della shipGrid disabilitate.");
     }
 
 

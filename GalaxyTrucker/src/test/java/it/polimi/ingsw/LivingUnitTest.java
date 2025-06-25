@@ -36,11 +36,26 @@ public class LivingUnitTest {
     }
 
     @Test
-    public void testAddAstronaut() {
+    public void testAstronaut() {
         component = new LivingUnit(ComponentType.LivingUnit, connectors,"");
+        component.copy();
         ((LivingUnit)component).addAstronauts();
+        ((LivingUnit)component).setNum_crewmates(2);
         assertEquals(2, ((LivingUnit)component).getNum_crewmates());
         assertEquals(CrewmateType.Astronaut, ((LivingUnit)component).getCrewmate_type());
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            ((LivingUnit) component).addAstronauts();
+        });
+
+        assertEquals("Try to remove a Crewmate, you can't add two crewmates", exception.getMessage());
+
+        exception = assertThrows(IllegalArgumentException.class, () -> {
+            ((LivingUnit)component).removeCrewmates(5);
+        });
+
+        assertEquals("Trying to remove a Crewmate that does not exist", exception.getMessage());
+
 
     }
 
@@ -49,6 +64,9 @@ public class LivingUnitTest {
         component = new LivingUnit(ComponentType.PinkAlienUnit, connectors,"");
         ((LivingUnit)component).addAlien(CrewmateType.PinkAlien);
         assertEquals(1, ((LivingUnit)component).getNum_crewmates());
+        assertEquals(CrewmateType.PinkAlien, ((LivingUnit)component).getCrewmate_type());
+
+        ((LivingUnit)component).setCrewmate_type(CrewmateType.PinkAlien);
         assertEquals(CrewmateType.PinkAlien, ((LivingUnit)component).getCrewmate_type());
 
     }

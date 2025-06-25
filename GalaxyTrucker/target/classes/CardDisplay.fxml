@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.Image?>
+
+<VBox alignment="CENTER" spacing="10" style="-fx-background-color: #333333;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.CardDisplayController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <Label fx:id="deckNameLabel" style="-fx-font-family: 'Verdana'; -fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #fef6d5;" text="First Card of [Deck Name]" />
+    <ImageView fx:id="cardImageView" fitHeight="300.0" fitWidth="200.0" preserveRatio="true">
+    </ImageView>
+</VBox>

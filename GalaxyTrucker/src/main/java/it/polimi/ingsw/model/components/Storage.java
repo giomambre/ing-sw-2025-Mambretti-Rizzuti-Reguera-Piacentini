@@ -120,23 +120,7 @@ public class Storage extends CardComponent  implements Serializable {
         return carried_cargos.contains(cargo);
     }
 
-    /**
-     * This method removes specific cargo items from the storage by setting their positions to {@code Cargo.Empty}.
-     *
-     * @param cargoMap a map where each entry associates a cargo unit to the index from which it should be removed
-     * @throws IllegalArgumentException if the number of cargo items exceeds the storage capacity
-     */
-    public void removeCargo(Map<Cargo, Integer> cargoMap){
-        if(cargoMap.size()>this.size){
-            throw new IllegalArgumentException("Trying to remove more cargo than the size of the storage");
-        }
-    for (Map.Entry<Cargo, Integer> entry : cargoMap.entrySet()) {
-            int index = entry.getValue();
 
-            carried_cargos.set(index, Cargo.Empty);
-
-        }
-    }
 
     /**
      * This method creates a copy of this storage component, including its stored cargo and unique ID.
