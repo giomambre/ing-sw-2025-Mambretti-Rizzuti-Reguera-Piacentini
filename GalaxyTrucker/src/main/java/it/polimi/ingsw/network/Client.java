@@ -81,6 +81,12 @@ public class Client {
             int socketPort = 12345 ;
             int rmiPort = 1099;
             int choice = -1;
+            System.out.print("Inserisci l'indirizzo IP del server (lascia vuoto per localhost): ");
+            String ipInput = scanner.nextLine();
+            if (!ipInput.trim().isEmpty()) {
+                host = ipInput.trim();
+            }
+
             do {
                 System.out.println("Scegli il tipo di connessione:");
                 System.out.println("1. Socket");
