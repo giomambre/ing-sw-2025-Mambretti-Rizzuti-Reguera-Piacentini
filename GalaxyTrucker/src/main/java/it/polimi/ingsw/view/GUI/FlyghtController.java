@@ -113,7 +113,9 @@ public class FlyghtController {
 
 
     @FXML
-    private TextArea eventLogTextArea;
+    private VBox eventLogVBox;
+    @FXML
+    private ScrollPane eventLogScrollPane;
 
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
@@ -131,11 +133,22 @@ public class FlyghtController {
         Platform.runLater(() -> infoLabel.setVisible(false));
     }
 
+
+
     public void addLogMessage(String message) {
         Platform.runLater(() -> {
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-            eventLogTextArea.appendText("[" + timestamp + "] " + message + "\n");
-            eventLogTextArea.setScrollTop(Double.MAX_VALUE);
+            Label logEntry = new Label(message);
+            logEntry.setWrapText(true);
+            logEntry.setStyle("-fx-font-family: 'Verdana'; -fx-font-size: 12; -fx-text-fill: #fef6d5;");
+
+            if (eventLogVBox != null) {
+                eventLogVBox.getChildren().add(logEntry);
+
+                // Scrolla automaticamente in basso usando l'fx:id del ScrollPane
+                if (eventLogScrollPane != null) {
+                    eventLogScrollPane.vvalueProperty().bind(eventLogVBox.heightProperty());
+                }
+            }
         });
     }
 

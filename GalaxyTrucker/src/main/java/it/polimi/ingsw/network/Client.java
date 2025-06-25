@@ -78,7 +78,7 @@ public class Client {
 
             Scanner scanner = new Scanner(System.in);
             String host = "localhost";
-            int socketPort = 12345;
+            int socketPort = 12345 ;
             int rmiPort = 1099;
             int choice = -1;
             do {

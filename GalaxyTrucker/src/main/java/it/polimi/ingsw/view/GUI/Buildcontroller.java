@@ -220,6 +220,7 @@ public class Buildcontroller {
                 final int index = i;
 
                 cardImage.setOnMouseClicked(e -> {
+                    System.out.println("carta scartata per testare ciao");
                     if (!faceupCardIndex.isDone()) {
                         faceupCardIndex.complete(index);
                     }
