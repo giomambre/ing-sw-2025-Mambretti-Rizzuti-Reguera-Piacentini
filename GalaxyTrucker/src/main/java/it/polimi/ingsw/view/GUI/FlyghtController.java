@@ -18,20 +18,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import javax.smartcardio.Card;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -112,6 +111,10 @@ public class FlyghtController {
     @FXML
     private Label infoLabel;
 
+
+    @FXML
+    private TextArea eventLogTextArea;
+
     // Dimensioni della board
     private static final int BOARD_SIZE = 5;
     private static final int CELL_WIDTH = 80;
@@ -126,6 +129,14 @@ public class FlyghtController {
     }
     public void hideInfoLabel() {
         Platform.runLater(() -> infoLabel.setVisible(false));
+    }
+
+    public void addLogMessage(String message) {
+        Platform.runLater(() -> {
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+            eventLogTextArea.appendText("[" + timestamp + "] " + message + "\n");
+            eventLogTextArea.setScrollTop(Double.MAX_VALUE);
+        });
     }
 
     public void setPlayerStage(Stage playerStage) {
@@ -283,6 +294,7 @@ public class FlyghtController {
         setupBoardGrid();
         setupPlayerShipGrid();
         setupAdventureCardArea();
+        addLogMessage("Benvenuto In Galaxy Trucker! Questa à la Fase di Volo"); // Nuovo
     }
 
     public List<Pair<Integer,Integer>> getBatteries() {

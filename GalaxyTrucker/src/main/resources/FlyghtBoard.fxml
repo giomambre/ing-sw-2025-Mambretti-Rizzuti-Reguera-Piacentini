@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ScrollPane?>
 <BorderPane minHeight="870.0" minWidth="1500.0" prefHeight="870.0" prefWidth="1500.0" style="-fx-background-color: #1E1142FF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.FlyghtController">
     <stylesheets>
         <URL value="@FlyghtBoard.css" />
@@ -140,7 +142,15 @@
                 </VBox>
 
                 <Region HBox.hgrow="ALWAYS" />
+                <ScrollPane fitToWidth="true" prefHeight="150.0" prefWidth="200.0" StackPane.alignment="BOTTOM_RIGHT">
+                    <content>
+                        <TextArea fx:id="eventLogTextArea" editable="false" wrapText="true" />
+                    </content>
+                    <StackPane.margin>
+                        <Insets bottom="10.0" right="10.0" />
+                    </StackPane.margin>
 
+                </ScrollPane>
             </children>
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
