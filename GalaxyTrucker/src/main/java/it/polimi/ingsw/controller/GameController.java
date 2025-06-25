@@ -353,10 +353,6 @@ public class GameController {
         return game.getBoard();
     }
 
-  /*  public String getPlayerNickname(Player player) {
-        return player.getNickname();
-    }*/
-
     public synchronized CardComponent getRandomCard() {
 
         return game.getRandomCardComponent();
@@ -381,34 +377,6 @@ public class GameController {
     public List<Player> getBuild_order_players() {
         return build_order_players;
     }
-
-    public List<Player> getFinished_supply_players() {
-        return finished_supply_players;
-    }
-
-
-    public void putPlayersOnBoard(List<Player> players) {
-        game.getBoard().putPlayersOnBoard(players);
-    }
-
-   /* public List<Player> ordinaPlayers(List<Player> players, List<String> order) {
-
-
-        Map<String, Player> playerMap = new HashMap<>();
-        for (Player p : players) {
-            playerMap.put(p.getNickname(), p);
-        }
-
-        List<Player> order_player = new ArrayList<>();
-        for (String nick : order) {
-            if (playerMap.containsKey(nick)) {
-                order_player.add(playerMap.get(nick));
-            }
-        }
-
-        return order_player;
-    }*/
-
 
     public CardAdventure getRandomAdventure() {
         return game.getRandomCardAdventure();
@@ -489,15 +457,6 @@ public class GameController {
     }
 
 
-/*
-    public synchronized CardComponent pickComponentFacedUp(int index) {
-
-        if (index < 0 || index > game.getPlayers().size()) throw new IllegalArgumentException("Index out of bounds");
-
-        return game.getFacedUpCard(index);
-
-    }
-*/
 
     public void crewmatesSupply(String nickname, int x, int y, CrewmateType type) {
 
@@ -525,24 +484,6 @@ public class GameController {
 
     }
 
-  /*  public void rotateCard(CardComponent card) {
-        card.rotate();
-    }
-
-    public int getExposedConnector(String nickname) {
-        Player p = game.getPlayer(nickname);
-        Ship ship = p.getShip();
-
-        return ship.calculateExposedConnectors();
-    }
-
-    public CardComponent[][] getShipPlance(String nickname) {
-        Player p = game.getPlayer(nickname);
-        Ship ship = p.getShip();
-
-        return ship.getShipBoard();
-    }
-*/
 
     public List<Pair<Integer, Integer>> checkShipConnectors(String nickname) {
 
@@ -562,17 +503,6 @@ public class GameController {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
 
-//        for (List<Pair<Integer, Integer>> piece : pieces) {
-//            CardComponent[][] matrix = new CardComponent[5][7]; // 5 righe, 7 colonne
-//
-//            for (Pair<Integer, Integer> coord : piece) {
-//                int x = coord.getKey();
-//                int y = coord.getValue();
-//                matrix[x][y] = ship.getComponent(x, y);
-//            }
-//
-//            validPieces.add(matrix);
-//        }
 
         return ship.findShipPieces();
 
@@ -595,48 +525,6 @@ public class GameController {
     }
 
 
-/*
-    public List<Cargo> getCargoReward(CardAdventure cardAdventure) {
-        CardAdventureType type = cardAdventure.getType();
-        switch (type) {
-            case AbandonedStation -> {
-                return ((AbandonedStation) cardAdventure).getCargo();
-            }
-
-            default -> throw new IllegalArgumentException("err");
-
-        }
-    }
-
-
-    public void executeAbandonedStation(String nickname, Map<CardComponent, Map<Cargo, Integer>> new_cargo_positions, AbandonedStation abandonedStation) {
-        Player p = game.getPlayer(nickname);
-        Ship ship = p.getShip();
-        int total_crewmates = 0;
-        for (int i = 0; i < ship.getROWS(); i++) {
-            for (int j = 0; j < ship.getCOLS(); j++) {
-                if (ship.getComponent(i, j).getComponentType() == ComponentType.LivingUnit)
-                    total_crewmates += ((LivingUnit) ship.getComponent(i, j)).getNum_crewmates();
-            }
-        }
-
-        if (total_crewmates > abandonedStation.getNeeded_crewmates()) {
-            abandonedStation.execute(p, new_cargo_positions);
-        } else {
-            throw new IllegalArgumentException("Non hai abbastanza membri dell'equipaggiamento!");
-        }
-    }
-
-
-    //Serie di metodi di Combat Zone che vanno gestiti poi dal controller in base a quale id esce
-    public List<Pair<MeteorType, Direction>> getCombatZoneMeteors(CombatZone combatZone) {
-        return combatZone.getMeteors();
-    }
-
-    public void executeMeteors(String nickname, CardAdventure meteor, Direction direction, MeteorType meteor_type, Boolean shield_usage, CardComponent battery, int position, Boolean double_cannon_usage) {
-        Player p = game.getPlayer(nickname);
-        //((MeteorSwarm) meteor).execute(p, direction, meteor_type, shield_usage, battery, position, double_cannon_usage);
-    }*/
 
     public String calculateLessCrewmates() {
         List<Player> players = getActivePlayers();
@@ -663,73 +551,6 @@ public class GameController {
     }
 
 
-  /*  public void executeLessCrewmates1(String nickname, CombatZone combatZone) {
-        Player p = game.getPlayer(nickname);
-        combatZone.executeLessCrewmates1(p);
-    }
-
-    public void executeLessEnginePower1(String nickname, Map<CardComponent, Integer> astronaut_losses, CombatZone combatZone) {
-        Player p = game.getPlayer(nickname);
-        combatZone.executeLessEnginePower1(p, astronaut_losses);
-    }
-
-    //Metodi Combat Zone 2
-
-    public void executeLessCannonPower2(String nickname, CombatZone combatZone) {
-        Player p = game.getPlayer(nickname);
-        combatZone.executeLessCannonPower2(p);
-    }
-
-    public void executeLessEnginePower2(String nickname, Map<CardComponent, Map<Cargo, Integer>> cargo_position, CombatZone combatZone) {
-        Player p = game.getPlayer(nickname);
-        combatZone.executeLessEnginePower2(p, cargo_position);
-    }
-
-    public void executeEpidemic(String nickname, Epidemic epidemic) {
-        Player p = game.getPlayer(nickname);
-        epidemic.execute(p.getShip());
-    }
-
-    public List<Pair<MeteorType, Direction>> getMeteorSwarmMeteors(MeteorSwarm meteor) {
-        return meteor.getMeteors();
-    }
-
-
-    public List<Pair<MeteorType, Direction>> getMeteorSwarm(Pirates pirates) {
-        return pirates.getMeteors();
-    }
-
-
-    public List<Cargo> getCargosPlanets(Planets planets, int choice) {
-        return planets.getCargos(choice);
-    }
-
-    public void executePlanets(Planets planets, String nickname, Map<CardComponent, Map<Cargo, Integer>> cargos) {
-        Player p = game.getPlayer(nickname);
-        planets.execute(p, cargos);
-    }
-
-
-    public void executeWinSlavers(String nickname, Slavers slavers) {
-        Player p = game.getPlayer(nickname);
-        slavers.executeWin(p);
-    }
-
-    public void executeLossSlavers(String nickname, Map<CardComponent, Integer> astronaut_losses, Slavers slavers) {
-        Player p = game.getPlayer(nickname);
-        slavers.executeLoss(p, astronaut_losses);
-    }
-
-
-   public void executeWinSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> new_cargo_position, Boolean choice) {
-        Player p = game.getPlayer(nickname);
-        smugglers.executeWin(p, new_cargo_position, choice);
-    }
-
-    public void executeLossSmugglers(String nickname, Smugglers smugglers, Map<CardComponent, Map<Cargo, Integer>> cargo_position) {
-        Player p = game.getPlayer(nickname);
-        smugglers.executeLoss(p, cargo_position);
-    }*/
 
     public void executeStardust(Stardust stardust) {
         initializeAdventure(stardust);
@@ -749,21 +570,7 @@ public class GameController {
     }
 
 
-/*    public List<Player> winOrder() {
-        List<Player> orderedList = new ArrayList<>(game.getActive_players());
 
-
-        Collections.sort(orderedList, new Comparator<Player>() {
-            @Override
-            public int compare(Player p1, Player p2) {
-                return Integer.compare(p2.getCredits(), p1.getCredits());
-            }
-        });
-
-        return orderedList;
-
-
-    }*/
 
     public void addCredits(String nickname, int credits) {
 

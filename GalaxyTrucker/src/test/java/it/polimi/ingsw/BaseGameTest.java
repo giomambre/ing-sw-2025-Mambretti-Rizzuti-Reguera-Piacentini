@@ -99,6 +99,17 @@ public class BaseGameTest {
     }
 
 
+    @Test
+    void testPlayer(){
+        baseGame.setPlayers(List.of(player1, player2, player3, player4));
+        baseGame.setActivePlayers(List.of(player1, player2, player3, player4));
+        baseGame.getBuildPhasePlayers();
 
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            baseGame.getPlayer("assa");
+        });
+
+        assertEquals("Nickname not found",exception.getMessage());
+    }
 
 }

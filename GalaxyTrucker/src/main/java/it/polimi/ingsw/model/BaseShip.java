@@ -29,7 +29,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.East;
 public abstract class BaseShip {
     protected int rows;
     protected int cols;
-    protected CardComponent[][] ship_board = new CardComponent[rows][cols];
+    protected CardComponent[][] ship_board = new CardComponent[5][7];
     protected List<CardComponent> extra_components = new ArrayList<>();
     protected Player player;
 
@@ -69,8 +69,7 @@ public abstract class BaseShip {
     public abstract void initializeShipPlance();
 
 
-    public abstract double calculateCannonPower(Map<CardComponent, Boolean> battery_usage);
-    public abstract double calculateEnginePower(Map<CardComponent, Boolean> battery_usage);
+
     /**
      * This method allows getting the available batteries on the ship
      * @return list of available batteries
