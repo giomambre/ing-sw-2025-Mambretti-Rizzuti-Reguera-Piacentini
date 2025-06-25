@@ -25,6 +25,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -135,22 +137,47 @@ public class FlyghtController {
 
 
 
-    public void addLogMessage(String message) {
+    public void addLogMessage(String message, String messageType) {
         Platform.runLater(() -> {
+
             Label logEntry = new Label(message);
             logEntry.setWrapText(true);
-            logEntry.setStyle("-fx-font-family: 'Verdana'; -fx-font-size: 12; -fx-text-fill: #fef6d5;");
+            logEntry.setMaxWidth(eventLogVBox.getWidth());
+
+            logEntry.setStyle("-fx-font-family: 'Verdana'; -fx-font-size: 12px;");
+
+            switch (messageType) {
+                case "HIGHLIGHT":
+                    logEntry.setTextFill(javafx.scene.paint.Color.web("#DAA520")); // Oro
+                    logEntry.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+                    break;
+                case "ERROR":
+                    logEntry.setTextFill(javafx.scene.paint.Color.web("#FF0000")); // Rosso
+                    logEntry.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+                    break;
+                case "NOTIFICATION":
+                    logEntry.setTextFill(javafx.scene.paint.Color.web("#90EE90"));
+                    logEntry.setFont(Font.font("Verdana", FontWeight.NORMAL, 12));
+                    break;
+                case "NORMAL":
+                default:
+                    logEntry.setTextFill(javafx.scene.paint.Color.web("#D8B7DD"));
+                    logEntry.setFont(Font.font("Verdana", FontWeight.NORMAL, 12));
+                    break;
+            }
 
             if (eventLogVBox != null) {
                 eventLogVBox.getChildren().add(logEntry);
 
-                // Scrolla automaticamente in basso usando l'fx:id del ScrollPane
-                if (eventLogScrollPane != null) {
-                    eventLogScrollPane.vvalueProperty().bind(eventLogVBox.heightProperty());
-                }
+                // Scrolla automaticamente in basso
+                // Imposta un valore alto per la proprietà vvalue dello ScrollPane
+                // Questo è più affidabile del binding continuo e permette all'utente di scrollare manualmente
+                eventLogScrollPane.setVvalue(1.0); // 1.0 significa "scrolla fino in fondo"
             }
         });
     }
+
+
 
     public void setPlayerStage(Stage playerStage) {
         this.playerStage = playerStage;
@@ -307,7 +334,7 @@ public class FlyghtController {
         setupBoardGrid();
         setupPlayerShipGrid();
         setupAdventureCardArea();
-        addLogMessage("Benvenuto In Galaxy Trucker! Questa à la Fase di Volo"); // Nuovo
+        addLogMessage("Benvenuto In Galaxy Trucker! Questa à la Fase di Volo","NOTIFICATION"); // Nuovo
     }
 
     public List<Pair<Integer,Integer>> getBatteries() {

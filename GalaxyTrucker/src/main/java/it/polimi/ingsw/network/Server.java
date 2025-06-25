@@ -934,7 +934,12 @@ public class Server implements RemoteServer {
 
                                     }
 
-                                    curr_nick = controller.nextAdventurePlayer();
+                                    try {
+                                        curr_nick = controller.nextAdventurePlayer();
+                                    }catch (Exception e) {
+                                        manageAdventure(controller.getRandomAdventure(),controller);
+                                        break;
+                                    }
                                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
                                     sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la POTENZA CANNONI! \n", curr_nick));
 

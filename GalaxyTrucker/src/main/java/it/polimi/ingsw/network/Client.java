@@ -771,9 +771,8 @@ public class Client {
         switch (msg.getType()) {
 
             case END_FLIGHT:
-                Message end_msg = msg;
                 virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
-                virtualView.earlyEndFlightResume(player_local);
+
                 break;
 
             case GAME_FINISHED:
@@ -950,7 +949,7 @@ public class Client {
                     else
                     if(VirtualViewType.GUI == virtualViewType) {
                         if(((GUI)virtualView).getFlyghtController()!=null)
-                            ((GUI)virtualView).addLogEvent(bm.getContent());
+                            ((GUI)virtualView).addLogEvent(bm.getContent(),"");
                     }
 
                     virtualView.showBasicBoard(local_board_positions, local_board_laps);
@@ -996,7 +995,7 @@ public class Client {
                 AdventureCardMessage ad = (AdventureCardMessage) msg;
                 if(virtualViewType == VirtualViewType.GUI) {
                     ((GUI)virtualView).getFlyghtController().addAdventureCard(ad.getAdventure());
-                    ((GUI)virtualView).addLogEvent("\n NUOVA CARTA AVVENTURA PESCATA\n" + ad.getAdventure().getType() );
+                    ((GUI)virtualView).addLogEvent("\nNUOVA CARTA AVVENTURA : \n" + ad.getAdventure().getType() ,"HIGHLIGHT" );
                 }
                 virtualView.printCardAdventure(ad.getAdventure());
                 dummy = virtualView.nextMeteor();
@@ -1012,7 +1011,7 @@ public class Client {
 
                     if(VirtualViewType.GUI == virtualViewType) {
                         if(((GUI)virtualView).getFlyghtController()!=null)
-                            ((GUI)virtualView).addLogEvent(nm.getContent());
+                            ((GUI)virtualView).addLogEvent(nm.getContent(),"");
                     }else
                         virtualView.showMessage("\n"+nm.getContent());
                     break;
@@ -1031,7 +1030,7 @@ public class Client {
                     if(virtualViewType == VirtualViewType.TUI)
                         virtualView.showMessage("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1]);
                     else
-                        ((GUI)virtualView).addLogEvent("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1]);
+                        ((GUI)virtualView).addLogEvent("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1],"");
 
                 }
                 break;
@@ -1042,7 +1041,7 @@ public class Client {
                     if(virtualViewType == VirtualViewType.TUI)
                         virtualView.showMessage("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1]);
                     else
-                        ((GUI)virtualView).addLogEvent("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1]);
+                        ((GUI)virtualView).addLogEvent("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1],"");
                 }
                 break;
 
