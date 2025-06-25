@@ -96,18 +96,15 @@ public class QuickGame extends BaseGame {
         return;
     }
 
-    public Map<Direction,List<CardAdventure>> seeDecksOnBoard(){  //to implement
-
-        return null;
-
-
-
+    @Override
+    public Map<Direction, List<CardAdventure>> seeDecksOnBoard() {
+        return Map.of();
     }
+
 
     @Override
     public CardAdventure getRandomCardAdventure() {
-        if (deck_adventure.isEmpty()) return null; //manca da fare la gestione della fine del gioco
-
+        if (deck_adventure.isEmpty()) return null;
         CardAdventure adventure = deck_adventure.removeFirst();
         adventure.changeFace();
         return  adventure;
