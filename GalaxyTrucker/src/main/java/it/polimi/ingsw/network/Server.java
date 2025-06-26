@@ -36,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.spi.AbstractResourceBundleProvider;
 
 public class Server implements RemoteServer {
     private static final int SOCKET_PORT = 12345;
@@ -571,19 +572,19 @@ public class Server implements RemoteServer {
 
                 /*CardAdventure adventure= new AbandonedShip(1,0,CardAdventureType.AbandonedShip,2,2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg");*/
 
-//             CardAdventure adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
-//                     Cargo.Red,
-//                     Cargo.Yellow,
-//                     Cargo.Yellow),
-//                Arrays.asList(
-//                        Cargo.Red,
-//                        Cargo.Yellow,
-//                        Cargo.Yellow),
-//                Arrays.asList(
-//                        Cargo.Red,
-//                        Cargo.Yellow,
-//                        Cargo.Yellow)
-//             ),"/images/cardAdventure/GT-planets_1.1.jpg" );
+              adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
+                     Cargo.Red,
+                     Cargo.Yellow,
+                     Cargo.Yellow),
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow),
+                Arrays.asList(
+                        Cargo.Red,
+                        Cargo.Yellow,
+                        Cargo.Yellow)
+             ),"/images/cardAdventure/GT-planets_1.1.jpg" );
 
 //             CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
 //                        Arrays.asList(
@@ -592,14 +593,14 @@ public class Server implements RemoteServer {
 //                                Cargo.Yellow
 //                        ),
 //                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
-                 adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+             /*    adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                         List.of(
                                 new Pair<>(MeteorType.LightCannonFire, North),
                                 new Pair<>(MeteorType.LightCannonFire, West),
                                 new Pair<>(MeteorType.LightCannonFire, East),
                                 new Pair<>(MeteorType.HeavyCannonFire, South)
                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
-                );
+                )*/;
 
              /*    adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(
@@ -934,7 +935,12 @@ public class Server implements RemoteServer {
 
                                     }
 
-                                    curr_nick = controller.nextAdventurePlayer();
+                                    try {
+                                        curr_nick = controller.nextAdventurePlayer();
+                                    }catch (Exception e) {
+                                        manageAdventure(controller.getRandomAdventure(),controller);
+                                        break;
+                                    }
                                     sendToClient(getId_client(curr_nick), new AdventureCardMessage(COMBAT_ZONE, "cannon", controller.getCurrentAdventure()));
                                     sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "Il player " + curr_nick + " sta dichiarando la POTENZA CANNONI! \n", curr_nick));
 
@@ -1180,6 +1186,7 @@ public class Server implements RemoteServer {
                 sendToAllClients(controller.getLobby(), new NotificationMessage(NOTIFICATION, "IL PLAYER " + getNickname(end_msg.getId_client()) + " è STATO KICKATO DALLA PARTITA PER NAVE INVALIDA", getNickname(end_msg.getId_client())));
                 if (controller.getActivePlayers().size() <= 1) {
                     controller.setRewards();
+
                     sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getPlayers()));
                     controller.setGamestate(FINISHED_GAME);
                 }
@@ -1217,6 +1224,13 @@ public class Server implements RemoteServer {
 
             controller.setRewards();
             sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getPlayers()));
+            all_games.remove(controller.getLobby().getLobbyId());
+            System.out.println("PARTITA FINITA lobby: " + controller.getLobby().getLobbyId() + " CHIUSA ");
+            for(Player p : controller.getPlayers()) {
+
+                System.out.println(p.getNickname() + " " + p.getCredits());
+
+            }
             controller.setGamestate(FINISHED_GAME);
 
             return;
@@ -1519,6 +1533,16 @@ public class Server implements RemoteServer {
     public void handleClientDisconnection(UUID clientId) {
         ConnectionHandler handler = clients.get(clientId);
         controller = all_games.get(getLobbyId(clientId));
+
+
+        if(controller == null){
+
+            clients.remove(clientId);
+            connectedNames.remove(getNickname(clientId));
+            return;
+
+        }
+
         String nick = getNickname(clientId);
 
         Player player_disc = controller.getPlayer(nick);
@@ -1644,6 +1668,7 @@ public class Server implements RemoteServer {
             case SUPLLY_PHASE:
                 sendToClient(clientId, new ShipClientMessage(ADD_CREWMATES, "", clientId, player));
                 break;
+
             case FIXING_SHIPS:
 
 

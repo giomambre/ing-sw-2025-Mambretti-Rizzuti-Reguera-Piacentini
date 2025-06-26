@@ -190,6 +190,13 @@ public class GUI implements View {
         }
     }
 
+
+    public void addLogEvent(String msg, String type) {
+
+        flyghtController.addLogMessage(msg,type);
+
+    }
+
     public void createnumplayerscontroller(){
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {

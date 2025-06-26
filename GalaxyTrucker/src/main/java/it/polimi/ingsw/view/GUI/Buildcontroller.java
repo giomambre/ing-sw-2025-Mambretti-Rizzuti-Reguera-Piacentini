@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -177,7 +178,6 @@ public class Buildcontroller {
                 timeline.stop();
                 stopBlinking();
                 timerLabel.setText("Tempo Scaduto!");
-                System.out.println("Tempo di costruzione terminato!");
             }
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -219,8 +219,9 @@ public class Buildcontroller {
                 cardImage.setPreserveRatio(true);
 
                 final int index = i;
-
+                cardImage.setCursor(Cursor.HAND);
                 cardImage.setOnMouseClicked(e -> {
+                    System.out.println("carta scartata per testare ciao");
                     if (!faceupCardIndex.isDone()) {
                         faceupCardIndex.complete(index);
                     }
@@ -376,6 +377,7 @@ public class Buildcontroller {
                     cell.setOnMouseEntered(null);
                     cell.setOnMouseExited(null);
                     cell.setEffect(null);
+                    cell.setOnMouseClicked(null);
 
 
                     Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -445,6 +447,7 @@ public class Buildcontroller {
                 playerButton.setOnAction(e -> showShipForPlayer(p.getNickname()));
                 playerButton.getStyleClass().add("player-button");
                 playersButtonBox.getChildren().add(playerButton);
+
             }
         });
     }
@@ -514,7 +517,6 @@ public class Buildcontroller {
                 return;
             }
         }
-        System.out.println("Cell not found at " + x + "," + y);
     }
 
     public void resetHighlights(Pair<Integer, Integer> coords) {
@@ -614,8 +616,7 @@ public class Buildcontroller {
             PlayerShipController controller = loader.getController();
             controller.setBuildcontroller(this);
 
-            System.out.println("debug,nave di:"+player.getNickname());
-            System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
+
             controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
             controller.showCloseButton();
 
@@ -747,11 +748,9 @@ public class Buildcontroller {
             System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
             return;
         }
-        System.out.println("CARTA TROVATA");
 
         StackPane cell = (StackPane) cardNode; // Ora il cast è sicuro e corretto
         Node overlay = createoverlayfortype(type);
-        System.out.println("overlay trovato");
         if (overlay != null) { // Aggiungi l'overlay solo se è stato creato con successo
             cell.getChildren().add(overlay);
         } else {
@@ -766,7 +765,6 @@ public class Buildcontroller {
             System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
             return;
         }
-        System.out.println("CARTA TROVATA");
 
         StackPane cell = (StackPane) cardNode;
 
@@ -986,7 +984,6 @@ public class Buildcontroller {
             //cell.setOpacity(0.7);
             //cell.setStyle("-fx-background-color: #A9A9A9;");
         }
-        System.out.println("Celle della shipGrid disabilitate.");
     }
 
 

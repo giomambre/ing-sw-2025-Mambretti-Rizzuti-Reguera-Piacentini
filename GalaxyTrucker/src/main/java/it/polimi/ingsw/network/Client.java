@@ -29,7 +29,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
-import static it.polimi.ingsw.model.enumerates.Direction.South;
+import static it.polimi.ingsw.model.enumerates.Direction.*;
+import static it.polimi.ingsw.model.enumerates.Direction.East;
 
 public class Client {
     private static ObjectInputStream in;
@@ -77,9 +78,15 @@ public class Client {
 
             Scanner scanner = new Scanner(System.in);
             String host = "localhost";
-            int socketPort = 12345;
+            int socketPort = 12345 ;
             int rmiPort = 1099;
             int choice = -1;
+            System.out.print("Inserisci l'indirizzo IP del server (lascia vuoto per localhost): ");
+            String ipInput = scanner.nextLine();
+            if (!ipInput.trim().isEmpty()) {
+                host = ipInput.trim();
+            }
+
             do {
                 System.out.println("Scegli il tipo di connessione:");
                 System.out.println("1. Socket");
@@ -770,9 +777,8 @@ public class Client {
         switch (msg.getType()) {
 
             case END_FLIGHT:
-                Message end_msg = msg;
                 virtualView.showMessage("\n Purtroppo non puoi più continuare la tua fase di volo");
-                virtualView.earlyEndFlightResume(player_local);
+
                 break;
 
             case GAME_FINISHED:
@@ -946,6 +952,12 @@ public class Client {
                     System.out.println();
                     if(virtualViewType == VirtualViewType.TUI)
                         virtualView.showMessage(bm.getContent());
+                    else
+                    if(VirtualViewType.GUI == virtualViewType) {
+                        if(((GUI)virtualView).getFlyghtController()!=null)
+                            ((GUI)virtualView).addLogEvent(bm.getContent(),"");
+                    }
+
                     virtualView.showBasicBoard(local_board_positions, local_board_laps);
 
                 } else {
@@ -989,6 +1001,7 @@ public class Client {
                 AdventureCardMessage ad = (AdventureCardMessage) msg;
                 if(virtualViewType == VirtualViewType.GUI) {
                     ((GUI)virtualView).getFlyghtController().addAdventureCard(ad.getAdventure());
+                    ((GUI)virtualView).addLogEvent("\nNUOVA CARTA AVVENTURA : \n" + ad.getAdventure().getType() ,"HIGHLIGHT" );
                 }
                 virtualView.printCardAdventure(ad.getAdventure());
                 dummy = virtualView.nextMeteor();
@@ -1002,7 +1015,11 @@ public class Client {
                 String curr_nick = nm.getNickname();
                 if(!curr_nick.equals(nickname)){
 
-                    virtualView.showMessage("\n"+nm.getContent());
+                    if(VirtualViewType.GUI == virtualViewType) {
+                        if(((GUI)virtualView).getFlyghtController()!=null)
+                            ((GUI)virtualView).addLogEvent(nm.getContent(),"");
+                    }else
+                        virtualView.showMessage("\n"+nm.getContent());
                     break;
 
                 }
@@ -1016,9 +1033,10 @@ public class Client {
             case ENGINE_POWER:
                 String[] enginePower = msg.getContent().split("\\s+");
                 if (!enginePower[0].equals(nickname)) {
-
-                    virtualView.showMessage("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1]);
-
+                    if(virtualViewType == VirtualViewType.TUI)
+                        virtualView.showMessage("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1]);
+                    else
+                        ((GUI)virtualView).addLogEvent("IL PLAYER " + enginePower[0] + " ha una potenza MOTORE di : " + enginePower[1],"");
 
                 }
                 break;
@@ -1026,10 +1044,10 @@ public class Client {
             case CANNON_POWER:
                 String[] canonPower = msg.getContent().split("\\s+");
                 if (!canonPower[0].equals(nickname)) {
-
-                    virtualView.showMessage("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1]);
-
-
+                    if(virtualViewType == VirtualViewType.TUI)
+                        virtualView.showMessage("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1]);
+                    else
+                        ((GUI)virtualView).addLogEvent("IL PLAYER " + canonPower[0] + " ha una potenza CANNONI di : " + canonPower[1],"");
                 }
                 break;
 
@@ -1076,7 +1094,9 @@ public class Client {
                 manageAdventure(
                         new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
                                 List.of(
-                                        new Pair<>(MeteorType.LightCannonFire, South),
+                                        new Pair<>(MeteorType.LightCannonFire, North),
+                                        new Pair<>(MeteorType.LightCannonFire, West),
+                                        new Pair<>(MeteorType.LightCannonFire, East),
                                         new Pair<>(MeteorType.HeavyCannonFire, South)
                                 ),""
                         ), coords_m.toString());
@@ -1749,7 +1769,6 @@ public class Client {
             if (scelta == -1) {
                 break;
             }
-            System.out.println("debug scelgo" +scelta);
 
             Cargo c = planet_cargos.get(scelta);
             new_position = virtualView.addCargo(player_local.getShip(), c);

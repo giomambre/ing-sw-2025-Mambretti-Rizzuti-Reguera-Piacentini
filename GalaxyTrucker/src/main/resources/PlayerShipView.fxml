@@ -12,6 +12,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <StackPane prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #FFFFE0;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.PlayerShipController">
     <stylesheets>
         <URL value="@PlayerShipView.css" />
@@ -25,6 +27,12 @@
             <Insets top="50.0" />
          </StackPane.margin>
       </ImageView>
+
+
+
+
+
+
 
           <VBox alignment="TOP_CENTER" spacing="10.0">
            <Label fx:id="playerNameLabel" />
@@ -58,5 +66,8 @@
                <Insets bottom="5.0" />
             </VBox.margin></Button>
        </VBox>
+
+
+
    </children>
 </StackPane>
