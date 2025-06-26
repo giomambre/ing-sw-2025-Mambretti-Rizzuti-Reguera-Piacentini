@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,7 +20,7 @@ public class Guiselectcontroller {
     private ListView<Integer> lobbyListView;
 
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChooseLobby.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChooseLobby.fxml"));
         loader.setController(this);
         Parent root = loader.load();
         gui.setStage(stage);
