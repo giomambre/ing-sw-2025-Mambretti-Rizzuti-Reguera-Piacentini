@@ -191,9 +191,9 @@ public class GUI implements View {
     }
 
 
-    public void addLogEvent(String msg) {
+    public void addLogEvent(String msg, String type) {
 
-        flyghtController.addLogMessage(msg);
+        flyghtController.addLogMessage(msg,type);
 
     }
 

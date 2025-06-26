@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -218,8 +219,9 @@ public class Buildcontroller {
                 cardImage.setPreserveRatio(true);
 
                 final int index = i;
-
+                cardImage.setCursor(Cursor.HAND);
                 cardImage.setOnMouseClicked(e -> {
+                    System.out.println("carta scartata per testare ciao");
                     if (!faceupCardIndex.isDone()) {
                         faceupCardIndex.complete(index);
                     }
@@ -445,6 +447,7 @@ public class Buildcontroller {
                 playerButton.setOnAction(e -> showShipForPlayer(p.getNickname()));
                 playerButton.getStyleClass().add("player-button");
                 playersButtonBox.getChildren().add(playerButton);
+
             }
         });
     }

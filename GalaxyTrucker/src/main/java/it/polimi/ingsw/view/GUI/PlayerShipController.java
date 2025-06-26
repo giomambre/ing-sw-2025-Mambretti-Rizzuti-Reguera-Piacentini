@@ -49,14 +49,11 @@ public class PlayerShipController {
 
                 CardComponent component = shipBoard[i][j];
                 if(component==null||component.getComponentType()== ComponentType.NotAccessible||component.getComponentType()==ComponentType.Empty){
-                    if (component == null) {
-                        System.out.println("DEBUG: shipBoard[" + i + "][" + j + "] is null");
-                    }
+
                     cell.setStyle("-fx-background-color: transparent;");
 
                 }
                 else  {
-                    System.out.println("DEBUG: Componente a [" + i + "][" + j + "] ImagePath: " + component.getImagePath() + ", Angolo di rotazione: " + component.getRotationAngle());
 
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                     ImageView iv = new ImageView(img);

@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane style="-fx-background-color: #1E1142FF;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.Buildcontroller">
+<StackPane style="-fx-background-color: #1E1142FF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.Buildcontroller">
     <stylesheets>
         <URL value="@BuildShip.css" />
     </stylesheets>
@@ -38,26 +29,22 @@
             </HBox>
 
             <Pane prefHeight="425.0" prefWidth="585.0">
-                <GridPane fx:id="shipGrid" alignment="CENTER"
-                          layoutX="497.5" layoutY="19.0"
-                          prefHeight="386.25" prefWidth="540.0"
-                          styleClass="ship-grid-large"
-                          hgap="0" vgap="0">
+                <GridPane fx:id="shipGrid" alignment="CENTER" hgap="0" layoutX="497.5" layoutY="19.0" prefHeight="386.25" prefWidth="540.0" styleClass="ship-grid-large" vgap="0">
                     <columnConstraints>
-                        <ColumnConstraints percentWidth="77.5"/>
-                        <ColumnConstraints percentWidth="77.5"/>
-                        <ColumnConstraints percentWidth="77.5"/>
-                        <ColumnConstraints percentWidth="77.5"/>
-                        <ColumnConstraints percentWidth="77.5"/>
-                        <ColumnConstraints percentWidth="77.5"/>
-                        <ColumnConstraints percentWidth="77.5"/>
+                        <ColumnConstraints percentWidth="77.5" />
+                        <ColumnConstraints percentWidth="77.5" />
+                        <ColumnConstraints percentWidth="77.5" />
+                        <ColumnConstraints percentWidth="77.5" />
+                        <ColumnConstraints percentWidth="77.5" />
+                        <ColumnConstraints percentWidth="77.5" />
+                        <ColumnConstraints percentWidth="77.5" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="77.5"/>
-                        <RowConstraints percentHeight="77.5"/>
-                        <RowConstraints percentHeight="77.5"/>
-                        <RowConstraints percentHeight="77.5"/>
-                        <RowConstraints percentHeight="77.5"/>
+                        <RowConstraints percentHeight="77.5" />
+                        <RowConstraints percentHeight="77.5" />
+                        <RowConstraints percentHeight="77.5" />
+                        <RowConstraints percentHeight="77.5" />
+                        <RowConstraints percentHeight="77.5" />
                     </rowConstraints>
                 </GridPane>
 
@@ -94,7 +81,7 @@
             </HBox>
         </VBox>
 
-        <VBox maxWidth="450.0" spacing="15.0" StackPane.alignment="TOP_LEFT">
+        <VBox maxWidth="450.0" prefHeight="828.0" prefWidth="450.0" spacing="15.0" StackPane.alignment="TOP_LEFT">
             <StackPane.margin>
                 <Insets left="30.0" top="30.0" />
             </StackPane.margin>
