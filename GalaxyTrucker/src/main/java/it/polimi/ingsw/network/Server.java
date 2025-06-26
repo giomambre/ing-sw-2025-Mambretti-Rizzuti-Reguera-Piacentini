@@ -36,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.spi.AbstractResourceBundleProvider;
 
 public class Server implements RemoteServer {
     private static final int SOCKET_PORT = 12345;
@@ -1223,6 +1224,8 @@ public class Server implements RemoteServer {
 
             controller.setRewards();
             sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getPlayers()));
+            all_games.remove(controller.getLobby().getLobbyId());
+            System.out.println("PARTITA FINITA lobby: " + controller.getLobby().getLobbyId() + " CHIUSA ");
             for(Player p : controller.getPlayers()) {
 
                 System.out.println(p.getNickname() + " " + p.getCredits());
@@ -1530,6 +1533,16 @@ public class Server implements RemoteServer {
     public void handleClientDisconnection(UUID clientId) {
         ConnectionHandler handler = clients.get(clientId);
         controller = all_games.get(getLobbyId(clientId));
+
+
+        if(controller == null){
+
+            clients.remove(clientId);
+            connectedNames.remove(getNickname(clientId));
+            return;
+
+        }
+
         String nick = getNickname(clientId);
 
         Player player_disc = controller.getPlayer(nick);
