@@ -172,7 +172,8 @@ public class Player implements Serializable {
      */
     public void LostCredits(int credits) {
         this.credits -= credits ;
-        if (credits<0) this.credits = 0;
+        if (this.credits<0)
+            this.credits = 0;
     }
 
     /**

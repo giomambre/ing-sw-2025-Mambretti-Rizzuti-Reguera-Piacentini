@@ -1223,7 +1223,17 @@ public class Server implements RemoteServer {
         if (adventure == null || controller.getActivePlayers().size() <= 1) {
 
             controller.setRewards();
-            sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", controller.getPlayers()));
+            List <Player> players = controller.getPlayers();
+            for(Player p : controller.getPlayers()) {
+
+                players.add(p.copyPlayer());
+
+            }
+
+            sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", players));
+
+
+
             all_games.remove(controller.getLobby().getLobbyId());
             System.out.println("PARTITA FINITA lobby: " + controller.getLobby().getLobbyId() + " CHIUSA ");
             for(Player p : controller.getPlayers()) {
