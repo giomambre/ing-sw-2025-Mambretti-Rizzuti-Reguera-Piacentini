@@ -1232,8 +1232,6 @@ public class Server implements RemoteServer {
 
             sendToAllClients(controller.getLobby(), new PlayersShipsMessage(GAME_FINISHED, "", players));
 
-
-
             all_games.remove(controller.getLobby().getLobbyId());
             System.out.println("PARTITA FINITA lobby: " + controller.getLobby().getLobbyId() + " CHIUSA ");
             for(Player p : controller.getPlayers()) {
