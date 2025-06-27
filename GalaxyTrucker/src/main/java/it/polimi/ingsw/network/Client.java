@@ -1069,7 +1069,7 @@ public class Client {
                         break;
                     } else {
 
-                        handleNotification(new Message(MessageType.CARGO_LOSS, "2"));
+                        handleNotification(new Message(MessageType.CARGO_LOSS, "3"));
                         break;
                     }
 
@@ -1085,7 +1085,7 @@ public class Client {
 
             case LESS_CW :
                 StringBuilder coords_m = new StringBuilder();
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 4; i++) {
 
                     coords_m.append(throwDice()).append(" ");
 

@@ -386,6 +386,7 @@ public class Server implements RemoteServer {
                 StandardMessageClient endMsg = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(endMsg.getId_client()));
                 LobbyTimer lt = lobbyTimers.get(controller.getLobby().getLobbyId());
+                lt.setController(controller);
                 lt.addPlayer(getNickname(endMsg.getId_client()));
                 sendToClient(endMsg.getId_client(), new Message(BUILD_PHASE_ENDED, lt.getPositionByPlayer(getNickname(endMsg.getId_client()))));
 
@@ -410,7 +411,7 @@ public class Server implements RemoteServer {
                                     "✅ Tempo SCADUTO si comincia con la fase di Controllo! "));
 
 
-                            for (Player p : controller.getPlayers()) {
+                            for (Player p : lt.getController().getPlayers()) {
 
                                 if (!lt.getFinishOrder().contains(p.getNickname())) {
                                     lt.addPlayer(p.getNickname());
@@ -419,9 +420,9 @@ public class Server implements RemoteServer {
                                 }
 
                             }
-                            controller.setGamestate(SUPLLY_PHASE);
+                            lt.getController().setGamestate(SUPLLY_PHASE);
 
-                            sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
+                            sendToAllClients(lt.getController().getLobby(), new Message(ADD_CREWMATES, ""));
 
                         }
 
@@ -429,7 +430,7 @@ public class Server implements RemoteServer {
                 );
 
 
-                controller.setBuild_order_players(lt.getFinishOrder());
+                lt.getController().setBuild_order_players(lt.getFinishOrder());
                 break;
 
 
