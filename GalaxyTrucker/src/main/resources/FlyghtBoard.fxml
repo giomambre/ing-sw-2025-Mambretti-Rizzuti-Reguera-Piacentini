@@ -114,7 +114,7 @@
     </right>
 
     <bottom>
-        <HBox alignment="CENTER" maxWidth="1382.0" prefHeight="486.0" prefWidth="1401.0" spacing="40.0" BorderPane.alignment="CENTER_LEFT">
+        <HBox alignment="CENTER" maxWidth="1431.0" prefHeight="486.0" prefWidth="1431.0" spacing="40.0" BorderPane.alignment="CENTER_LEFT">
             <children>
 
                 <VBox maxWidth="450.0" prefHeight="456.0" prefWidth="362.0" spacing="15.0">
@@ -138,10 +138,10 @@
                     </children>
                 </VBox>
 
-                <VBox alignment="CENTER" maxHeight="430.0" prefHeight="430.0" prefWidth="247.0" spacing="5.0">
+                <VBox alignment="CENTER" maxHeight="454.0" prefHeight="454.0" prefWidth="343.0" spacing="5.0">
                     <children>
                         <Label style="-fx-font-size: 18; -fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-text-fill: #D8B7DD;" text="Log Eventi" />
-                        <ScrollPane fx:id="eventLogScrollPane" fitToWidth="true" prefHeight="389.0" prefWidth="225.0" style="-fx-background: rgba(255, 255, 255, 0.1); -fx-background-color: rgba(255, 255, 255, 0.1); -fx-border-color: rgba(254, 246, 213, 0.5); -fx-border-width: 1px; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 5px;">
+                        <ScrollPane fx:id="eventLogScrollPane" fitToWidth="true" prefHeight="413.0" prefWidth="210.0" style="-fx-background: rgba(255, 255, 255, 0.1); -fx-background-color: rgba(255, 255, 255, 0.1); -fx-border-color: rgba(254, 246, 213, 0.5); -fx-border-width: 1px; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 5px;">
                             <content>
                                 <VBox fx:id="eventLogVBox" spacing="2.0" />
                             </content>
