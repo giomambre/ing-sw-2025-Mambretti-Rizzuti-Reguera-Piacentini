@@ -50,6 +50,11 @@ public class GameManager {
         return all_lobbies;
     }
 
+
+    public void deleteLobby(Lobby lobby) {
+        all_lobbies.remove(lobby);
+    }
+
     public Lobby getLobby(int id) {
         for (Lobby lobby : all_lobbies) {
             if (lobby.getLobbyId() == id) {
