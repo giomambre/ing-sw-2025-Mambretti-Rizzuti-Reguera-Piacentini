@@ -113,9 +113,8 @@ public abstract class BaseGame implements Serializable {
             i++;
 
         }
-        //gives credits to the players who have the best ship (only for players that ended the game)
         List<Player> best_ships = new ArrayList<>();
-        best_ships.add(active_players.getFirst());
+        best_ships.add(players.getFirst());
         for (Player p : players) {
             if (p.getExposed_connectors() < best_ships.getFirst().getExposed_connectors()) {
                 best_ships.clear();

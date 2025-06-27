@@ -9,12 +9,18 @@ import it.polimi.ingsw.model.enumerates.ComponentType;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
@@ -278,15 +284,23 @@ public class CargoSelector {
         popupStage.setTitle("Seleziona Pianeta");
         popupStage.setResizable(false);
 
-        // Container principale
+
         VBox mainContainer = new VBox(20);
         mainContainer.setPadding(new Insets(20));
         mainContainer.setAlignment(Pos.CENTER);
-        mainContainer.setStyle("-fx-background-color: #f8f9fa;");
+        mainContainer.setStyle(
+                "-fx-background-color: #D8B7DD;"
+        );
+
+
+// Crea lo StackPane con sfondo + contenuti
+        StackPane root = new StackPane();
+        root.getChildren().add(mainContainer);
+
 
         // Titolo
         Label titleLabel = new Label("Scegli quale pianeta vuoi conquistare:");
-        titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333;");
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #043a7e;");
 
         // Griglia per i bottoni dei pianeti
         GridPane planetGrid = new GridPane();
@@ -299,7 +313,7 @@ public class CargoSelector {
         for (int i = 0; i < planets.size(); i++) {
             List<Cargo> planetCargos = planets.get(i);
             boolean isPlanetTaken = planets_taken.contains(i);
-            Button planetButton = createPlanetButton(i, planetCargos, isPlanetTaken, popupStage, planetLatch, result);
+            Node planetButton = createPlanetButton(i, planetCargos, isPlanetTaken, popupStage, planetLatch, result);
 
             int row = i / columns;
             int col = i % columns;
@@ -308,14 +322,7 @@ public class CargoSelector {
 
         // Bottone "Annulla"
         Button cancelButton = new Button("Annulla");
-        cancelButton.setStyle(
-                "-fx-background-color: #6c757d; " +
-                        "-fx-text-fill: white; " +
-                        "-fx-font-size: 12px; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-padding: 10 25 10 25; " +
-                        "-fx-background-radius: 5;"
-        );
+        cancelButton.setId("continue-button");
         cancelButton.setOnAction(e -> {
             result[0] = -1;
             Platform.runLater(() -> {
@@ -324,47 +331,33 @@ public class CargoSelector {
             });
         });
 
-        // Effetto hover per il bottone "Annulla"
-        cancelButton.setOnMouseEntered(e ->
-                cancelButton.setStyle(
-                        "-fx-background-color: #5a6268; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-size: 12px; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-padding: 10 25 10 25; " +
-                                "-fx-background-radius: 5;"
-                )
-        );
-        cancelButton.setOnMouseExited(e ->
-                cancelButton.setStyle(
-                        "-fx-background-color: #6c757d; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-size: 12px; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-padding: 10 25 10 25; " +
-                                "-fx-background-radius: 5;"
-                )
-        );
-
         // Assemblaggio del layout
         mainContainer.getChildren().addAll(titleLabel, planetGrid, cancelButton);
 
         // Creazione della scena
-        Scene scene = new Scene(mainContainer);
+        Scene scene = new Scene(root);
         popupStage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
-        // Gestione della chiusura della finestra
         popupStage.setOnCloseRequest(e -> {
             result[0] = -1;
             planetLatch.countDown();
         });
 
-        // Mostra il popup
         popupStage.show();
+
+        Platform.runLater(() -> {
+            double x = screenBounds.getMinX() + (screenBounds.getWidth() - popupStage.getWidth()) / 2;
+            double y = screenBounds.getMinY() + 50;
+            popupStage.setX(x);
+            popupStage.setY(y);
+        });
+
     }
 
-    private Button createPlanetButton(int planetIndex, List<Cargo> cargos, boolean isPlanetTaken,
-                                      Stage parentStage, CountDownLatch planetLatch, int[] result) {
+    private Node createPlanetButton(int planetIndex, List<Cargo> cargos, boolean isPlanetTaken,
+                                    Stage parentStage, CountDownLatch planetLatch, int[] result) {
         Button button = new Button();
         button.setPrefSize(150, 100);
 
@@ -384,12 +377,30 @@ public class CargoSelector {
                 }
             }
         }
-
+        Image image = new Image(getClass().getResource("/images/backgrounds/bgSpace.png").toExternalForm());
+        BackgroundImage bgImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100, 100, true, true, true, false)
+        );
+        button.setBackground(new Background(bgImage));
         button.setText(buttonText.toString());
+        button.setStyle(
+                        "-fx-border-radius: 50%;" +
+                        "-fx-border-color: #043a7e;" +
+                        "-fx-border-width: 2;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 10px;" +
+                        "-fx-font-family: Verdana;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-alignment: center;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-wrap-text: true;"
+        );
 
-        // Stile del bottone basato sullo stato
-        String baseStyle = getPlanetButtonStyle(isPlanetTaken);
-        button.setStyle(baseStyle);
+
 
         // ActionListener per la selezione (solo se il pianeta è disponibile)
         if (!isPlanetTaken) {
@@ -402,54 +413,31 @@ public class CargoSelector {
             });
 
             // Effetti hover solo per pianeti disponibili
-            String hoverStyle = getPlanetButtonHoverStyle();
-            button.setOnMouseEntered(e -> button.setStyle(hoverStyle));
-            button.setOnMouseExited(e -> button.setStyle(baseStyle));
-        } else {
-            // Disabilita il bottone per pianeti occupati
-            button.setDisable(true);
+            button.setOnMouseEntered(e -> button.setEffect(new DropShadow(10, Color.WHITE)));
+            button.setOnMouseExited(e -> button.setEffect(null));
+
+            return button;
         }
 
-        return button;
+        Rectangle overlay = new Rectangle(150, 100);
+        overlay.setArcWidth(150);
+        overlay.setArcHeight(100);
+        overlay.setFill(javafx.scene.paint.Color.rgb(255,0,0,0.4));
+
+        button.setDisable(true);
+
+        return new StackPane(button, overlay);
     }
 
-    private String getPlanetButtonStyle(boolean isPlanetTaken) {
-        if (isPlanetTaken) {
-            // Stile per pianeti occupati (grigio e disabilitato)
-            return "-fx-background-color: #dc3545; " +
-                    "-fx-text-fill: white; " +
-                    "-fx-font-size: 11px; " +
-                    "-fx-font-weight: bold; " +
-                    "-fx-background-radius: 8; " +
-                    "-fx-border-color: #dee2e6; " +
-                    "-fx-border-width: 1; " +
-                    "-fx-border-radius: 8; " +
-                    "-fx-opacity: 0.6;";
-        } else {
-            // Stile per pianeti disponibili (verde)
-            return "-fx-background-color: #198754; " +
-                    "-fx-text-fill: white; " +
-                    "-fx-font-size: 11px; " +
-                    "-fx-font-weight: bold; " +
-                    "-fx-background-radius: 8; " +
-                    "-fx-border-color: #dee2e6; " +
-                    "-fx-border-width: 1; " +
-                    "-fx-border-radius: 8;";
-        }
-    }
 
-    private String getPlanetButtonHoverStyle() {
-        // Stile hover per pianeti disponibili (verde più scuro)
-        return "-fx-background-color: #146c43; " +
-                "-fx-text-fill: white; " +
-                "-fx-font-size: 11px; " +
-                "-fx-font-weight: bold; " +
-                "-fx-background-radius: 8; " +
-                "-fx-border-color: #000000; " +
-                "-fx-border-width: 2; " +
-                "-fx-border-radius: 8;";
-    }
 
+
+
+
+    /**
+     * Restituisce lo stile da applicare al bottone quando ci passi sopra il mouse.
+     * Viene usato solo per pianeti disponibili.
+     */
     // Aggiungere questi metodi alla classe CargoSelector
 
     private String removedCargoMessage = "";
@@ -567,7 +555,7 @@ public class CargoSelector {
         VBox mainContainer = new VBox(20);
         mainContainer.setPadding(new Insets(30));
         mainContainer.setAlignment(Pos.CENTER);
-        mainContainer.setStyle("-fx-background-color: #f8f9fa;");
+        mainContainer.setStyle("-fx-background-color: #D8B7DD;");
 
         // Icona e titolo
         Label titleLabel = new Label(title);
@@ -576,48 +564,19 @@ public class CargoSelector {
 
         // Messaggio
         Label messageLabel = new Label(message);
-        messageLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333; -fx-text-alignment: center;");
+        messageLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #043a7e;-fx-font-family: 'Verdana'; -fx-text-alignment: center;");
         messageLabel.setWrapText(true);
         messageLabel.setMaxWidth(300);
 
         // Bottone OK
         Button okButton = new Button("OK");
-        okButton.setStyle(String.format(
-                "-fx-background-color: %s; " +
-                        "-fx-text-fill: white; " +
-                        "-fx-font-size: 14px; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-padding: 10 30 10 30; " +
-                        "-fx-background-radius: 5;", color
-        ));
+        okButton.setId("continue-button");
+        okButton.setPrefWidth(120);
 
         okButton.setOnAction(e -> {
             popupStage.close();
             removalLatch.countDown();
         });
-
-        // Effetto hover per il bottone OK
-        String hoverColor = darkenColor(color);
-        okButton.setOnMouseEntered(e ->
-                okButton.setStyle(String.format(
-                        "-fx-background-color: %s; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-size: 14px; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-padding: 10 30 10 30; " +
-                                "-fx-background-radius: 5;", hoverColor
-                ))
-        );
-        okButton.setOnMouseExited(e ->
-                okButton.setStyle(String.format(
-                        "-fx-background-color: %s; " +
-                                "-fx-text-fill: white; " +
-                                "-fx-font-size: 14px; " +
-                                "-fx-font-weight: bold; " +
-                                "-fx-padding: 10 30 10 30; " +
-                                "-fx-background-radius: 5;", color
-                ))
-        );
 
         // Assemblaggio del layout
         mainContainer.getChildren().addAll(titleLabel, messageLabel, okButton);
@@ -625,6 +584,7 @@ public class CargoSelector {
         // Creazione della scena
         Scene scene = new Scene(mainContainer);
         popupStage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
 
         // Gestione della chiusura della finestra
         popupStage.setOnCloseRequest(e -> {
@@ -636,16 +596,4 @@ public class CargoSelector {
         okButton.requestFocus();
     }
 
-    // Metodo helper per scurire i colori per l'effetto hover
-    private String darkenColor(String hexColor) {
-        switch (hexColor) {
-            case "#dc3545": return "#bb2d3b"; // Rosso più scuro
-            case "#ffc107": return "#e0a800"; // Giallo più scuro
-            case "#198754": return "#146c43"; // Verde più scuro
-            case "#0d6efd": return "#0b5ed7"; // Blu più scuro
-            case "#28a745": return "#1e7e34"; // Verde successo più scuro
-            case "#ff8c00": return "#e07600"; // Arancione più scuro
-            default: return "#5a6268"; // Grigio scuro di default
-        }
-    }
 }
