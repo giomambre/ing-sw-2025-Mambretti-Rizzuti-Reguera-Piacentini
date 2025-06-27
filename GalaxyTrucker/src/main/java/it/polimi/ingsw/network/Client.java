@@ -1795,7 +1795,7 @@ public class Client {
             Cargo c = planet_cargos.get(scelta);
             new_position = virtualView.addCargo(player_local.getShip(), c);
 
-            if (new_position != null) {
+            if (new_position != null ) {
                 ship = player_local.getShip();
                 planet_cargos.remove(scelta);
                 Storage s = ((Storage) ship.getComponent(new_position.getKey().getKey(), new_position.getKey().getValue()));

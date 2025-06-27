@@ -1215,8 +1215,10 @@ public class GUI implements View {
             CargoSelector cargoSelector = new CargoSelector();
             int pos = cargoSelector.askCargo(selectedStorage.getCarried_cargos());
 
+            if(pos == -1 ) return null;
             pair = new Pair<>(selection, pos);
             flyghtController.updatePlayerShip();
+
             return pair;
 
         } catch (InterruptedException | ExecutionException e) {
