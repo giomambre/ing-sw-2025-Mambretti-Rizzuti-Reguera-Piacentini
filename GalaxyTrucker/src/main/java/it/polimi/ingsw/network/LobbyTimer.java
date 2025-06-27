@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Lobby;
 
 import java.util.*;
@@ -12,13 +13,25 @@ public class LobbyTimer {
     private boolean someoneFinished = false;
     private boolean thirtyStarted   = false;
     private boolean build120Ended = false;
+    GameController controller;
     private Lobby lobby;
     private final List<String> finishOrder = new ArrayList<>();
     private final int totalPlayers;
+
+    public GameController getController() {
+        return controller;
+    }
+
+    public void setController(GameController controller) {
+        this.controller = controller;
+    }
+
     /**
      * Avvia il countdown di 120s.
      * @param on120End callback invocata allo scadere dei 120s
      */
+
+
     public void start120(Runnable on120End) {
         timer.schedule(new TimerTask() {
             @Override

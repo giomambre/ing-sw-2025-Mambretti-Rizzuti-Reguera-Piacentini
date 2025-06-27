@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.enumerates.ConnectorType;
 import it.polimi.ingsw.model.enumerates.Direction;
 import javafx.util.Pair;
 
+import java.io.Serializable;
 import java.util.*;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
@@ -26,7 +27,7 @@ import static it.polimi.ingsw.model.enumerates.Direction.East;
  *     <li>player: the shipowner</li>
  * </ul>
  */
-public abstract class BaseShip {
+public abstract class BaseShip implements Serializable {
     protected int rows;
     protected int cols;
     protected CardComponent[][] ship_board = new CardComponent[5][7];
