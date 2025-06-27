@@ -78,7 +78,7 @@ public class Client {
 
             Scanner scanner = new Scanner(System.in);
             String host = "5.tcp.eu.ngrok.io";
-            int socketPort = 18783 ;
+            int socketPort = 18783;
             int rmiPort = 1099;
             int choice = -1;
             System.out.print("Inserisci l'indirizzo IP del server (lascia vuoto per localhost): ");
@@ -1069,7 +1069,7 @@ public class Client {
                         break;
                     } else {
 
-                        handleNotification(new Message(MessageType.CARGO_LOSS, "2"));
+                        handleNotification(new Message(MessageType.CARGO_LOSS, "3"));
                         break;
                     }
 
@@ -1085,7 +1085,7 @@ public class Client {
 
             case LESS_CW :
                 StringBuilder coords_m = new StringBuilder();
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 4; i++) {
 
                     coords_m.append(throwDice()).append(" ");
 
