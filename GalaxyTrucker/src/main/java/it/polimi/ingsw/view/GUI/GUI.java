@@ -816,7 +816,7 @@ public class GUI implements View {
                 VBox mainContainer = new VBox(15);
                 mainContainer.setAlignment(Pos.CENTER);
                 mainContainer.setPadding(new Insets(20));
-                mainContainer.setStyle("-fx-background-color: #043a7e;");
+                mainContainer.setStyle("-fx-background-color: #D8B7DD;");
 
                 String imagePath = getMeteorImagePath(meteor.getKey());
 
@@ -837,15 +837,15 @@ public class GUI implements View {
 
                 Label meteorTypeLabel = new Label(getMeteorTypeText(meteor.getKey()));
                 meteorTypeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-                meteorTypeLabel.setStyle("-fx-text-fill: #ECD9A3;");
+                meteorTypeLabel.setStyle("-fx-text-fill: #043a7e;");
 
                 Label directionLabel = new Label("in arrivo " + getDirectionText(meteor.getValue()));
                 directionLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, 14));
-                directionLabel.setStyle("-fx-text-fill: #ECD9A3;");
+                directionLabel.setStyle("-fx-text-fill: #043a7e;");
 
                 Label coordLabel = new Label("alla coordinata: " + coord);
                 coordLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-                coordLabel.setStyle("-fx-text-fill: #ECD9A3;");
+                coordLabel.setStyle("-fx-text-fill: #043a7e;");
 
                 // Bottone Continua
                 Button continueButton = new Button("Continua");
@@ -865,9 +865,19 @@ public class GUI implements View {
 
                 mainContainer.getChildren().addAll(meteorImage, meteorTypeLabel, directionLabel, coordLabel, continueButton);
 
-                Scene scene = new Scene(mainContainer, 300, 400); // Altezza aumentata per il bottone
+                Scene scene = new Scene(mainContainer, 300, 350);
                 meteorStage.setScene(scene);
                 scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+                double windowWidth = scene.getWidth();
+
+                double x = screenBounds.getMinX() + (screenBounds.getWidth() - windowWidth) / 2;
+
+                double y = screenBounds.getMinY() + 50;
+
+                meteorStage.setX(x);
+                meteorStage.setY(y);
 
                 meteorStage.show();
 
@@ -885,7 +895,7 @@ public class GUI implements View {
             Thread.currentThread().interrupt();
             System.err.println("Il thread è stato interrotto durante l'attesa dell'allarme meteora.");
         }
-    }
+    } ;
     // Metodo ausiliario per ottenere il percorso dell'immagine
     private String getMeteorImagePath(MeteorType type) {
         return switch (type) {
@@ -1105,11 +1115,11 @@ public class GUI implements View {
         VBox root = new VBox(20);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-background-color: #043a7e;");
+        root.setStyle("-fx-background-color: #D8B7DD;");
 
         // Label informativa
-        Label infoLabel = new Label("La carta è stata colpita in direzione: " + direction.toString());
-        infoLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #ECD9A3;");
+        Label infoLabel = new Label("La carta è stata colpita \nin direzione: " + direction.toString());
+        infoLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #043a7e;");
 
         // ImageView per la carta
         ImageView cardImageView = new ImageView();
@@ -1147,13 +1157,20 @@ public class GUI implements View {
         root.getChildren().addAll(infoLabel, imageContainer, okButton);
 
         // Crea la scena
-        Scene scene = new Scene(root, 400, 400);
+        Scene scene = new Scene(root, 350, 300);
         stage.setScene(scene);
         scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
 
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
-        // Centra lo stage rispetto al parent
-        stage.centerOnScreen();
+        double windowWidth = scene.getWidth();
+
+        double x = screenBounds.getMinX() + (screenBounds.getWidth() - windowWidth) / 2;
+
+        double y = screenBounds.getMinY() + 50;
+
+        stage.setX(x);
+        stage.setY(y);
 
         // Mostra lo stage
         if (latch != null) {
