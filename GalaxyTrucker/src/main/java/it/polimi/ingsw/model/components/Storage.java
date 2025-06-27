@@ -61,7 +61,7 @@ public class Storage extends CardComponent  implements Serializable {
             Cargo cargo = entry.getKey();
             int index = entry.getValue();
 
-            carried_cargos.set(index, cargo);
+            carried_cargos.add(index, cargo);
 
         }
     }

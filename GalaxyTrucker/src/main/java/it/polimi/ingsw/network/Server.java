@@ -611,13 +611,13 @@ public class Server implements RemoteServer {
                         Cargo.Yellow)
              ),"/images/cardAdventure/GT-planets_1.1.jpg" );
 
-              adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
+              /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
                         Arrays.asList(
                                 Cargo.Red,
                                 Cargo.Green,
                                 Cargo.Blue
                         ),
-                        2,"/images/cardAdventure/GT-smugglers_1.jpg");
+                        2,"/images/cardAdventure/GT-smugglers_1.jpg");*/
              /*    adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                         List.of(
                                 new Pair<>(MeteorType.LightCannonFire, North),
@@ -639,7 +639,7 @@ public class Server implements RemoteServer {
 */
 
                 //CardAdventure adventure = controller.getRandomAdventure();
-                adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
+              //  adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
               //  adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
 
