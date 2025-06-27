@@ -506,6 +506,8 @@ public class Server implements RemoteServer {
 
                 }
 
+
+
                 if (controller.getBuild_order_players().size() == 1) {
 
                     Player p = controller.getBuild_order_players().get(0);
