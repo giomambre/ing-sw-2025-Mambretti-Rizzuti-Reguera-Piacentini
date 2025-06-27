@@ -77,8 +77,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "localhost";
-            int socketPort = 12345 ;
+            String host = "5.tcp.eu.ngrok.io";
+            int socketPort = 18783;
             int rmiPort = 1099;
             int choice = -1;
             System.out.print("Inserisci l'indirizzo IP del server (lascia vuoto per localhost): ");
