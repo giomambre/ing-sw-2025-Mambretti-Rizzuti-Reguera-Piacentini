@@ -1346,6 +1346,7 @@ public class Client {
                         virtualView.showMessage("\nMETEORITE NON HA COLPITO LA NAVE!!\n");
                         if(virtualViewType==VirtualViewType.TUI)
                             virtualView.nextMeteor();
+                        i++;
                         continue;
 
 
@@ -1365,7 +1366,7 @@ public class Client {
 
 
                                 virtualView.showMessage("\nMeteorite rimbalza sul lato liscio \n");
-
+                                i++;
                                 continue;
 
                             } else checkProtection(pair, m);

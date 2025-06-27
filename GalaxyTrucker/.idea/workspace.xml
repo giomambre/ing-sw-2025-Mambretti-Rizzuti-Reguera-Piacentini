@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Jar creati che cinema">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/BaseGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/BaseGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -476,31 +480,8 @@
       <workItem from="1750929933982" duration="132000" />
       <workItem from="1750938784220" duration="1935000" />
       <workItem from="1750943994782" duration="470000" />
-      <workItem from="1750946777178" duration="124000" />
-    </task>
-    <task id="LOCAL-00147" summary="Effetto Gui">
-      <option name="closed" value="true" />
-      <created>1750005791135</created>
-      <option name="number" value="00147" />
-      <option name="presentableId" value="LOCAL-00147" />
-      <option name="project" value="LOCAL" />
-      <updated>1750005791135</updated>
-    </task>
-    <task id="LOCAL-00148" summary="Aggiunto heartbeat per disc. con rmi">
-      <option name="closed" value="true" />
-      <created>1750087082243</created>
-      <option name="number" value="00148" />
-      <option name="presentableId" value="LOCAL-00148" />
-      <option name="project" value="LOCAL" />
-      <updated>1750087082243</updated>
-    </task>
-    <task id="LOCAL-00149" summary="Aggiunto heartbeat per disc. con rmi">
-      <option name="closed" value="true" />
-      <created>1750087131128</created>
-      <option name="number" value="00149" />
-      <option name="presentableId" value="LOCAL-00149" />
-      <option name="project" value="LOCAL" />
-      <updated>1750087131128</updated>
+      <workItem from="1750946777178" duration="890000" />
+      <workItem from="1750966556471" duration="3959000" />
     </task>
     <task id="LOCAL-00150" summary="fix schiavisti buggato e modificato 2 carta componente">
       <option name="closed" value="true" />
@@ -870,7 +851,31 @@
       <option name="project" value="LOCAL" />
       <updated>1750944424046</updated>
     </task>
-    <option name="localTasksCounter" value="196" />
+    <task id="LOCAL-00196" summary="Jar creati che cinema">
+      <option name="closed" value="true" />
+      <created>1750947659216</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1750947659216</updated>
+    </task>
+    <task id="LOCAL-00197" summary="Jar creati che cinema">
+      <option name="closed" value="true" />
+      <created>1750968482777</created>
+      <option name="number" value="00197" />
+      <option name="presentableId" value="LOCAL-00197" />
+      <option name="project" value="LOCAL" />
+      <updated>1750968482777</updated>
+    </task>
+    <task id="LOCAL-00198" summary="Jar creati che cinema">
+      <option name="closed" value="true" />
+      <created>1750968703454</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1750968703454</updated>
+    </task>
+    <option name="localTasksCounter" value="199" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

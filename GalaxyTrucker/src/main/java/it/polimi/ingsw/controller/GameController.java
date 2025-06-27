@@ -241,9 +241,6 @@ public class GameController {
     public List<Player> getAdventureOrder() {
         return adventureOrder;
     }
-    public int getAdventureSize(){
-        return adventureOrderSize;
-    }
 
     public int getAdv_index() {
         return adv_index;
@@ -587,9 +584,5 @@ public class GameController {
 
     }
 
-
-    public List<Player> getBuildPhasePlayers() {
-        return game.getBuildPhasePlayers();
-    }
 
 }
