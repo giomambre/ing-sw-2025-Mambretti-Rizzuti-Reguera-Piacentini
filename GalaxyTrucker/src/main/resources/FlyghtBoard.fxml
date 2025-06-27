@@ -70,7 +70,7 @@
                         </Label>
                         <Label fx:id="infoLabel" style="-fx-text-fill: #D8B7DD; -fx-font-family: verdana; -fx-font-size: 14;" text="Decidere se usare o no il cannone" visible="false">
                             <VBox.margin>
-                                <Insets />
+                                <Insets top="-10.0" />
                             </VBox.margin>
                         </Label>
                         <Button fx:id="continueButton" text="Sì" visible="false" />
@@ -78,19 +78,19 @@
                             <children>
                                 <Button fx:id="yesdc" styleClass="player-button" text="Sì" visible="false">
                                     <HBox.margin>
-                                        <Insets />
+                                        <Insets top="-20.0" />
                                     </HBox.margin></Button>
                                 <Button fx:id="accept" styleClass="player-button" text="Sì" visible="false">
                                     <HBox.margin>
-                                        <Insets />
+                                        <Insets top="-20.0" />
                                     </HBox.margin></Button>
                                 <Button fx:id="reject" styleClass="player-button" text="No" visible="false">
                                     <HBox.margin>
-                                        <Insets />
+                                        <Insets top="-20.0" />
                                     </HBox.margin></Button>
                                 <Button fx:id="nodc" styleClass="player-button" text="No" visible="false">
                                     <HBox.margin>
-                                        <Insets />
+                                        <Insets top="-20.0" />
                                     </HBox.margin>
                                 </Button>
                             </children>
@@ -100,7 +100,7 @@
                         </HBox>
                         <Button fx:id="dontusebattery" styleClass="player-button" text="Non usare nessuna batteria" visible="false">
                             <VBox.margin>
-                                <Insets top="-50.0" />
+                                <Insets top="-70.0" />
                             </VBox.margin>
                         </Button>
                     </children>
@@ -138,10 +138,10 @@
                     </children>
                 </VBox>
 
-                <VBox alignment="CENTER" maxHeight="300.0" prefWidth="280.0" spacing="5.0">
+                <VBox alignment="CENTER" maxHeight="430.0" prefHeight="430.0" prefWidth="247.0" spacing="5.0">
                     <children>
                         <Label style="-fx-font-size: 18; -fx-font-family: 'Verdana'; -fx-font-weight: bold; -fx-text-fill: #D8B7DD;" text="Log Eventi" />
-                        <ScrollPane fx:id="eventLogScrollPane" fitToWidth="true" prefHeight="150.0" prefWidth="200.0" style="-fx-background: rgba(255, 255, 255, 0.1); -fx-background-color: rgba(255, 255, 255, 0.1); -fx-border-color: rgba(254, 246, 213, 0.5); -fx-border-width: 1px; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 5px;">
+                        <ScrollPane fx:id="eventLogScrollPane" fitToWidth="true" prefHeight="389.0" prefWidth="225.0" style="-fx-background: rgba(255, 255, 255, 0.1); -fx-background-color: rgba(255, 255, 255, 0.1); -fx-border-color: rgba(254, 246, 213, 0.5); -fx-border-width: 1px; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 5px;">
                             <content>
                                 <VBox fx:id="eventLogVBox" spacing="2.0" />
                             </content>
