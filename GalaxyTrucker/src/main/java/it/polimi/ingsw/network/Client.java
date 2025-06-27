@@ -77,8 +77,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "5.tcp.eu.ngrok.io";
-            int socketPort = 18783;
+            String host = "localhost";
+            int socketPort = 12345;
             int rmiPort = 1099;
             int choice = -1;
             System.out.print("Inserisci l'indirizzo IP del server (lascia vuoto per localhost): ");
@@ -341,7 +341,7 @@ public class Client {
                     virtualView.showMessage("\n" + msg.getContent());
                 }
 
-                if (l_msg.getLobbies().size() == 0) {
+                if (l_msg.getLobbies().isEmpty()) {
 
                     virtualView.showMessage("\nNon ci sono Lobby disponibili!");
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
@@ -353,6 +353,11 @@ public class Client {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
                     } else {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
+                    }
+
+                    if(lobby_index == -1){
+                        elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
+                        break;
                     }
                     networkAdapter.sendMessage(new StandardMessageClient(MessageType.SELECT_LOBBY, "" + lobby_index, clientId));
 
@@ -1092,7 +1097,7 @@ public class Client {
                 }
 
                 manageAdventure(
-                        new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                        new MeteorSwarm(-1, 0, CardAdventureType.MeteorSwarm,
                                 List.of(
                                         new Pair<>(MeteorType.LightCannonFire, North),
                                         new Pair<>(MeteorType.LightCannonFire, West),
@@ -1558,7 +1563,9 @@ public class Client {
 
                     choice = virtualView.acceptAdventure("HAI SCONFITTO IL NEMICO, VUOI PRENDERE RICOMPENSA (e quindi perdere i giorni di volo)?");
                     if(choice ){
-                        cargoAction(smugglers.getCargo_rewards());
+                        List<Cargo> smugg_planets = new ArrayList<>(smugglers.getCargo_rewards());
+
+                        cargoAction(smugg_planets);
 
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
                         break;
