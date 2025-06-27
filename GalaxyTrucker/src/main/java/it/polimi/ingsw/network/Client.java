@@ -976,7 +976,7 @@ public class Client {
 
                 if (virtualViewType == VirtualViewType.TUI) {
                     ((TUI) virtualView).setLocal_board_position(local_board_positions);
-                    ((TUI) virtualView).setLocal_board_laps(local_board_positions);
+                    ((TUI) virtualView).setLocal_board_laps(local_board_laps);
 
                 }
                 int dummy = virtualView.nextMeteor();
@@ -1513,8 +1513,10 @@ public class Client {
 
                         double power = enginePower(0);
 
-                        virtualView.showMessage("\n ----- POTENZA MOTORE TOTALE :  " + power + " -----\n");
-
+                        virtualView.showMessage("\n ----- POTENZA MOTORI TOTALE :  " + power + " -----\n");
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza MOTORI : " +power,"" );
+                        }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng " + String.valueOf(power), clientId, player_local));
                         break;
 
@@ -1524,6 +1526,9 @@ public class Client {
 
 
                         virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                        }
 
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can " + String.valueOf(power_c), clientId, player_local));
                         break;
@@ -1543,6 +1548,9 @@ public class Client {
 
 
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                }
 
 
                 if(power_c < smugglers.getCannons_strenght()) {
@@ -1592,6 +1600,9 @@ public class Client {
                 virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +pirates.getCannons_strenght() +  " \n");
                 power_c =  cannonPower(pirates.getCannons_strenght());
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                }
 
                 StringBuilder coords_m = new StringBuilder();
 
@@ -1629,6 +1640,9 @@ public class Client {
                         }
                         if(virtualViewType == VirtualViewType.TUI) {
                             virtualView.showMessage("\nHAI GUADAGNATO " + pirates.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        }else {
+                                ((GUI)virtualView).getFlyghtController().addLogMessage("HAI GUADAGNATO " + pirates.getCredits() + " crediti","" );
+
                         }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 

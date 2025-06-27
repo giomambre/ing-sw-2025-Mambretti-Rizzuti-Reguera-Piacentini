@@ -637,10 +637,10 @@ public class Server implements RemoteServer {
                         ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
                 );
 */
-                //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                //CardAdventure adventure = controller.getRandomAdventure();
-                //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
 
+                //CardAdventure adventure = controller.getRandomAdventure();
+                adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
+                adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
 
 
@@ -1637,10 +1637,8 @@ public class Server implements RemoteServer {
                                     handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
 
 
-
                             }else if(controller.getCurr_combatzone().equals("cw"))
                                     handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
-
                             break;
                     }
                 }
