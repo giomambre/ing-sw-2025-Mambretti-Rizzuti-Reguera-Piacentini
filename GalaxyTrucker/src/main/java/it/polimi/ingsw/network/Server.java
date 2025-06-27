@@ -572,7 +572,7 @@ public class Server implements RemoteServer {
 
                 /*CardAdventure adventure= new AbandonedShip(1,0,CardAdventureType.AbandonedShip,2,2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg");*/
 
-              adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
+             adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
                      Cargo.Red,
                      Cargo.Yellow,
                      Cargo.Yellow),
