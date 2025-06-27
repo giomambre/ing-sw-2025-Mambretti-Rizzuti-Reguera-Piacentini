@@ -640,7 +640,7 @@ public class Server implements RemoteServer {
 
                 //CardAdventure adventure = controller.getRandomAdventure();
                 adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
-                adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
+              //  adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
 
 
@@ -1248,7 +1248,7 @@ public class Server implements RemoteServer {
         if (adventure == null || controller.getActivePlayers().size() <= 1) {
 
             controller.setRewards();
-            List <Player> players = controller.getPlayers();
+            List <Player> players = new ArrayList<>();
             for(Player p : controller.getPlayers()) {
 
                 players.add(p.copyPlayer());
@@ -1687,7 +1687,7 @@ public class Server implements RemoteServer {
         }
         sendToClient(clientId, new ShipClientMessage(UTIL, "", clientId, player));
         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
-        sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
+      //  sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
         String nick = getNickname(clientId);
         switch (controller.getGamestate()) {
 
