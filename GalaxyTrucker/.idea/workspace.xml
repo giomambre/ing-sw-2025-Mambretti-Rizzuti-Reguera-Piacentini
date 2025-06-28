@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Un bel po di fix">
+    <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Fix pianeti">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/GUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/TUI/TUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/controller/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/FlyghtBoard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FlyghtBoard.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +167,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.24316406",
     "project.structure.side.proportion": "0.32299742",
     "settings.editor.selected.configurable": "preferences.keymap",
@@ -483,15 +481,7 @@
       <workItem from="1750946777178" duration="890000" />
       <workItem from="1750966556471" duration="4139000" />
       <workItem from="1751027426021" duration="6181000" />
-      <workItem from="1751037278176" duration="7072000" />
-    </task>
-    <task id="LOCAL-00158" summary="fix">
-      <option name="closed" value="true" />
-      <created>1750177789271</created>
-      <option name="number" value="00158" />
-      <option name="presentableId" value="LOCAL-00158" />
-      <option name="project" value="LOCAL" />
-      <updated>1750177789271</updated>
+      <workItem from="1751037278176" duration="12171000" />
     </task>
     <task id="LOCAL-00159" summary="fix">
       <option name="closed" value="true" />
@@ -877,7 +867,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751050250745</updated>
     </task>
-    <option name="localTasksCounter" value="207" />
+    <task id="LOCAL-00207" summary="Fix pianeti">
+      <option name="closed" value="true" />
+      <created>1751111731965</created>
+      <option name="number" value="00207" />
+      <option name="presentableId" value="LOCAL-00207" />
+      <option name="project" value="LOCAL" />
+      <updated>1751111731965</updated>
+    </task>
+    <option name="localTasksCounter" value="208" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -925,7 +923,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="modifiche + contrabbandieri" />
     <MESSAGE value="PIRATI fatta" />
     <MESSAGE value="minor changes, menu ora funziona" />
     <MESSAGE value="some fixes" />
@@ -950,7 +947,8 @@
     <MESSAGE value="lot of changes grafici" />
     <MESSAGE value="Jar creati che cinema" />
     <MESSAGE value="Un bel po di fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Un bel po di fix" />
+    <MESSAGE value="Fix pianeti" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix pianeti" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
