@@ -42,10 +42,9 @@ java -jar GalaxyClient.jar
 
 
 ## Test Coverage 
-Model : 
+
 ![immagine](https://github.com/user-attachments/assets/f539d773-b9d9-43f9-975b-7d7b1d337b4b)
 
-Controller:
 
 ![immagine](https://github.com/user-attachments/assets/31012900-a424-41fd-90c9-5e4d725d7063)
 
