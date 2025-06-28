@@ -1,14 +1,14 @@
-# Project Title
-Gruppo numero 17
-Galaxy Trucker in java
-Prova Finale ingegneria del software , San Pietro
-Tutor Matteo Bianche
+# PROVA FINALE INGSW 2025
+Gruppo numero 17<br>
+Galaxy Trucker in java<br>
+Prova Finale ingegneria del software , San Pietro<br>
+Tutor : Matteo Bianchi
 ## 👥 Members
 
-Giovanni Mambretti
-Raffaele Rizzuti (scaglione Cugola)
-Isabel Reguera (scaglione Cugola)
-Alice Piacentini (scaglione Cugola)
+Giovanni Mambretti<br>
+Raffaele Rizzuti <br>
+Isabel Reguera <br>
+Alice Piacentini 
 
 ## 📋 Implemented Features
 | FA            | State |
@@ -20,7 +20,7 @@ Alice Piacentini (scaglione Cugola)
 | Rmi  | ✅  |
 |Partite Multiple | ✅  |
 |Disconessioni | ✅  |
-|Volo di Prova | 30%  |
+|Volo di Prova* | 1/3   |
 
 *Volo di prova : model full implemented and Tested  
 
@@ -33,7 +33,7 @@ Alice Piacentini (scaglione Cugola)
 cd "jar-directory"
 java -jar GalaxyServer.jar
 ```
-* Client : once opened the Client will ask the ip address of the Server (leave empty for localhost), than you can choose the Connection type and the UI
+* Client : once opened, the cmd will ask you the ip address of the Server (leave empty for localhost), than you can choose the Connection type and the UI
 
 ```
 cd "jar-directory"
@@ -47,4 +47,5 @@ Model :
 
 Controller:
 
-![Uploading immagine.png…]()
+![immagine](https://github.com/user-attachments/assets/31012900-a424-41fd-90c9-5e4d725d7063)
+
