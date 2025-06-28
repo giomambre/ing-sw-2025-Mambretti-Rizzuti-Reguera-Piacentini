@@ -636,12 +636,18 @@ public class FlyghtController {
         cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
         cell.setMaxSize(CELL_WIDTH, CELL_HEIGHT);
 
-        // Stile della cella (non cliccabile)
-        cell.setStyle("-fx-border-color: black; -fx-border-width: 1px; " +
-                "-fx-background-color: lightblue;");
+        // Stile con angoli arrotondati, contorno e sfondo personalizzati
+        cell.setStyle(
+                "-fx-border-color: #3a0066; " +         // Viola scuro
+                        "-fx-border-width: 2px; " +
+                        "-fx-border-radius: 10px; " +
+                        "-fx-background-color: #bfa3ff; " +     // Viola chiaro
+                        "-fx-background-radius: 10px;"
+        );
 
         return cell;
     }
+
 
     /**
      * Configura la griglia della nave del player (basso a destra)
@@ -857,7 +863,7 @@ public class FlyghtController {
 
         // Crea un contenitore verticale per pedina + label giri
         VBox playerContainer = new VBox();
-        playerContainer.setSpacing(2);
+        playerContainer.setSpacing(0);
         playerContainer.setAlignment(javafx.geometry.Pos.CENTER);
 
         // Crea l'immagine della pedina con il colore del player
@@ -879,8 +885,8 @@ public class FlyghtController {
      */
     private ImageView createPlayerPawn(Player player) {
         ImageView pawn = new ImageView();
-        pawn.setFitWidth(25);
-        pawn.setFitHeight(25);
+        pawn.setFitWidth(40);
+        pawn.setFitHeight(40);
         pawn.setPreserveRatio(true);
 
         // Prima prova a caricare un'immagine specifica per il colore
@@ -917,15 +923,15 @@ public class FlyghtController {
     private String getPawnImagePath(Color color) {
         switch (color) {
             case BLUE:
-                return "/images/pawns/pawn_blue.png";
+                return "/images/icons/bluPawn.png";
             case RED:
-                return "/images/pawns/pawn_red.png";
+                return "/images/icons/redPawn.png";
             case GREEN:
-                return "/images/pawns/pawn_green.png";
+                return "/images/icons/greenPawn.png";
             case YELLOW:
-                return "/images/pawns/pawn_yellow.png";
+                return "/images/icons/yellowPawn.png";
             default:
-                return "/images/pawns/pawn_default.png";
+                return "/images/icons/astronautPawns.png";
         }
     }
 
