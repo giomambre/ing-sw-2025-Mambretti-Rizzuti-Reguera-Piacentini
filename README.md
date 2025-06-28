@@ -19,7 +19,7 @@ Alice Piacentini
 | Socket  | ✅  |
 | Rmi  | ✅  |
 |Partite Multiple | ✅  |
-|Disconessioni | ✅  |
+|Disconessioni Client | ✅  |
 |Volo di Prova* | 1/3   |
 
 *Volo di prova : model full implemented and Tested  
