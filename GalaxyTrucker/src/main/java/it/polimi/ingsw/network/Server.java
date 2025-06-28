@@ -53,7 +53,9 @@ public class Server implements RemoteServer {
 
     private Map<Integer, LobbyTimer> lobbyTimers = new ConcurrentHashMap<>();
     private final ScheduledExecutorService heartbeatScheduler = Executors.newScheduledThreadPool(1);
-
+    /**
+     * Starts the server, initializing Socket, RMI, and message processing threads.
+     */
     public void start() {
         new Thread(this::startSocketServer).start();
         new Thread(this::startRmiServer).start();
@@ -61,7 +63,9 @@ public class Server implements RemoteServer {
         startHeartbeat();
         System.out.println("Server pronto.");
     }
-
+    /**
+     * Starts the Socket server to listen for new client connections.
+     */
     private void startSocketServer() {
         try (ServerSocket serverSocket = new ServerSocket(SOCKET_PORT)) {
             System.out.println("Server Socket in ascolto sulla porta " + SOCKET_PORT + "...");
@@ -76,7 +80,9 @@ public class Server implements RemoteServer {
             System.err.println("Errore server Socket: " + e.getMessage());
         }
     }
-
+    /**
+     * Starts the RMI server to allow remote method invocations from clients.
+     */
     private void startRmiServer() {
         try {
             RemoteServer stub = (RemoteServer) UnicastRemoteObject.exportObject(this, 0);
@@ -111,7 +117,9 @@ public class Server implements RemoteServer {
             messageQueue.add(message);
         }
     }
-
+    /**
+     * Continuously processes messages from the message queue in a loop.
+     */
     private void processMessages() {
         while (!Thread.currentThread().isInterrupted()) {
             Message msg;
@@ -128,7 +136,10 @@ public class Server implements RemoteServer {
             }
         }
     }
-
+    /**
+     * Handles a single message from the queue, directing it based on its type.
+     * @param msg The message to be handled.
+     */
     private void handleMessage(Message msg) {
 
         switch (msg.getType()) {
@@ -1226,7 +1237,12 @@ public class Server implements RemoteServer {
 
     }
 
-
+    /**
+     * Manages the logic for a specific adventure card during the flight phase.
+     * It initializes the adventure and notifies the appropriate players.
+     * @param adventure The adventure card to be managed.
+     * @param controller The game controller managing the current game.
+     */
     public void manageAdventure(CardAdventure adventure, GameController controller) {
 
 
@@ -1502,7 +1518,11 @@ public class Server implements RemoteServer {
         return null;
     }
 
-
+    /**
+     * Sends a message to all clients in a specific lobby.
+     * @param l The lobby whose players will receive the message.
+     * @param msg The message to be sent.
+     */
     private void sendToAllClients(Lobby l, Message msg) {
         GameController controller = all_games.get(l.getLobbyId());
         for (String player : l.getPlayers()) {
@@ -1517,7 +1537,11 @@ public class Server implements RemoteServer {
         }
 
     }
-
+    /**
+     * Sends a message to a specific client identified by their UUID.
+     * @param id The UUID of the target client.
+     * @param msg The message to be sent.
+     */
     private void sendToClient(UUID id, Message msg) {
         ConnectionHandler client = clients.get(id);
         if (client != null) {
@@ -1530,7 +1554,11 @@ public class Server implements RemoteServer {
         }
     }
 
-
+    /**
+     * Gets the lobby ID for a specific client.
+     * @param id The UUID of the client.
+     * @return The ID of the lobby the client is in, or -1 if not found.
+     */
     private int getLobbyId(UUID id) {
         String nick = getNickname(id);
         if (nick == null) return -1;
@@ -1540,12 +1568,17 @@ public class Server implements RemoteServer {
                 .findFirst()
                 .orElse(-1);
     }
-
+    /**
+     * The main method to start the server application.
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         Server server = new Server();
         server.start();
     }
-
+    /**
+     * Starts a scheduled task to periodically check client connections via heartbeat.
+     */
     private void startHeartbeat() {
         heartbeatScheduler.scheduleAtFixedRate(() -> {
             for (Map.Entry<UUID, ConnectionHandler> entry : clients.entrySet()) {
@@ -1562,7 +1595,11 @@ public class Server implements RemoteServer {
             }
         }, 0, 4, TimeUnit.SECONDS);
     }
-
+    /**
+     * Handles the logic when a client disconnects from the server.
+     * This includes updating game state and notifying other players.
+     * @param clientId The UUID of the disconnected client.
+     */
     public void handleClientDisconnection(UUID clientId) {
         ConnectionHandler handler = clients.get(clientId);
         controller = all_games.get(getLobbyId(clientId));
@@ -1664,7 +1701,11 @@ public class Server implements RemoteServer {
         }
     }
 
-
+    /**
+     * Handles the logic for a client reconnecting to an ongoing game.
+     * It restores the player's state and updates them on the current game status.
+     * @param clientId The UUID of the reconnecting client.
+     */
     public void handleClientReconnection(UUID clientId) {
         controller = all_games.get(getLobbyId(clientId));
         controller.reConnect(getNickname(clientId));
