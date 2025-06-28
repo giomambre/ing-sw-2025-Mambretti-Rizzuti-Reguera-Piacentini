@@ -202,7 +202,7 @@ public class Server implements RemoteServer {
                 int lobby_id = Integer.parseInt(msg.getContent());
                 System.out.println("il player vuole entrare nella lobby :" + lobby_id);
 
-                synchronized (manager) {
+
 
                     if (manager.getAvaibleLobbies().contains(lobby_id)) {
                         System.out.println("Successo player joined lobby :" + lobby_id);
@@ -219,7 +219,7 @@ public class Server implements RemoteServer {
 
                             }
 
-                        }
+
 
                     } else {
                         System.out.println("Fail player joined lobby :" + lobby_id);
@@ -282,11 +282,24 @@ public class Server implements RemoteServer {
 
                                     for (Player p : controller.getPlayers()) {
 
+                                        if(lt.controller.getDisconnected_players().contains(p.getNickname())) {
+                                            try {
+                                                lt.getFinishOrder().remove(p.getNickname());
+                                            }catch (Exception e){
+                                                System.out.println("Player " + p.getNickname() + " disconesso ma non aveva terminato");
+                                            }
+
+
+                                        }
+
                                         if (!lt.getFinishOrder().contains(p.getNickname())) {
+
+
                                             lt.addPlayer(p.getNickname());
                                             sendToClient(getId_client(p.getNickname()), new Message(FORCE_BUILD_PHASE_END, lt.getPositionByPlayer(p.getNickname())));
 
                                         }
+
 
                                     }
                                 }
@@ -386,6 +399,7 @@ public class Server implements RemoteServer {
                 StandardMessageClient endMsg = (StandardMessageClient) msg;
                 controller = all_games.get(getLobbyId(endMsg.getId_client()));
                 LobbyTimer lt = lobbyTimers.get(controller.getLobby().getLobbyId());
+                lt.setController(controller);
                 lt.addPlayer(getNickname(endMsg.getId_client()));
                 sendToClient(endMsg.getId_client(), new Message(BUILD_PHASE_ENDED, lt.getPositionByPlayer(getNickname(endMsg.getId_client()))));
 
@@ -410,8 +424,17 @@ public class Server implements RemoteServer {
                                     "✅ Tempo SCADUTO si comincia con la fase di Controllo! "));
 
 
-                            for (Player p : controller.getPlayers()) {
+                            for (Player p : lt.getController().getPlayers()) {
 
+                                if(lt.controller.getDisconnected_players().contains(p.getNickname())) {
+                                    try {
+                                        lt.getFinishOrder().remove(p.getNickname());
+                                    }catch (Exception e){
+                                        System.out.println("Player " + p.getNickname() + " disconesso ma non aveva terminato");
+                                    }
+
+
+                                }
                                 if (!lt.getFinishOrder().contains(p.getNickname())) {
                                     lt.addPlayer(p.getNickname());
                                     sendToClient(getId_client(p.getNickname()), new Message(FORCE_BUILD_PHASE_END, lt.getPositionByPlayer(p.getNickname())));
@@ -419,9 +442,9 @@ public class Server implements RemoteServer {
                                 }
 
                             }
-                            controller.setGamestate(SUPLLY_PHASE);
+                            lt.getController().setGamestate(SUPLLY_PHASE);
 
-                            sendToAllClients(controller.getLobby(), new Message(ADD_CREWMATES, ""));
+                            sendToAllClients(lt.getController().getLobby(), new Message(ADD_CREWMATES, ""));
 
                         }
 
@@ -429,7 +452,7 @@ public class Server implements RemoteServer {
                 );
 
 
-                controller.setBuild_order_players(lt.getFinishOrder());
+                lt.getController().setBuild_order_players(lt.getFinishOrder());
                 break;
 
 
@@ -505,6 +528,8 @@ public class Server implements RemoteServer {
                     controller.removePlayerFromOrder(getNickname(update_msg.getId_client()));
 
                 }
+
+
 
                 if (controller.getBuild_order_players().size() == 1) {
 
@@ -586,13 +611,13 @@ public class Server implements RemoteServer {
                         Cargo.Yellow)
              ),"/images/cardAdventure/GT-planets_1.1.jpg" );
 
-//             CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
-//                        Arrays.asList(
-//                                Cargo.Red,
-//                                Cargo.Yellow,
-//                                Cargo.Yellow
-//                        ),
-//                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
+              /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
+                        Arrays.asList(
+                                Cargo.Red,
+                                Cargo.Green,
+                                Cargo.Blue
+                        ),
+                        2,"/images/cardAdventure/GT-smugglers_1.jpg");*/
              /*    adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                         List.of(
                                 new Pair<>(MeteorType.LightCannonFire, North),
@@ -612,10 +637,10 @@ public class Server implements RemoteServer {
                         ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
                 );
 */
-                //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                //CardAdventure adventure = controller.getRandomAdventure();
-                //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
 
+                //CardAdventure adventure = controller.getRandomAdventure();
+              //  adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
+              //  adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
 
 
@@ -1223,7 +1248,7 @@ public class Server implements RemoteServer {
         if (adventure == null || controller.getActivePlayers().size() <= 1) {
 
             controller.setRewards();
-            List <Player> players = controller.getPlayers();
+            List <Player> players = new ArrayList<>();
             for(Player p : controller.getPlayers()) {
 
                 players.add(p.copyPlayer());
@@ -1543,13 +1568,17 @@ public class Server implements RemoteServer {
         controller = all_games.get(getLobbyId(clientId));
 
 
-        if(controller == null){
+        if(controller == null || controller.getGamestate() == FINISHED_GAME ){
+            connectedNames.remove(getNickname(clientId));
+            System.out.println("Lobby cancellata 2");
+
 
             clients.remove(clientId);
-            connectedNames.remove(getNickname(clientId));
             return;
 
         }
+
+        if(     controller.getLobby().getPlayers().contains(getNickname(clientId))) {}
 
         String nick = getNickname(clientId);
 
@@ -1608,10 +1637,8 @@ public class Server implements RemoteServer {
                                     handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
 
 
-
                             }else if(controller.getCurr_combatzone().equals("cw"))
                                     handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
-
                             break;
                     }
                 }
@@ -1660,12 +1687,13 @@ public class Server implements RemoteServer {
         }
         sendToClient(clientId, new ShipClientMessage(UTIL, "", clientId, player));
         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+      //  sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
         String nick = getNickname(clientId);
         switch (controller.getGamestate()) {
 
             case BUILD_PHASE:
 
-                sendToClient(clientId, new ShipClientMessage(MessageType.BUILD_START, "", clientId, player));
+                sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
 
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 for (CardComponent card : controller.getFacedUpCards()) {

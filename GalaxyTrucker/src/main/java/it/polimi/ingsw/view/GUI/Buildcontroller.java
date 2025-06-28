@@ -344,7 +344,7 @@ public class Buildcontroller {
                     cell.setStyle("-fx-background-color: transparent;");
                 } else {
                     if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
-                        cell.setPrefSize(77.5,77.5);
+                        cell.setPrefSize(77.5, 77.5);
                         cell.setStyle("-fx-background-color: transparent;");
 
                         final Effect originalEffect = cell.getEffect();
@@ -361,23 +361,28 @@ public class Buildcontroller {
 
                         final int a = i;
                         final int b = j;
-                        cell.setOnMouseClicked(e -> {
-                            coords.complete(new Pair<>(a, b));
+                        if (i != 2 || j != 3) {
+                            cell.setOnMouseClicked(e -> {
+                                coords.complete(new Pair<>(a, b));
 
-                            if (gui.getRandomcardcontroller().getStage() != null) {
-                                gui.getRandomcardcontroller().getStage().close();
-                            }
-                        });
+                                if (gui.getRandomcardcontroller().getStage() != null) {
+                                    gui.getRandomcardcontroller().getStage().close();
+                                }
+                            });
+                        }else
+                        {
+                            cell.setOnMouseEntered(null);
+                            cell.setOnMouseExited(null);
+                            cell.setEffect(null);
+                            cell.setOnMouseClicked(null);
+                        }
                     }
 
                 }
                 if (i == 2 && j == 3) {
                     Color color = gui.getClient().getPlayer_local().getColor();
                     String imagePath = null;
-                    cell.setOnMouseEntered(null);
-                    cell.setOnMouseExited(null);
-                    cell.setEffect(null);
-                    cell.setOnMouseClicked(null);
+                    ;
 
 
                     Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);

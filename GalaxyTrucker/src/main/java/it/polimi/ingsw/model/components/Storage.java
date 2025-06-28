@@ -51,9 +51,8 @@ public class Storage extends CardComponent  implements Serializable {
      * @param cargoMap a map of cargo units and their corresponding storage slot indexes
      * @throws IllegalArgumentException if the number of cargo units exceeds the storage capacity
      */
-    public void addCargo(Map<Cargo, Integer> cargoMap){
-
-        if(cargoMap.size()>this.size){
+    public void addCargo(Map<Cargo, Integer> cargoMap) {
+        if (cargoMap.size() > this.size) {
             throw new IllegalArgumentException("Trying to add more cargo than the size of the storage");
         }
 
@@ -61,8 +60,13 @@ public class Storage extends CardComponent  implements Serializable {
             Cargo cargo = entry.getKey();
             int index = entry.getValue();
 
-            carried_cargos.set(index, cargo);
+            if (index >= 0 && index < carried_cargos.size()) {
+                carried_cargos.remove(index);
+                carried_cargos.add(index, cargo);
+            } else {
 
+                System.out.println("Warning: Index " + index + " is out of bounds.");
+            }
         }
     }
 

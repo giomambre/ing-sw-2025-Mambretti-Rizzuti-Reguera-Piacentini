@@ -77,8 +77,8 @@ public class Client {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "5.tcp.eu.ngrok.io";
-            int socketPort = 18783;
+            String host = "localhost";
+            int socketPort = 12345;
             int rmiPort = 1099;
             int choice = -1;
             System.out.print("Inserisci l'indirizzo IP del server (lascia vuoto per localhost): ");
@@ -341,7 +341,7 @@ public class Client {
                     virtualView.showMessage("\n" + msg.getContent());
                 }
 
-                if (l_msg.getLobbies().size() == 0) {
+                if (l_msg.getLobbies().isEmpty()) {
 
                     virtualView.showMessage("\nNon ci sono Lobby disponibili!");
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
@@ -353,6 +353,11 @@ public class Client {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
                     } else {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
+                    }
+
+                    if(lobby_index == -1){
+                        elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
+                        break;
                     }
                     networkAdapter.sendMessage(new StandardMessageClient(MessageType.SELECT_LOBBY, "" + lobby_index, clientId));
 
@@ -971,7 +976,7 @@ public class Client {
 
                 if (virtualViewType == VirtualViewType.TUI) {
                     ((TUI) virtualView).setLocal_board_position(local_board_positions);
-                    ((TUI) virtualView).setLocal_board_laps(local_board_positions);
+                    ((TUI) virtualView).setLocal_board_laps(local_board_laps);
 
                 }
                 int dummy = virtualView.nextMeteor();
@@ -1069,7 +1074,7 @@ public class Client {
                         break;
                     } else {
 
-                        handleNotification(new Message(MessageType.CARGO_LOSS, "2"));
+                        handleNotification(new Message(MessageType.CARGO_LOSS, "3"));
                         break;
                     }
 
@@ -1085,14 +1090,14 @@ public class Client {
 
             case LESS_CW :
                 StringBuilder coords_m = new StringBuilder();
-                for (int i = 0; i < 2; i++) {
+                for (int i = 0; i < 4; i++) {
 
                     coords_m.append(throwDice()).append(" ");
 
                 }
 
                 manageAdventure(
-                        new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                        new MeteorSwarm(-1, 0, CardAdventureType.MeteorSwarm,
                                 List.of(
                                         new Pair<>(MeteorType.LightCannonFire, North),
                                         new Pair<>(MeteorType.LightCannonFire, West),
@@ -1508,8 +1513,10 @@ public class Client {
 
                         double power = enginePower(0);
 
-                        virtualView.showMessage("\n ----- POTENZA MOTORE TOTALE :  " + power + " -----\n");
-
+                        virtualView.showMessage("\n ----- POTENZA MOTORI TOTALE :  " + power + " -----\n");
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza MOTORI : " +power,"" );
+                        }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng " + String.valueOf(power), clientId, player_local));
                         break;
 
@@ -1519,6 +1526,9 @@ public class Client {
 
 
                         virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                        }
 
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can " + String.valueOf(power_c), clientId, player_local));
                         break;
@@ -1538,6 +1548,9 @@ public class Client {
 
 
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                }
 
 
                 if(power_c < smugglers.getCannons_strenght()) {
@@ -1558,7 +1571,9 @@ public class Client {
 
                     choice = virtualView.acceptAdventure("HAI SCONFITTO IL NEMICO, VUOI PRENDERE RICOMPENSA (e quindi perdere i giorni di volo)?");
                     if(choice ){
-                        cargoAction(smugglers.getCargo_rewards());
+                        List<Cargo> smugg_planets = new ArrayList<>(smugglers.getCargo_rewards());
+
+                        cargoAction(smugg_planets);
 
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
                         break;
@@ -1585,6 +1600,9 @@ public class Client {
                 virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +pirates.getCannons_strenght() +  " \n");
                 power_c =  cannonPower(pirates.getCannons_strenght());
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                }
 
                 StringBuilder coords_m = new StringBuilder();
 
@@ -1622,6 +1640,9 @@ public class Client {
                         }
                         if(virtualViewType == VirtualViewType.TUI) {
                             virtualView.showMessage("\nHAI GUADAGNATO " + pirates.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        }else {
+                                ((GUI)virtualView).getFlyghtController().addLogMessage("HAI GUADAGNATO " + pirates.getCredits() + " crediti","" );
+
                         }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
@@ -1774,7 +1795,7 @@ public class Client {
             Cargo c = planet_cargos.get(scelta);
             new_position = virtualView.addCargo(player_local.getShip(), c);
 
-            if (new_position != null) {
+            if (new_position != null ) {
                 ship = player_local.getShip();
                 planet_cargos.remove(scelta);
                 Storage s = ((Storage) ship.getComponent(new_position.getKey().getKey(), new_position.getKey().getValue()));

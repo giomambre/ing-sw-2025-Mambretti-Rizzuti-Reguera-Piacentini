@@ -1716,6 +1716,7 @@ int i = 0;
                 }
 
                 int storage_scelto = readValidInt("Scelta ", 0, red_storage.size()-1, true);
+
                 if(storage_scelto == -1 ) return null;
                 tmp_storage = red_storage.get(storage_scelto); //coordinate storage scelto
                 Storage s =(Storage) ship.getComponent(tmp_storage.getKey(), tmp_storage.getValue());

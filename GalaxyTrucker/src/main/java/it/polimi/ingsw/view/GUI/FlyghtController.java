@@ -168,11 +168,6 @@ public class FlyghtController {
 
             if (eventLogVBox != null) {
                 eventLogVBox.getChildren().add(logEntry);
-
-                // Scrolla automaticamente in basso
-                // Imposta un valore alto per la proprietà vvalue dello ScrollPane
-                // Questo è più affidabile del binding continuo e permette all'utente di scrollare manualmente
-                eventLogScrollPane.setVvalue(1.0); // 1.0 significa "scrolla fino in fondo"
             }
         });
     }
@@ -335,6 +330,9 @@ public class FlyghtController {
         setupPlayerShipGrid();
         setupAdventureCardArea();
         addLogMessage("Benvenuto In Galaxy Trucker! Questa à la Fase di Volo","NOTIFICATION"); // Nuovo
+        eventLogVBox.heightProperty().addListener((observable, oldValue, newValue) -> {
+            eventLogScrollPane.setVvalue(1.0);
+        });
     }
 
     public List<Pair<Integer,Integer>> getBatteries() {
