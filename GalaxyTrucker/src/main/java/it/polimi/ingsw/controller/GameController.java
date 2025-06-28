@@ -59,6 +59,7 @@ public class GameController {
         this.curr_adventure_player = curr_adventure_player;
     }
 
+
     public GameController(Lobby lobby) {
         this.lobby = lobby;
         game = new Game(Gametype.StandardGame);
@@ -76,9 +77,19 @@ public class GameController {
         this.in_pause = in_pause;
     }
 
+    /**
+     * Remove the Player from the disconnected Player List
+     * @param nickname
+     */
+
     public void reConnect(String nickname) {
         disconnected_players.remove(nickname);
     }
+
+    /**
+     * Adde the Player to the disconnected Player List
+     * @param nickname
+     */
 
     public void disconnect(String nickname) {
         disconnected_players.add(nickname);
@@ -98,6 +109,9 @@ public class GameController {
 
     }
 
+
+
+
     public void removeFromActivePlayers(String nickname) {
         Player player = game.getPlayer(nickname);
 
@@ -105,10 +119,22 @@ public class GameController {
 
     }
 
+
+    /**
+     * Add the Cannon declared of the Player to the List, used for some adventures
+     * @param name
+     * @param value
+     */
     public void addCannonValue(String name, double value) {
 
         list_cannon_power.put(name, value);
     }
+
+    /**
+     * Add the Engine declared of the Player to the List, used for some adventures
+     * @param name
+     * @param value
+     */
 
     public void addEngineValue(String name, Double value) {
 
@@ -120,6 +146,11 @@ public class GameController {
         return list_cannon_power;
     }
 
+
+    /**
+     * It calculates the Player with the least Cannon Power
+     * @return The player Nickname
+     */
     public String getLeastCannon() {
 
         String result = "";
@@ -133,6 +164,11 @@ public class GameController {
         return result;
 
     }
+
+    /**
+     * It calculates the Player with the least Engine Power
+     * @return The player Nickname
+     */
 
     public String getLeastEngineValue() {
         String result = "";
@@ -150,6 +186,11 @@ public class GameController {
         return list_engine_power;
     }
 
+    /**
+     * Removes the Player from the adventure, if the adventureOrder List contains him that means that the player has not done the adventure
+     * @return The player Nickname
+     */
+
     public void removeFromAdventure(String nickname) {
 
         if (adventureOrder.contains(getPlayer(nickname))) {
@@ -164,6 +205,13 @@ public class GameController {
         return adv_done;
     }
 
+
+    /**
+     * For each adventure creates the proper AdventureOrder, which depends on the rules of the specific card
+     * Its runned only at the beginning for most cards because the order is defined at the Start of the Round
+     * In the card Combat Zone its run multiple times, in fact this card has multiple phases
+     * @param adventure
+     */
     public void initializeAdventure(CardAdventure adventure) {
         adv_index = 0;
         this.adventure = adventure;
@@ -220,6 +268,10 @@ public class GameController {
         return planets;
     }
 
+    /**
+     * Method Specific for the Planers Card , is used for take a Reference of which Planet is already taken or free
+     * @param planet
+     */
     public void addPlanetTaken(String planet) {
         if (planet.isEmpty()) {
             planets = planet;
@@ -228,6 +280,11 @@ public class GameController {
         }
     }
 
+    /**
+     * From the Nickname it returns the Instance of the Player Object
+      * @param nickname
+     * @return Player Object
+     */
     public Player getPlayer(String nickname) {
         for (Player p : getActivePlayers()) {
 
@@ -246,7 +303,10 @@ public class GameController {
         return adv_index;
     }
 
-
+    /**
+     * Return the next Player on the Adventure Order
+     * @return
+     */
     public String nextAdventurePlayer() {
 
         if(adv_index > 0) {
@@ -291,6 +351,10 @@ public class GameController {
         this.game_state = game_state;
     }
 
+    /**
+     * Calculate a random Value from 2 dice
+     * @return
+     */
     public int throwDice() {
 
         return (random.nextInt(6) + 1) + (random.nextInt(6) + 1);
@@ -316,7 +380,9 @@ public class GameController {
         return game.getActivePlayers();
     }
 
-
+    /**
+     * Put all the players with a valid ship in the Active Players List
+     */
     public void startFlight() {
         game.setActivePlayers(getBuild_order_players());
         game.startFlight();
@@ -334,6 +400,12 @@ public class GameController {
         return available_colors;
     }
 
+    /**
+     * When a Player joins a lobby the Controller adds him to the Game
+     * @param nickname
+     * @param color
+     * @return
+     */
     public synchronized Player addPlayer(String nickname, Color color) {
         if (game.getNicknames().contains(nickname)) throw new IllegalArgumentException(" Nickname already in use.");
 
@@ -379,7 +451,12 @@ public class GameController {
         return game.getRandomCardAdventure();
     }
 
-    public synchronized int endPlayerBuildPhase(String nickname) {
+    /**
+     * When a player declares the Final ship it checks the validity of It and return the correspondent value
+     * @param nickname
+     * @return
+     */
+    public  int endPlayerBuildPhase(String nickname) {
 
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
@@ -409,7 +486,13 @@ public class GameController {
         build_order_players.remove(nickname);
     }
 
-
+    /**
+     * Add a component in the player ship board
+     * @param nickname
+     * @param card
+     * @param x row
+     * @param y column
+     */
     public void addComponent(String nickname, CardComponent card, int x, int y) {
         Player p = game.getPlayer(nickname);
 
@@ -425,7 +508,11 @@ public class GameController {
 
     }
 
-
+    /**
+     * Add the component to the ExtraComponents deck of the player
+     * @param nickname
+     * @param card
+     */
     public void secureComponent(String nickname, CardComponent card) {
 
 
@@ -442,6 +529,11 @@ public class GameController {
 
     }
 
+    /**
+     * Add the Card to the dismissed (faced up) deck
+     * @param nickname
+     * @param card
+     */
     public void dismissComponent(String nickname, CardComponent card) {
 
         Player p = game.getPlayer(nickname);
@@ -454,7 +546,13 @@ public class GameController {
     }
 
 
-
+    /**
+     * Add the Crewmate in the Living Unit in x,y
+     * @param nickname
+     * @param x row
+     * @param y column
+     * @param type The color of the alien or normale crewmmate
+     */
     public void crewmatesSupply(String nickname, int x, int y, CrewmateType type) {
 
 
@@ -481,7 +579,11 @@ public class GameController {
 
     }
 
-
+    /**
+     * Calculate and return the list of the invalids components
+     * @param nickname
+     * @return
+     */
     public List<Pair<Integer, Integer>> checkShipConnectors(String nickname) {
 
         Player p = game.getPlayer(nickname);
@@ -496,6 +598,12 @@ public class GameController {
 
     }
 
+    /**
+     * Returns the "Tronconi" of the ship, if the size is 0 the ship is invalid
+     * The Invalids "Tronconi" or Single Components are removed automatically
+     * @param nickname
+     * @return
+     */
     public List<List<Pair<Integer, Integer>>> getValidPieces(String nickname) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
@@ -505,6 +613,12 @@ public class GameController {
 
     }
 
+    /**
+     * Remove all the others "Tronconi" and keeps the chosen one
+     * @param choice
+     * @param nickname
+     * @return
+     */
     public CardComponent[][] choosePieces(int choice, String nickname) {
         Player p = game.getPlayer(nickname);
         Ship ship = p.getShip();
@@ -522,7 +636,10 @@ public class GameController {
     }
 
 
-
+    /**
+     * It Returns the nickname of the Player with fewer crewmates
+     * @return
+     */
     public String calculateLessCrewmates() {
         List<Player> players = getActivePlayers();
         String lessCrewmatesNickname = "";
@@ -548,7 +665,10 @@ public class GameController {
     }
 
 
-
+    /**
+     * Execute this specific Adventure Card (the Client has no power to will in this one)
+     * @param stardust
+     */
     public void executeStardust(Stardust stardust) {
         initializeAdventure(stardust);
         for (Player p : adventureOrder) {
@@ -559,6 +679,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Called at the end of the Game
+     * Assign each player credits for their ,cargo, ship, position and removes 1 credit for each destroyed Component
+     */
     public void setRewards() {
 
         game.setRewards();
@@ -567,7 +691,11 @@ public class GameController {
     }
 
 
-
+    /**
+     * Add the player the number of credits
+     * @param nickname
+     * @param credits
+     */
 
     public void addCredits(String nickname, int credits) {
 
