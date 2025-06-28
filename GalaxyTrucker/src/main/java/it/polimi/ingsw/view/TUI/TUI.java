@@ -1088,22 +1088,22 @@ public class TUI implements View {
 
     @Override
     public void printFinalRanks(List<Player> finalRanks) {
-            StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-            sb.append("CLASSIFICA FINALE \n");
-            if (finalRanks.isEmpty()) {
-                sb.append("Nessun giocatore da mostrare.");
-            } else {
-                for (int i = 0; i < finalRanks.size(); i++) {
-                    Player player = finalRanks.get(i);
-                    sb.append(String.format("%d. %s - Crediti: %d%n",
-                            (i + 1), player.getNickname(), player.getCredits()));
-                }
+        sb.append("CLASSIFICA FINALE \n");
+        if (finalRanks.isEmpty()) {
+            sb.append("Nessun giocatore da mostrare.");
+        } else {
+            finalRanks.sort((p1, p2) -> Integer.compare(p2.getCredits(), p1.getCredits()));
+
+            for (int i = 0; i < finalRanks.size(); i++) {
+                Player player = finalRanks.get(i);
+                sb.append(String.format("%d. %s - Crediti: %d%n",
+                        (i + 1), player.getNickname(), player.getCredits()));
             }
+        }
 
-            printBorder(sb.toString());
-
-
+        printBorder(sb.toString());
     }
 
 
