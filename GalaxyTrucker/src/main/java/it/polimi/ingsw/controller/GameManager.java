@@ -67,10 +67,6 @@ public class GameManager {
     }
 
 
-    public void deleteLobby(Lobby lobby) {
-        all_lobbies.remove(lobby);
-    }
-
     /**
      * From the lobby id to the Lobby object
      * @param id

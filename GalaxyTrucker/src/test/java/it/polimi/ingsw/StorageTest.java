@@ -60,6 +60,9 @@ public class StorageTest {
         ((Storage) player.getShip().getComponent(3,1)).addCargo(cargoMap);
 
         Storage storage = (Storage) player.getShip().getComponent(3,1);
+        System.out.println(storage.getCargo(0));
+        System.out.println(storage.getCarried_cargos());
+
         assertEquals(Cargo.Green,storage.getCargo(0));
         assertEquals(Cargo.Red,storage.getCargo(1));
         assertEquals(Cargo.Empty,storage.getCargo(2));
