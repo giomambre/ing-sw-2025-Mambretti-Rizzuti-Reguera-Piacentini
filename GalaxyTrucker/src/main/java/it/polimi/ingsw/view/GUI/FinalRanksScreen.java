@@ -81,23 +81,18 @@ public class FinalRanksScreen {
         label.setWrapText(true);
 
         String textColor;
-        FontWeight fontWeight = FontWeight.NORMAL;
+        FontWeight fontWeight = (row <= 3) ? FontWeight.BOLD : FontWeight.NORMAL;
 
         if (isHeader) {
             textColor = "lightgray";
-            fontWeight = FontWeight.BOLD;
             label.setText(text);
-        }
-        else {
-            // Determina il colore del testo in base alla riga della classifica
+        } else {
+            // Colore testo in base alla posizione
             switch (row) {
-                case 1 -> {
-                    textColor = "#FFD700"; // Oro
-                    fontWeight = FontWeight.BOLD;
-                }
+                case 1 -> textColor = "#FFD700"; // Oro
                 case 2 -> textColor = "#C0C0C0"; // Argento
                 case 3 -> textColor = "#CD7F32"; // Bronzo
-                default -> textColor = "#fef6d5"; // Default
+                default -> textColor = "#fef6d5";
             }
 
             // Emoji solo per colonna posizione
@@ -112,6 +107,7 @@ public class FinalRanksScreen {
                 label.setText(text);
             }
         }
+
 
         // Imposta sempre Verdana 20, con fontWeight deciso sopra
         label.setFont(Font.font("Verdana", fontWeight, 30));
