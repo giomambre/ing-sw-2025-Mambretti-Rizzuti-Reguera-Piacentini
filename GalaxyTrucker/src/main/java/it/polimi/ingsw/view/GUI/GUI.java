@@ -116,6 +116,9 @@ public class GUI implements View {
         this.stage = stage;
     }
 
+    /**
+     * This method is used to create the nickname screen
+     */
     public void createNicknamescreen(){
         Platform.runLater(() -> {
             try {
@@ -133,6 +136,11 @@ public class GUI implements View {
         });
     }
 
+    /**
+     * This method send the user's nickname to the client application.
+     * @param event the insertion of the name by the user
+     */
+
     @FXML
     public void sendNickname(ActionEvent event) {
         System.out.println("sendNickname() chiamato");
@@ -142,23 +150,18 @@ public class GUI implements View {
         }
         System.out.println("nicknamescelto: " + nicknamescelto);
     }
+
+    /**
+     * This method send the user's nickname to the client application.
+     */
     @Override
     public String askNickname()  {
         return nicknamescelto;
     }
 
-    /*public void createjoingamecontroller(){
-        Platform.runLater(() -> {
-            try {
-                Joingamecontroller joingamecontroller = new Joingamecontroller();
-                this.joingamecontroller = joingamecontroller;
-                joingamecontroller.setGui(this);
-                joingamecontroller.start(this.stage);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-    }*/
+    /**
+     * This method is used to create the screen in witch the player decide to enter a lobby or to join an existing one
+     */
 
     public void createjoingamecontroller(){
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -180,6 +183,11 @@ public class GUI implements View {
         }
     }
 
+    /**
+     *This method send the user's nickname to the client application.
+     * @return 1 for creating a lobby, 0 to enter an existing one
+     */
+
     @Override
     public int askCreateOrJoin() {
         try {
@@ -190,12 +198,21 @@ public class GUI implements View {
         }
     }
 
-
+    /**
+     * Add a message to Log Event
+     * @param msg the message to display
+     * @param type
+     */
     public void addLogEvent(String msg, String type) {
 
         flyghtController.addLogMessage(msg,type);
 
     }
+
+
+    /**
+     * This method is used to create the screen in witch the player decide how many players can join the lobby
+     */
 
     public void createnumplayerscontroller(){
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -216,6 +233,11 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }
+
+    /**
+     *This method send the number of player in the new lobby to the client application.
+     * @return the number of player
+     */
     @Override
     public int askNumPlayers() {
         try {
@@ -250,6 +272,11 @@ public class GUI implements View {
     public void updateFacedUpCards(List<CardComponent> facedUpDeck) {
 
     }
+
+    /**
+     * creates a pop-up to show a quick message
+     * @param message the message to be shown
+     */
 
     @Override
     public void showMessage(String message) {
@@ -287,6 +314,10 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method is used to create the screen in witch the player decide witch lobby to join
+     */
+
     public void createselectlobbyscreen(List<Integer> lobbies){
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
@@ -308,6 +339,10 @@ public class GUI implements View {
         }
     }
 
+    /**
+     *This method send the number of the lobby chosen to the client application
+     * @return lobby ID
+     */
     @Override
     public int showLobbies(List<Integer> lobbies) {
         try {
@@ -317,7 +352,10 @@ public class GUI implements View {
             return -1;
         }
     }
-//
+
+    /**
+     * This method is used to create the screen in witch the player decide witch color he wants
+     */
     public void createchoosecolorscreen(List<Color> colors) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
@@ -339,7 +377,10 @@ public class GUI implements View {
         }
     }
 
-
+    /**
+     *This method send the color chosen to the client application
+     * @return RED,YELLOW,BLUE or GREEN
+     */
     @Override
     public Color askColor(List<Color> colors) {
         try {
@@ -349,6 +390,11 @@ public class GUI implements View {
             return null;
         }
     }
+
+    /**
+     * This method is called when a player chose a color to update the colors remaining for the other players
+     * @param newColors a list containing the remaining colors
+     */
     public void updateColors(List<Color> newColors) {
         Platform.runLater(() -> {
             this.colorsavailable = newColors;
@@ -359,7 +405,9 @@ public class GUI implements View {
         });
     }
 
-
+    /**
+     * This method is used to create the screen in witch the player build his ship
+     */
     public void createbuildscreen() {
         if (this.buildcontroller != null && isbuildscreenactive) {
             Platform.runLater(() -> {
@@ -411,6 +459,10 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method is used to create the screen in witch the player can play
+     */
+
     public void createFlyghtScreen(Map<Integer, Player> positions, Map<Integer, Player> laps) {
         if (this.flyghtController != null && isFlyghtScreenActive) {
             Platform.runLater(() -> {
@@ -428,8 +480,8 @@ public class GUI implements View {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlyghtBoard.fxml"));
                 Parent root = loader.load();
 
-                FlyghtController controller = loader.getController(); // usa controller FXML
-                controller.setGUI(this); // passa la GUI, con il client corretto
+                FlyghtController controller = loader.getController();
+                controller.setGUI(this);
                 this.flyghtController = controller;
 
                 Scene scene = new Scene(root);
@@ -444,22 +496,19 @@ public class GUI implements View {
                     System.exit(0);
                 });
 
-                // Dopo che tutto è pronto, inizializza i componenti
                 controller.updatePlayerShip();
                 controller.setupPlayerButtons(client.getOther_players_local());
 
-                // Se ci sono già posizioni dei giocatori, aggiornale
                 if (client != null && client.getOther_players_local() != null) {
 
                      controller.updatePlayerPositions(positions, laps);
                 }
 
-                // Aggiorna il giocatore corrente se disponibile
                 if (client != null && client.getPlayer_local() != null) {
                     controller.updateCurrentPlayer(client.getPlayer_local().getNickname());
                 }
 
-                future.complete(null);  // GUI pronta
+                future.complete(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 future.completeExceptionally(ex);
@@ -467,7 +516,7 @@ public class GUI implements View {
         });
 
         try {
-            future.get(); // aspetta la GUI
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -476,6 +525,11 @@ public class GUI implements View {
     public FlyghtController getFlyghtController() {
         return flyghtController;
     }
+
+    /**
+     * This method returns the action that the player wants to do in the build screen
+     * @return 1 ask for a random card, 2 for a face up card, 3 for a reserved card
+     */
 
     @Override
     public int selectDeck() {
@@ -492,6 +546,10 @@ public class GUI implements View {
     public CardComponent getActualcard() {
         return actualcard;
     }
+
+    /**
+     * This method is used to create the screen in witch the player decide what to do with the drawn card
+     */
     public void createrandomcardcontroller(CardComponent card) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         this.actualcard = card;
@@ -503,8 +561,8 @@ public class GUI implements View {
                 Randomcardcontroller controller = loader.getController();
 
                 controller.setGui(this);
-                Stage stage = new Stage(); // Crea la stage qui
-                controller.setStage(stage);// Passa la stage al controller
+                Stage stage = new Stage();
+                controller.setStage(stage);
                 if (player_local.getShip().getExtra_components().contains(card) || player_local.getShip().getExtra_components().size()>1) {
                     controller.setBookButton();
                 }
@@ -534,10 +592,6 @@ public class GUI implements View {
 
                 stage.show();
 
-            /*stage.setOnCloseRequest(event -> {
-                Platform.exit();
-                System.exit(0);
-            });*/
 
                 this.randomcardcontroller = controller;
 
@@ -553,7 +607,9 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }
-
+    /**
+     * This method is used to create the screen in witch the player decide witch type of crewmate he wants
+     */
     public void createCrewmateSelectionController(Pair<Integer, Integer> coords, List<CrewmateType> supportedCrewmates) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -563,7 +619,7 @@ public class GUI implements View {
                 Parent root = loader.load();
                 CrewmateSelectionController controller = loader.getController();
 
-                controller.setCardWithSupportedCrewmates(coords, supportedCrewmates); // usa il metodo alternativo
+                controller.setCardWithSupportedCrewmates(coords, supportedCrewmates);
                 controller.setStage(new Stage());
 
                 Stage stage = controller.getStage();
@@ -587,6 +643,12 @@ public class GUI implements View {
         }
     }
 
+
+    /**
+     * This method sends to the client the action that the player wants to do with a card
+     * @param card
+     * @return 1 rotate, 2 place card on ship, 3 discard, 4 reserve
+     */
     @Override
     public int showCard(CardComponent card) {
         try {
@@ -637,12 +699,15 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method is used to create the screen of the final ranking
+     */
     public void createrankingscreen(List<Player> finalRanks) {
         if (this.finalRanksScreen != null) {
             Platform.runLater(() -> {
                 stage.toFront();
                 stage.requestFocus();
-                stage.show(); // riportala in primo piano
+                stage.show();
             });
             return;
         }
@@ -732,14 +797,6 @@ public class GUI implements View {
 
     @Override
     public int nextMeteor() {
-//        try {
-//            return flyghtController.getNextMeteor().get();
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//            return -1;
-//        } finally {
-//            flyghtController.resetNextMeteor();
-//        }
         return 0;
     }
 
@@ -1025,54 +1082,6 @@ public class GUI implements View {
             return null;
         }
     }
-/*
-    @Override
-    public int nextMeteor() {
-//        CountDownLatch latch = new CountDownLatch(1);
-//
-//        Platform.runLater(() -> {
-//            Stage popupStage = new Stage();
-//            popupStage.initModality(Modality.APPLICATION_MODAL);
-//            popupStage.setTitle("Continua l'Avventura");
-//            popupStage.setResizable(false);
-//
-//            VBox mainContainer = new VBox(15);
-//            mainContainer.setAlignment(Pos.CENTER);
-//            mainContainer.setPadding(new Insets(20));
-//            mainContainer.setStyle("-fx-background-color: #2c3e50;");
-//
-//            Label messageLabel = new Label("Premi Continua per proseguire.");
-//            messageLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-//            messageLabel.setStyle("-fx-text-fill: #ecf0f1;");
-//
-//            Button continueButton = new Button("Continua");
-//            continueButton.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-//            continueButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;");
-//            continueButton.setPrefWidth(100);
-//
-//            continueButton.setOnAction(e -> {
-//                popupStage.close();
-//                latch.countDown(); // Rilascia il thread in attesa
-//            });
-//
-//            mainContainer.getChildren().addAll(messageLabel, continueButton);
-//
-//            Scene scene = new Scene(mainContainer, 250, 150);
-//            popupStage.setScene(scene);
-//
-//            popupStage.show();
-//        });
-//
-//        try {
-//            latch.await(); // Aspetta che l'utente prema il bottone
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
-//            System.err.println("Il thread è stato interrotto durante l'attesa per il popup Continua.");
-//            return 0; // Ritorna 0 in caso di interruzione
-//        }
-//
-      return 1;
-   }*/
 
 
         @Override

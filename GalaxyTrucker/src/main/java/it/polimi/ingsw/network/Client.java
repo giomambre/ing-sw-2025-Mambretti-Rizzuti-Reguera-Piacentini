@@ -436,8 +436,7 @@ public class Client {
                     if (virtualViewType == VirtualViewType.GUI) {
                         CompletableFuture<Integer> futureIndex = ((GUI) virtualView).getBuildcontroller().getFaceupCardIndexFuture();
                         int index = futureIndex.get();
-                        System.out.println("clientttt indice carta scartata" + index);
-                        ((GUI) virtualView).getBuildcontroller().resetfaceupCardIndex(); // opzionale
+                        ((GUI) virtualView).getBuildcontroller().resetfaceupCardIndex();
                         if (index == -1) {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                             break;
@@ -473,12 +472,12 @@ public class Client {
                         }
 
                     }
-                } else if (deck_selected == 3) {  //carte prenotate
+                } else if (deck_selected == 3) {
 
                     if (virtualViewType == VirtualViewType.GUI) {
                         CompletableFuture<Integer> futureIndex = ((GUI) virtualView).getBuildcontroller().getReservedCardIndexFuture();
                         int index = futureIndex.get();
-                        ((GUI) virtualView).getBuildcontroller().resetReservedCardIndex(); // opzionale
+                        ((GUI) virtualView).getBuildcontroller().resetReservedCardIndex();
                         if (index == -1) {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                         } else if (index >= 0 && index < player_local.getShip().getExtra_components().size()) {
