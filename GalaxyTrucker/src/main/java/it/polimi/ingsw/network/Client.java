@@ -591,8 +591,13 @@ public class Client {
 
                         networkAdapter.sendMessage(new CardComponentMessage(MessageType.PLACE_CARD, coords.getKey() + " " + coords.getValue(), clientId, card_msg.getCardComponent()));
 
-                        player_local.addToShip(card_msg.getCardComponent(), coords.getKey(), coords.getValue());
-
+                        try {
+                            player_local.addToShip(card_msg.getCardComponent(), coords.getKey(), coords.getValue());
+                        }catch (Exception e){
+                            networkAdapter.sendMessage(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
+                            elaborate(new Message(MessageType.BUILD_START, ""));
+                            break;
+                        }
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         player_local.getShip().getExtra_components().remove(card_msg.getCardComponent());
                         break;
