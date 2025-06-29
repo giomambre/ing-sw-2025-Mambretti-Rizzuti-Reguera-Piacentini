@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -682,10 +684,17 @@ public class FlyghtController {
         boardGrid.setPrefSize(BOARD_SIZE * CELL_WIDTH, BOARD_SIZE * CELL_HEIGHT);
         boardGrid.setMinSize(BOARD_SIZE * CELL_WIDTH, BOARD_SIZE * CELL_HEIGHT);
         boardGrid.setMaxSize(BOARD_SIZE * CELL_WIDTH, BOARD_SIZE * CELL_HEIGHT);
-
+        int coords = 1;
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                StackPane cell = createBoardCell(i, j);
+                StackPane cell;
+                if(i == 0 && j == 0) {
+                     cell = createBoardCell(24);
+
+                }else{
+                      cell = createBoardCell(coords);
+                    coords++;
+                }
                 boardGrid.add(cell, j, i);
             }
         }
@@ -693,11 +702,10 @@ public class FlyghtController {
 
     /**
      * Creates a single board cell with consistent styling.
-     * @param row the row index
-     * @param col the column index
+     * @param num index of the cell
      * @return the created StackPane representing the cell
      */
-    private StackPane createBoardCell(int row, int col) {
+    private StackPane createBoardCell(int num) {
         StackPane cell = new StackPane();
         cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
         cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
@@ -711,9 +719,17 @@ public class FlyghtController {
                         "-fx-background-radius: 10px;"
         );
 
+        Text numberText = new Text(String.valueOf(num));
+        numberText.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        numberText.setFill(javafx.scene.paint.Color.web("#3a0066"));
+
+        StackPane.setAlignment(numberText, Pos.TOP_LEFT);
+        StackPane.setMargin(numberText, new Insets(5, 0, 0, 5));
+
+        cell.getChildren().add(numberText);
+
         return cell;
     }
-
 
     /**
      * Initializes the grid for the player's ship (7x5).
