@@ -12,6 +12,10 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Controller for the screen where the player chooses how to join the game.
+ * It allows the user to select between different joining options: joining an existing lobby or creating a new one.
+ */
 public class Joingamecontroller {
 
     @FXML
@@ -20,11 +24,15 @@ public class Joingamecontroller {
     @FXML
     private Button joinButton;
 
-    //int choice=0;
     private CompletableFuture<Integer> choiceFuture = new CompletableFuture<>();
 
     private GUI gui;
 
+    /**
+     * Initializes and displays the "Join Game" screen.
+     * @param stage
+     * @throws Exception if the FXML file fails to load
+     */
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/joinGame.fxml"));
         loader.setController(this);
@@ -45,18 +53,13 @@ public class Joingamecontroller {
     }
     @FXML
     public void setOne(ActionEvent event) {
-        //this.choice=1;
         choiceFuture.complete(1);
     }
     @FXML
     public void setTwo(ActionEvent event) {
-        //this.choice=2;
         choiceFuture.complete(2);
     }
 
-    /*public int getChoice() {
-        return choice;
-    }*/
     public void setGui(GUI gui) {
         this.gui=gui;
     }

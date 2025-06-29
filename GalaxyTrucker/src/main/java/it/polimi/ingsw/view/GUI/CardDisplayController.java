@@ -5,6 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Controller responsible for displaying a component card in the GUI.
+ */
 public class CardDisplayController {
     @FXML
     private Label deckNameLabel;
@@ -22,22 +25,17 @@ public class CardDisplayController {
     }
 
     /**
-     * Imposta l'immagine e la descrizione della carta da visualizzare.
-     * Il percorso dell'immagine deve essere relativo al classpath (es. "/images/cards/my_card.png").
-     * @param cardImagePath Il percorso relativo dell'immagine della carta.
+     * Sets the image and description of the card to be displayed.
+     * @param cardImagePath the relative path to the card image
      */
     public void setCard(String cardImagePath) {
         try {
-            // Carica l'immagine dal percorso specificato
-            // Utilizziamo getClass().getResourceAsStream() per un caricamento robusto da risorse interne
             Image cardImage = new Image(getClass().getResourceAsStream(cardImagePath));
             cardImageView.setImage(cardImage);
         } catch (Exception e) {
             System.err.println("Errore nel caricamento dell'immagine della carta: " + cardImagePath);
             e.printStackTrace();
-            // Puoi impostare un'immagine di placeholder per errori, ad esempio:
-            // cardImageView.setImage(new Image(getClass().getResourceAsStream("/it/polimi/ingsw/view/GUI/images/cards/error_card.png")));
-        }
+            }
     }
 }
 

@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Controller for managing the selection of crewmates within the ship grid.
+ */
 public class CrewmateSelectionController {
 
     @FXML
@@ -34,13 +37,20 @@ public class CrewmateSelectionController {
     private Stage stage;
     private CompletableFuture<Integer> crewmateSelection = new CompletableFuture<>();
 
+    /**
+     * This method initializes the crewmate selection buttons with their corresponding actions.
+     * Each button, when clicked, completes the selection with its associated crewmate type.
+     */
     public void initialize() {
-        // Setup button actions
-        astronautButton.setOnAction(e -> selectCrewmate(1)); // Astronaut
-        pinkAlienButton.setOnAction(e -> selectCrewmate(2)); // PinkAlien
-        brownAlienButton.setOnAction(e -> selectCrewmate(3)); // BrownAlien
+        astronautButton.setOnAction(e -> selectCrewmate(1));
+        pinkAlienButton.setOnAction(e -> selectCrewmate(2));
+        brownAlienButton.setOnAction(e -> selectCrewmate(3));
     }
 
+    /**
+     * This method completes the crewmate selection with the given type and closes the stage if open.
+     * @param crewmateType the type of crewmate selected (1 = Astronaut, 2 = PinkAlien, 3 = BrownAlien)
+     */
     private void selectCrewmate(int crewmateType) {
         if (!crewmateSelection.isDone()) {
             crewmateSelection.complete(crewmateType);
@@ -57,13 +67,17 @@ public class CrewmateSelectionController {
         return crewmateSelection;
     }
 
-    // Metodo alternativo per passare direttamente i crewmate supportati
+    /**
+     * Configures the UI to show only the crewmates that can be assigned to the given card.
+     * Also updates the label with the coordinates of the card.
+     * @param coords the coordinates of the card
+     * @param supportedCrewmates a list of allowed crewmate types for this card
+     */
     public void setCardWithSupportedCrewmates(Pair<Integer, Integer> coords, List<CrewmateType> supportedCrewmates) {
 
-        // Set card info text
-        cardInfoLabel.setText("Seleziona il crewmate per questa Living Unit alle coordinate (" + coords.getKey() + ", " + coords.getValue() + ") :");
+        cardInfoLabel.setText("Seleziona il crewmate per questa Living Unit \n" + "alle coordinate (" + coords.getKey() + ", " + coords.getValue() + ") :");
+        cardInfoLabel.setWrapText(true);
 
-        // Configure buttons directly with provided list
         astronautButton.setVisible(supportedCrewmates.contains(CrewmateType.Astronaut));
         astronautButton.setManaged(supportedCrewmates.contains(CrewmateType.Astronaut));
 

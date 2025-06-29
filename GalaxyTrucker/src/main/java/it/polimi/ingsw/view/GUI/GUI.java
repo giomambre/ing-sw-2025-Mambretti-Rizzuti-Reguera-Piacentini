@@ -48,7 +48,9 @@ import java.util.concurrent.ExecutionException;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
-
+/**
+ * Main graphical user interface (GUI) class for the Galaxy Trucker game.
+ */
 public class GUI implements View {
 
     Joingamecontroller joingamecontroller;
@@ -171,13 +173,13 @@ public class GUI implements View {
                 controller.setGui(this);
                 this.joingamecontroller = controller;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -191,7 +193,7 @@ public class GUI implements View {
     @Override
     public int askCreateOrJoin() {
         try {
-            return joingamecontroller.getChoiceFuture().get(); // blocca finché non c'è risposta
+            return joingamecontroller.getChoiceFuture().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return -1;
@@ -222,13 +224,13 @@ public class GUI implements View {
                 controller.setGui(this);
                 this.numplayercontroller = controller;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -327,13 +329,13 @@ public class GUI implements View {
                 this.guiselectcontroller = controller;
                 this.lobbies = lobbies;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -365,13 +367,13 @@ public class GUI implements View {
                 this.choosecolorcontroller = controller;
                 this.colorsavailable = colors;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -413,7 +415,7 @@ public class GUI implements View {
             Platform.runLater(() -> {
                     stage.toFront();
                     stage.requestFocus();
-                    stage.show(); // riportala in primo piano
+                    stage.show();
                     buildcontroller.updateFaceUpCardsDisplay();
             });
             return;
@@ -424,8 +426,8 @@ public class GUI implements View {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/BuildShip.fxml"));
                 Parent root = loader.load();
 
-                Buildcontroller controller = loader.getController(); // usa controller FXML
-                controller.setGUI(this); // passa la GUI, con il client corretto
+                Buildcontroller controller = loader.getController();
+                controller.setGUI(this);
                 this.buildcontroller = controller;
 
                 Scene scene = new Scene(root);
@@ -453,7 +455,7 @@ public class GUI implements View {
         });
 
         try {
-            future.get(); // aspetta la GUI
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -468,7 +470,7 @@ public class GUI implements View {
             Platform.runLater(() -> {
                 stage.toFront();
                 stage.requestFocus();
-                stage.show(); // riportala in primo piano
+                stage.show();
                 flyghtController.updatePlayerShip();
             });
             return;
@@ -567,7 +569,6 @@ public class GUI implements View {
                     controller.setBookButton();
                 }
 
-                //controller.setComboBox();
                 controller.showCardImage(card);
 
                 stage.setTitle("Random Card");
@@ -620,21 +621,28 @@ public class GUI implements View {
                 CrewmateSelectionController controller = loader.getController();
 
                 controller.setCardWithSupportedCrewmates(coords, supportedCrewmates);
-                controller.setStage(new Stage());
+                Stage stage = new Stage();
+                controller.setStage(stage);
 
-                Stage stage = controller.getStage();
                 stage.setTitle("Crewmate Selection");
                 stage.setScene(new Scene(root));
-                stage.centerOnScreen();
+
+                // Calcola posizione: sinistra + centro verticale
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                double x = 20; // Margine da sinistra
+                double y = (screenBounds.getHeight() - root.prefHeight(-1)) / 2 - 50;
+                stage.setX(x);
+                stage.setY(y);
+
                 stage.show();
 
                 this.crewmateSelectionController = controller;
-
                 future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
+
 
         try {
             future.get();
@@ -642,6 +650,7 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }
+
 
 
     /**
@@ -731,8 +740,8 @@ public class GUI implements View {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ranking.fxml"));
                 Parent root = loader.load();
 
-                FinalRanksScreen controller = loader.getController(); // usa controller FXML
-                controller.setGUI(this); // passa la GUI, con il client corretto
+                FinalRanksScreen controller = loader.getController();
+                controller.setGUI(this);
                 this.finalRanksScreen = controller;
 
                 Scene scene = new Scene(root);
@@ -918,7 +927,6 @@ public class GUI implements View {
     public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
         CountDownLatch latch = new CountDownLatch(1);
 
-        // Esegui tutto sul thread JavaFX
         Platform.runLater(() -> {
             try {
                 Stage meteorStage = new Stage();
@@ -961,20 +969,18 @@ public class GUI implements View {
                 coordLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
                 coordLabel.setStyle("-fx-text-fill: #043a7e;");
 
-                // Bottone Continua
+
                 Button continueButton = new Button("Continua");
                 continueButton.setId("continue-button");
                 continueButton.setPrefWidth(120);
 
-                // Event handler per il bottone
                 continueButton.setOnAction(e -> {
                     meteorStage.close();
-                    latch.countDown(); // Rilascia il thread in attesa
+                    latch.countDown();
                 });
 
-                // Aggiungi anche la possibilità di chiudere con ESC o clic sulla X
                 meteorStage.setOnCloseRequest(e -> {
-                    latch.countDown(); // Rilascia il thread anche se chiuso diversamente
+                    latch.countDown();
                 });
 
                 mainContainer.getChildren().addAll(meteorImage, meteorTypeLabel, directionLabel, coordLabel, continueButton);
@@ -998,11 +1004,10 @@ public class GUI implements View {
             } catch (Exception e) {
                 System.err.println("Errore durante la visualizzazione dell'allarme meteorite.");
                 e.printStackTrace();
-                latch.countDown(); // Rilascia in caso di errore
+                latch.countDown();
             }
-        }); // Fine di Platform.runLater
+        });
 
-        // Blocca il thread corrente finché l'utente non preme Continua
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -1010,7 +1015,7 @@ public class GUI implements View {
             System.err.println("Il thread è stato interrotto durante l'attesa dell'allarme meteora.");
         }
     } ;
-    // Metodo ausiliario per ottenere il percorso dell'immagine
+
     private String getMeteorImagePath(MeteorType type) {
         return switch (type) {
             case LargeMeteor -> "/images/meteortype/large_meteor.jpg";
@@ -1020,7 +1025,6 @@ public class GUI implements View {
         };
     }
 
-    // Metodo ausiliario per ottenere il testo del tipo di meteora
     private String getMeteorTypeText(MeteorType type) {
         return switch (type) {
             case LargeMeteor -> "METEORA GROSSA";
@@ -1030,7 +1034,6 @@ public class GUI implements View {
         };
     }
 
-    // Metodo ausiliario per ottenere il testo della direzione
     private String getDirectionText(Direction direction) {
         return switch (direction) {
             case South -> "da SUD";
@@ -1040,13 +1043,12 @@ public class GUI implements View {
         };
     }
 
-    // Metodo ausiliario per ruotare l'immagine basata sulla direzione
     private void rotateMeteorImage(ImageView imageView, Direction direction) {
         double rotation = switch (direction) {
-            case North -> 0;      // Verso il basso
-            case South -> 180;    // Verso l'alto
-            case East -> 270;     // Verso sinistra
-            case West -> 90;      // Verso destra
+            case North -> 0;
+            case South -> 180;
+            case East -> 270;
+            case West -> 90;
         };
         imageView.setRotate(rotation);
     }
@@ -1127,12 +1129,12 @@ public class GUI implements View {
             controller.getSelectedPieceFuture().thenAccept(result::complete);
         });
 
-        // Aspetta che l'utente selezioni il pezzo
+
         try {
-            return result.get(); // blocca fino a quando viene completato
+            return result.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return -1; // fallback in caso di errore
+            return -1;
         }
     }
 
@@ -1161,19 +1163,17 @@ public class GUI implements View {
      */
         @Override
         public void showHittedCard(CardComponent card, Direction direction) {
-            // Se non siamo sul JavaFX Application Thread, usa CountDownLatch
             if (!Platform.isFxApplicationThread()) {
                 CountDownLatch latch = new CountDownLatch(1);
                 Platform.runLater(() -> {
                     createAndShowStage(card, direction, latch);
                 });
                 try {
-                    latch.await(); // Aspetta che la finestra venga chiusa
+                    latch.await();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             } else {
-                // Se siamo già sul JavaFX thread, crea direttamente lo stage
                 createAndShowStage(card, direction, null);
             }
             flyghtController.updatePlayerShip();
@@ -1187,13 +1187,11 @@ public class GUI implements View {
      * @param latch an optional {@link CountDownLatch} used to block the calling thread until the window is closed
      */
     private void createAndShowStage(CardComponent card, Direction direction, CountDownLatch latch) {
-        // Crea un nuovo stage
         Stage stage = new Stage();
         stage.setTitle("Carta Colpita");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
 
-        // Ottieni la finestra principale per impostare il proprietario
         Stage primaryStage = (Stage) Stage.getWindows().stream()
                 .filter(Window::isShowing)
                 .findFirst()
@@ -1202,52 +1200,44 @@ public class GUI implements View {
             stage.initOwner(primaryStage);
         }
 
-        // Layout principale
         VBox root = new VBox(20);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #D8B7DD;");
 
-        // Label informativa
         Label infoLabel = new Label("La carta è stata colpita \nin direzione: " + direction.toString());
         infoLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #043a7e;");
 
-        // ImageView per la carta
         ImageView cardImageView = new ImageView();
 
-        // Carica l'immagine della carta
         String imagePath = card.getImagePath();
         if(!imagePath.isEmpty()) {
             Image cardImage = new Image(imagePath);
             cardImageView.setImage(cardImage);
         }
-            // Imposta dimensioni dell'immagine
+
             cardImageView.setFitWidth(150);
             cardImageView.setFitHeight(200);
             cardImageView.setPreserveRatio(true);
 
-            // Applica la rotazione in base alla direzione
             cardImageView.setRotate(card.getRotationAngle());
 
-            // Container per l'immagine con bordo
             StackPane imageContainer = new StackPane();
             imageContainer.getChildren().add(cardImageView);
             imageContainer.setStyle("-fx-border-color: transparent; -fx-background-color: transparent;");
 
-        // Bottone OK
+
         Button okButton = new Button("OK");
         okButton.setId("continue-button");
         okButton.setOnAction(e -> {
             stage.close();
             if (latch != null) {
-                latch.countDown(); // Sblocca il thread chiamante
+                latch.countDown();
             }
         });
 
-        // Aggiunge tutti i componenti al layout
         root.getChildren().addAll(infoLabel, imageContainer, okButton);
 
-        // Crea la scena
         Scene scene = new Scene(root, 350, 300);
         stage.setScene(scene);
         scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
@@ -1263,11 +1253,10 @@ public class GUI implements View {
         stage.setX(x);
         stage.setY(y);
 
-        // Mostra lo stage
         if (latch != null) {
-            stage.show(); // Non usa showAndWait() perché stiamo gestendo il blocking con CountDownLatch
+            stage.show();
         } else {
-            stage.showAndWait(); // Usa showAndWait() se siamo già sul JavaFX thread
+            stage.showAndWait();
         }
     }
 
@@ -1311,9 +1300,7 @@ public class GUI implements View {
             Pair<Integer,Integer> selection = flyghtController.getcoordsBattery().get();
             flyghtController.resetcoordsBattery();
 
-            // Controlla se la selezione è valida (non -1, -1)
             if (selection.getKey() == -1 && selection.getValue() == -1) {
-                // Nessuno storage disponibile o selezione annullata
                 return null;
             }
             Storage selectedStorage = (Storage) ship.getComponent(selection.getKey(), selection.getValue());
