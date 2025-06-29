@@ -1270,6 +1270,9 @@ public class Client {
                 }
 
                 double power_m = ship.calculateEnginePower(battery_usage_os);
+                if(virtualViewType==VirtualViewType.GUI){
+                    ((GUI) virtualView).addLogEvent("Hai dichiarato una potenza di " + power_m,"");
+                }
                 virtualView.showMessage("\n\nLA TUA POTENZA MOTORE : " + power_m);
                 networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power_m), clientId, player_local));
 
@@ -1549,6 +1552,7 @@ public class Client {
 
                         double power = enginePower(0);
 
+
                         virtualView.showMessage("\n ----- POTENZA MOTORI TOTALE :  " + power + " -----\n");
                         if(virtualViewType == VirtualViewType.GUI){
                             ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza MOTORI : " +power,"" );
@@ -1661,6 +1665,9 @@ public class Client {
 
 
                     virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
+                    if(virtualViewType==VirtualViewType.GUI){
+                        ((GUI) virtualView).addLogEvent("HAI PAREGGIATO LA POTENZA DEI NEMICI " ,"");
+                    }
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
 

@@ -231,13 +231,13 @@ public class Server implements RemoteServer {
                             }
 
 
+                        }
+                    }else {
+                            System.out.println("Fail player joined lobby :" + lobby_id);
+                            sendToClient(msgClient.getId_client(), new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES, "Lobby full o partita iniziata \n", manager.getAvaibleLobbies()));
 
-                    } else {
-                        System.out.println("Fail player joined lobby :" + lobby_id);
-                        sendToClient(msgClient.getId_client(), new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES, "Lobby full o partita iniziata \n", manager.getAvaibleLobbies()));
+                        }
 
-                    }
-                }
 
                 break;
 
@@ -629,14 +629,14 @@ public class Server implements RemoteServer {
                                 Cargo.Blue
                         ),
                         2,"/images/cardAdventure/GT-smugglers_1.jpg");*/
-             /*    adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+                 adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                         List.of(
                                 new Pair<>(MeteorType.LightCannonFire, North),
                                 new Pair<>(MeteorType.LightCannonFire, West),
                                 new Pair<>(MeteorType.LightCannonFire, East),
                                 new Pair<>(MeteorType.HeavyCannonFire, South)
                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
-                )*/;
+                );
 
              /*    adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(

@@ -193,11 +193,7 @@ public class GameController {
 
     public void removeFromAdventure(String nickname) {
 
-        if (adventureOrder.contains(getPlayer(nickname))) {
-
-            adventureOrder.remove(getPlayer(nickname));
-
-        } else adv_index--;
+        adventureOrder.remove(getPlayer(nickname));
 
     }
 
