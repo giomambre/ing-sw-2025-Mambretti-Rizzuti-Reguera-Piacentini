@@ -79,6 +79,7 @@ it\polimi\ingsw\network\SocketAdapter.class
 it\polimi\ingsw\model\enumerates\Cargo.class
 it\polimi\ingsw\view\ShipPanel.class
 it\polimi\ingsw\network\messages\ShipClientMessage.class
+it\polimi\ingsw\view\GUI\PlayerShipController$1.class
 it\polimi\ingsw\model\adventures\AbandonedShip.class
 it\polimi\ingsw\network\RmiAdapter.class
 it\polimi\ingsw\network\messages\NotificationMessage.class

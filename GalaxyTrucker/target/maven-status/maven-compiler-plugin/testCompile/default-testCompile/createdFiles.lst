@@ -24,7 +24,6 @@ it\polimi\ingsw\LobbyTest.class
 it\polimi\ingsw\GameControllerTest.class
 it\polimi\ingsw\PlayerTest.class
 it\polimi\ingsw\LivingUnitTest.class
-it\polimi\ingsw\GameManagerTest.class
 it\polimi\ingsw\CardComponentLoaderTest.class
 it\polimi\ingsw\CardComponentTest.class
 it\polimi\ingsw\EpidemicTest.class

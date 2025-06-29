@@ -1495,6 +1495,7 @@ public class Client {
 
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
+                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
                     return;
 
                 } else if (pieces.size() > 1) {

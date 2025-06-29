@@ -373,7 +373,6 @@ public class Server implements RemoteServer {
 
 
                         controller.dismissComponent(getNickname(card_msg.getId_client()), card_msg.getCardComponent());
-                        System.out.println(controller.getFacedUpCards().toString());
                         sendToAllClients(controller.getLobby(), new CardComponentMessage(MessageType.FACED_UP_CARD_UPDATED, "", card_msg.getId_client(), card_msg.getCardComponent()));
 
 
@@ -515,7 +514,6 @@ public class Server implements RemoteServer {
                     safePlayers.add(p.copyPlayer());
                 }
                 sendToClient(update_msg.getId_client(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
-                System.out.println(getNickname(update_msg.getId_client()) + " " + controller.getValidPieces(getNickname(update_msg.getId_client())).size());
 
                 if (controller.getValidPieces(getNickname(update_msg.getId_client())).size() > 1) {
 
@@ -752,6 +750,9 @@ public class Server implements RemoteServer {
                     case MeteorSwarm:
 
                         controller.removeFromAdventure(getNickname(adv_msg.getId_client()));
+
+
+
 
                         if (controller.getActivePlayers().size() <= 1) {
 
