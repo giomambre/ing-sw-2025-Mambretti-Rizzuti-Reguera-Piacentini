@@ -21,7 +21,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-
+/**
+ * Controls the display of a player's ship in a separate window.
+ * This class is used during both the build and flight phases
+ * to visualize the structure and current state of a player's ship.
+ */
 public class PlayerShipController {
     @FXML
     private Label playerNameLabel;
@@ -29,26 +33,37 @@ public class PlayerShipController {
     private GridPane shipGrid;
     @FXML
     private Button closeButton;
-
     @FXML
     private Button closeButtonFlyght;
 
     private Buildcontroller buildcontroller;
-
     private FlyghtController flyghtcontroller;
 
+    /**
+     * Sets the reference to the Buildcontroller to manage the stage during the build phase.
+     * @param buildcontroller The build controller to be referenced.
+     */
     public void setBuildcontroller(Buildcontroller buildcontroller) {
         this.buildcontroller = buildcontroller;
     }
 
+    /**
+     * Sets the reference to the FlyghtController to manage the stage during the flight phase.
+     * @param flyghtcontroller The flight controller to be referenced.
+     */
     public void setFlyghtcontroller(FlyghtController flyghtcontroller) {
         this.flyghtcontroller = flyghtcontroller;
     }
 
+    /**
+     * Populates the ship grid with the components and overlays (crew, batteries, cargo) from the provided Ship object.
+     * @param nickname The nickname of the player who owns the ship.
+     * @param ship The player's {@link Ship} object, containing the board and the state of all its components.
+     */
     public void setPlayerShip(String nickname, Ship ship) {
-        playerNameLabel.setText("Nave di " + nickname);
+        playerNameLabel.setText(nickname + "'s Ship");
         shipGrid.getChildren().clear();
-        playerNameLabel.setStyle("-fx-font-family: 'Verdana'; -fx-font-size: 14px; -fx-text-fill: #4B0082 ; -fx-font-weight: bold;");
+        playerNameLabel.setStyle("-fx-font-family: 'Verdana'; -fx-font-size: 14px; -fx-text-fill: #4B0082; -fx-font-weight: bold;");
 
         CardComponent[][] shipBoard = ship.getShipBoard();
 
@@ -58,10 +73,9 @@ public class PlayerShipController {
                 cell.setPrefSize(53, 53);
 
                 CardComponent component = shipBoard[i][j];
-                if(component==null||component.getComponentType()== ComponentType.NotAccessible||component.getComponentType()==ComponentType.Empty){
+                if(component == null || component.getComponentType() == ComponentType.NotAccessible || component.getComponentType() == ComponentType.Empty){
                     cell.setStyle("-fx-background-color: transparent;");
-                }
-                else  {
+                } else {
                     Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(component.getImagePath())));
                     ImageView iv = new ImageView(img);
                     iv.setFitWidth(66.25);
@@ -76,6 +90,12 @@ public class PlayerShipController {
         restoreOverlays(ship);
     }
 
+    /**
+     * Restores all dynamic overlays (crew, battery, cargo) on the ship grid.
+     * This method iterates through the ship's components and adds the corresponding visual overlays
+     * to reflect the current state of the game.
+     * @param ship The ship on which to restore the overlays.
+     */
     private void restoreOverlays(Ship ship) {
         for (int i = 0; i < ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
@@ -112,6 +132,14 @@ public class PlayerShipController {
         }
     }
 
+    /**
+     * Updates the cargo overlay for a specific cell.
+     * It clears any existing cargo overlays on the cell and adds new ones based on the
+     * contents of the Storage component at that location.
+     * @param row The row index of the cell.
+     * @param col The column index of the cell.
+     * @param ship The ship containing the cell.
+     */
     private void updateCargoOverlayAt(int row, int col, Ship ship) {
         CardComponent component = ship.getComponent(row, col);
 
@@ -145,6 +173,13 @@ public class PlayerShipController {
     }
 
 
+    /**
+     * Adds a visual overlay of a specific type to a cell on the ship grid.
+     * @param x The row index of the cell.
+     * @param y The column index of the cell.
+     * @param type The type of overlay to add (e.g., "Astronaut", "Battery").
+     * @param count The number of items to represent in the overlay (e.g., number of crewmates).
+     */
     private void addOverlay(int x, int y, String type, int count) {
         Platform.runLater(() -> {
             StackPane cell = getShipCellAt(x, y);
@@ -157,6 +192,12 @@ public class PlayerShipController {
         });
     }
 
+    /**
+     * Removes an overlay of a specific type from a cell on the ship grid.
+     * @param x The row index of the cell.
+     * @param y The column index of the cell.
+     * @param type The type of overlay to remove.
+     */
     private void removeOverlay(int x, int y, String type) {
         Platform.runLater(() -> {
             StackPane cell = getShipCellAt(x, y);
@@ -165,12 +206,24 @@ public class PlayerShipController {
         });
     }
 
+    /**
+     * A utility method to check if a JavaFX Node is a specific type of overlay by its ID.
+     * @param node The node to check.
+     * @param type The type identifier to match (e.g., "Astronaut").
+     * @return True if the node is an overlay of the given type, false otherwise.
+     */
     private boolean isOverlayOfType(Node node, String type) {
         if (node == null) return false;
         String nodeId = node.getId();
         return nodeId != null && nodeId.equals("overlay-" + type);
     }
 
+    /**
+     * Factory method that creates the actual JavaFX Node for an overlay.
+     * @param type The type of overlay to create (e.g., "Battery", "RedCargo").
+     * @param count The number of icons to include in the overlay.
+     * @return The generated {@link Node} (usually an HBox of ImageViews), or null if the type is unknown.
+     */
     private Node createOverlayForType(String type, int count) {
         String path;
         HBox container = new HBox(0);
@@ -234,6 +287,12 @@ public class PlayerShipController {
         return container;
     }
 
+    /**
+     * Finds and returns the StackPane (the cell) at a given grid coordinate.
+     * @param row The row index of the cell.
+     * @param col The column index of the cell.
+     * @return The {@link StackPane} at the specified position, or null if not found.
+     */
     private StackPane getShipCellAt(int row, int col) {
         for (Node node : shipGrid.getChildren()) {
             Integer colIndex = GridPane.getColumnIndex(node);
@@ -246,18 +305,30 @@ public class PlayerShipController {
         return null;
     }
 
+    /**
+     * Makes the close button visible, typically for the build phase view.
+     */
     public void showCloseButton() {
         Platform.runLater(() -> closeButton.setVisible(true));
     }
 
+    /**
+     * Makes the close button visible, typically for the flight phase view.
+     */
     public void showCloseButtonFlyght() {
         Platform.runLater(() -> closeButtonFlyght.setVisible(true));
     }
 
+    /**
+     * Closes the stage associated with the Buildcontroller.
+     */
     public void closeStage(){
         buildcontroller.getPlayerStage().close();
     }
 
+    /**
+     * Closes the stage associated with the FlyghtController.
+     */
     public void closeStageFlyght(){
         flyghtcontroller.getPlayerStage().close();
     }
