@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-23\bin"/>
-    <property name="sun.java.command" value="C:\Users\gioma\AppData\Local\Temp\surefire6166258747921681346\surefirebooter-20250629214400013_3.jar C:\Users\gioma\AppData\Local\Temp\surefire6166258747921681346 2025-06-29T21-43-59_842-jvmRun1 surefire-20250629214400013_1tmp surefire_0-20250629214400013_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\gioma\AppData\Local\Temp\surefire3426856909318614404\surefirebooter-20250629224432945_3.jar C:\Users\gioma\AppData\Local\Temp\surefire3426856909318614404 2025-06-29T22-44-32_802-jvmRun1 surefire-20250629224432945_1tmp surefire_0-20250629224432945_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\target\test-classes;C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\target\classes;C:\Users\gioma\.m2\repository\org\openjfx\javafx-controls\24.0.1\javafx-controls-24.0.1.jar;C:\Users\gioma\.m2\repository\org\openjfx\javafx-controls\24.0.1\javafx-controls-24.0.1-win.jar;C:\Users\gioma\.m2\repository\org\openjfx\javafx-graphics\24.0.1\javafx-graphics-24.0.1.jar;C:\Users\gioma\.m2\repository\org\openjfx\javafx-graphics\24.0.1\javafx-graphics-24.0.1-win.jar;C:\Users\gioma\.m2\repository\org\openjfx\javafx-base\24.0.1\javafx-base-24.0.1.jar;C:\Users\gioma\.m2\repository\org\openjfx\javafx-base\24.0.1\javafx-base-24.0.1-win.jar;C:\Users\gioma\.m2\repository\org\openjfx\javafx-fxml\24.0.1\javafx-fxml-24.0.1.jar;C:\Users\gioma\.m2\repository\org\openjfx\javafx-fxml\24.0.1\javafx-fxml-24.0.1-win.jar;C:\Users\gioma\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.16.0\jackson-databind-2.16.0.jar;C:\Users\gioma\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.16.0\jackson-core-2.16.0.jar;C:\Users\gioma\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.16.0\jackson-annotations-2.16.0.jar;C:\Users\gioma\.m2\repository\org\controlsfx\controlsfx\11.2.1\controlsfx-11.2.1.jar;C:\Users\gioma\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.2\junit-jupiter-api-5.10.2.jar;C:\Users\gioma\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\gioma\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\gioma\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\gioma\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.2\junit-jupiter-engine-5.10.2.jar;C:\Users\gioma\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\gioma\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\gioma\AppData\Local\Temp\surefire6166258747921681346\surefirebooter-20250629214400013_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\gioma\AppData\Local\Temp\surefire3426856909318614404\surefirebooter-20250629224432945_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.1+11-39"/>
@@ -59,8 +59,8 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="testRemoveCargo" classname="it.polimi.ingsw.StorageTest" time="0.001"/>
-  <testcase name="testaddCargo" classname="it.polimi.ingsw.StorageTest" time="0.0">
+  <testcase name="testRemoveCargo" classname="it.polimi.ingsw.StorageTest" time="0.0"/>
+  <testcase name="testaddCargo" classname="it.polimi.ingsw.StorageTest" time="0.001">
     <system-out><![CDATA[Green
 [Green, Red, Empty]
 ]]></system-out>

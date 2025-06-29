@@ -335,7 +335,8 @@ public class Buildcontroller {
         shipGrid.setMinSize(540, 386.25);
         shipGrid.setMaxSize(540, 386.25);
 
-        CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
+        CardComponent[][] shipboard=gui.getClient().getPlayer_local().getShip().getShipBoard();
+
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
 
@@ -345,10 +346,10 @@ public class Buildcontroller {
                 cell.setMinSize(77.5, 77.5);
                 cell.setMaxSize(77.5, 77.5);
 
-                if (shipboard[i][j].getComponentType() == ComponentType.NotAccessible) {
+                if (shipboard[i][j].getComponentType()== ComponentType.NotAccessible) {
                     cell.setStyle("-fx-background-color: transparent;");
                 } else {
-                    if (shipboard[i][j].getComponentType() == ComponentType.Empty) {
+                    if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
                         cell.setPrefSize(77.5, 77.5);
                         cell.setStyle("-fx-background-color: transparent;");
 
@@ -374,60 +375,62 @@ public class Buildcontroller {
                                     gui.getRandomcardcontroller().getStage().close();
                                 }
                             });
-                        }
-
-                    }
-                    if (i == 2 && j == 3) {
-                        Color color = gui.getClient().getPlayer_local().getColor();
-                        String imagePath = null;
-
-                        cell.setOnMouseEntered(null);
-                        cell.setOnMouseExited(null);
-                        cell.setEffect(null);
-                        cell.setOnMouseClicked(null);
-
-                        Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
-                        connectors.put(North, Universal);
-                        connectors.put(South, Universal);
-                        connectors.put(East, Universal);
-                        connectors.put(West, Universal);
-
-
-                        switch (color) {
-                            case BLUE:
-                                imagePath = "/images/cardComponent/GT-mainUnitBlue.jpg";
-                                shipboard[i][j] = new LivingUnit(ComponentType.MainUnitBlue, connectors, imagePath);
-
-                                break;
-                            case RED:
-                                imagePath = "/images/cardComponent/GT-mainUnitRed.jpg";
-                                shipboard[i][j] = new LivingUnit(ComponentType.MainUnitRed, connectors, imagePath);
-
-                                break;
-                            case GREEN:
-                                imagePath = "/images/cardComponent/GT-mainUnitGreen.jpg";
-                                shipboard[i][j] = new LivingUnit(ComponentType.MainUnitGreen, connectors, imagePath);
-
-                                break;
-                            case YELLOW:
-                                imagePath = "/images/cardComponent/GT-mainUnitYellow.jpg";
-                                shipboard[i][j] = new LivingUnit(ComponentType.MainUnitYellow, connectors, imagePath);
-
-                                break;
-                        }
-
-                        if (imagePath != null) {
-                            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
-                            ImageView imageView = new ImageView(image);
-                            imageView.setFitWidth(77.5);
-                            imageView.setFitHeight(77.5);
-                            imageView.setPreserveRatio(false);
-                            cell.getChildren().add(imageView);
+                        }else
+                        {
+                            cell.setOnMouseEntered(null);
+                            cell.setOnMouseExited(null);
+                            cell.setEffect(null);
+                            cell.setOnMouseClicked(null);
                         }
                     }
 
-                    shipGrid.add(cell, j, i);
                 }
+                if (i == 2 && j == 3) {
+                    Color color = gui.getClient().getPlayer_local().getColor();
+                    String imagePath = null;
+
+
+                    Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
+                    connectors.put(North, Universal);
+                    connectors.put(South, Universal);
+                    connectors.put(East, Universal);
+                    connectors.put(West, Universal);
+
+
+                    switch (color) {
+                        case BLUE:
+                            imagePath = "/images/cardComponent/GT-mainUnitBlue.jpg";
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitBlue,connectors,imagePath);
+
+                            break;
+                        case RED:
+                            imagePath = "/images/cardComponent/GT-mainUnitRed.jpg";
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitRed,connectors,imagePath);
+
+                            break;
+                        case GREEN:
+                            imagePath = "/images/cardComponent/GT-mainUnitGreen.jpg";
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitGreen,connectors,imagePath);
+
+                            break;
+                        case YELLOW:
+                            imagePath = "/images/cardComponent/GT-mainUnitYellow.jpg";
+                            shipboard[i][j] = new LivingUnit(ComponentType.MainUnitYellow,connectors,imagePath);
+
+                            break;
+                    }
+
+                    if (imagePath != null) {
+                        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitWidth(77.5);
+                        imageView.setFitHeight(77.5);
+                        imageView.setPreserveRatio(false);
+                        cell.getChildren().add(imageView);
+                    }
+                }
+
+                shipGrid.add(cell, j, i);
             }
         }
     }

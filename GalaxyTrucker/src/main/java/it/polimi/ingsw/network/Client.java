@@ -612,7 +612,7 @@ public class Client {
                         virtualView.showMessage("\nSpazio esaurito nelle carte prenotate");
                         networkAdapter.sendMessage(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
                         elaborate(new Message(MessageType.BUILD_START, ""));
-
+                        break;
                     } else {
                         if(virtualViewType == VirtualViewType.TUI) {
                             virtualView.showMessage("\nCarta aggiunta tra le carte prenotate");

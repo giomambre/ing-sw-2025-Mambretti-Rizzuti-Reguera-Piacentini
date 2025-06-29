@@ -6,67 +6,148 @@
   <component name="ChangeListManager">
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Qualchep fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/model/Ship.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/RankingMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/messages/RankingMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/Buildcontroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/Buildcontroller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/controllerTests/GameManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controllerTests/GameManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JAR/GalaxyClient.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JAR/GalaxyServer.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/PSP17-1.0-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/controller/GameState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/BaseGame$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/BaseGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/BaseGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/BaseShip$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/BaseShip.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/BaseShip.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Board.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/CardComponentLoader.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/CardComponentLoader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/InvalidGameActionException.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/InvalidGameActionException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Lobby.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Lobby.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Player$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/QuickGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/QuickGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/QuickShip$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/QuickShip.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/QuickShip.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/Ship.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/AbandonedShip.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/AbandonedShip.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/AbandonedStation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/AbandonedStation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/CardAdventure.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/CardAdventure.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/CombatZone.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/CombatZone.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Epidemic.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Epidemic.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/MeteorSwarm.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/MeteorSwarm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/OpenSpace.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/OpenSpace.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Pirates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Pirates.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Planets.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Planets.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Slavers.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Slavers.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Smugglers.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Smugglers.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Stardust.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/adventures/Stardust.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Battery.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Battery.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/CardComponent$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/CardComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/CardComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/LivingUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/LivingUnit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Shield.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Shield.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/components/Storage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/CardAdventureType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/CardAdventureType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Cargo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Cargo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Color.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Color.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/ComponentType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/ComponentType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/ConnectorType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/ConnectorType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/CrewmateType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/CrewmateType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Direction.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Direction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Gametype.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/Gametype.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/MeteorType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/model/enumerates/MeteorType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/GameState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/GameState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/LobbyTimer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/LobbyTimer$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/LobbyTimer$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/LobbyTimer$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/LobbyTimer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/LobbyTimer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/RemoteClientImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/RemoteClientImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/RmiAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/RmiAdapter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/RmiConnectionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/RmiConnectionHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/SocketAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/SocketAdapter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/SocketConnectionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/SocketConnectionHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/VirtualViewType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/VirtualViewType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AddBatteryMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AddBatteryMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AddCardMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AddCardMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AddCrewmateMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AddCrewmateMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AdventureCardMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AdventureCardMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AvaiableLobbiesMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/AvaiableLobbiesMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/BoardMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/BoardMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/BuildPhaseEndedMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/BuildPhaseEndedMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/CardAdventureDeckMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/CardAdventureDeckMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/CardComponentMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/CardComponentMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/CreateLobbyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/CreateLobbyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/GameStartedMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/GameStartedMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/InvalidConnectorsMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/InvalidConnectorsMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/MessageType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/NotificationMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/NotificationMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/PlayersShipsMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/PlayersShipsMessage.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/RankingMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/RankingMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/ShipClientMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/ShipClientMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/ShipPiecesMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/ShipPiecesMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/StandardMessageClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/StandardMessageClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/TimeUpdateMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/messages/TimeUpdateMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/AdventurePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/AdventurePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/CardSelectionPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/CardSelectionPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Buildcontroller$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Buildcontroller$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Buildcontroller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Buildcontroller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameControllerTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameManagerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameManagerTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedShipTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedShipTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedStationTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedStationTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BaseGameTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BaseGameTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BatteryTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BatteryTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BoardTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BoardTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardAdventureTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardAdventureTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentLoaderTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentLoaderTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CombatZoneTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CombatZoneTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.EpidemicTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.EpidemicTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.GameControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.GameControllerTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LivingUnitTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LivingUnitTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LobbyTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LobbyTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.MeteorSwarmTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.MeteorSwarmTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PiratesTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PiratesTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlanetsTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlanetsTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlayerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlayerTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickGameTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickGameTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickShipTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickShipTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShieldTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShieldTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShipTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShipTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SlaversTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SlaversTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SmugglersTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SmugglersTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.StorageTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.StorageTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/controllerTests.GameControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/controllerTests.GameControllerTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/controllerTests.GameManagerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/controllerTests.GameManagerTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.AbandonedShipTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.AbandonedShipTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.AbandonedStationTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.AbandonedStationTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.BaseGameTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.BaseGameTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardAdventureTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardAdventureTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardComponentLoaderTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardComponentLoaderTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.GameControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.GameControllerTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.LivingUnitTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.LivingUnitTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.PiratesTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.PiratesTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.PlayerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.PlayerTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.QuickGameTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.QuickGameTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.QuickShipTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.QuickShipTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.SlaversTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.SlaversTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.SmugglersTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.SmugglersTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/CardDisplayController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/CardDisplayController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/CargoSelector$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/CargoSelector.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/CargoSelector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Choosecolorcontroller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Choosecolorcontroller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/ConnectionScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/ConnectionScreen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/CrewmateSelectionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/CrewmateSelectionController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FinalRanksScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FinalRanksScreen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GuiApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/GuiApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Guiselectcontroller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Guiselectcontroller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Joingamecontroller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Joingamecontroller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Numplayercontroller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Numplayercontroller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/PlayerShipController$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/PlayerShipController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/PlayerShipController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Randomcardcontroller.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/Randomcardcontroller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/SelectedPieceController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/SelectedPieceController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/MenuPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/MenuPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/ShipPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/ShipPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/TUI/TUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/controllerTests/GameControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/controllerTests/GameControllerTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/controllerTests/GameManagerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/controllerTests/GameManagerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedShipTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedShipTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedStationTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AbandonedStationTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AppTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/AppTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/BaseGameTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/BaseGameTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/BatteryTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/BatteryTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/BoardTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/BoardTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CardAdventureTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CardAdventureTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CardComponentLoaderTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CardComponentLoaderTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CardComponentTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CardComponentTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CombatZoneTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/CombatZoneTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/EpidemicTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/EpidemicTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/GameControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/GameControllerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/GameTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/GameTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/LivingUnitTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/LivingUnitTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/LobbyTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/LobbyTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/MeteorSwarmTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/MeteorSwarmTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/OpenSpaceTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/OpenSpaceTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/PiratesTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/PiratesTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/PlanetsTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/PlanetsTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/PlayerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/PlayerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/QuickGameTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/QuickGameTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/QuickShipTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/QuickShipTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShieldTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShieldTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/ShipTest2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/SlaversTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/SlaversTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/SmugglersTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/SmugglersTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/StorageTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/it/polimi/ingsw/StorageTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,103 +219,103 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.App.executor": "Run",
-    "Application.CardComponentLoader.executor": "Run",
-    "Application.Client.executor": "Run",
-    "Application.ClientMultiplo.executor": "Run",
-    "Application.JsonLoader.executor": "Run",
-    "Application.MainClient.executor": "Run",
-    "Application.Multiple Istance Client.executor": "Run",
-    "Application.RmiClient.executor": "Run",
-    "Application.RmiServer.executor": "Run",
-    "Application.Server.executor": "Run",
-    "Application.TestGui.executor": "Run",
-    "Application.Unnamed (1).executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "JUnit.AbandonedShipTest.executor": "Run",
-    "JUnit.AbandonedShipTest.testAbandonedShip.executor": "Run",
-    "JUnit.AbandonedStationTest.executor": "Run",
-    "JUnit.AbandonedStationTest.testAbandonedStation.executor": "Run",
-    "JUnit.BaseGameTest.executor": "Run",
-    "JUnit.BaseGameTest.testAddPlayer.executor": "Coverage",
-    "JUnit.BaseGameTest.testSetRewards.executor": "Run",
-    "JUnit.BatteryTest.testAddBattery.executor": "Run",
-    "JUnit.BatteryTest.testRemoveBattery.executor": "Run",
-    "JUnit.BoardTest.checkLeaderTest.executor": "Run",
-    "JUnit.BoardTest.executor": "Run",
-    "JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces.executor": "Run",
-    "JUnit.BoardTest.testRankingOrder.executor": "Run",
-    "JUnit.BoardTest.testmovePlayerBackwardWrappingAroundBoard.executor": "Run",
-    "JUnit.BoardTest.testmovePlayerForwardWrappingAroundBoardExtremeCase.executor": "Run",
-    "JUnit.CombatZoneTest.executor": "Run",
-    "JUnit.EpidemicTest.executor": "Run",
-    "JUnit.GameControllerTest.executor": "Coverage",
-    "JUnit.GameControllerTest.testAddComponent.executor": "Run",
-    "JUnit.GameControllerTest.testAddPlayer.executor": "Run",
-    "JUnit.GameControllerTest.testCrewmateSupply.executor": "Run",
-    "JUnit.GameControllerTest.testEndPlayerBuildPhase.executor": "Run",
-    "JUnit.GameControllerTest.testsecureComponent.executor": "Run",
-    "JUnit.GameManagerTest.testCreateLobby.executor": "Run",
-    "JUnit.GameManagerTest.testGameManager.executor": "Run",
-    "JUnit.GameManagerTest.testJoinPlayer.executor": "Run",
-    "JUnit.LobbyTest.testLobby.executor": "Run",
-    "JUnit.MeteorSwarmTest.executor": "Run",
-    "JUnit.OpenSpaceTest.executor": "Run",
-    "JUnit.OpenSpaceTest.testAccept_CorrectOrder.executor": "Run",
-    "JUnit.OpenSpaceTest.testAccept_NoBatteries.executor": "Run",
-    "JUnit.OpenSpaceTest.testExecuteAdventureEffects.executor": "Run",
-    "JUnit.OpenSpaceTest.testExecuteAdventureEffects_CorrectOrder.executor": "Run",
-    "JUnit.OpenSpaceTest.testExecuteAdventureEffects_NoBatteries.executor": "Run",
-    "JUnit.PiratesTest.executor": "Run",
-    "JUnit.PlanetsTest.executor": "Run",
-    "JUnit.PlayerTest.executor": "Run",
-    "JUnit.PlayerTest.testsecureComponent.executor": "Run",
-    "JUnit.ShipTest.checkConnection.executor": "Run",
-    "JUnit.ShipTest.checkShipConnectionsTest.executor": "Run",
-    "JUnit.ShipTest.executor": "Run",
-    "JUnit.ShipTest.findShipPieces.executor": "Run",
-    "JUnit.ShipTest.testaddComponent.executor": "Run",
-    "JUnit.ShipTest.testaddComponentCannon.executor": "Run",
-    "JUnit.ShipTest.testcalculateCannonPower.executor": "Run",
-    "JUnit.ShipTest.testcalculateEnginePower.executor": "Run",
-    "JUnit.ShipTest2.executor": "Coverage",
-    "JUnit.ShipTest2.testExposedConnectors.executor": "Run",
-    "JUnit.ShipTest2.testFindPieces.executor": "Run",
-    "JUnit.ShipTest2.testPrintShipPlance.executor": "Run",
-    "JUnit.ShipTest2.testRemoveComponentKillingAlien.executor": "Run",
-    "JUnit.SlaversTest.executor": "Coverage",
-    "JUnit.SmugglersTest.executor": "Coverage",
-    "JUnit.StorageTest.executor": "Run",
-    "JUnit.StorageTest.testStorage.executor": "Run",
-    "JUnit.StorageTest.testaddCargo.executor": "Run",
-    "JUnit.controllerTests in PSP17.executor": "Coverage",
-    "JUnit.ingsw in PSP17.executor": "Coverage",
-    "JUnit.it.polimi.ingsw.model in PSP17.executor": "Run",
-    "JUnit.java in PSP17.executor": "Coverage",
-    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
-    "Maven.PSP17 [clean].executor": "Run",
-    "Maven.PSP17 [package].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "extract.method.default.visibility": "public",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/gioma/Downloads/ing-sw-2024-zanoni-valentini-spazzadeschi-spandri-master",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.24316406",
-    "project.structure.side.proportion": "0.32299742",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.App.executor&quot;: &quot;Run&quot;,
+    &quot;Application.CardComponentLoader.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ClientMultiplo.executor&quot;: &quot;Run&quot;,
+    &quot;Application.JsonLoader.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainClient.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Multiple Istance Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RmiClient.executor&quot;: &quot;Run&quot;,
+    &quot;Application.RmiServer.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestGui.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed (1).executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedShipTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedShipTest.testAbandonedShip.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedStationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AbandonedStationTest.testAbandonedStation.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BaseGameTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BaseGameTest.testAddPlayer.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.BaseGameTest.testSetRewards.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BatteryTest.testAddBattery.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BatteryTest.testRemoveBattery.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.checkLeaderTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testMovePlayerSkippingOccupiedSpaces.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testRankingOrder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testmovePlayerBackwardWrappingAroundBoard.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BoardTest.testmovePlayerForwardWrappingAroundBoardExtremeCase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CombatZoneTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.EpidemicTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.GameControllerTest.testAddComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testAddPlayer.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testCrewmateSupply.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testEndPlayerBuildPhase.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameControllerTest.testsecureComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameManagerTest.testCreateLobby.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameManagerTest.testGameManager.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameManagerTest.testJoinPlayer.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LobbyTest.testLobby.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.MeteorSwarmTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testAccept_CorrectOrder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testAccept_NoBatteries.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects_CorrectOrder.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OpenSpaceTest.testExecuteAdventureEffects_NoBatteries.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PiratesTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlanetsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlayerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlayerTest.testsecureComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.checkConnection.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.checkShipConnectionsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.findShipPieces.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testaddComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testaddComponentCannon.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testcalculateCannonPower.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest.testcalculateEnginePower.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.ShipTest2.testExposedConnectors.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testFindPieces.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testPrintShipPlance.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ShipTest2.testRemoveComponentKillingAlien.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SlaversTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.SmugglersTest.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.StorageTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StorageTest.testStorage.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StorageTest.testaddCargo.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.controllerTests in PSP17.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.ingsw in PSP17.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.it.polimi.ingsw.model in PSP17.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.java in PSP17.executor&quot;: &quot;Coverage&quot;,
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.PSP17 [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.PSP17 [package].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;public&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/gioma/Downloads/ing-sw-2024-zanoni-valentini-spazzadeschi-spandri-master&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.24316406&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.32299742&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\java\it\polimi\ingsw\network\server" />
@@ -244,7 +325,7 @@
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\resources\fxml" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientMultiplo">
+  <component name="RunManager" selected="JUnit.GameManagerTest.testJoinPlayer">
     <configuration name="ClientMultiplo" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.network.Client" />
       <module name="PSP17" />
@@ -553,6 +634,7 @@
       <workItem from="1751027426021" duration="6181000" />
       <workItem from="1751037278176" duration="14654000" />
       <workItem from="1751126791663" duration="1248000" />
+      <workItem from="1751228790646" duration="1046000" />
     </task>
     <task id="LOCAL-00178" summary="un po di test">
       <option name="closed" value="true" />
