@@ -25,6 +25,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+/**
+ * This class sets up the initial stage and launches the GUI by loading the first scene (`Startgui.fxml`).
+ * It integrates the `Client` logic with the visual components by initializing a {@link GUI} instance
+ * and passing necessary references such as the client and the stage.
+ */
 public class GuiApplication extends Application  {
    private static GUI gui;
    private Stage stage;
@@ -33,13 +38,21 @@ public class GuiApplication extends Application  {
 
     private static Client client;
 
+    /**
+     * Sets the client instance to be used by the GUI.
+     * @param c the Client instance
+     */
     public static void setClient(Client c) {
         client = c;
     }
 
+    /**
+     * Initializes the GUI and loads the start scene
+     * @param primaryStage the primary window of the application
+     */
     @Override
     public void start(Stage primaryStage) {
-            GUI gui = new GUI(); // inizializza GUI qui
+            GUI gui = new GUI();
             setGui(gui);
             gui.setGuiApplication(this);
             gui.setStage(primaryStage);
@@ -89,9 +102,4 @@ public class GuiApplication extends Application  {
     public static GUI getGui() {
         return gui;
     }
-
-    /*public void sendNickname(ActionEvent actionEvent) {
-            Platform.runLater(()->gui.setNicknamescelto(nicknameField.getText()));
-            System.out.println("bottone cliccato");
-    }*/
 }

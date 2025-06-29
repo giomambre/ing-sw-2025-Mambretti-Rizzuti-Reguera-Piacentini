@@ -19,27 +19,35 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for the final ranking screen displayed at the end of the game.
+ */
 public class FinalRanksScreen {
 
     public GUI gui;
    @FXML
    private GridPane rankingGridPane;
 
+   private BorderPane mainLayout;
 
-    private BorderPane mainLayout;
-
+    /**
+     * Sets the reference to the main GUI instance.
+     * @param gui the main GUI instance to be used by this controller
+     */
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
-
-
+    /**
+     * Displays the final player rankings.
+     * @param players the list of players to display in the final ranking
+     */
     public void displayFinalRanks(List<Player> players) {
 
         rankingGridPane.getChildren().clear();
 
         List<Player> sortedPlayers = players.stream()
-                .sorted(Comparator.comparingInt(Player::getCredits).reversed()) // Ordina per crediti decrescenti
+                .sorted(Comparator.comparingInt(Player::getCredits).reversed())
                 .collect(Collectors.toList());
 
 
@@ -73,7 +81,14 @@ public class FinalRanksScreen {
 
     }
 
-
+    /**
+     * Adds a styled label to the specified position in a GridPane.
+     * @param grid the GridPane to which the label will be added
+     * @param text the text to display in the label
+     * @param col the column index in the grid
+     * @param row the row index in the grid
+     * @param isHeader true if the label is a header; false otherwise
+     */
     private void addStyledLabelToGrid(GridPane grid, String text, int col, int row, boolean isHeader) {
         Label label = new Label();
         label.setAlignment(Pos.CENTER);
@@ -87,15 +102,13 @@ public class FinalRanksScreen {
             textColor = "lightgray";
             label.setText(text);
         } else {
-            // Colore testo in base alla posizione
             switch (row) {
-                case 1 -> textColor = "#FFD700"; // Oro
-                case 2 -> textColor = "#C0C0C0"; // Argento
-                case 3 -> textColor = "#CD7F32"; // Bronzo
+                case 1 -> textColor = "#FFD700";
+                case 2 -> textColor = "#C0C0C0";
+                case 3 -> textColor = "#CD7F32";
                 default -> textColor = "#fef6d5";
             }
 
-            // Emoji solo per colonna posizione
             if (col == 0) {
                 switch (text) {
                     case "1" -> label.setText("🥇 1");
@@ -109,7 +122,6 @@ public class FinalRanksScreen {
         }
 
 
-        // Imposta sempre Verdana 20, con fontWeight deciso sopra
         label.setFont(Font.font("Verdana", fontWeight, 30));
         label.setStyle("-fx-text-fill: " + textColor + ";");
 

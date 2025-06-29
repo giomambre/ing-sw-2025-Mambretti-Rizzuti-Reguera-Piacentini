@@ -39,7 +39,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
-
+/**
+ * Controller responsible for managing the GUI elements during the flight phase of the game.
+ */
 public class FlyghtController {
     private GUI gui;
     private CompletableFuture<Integer> adventureCardAction = new CompletableFuture<>();
@@ -47,8 +49,8 @@ public class FlyghtController {
     List<Pair<Integer,Integer>> batteries = new ArrayList<>();
     List<Pair<Integer,Integer>> livingUnits = new ArrayList<>();
     private Map<String, ImageView> playerPawns = new HashMap<>();
-    private Map<Integer, Player> playerPositions = new HashMap<>(); // posizione -> Player
-    private Map<Integer, Player> playerLaps = new HashMap<>(); // posizione -> Player (per i giri)
+    private Map<Integer, Player> playerPositions = new HashMap<>();
+    private Map<Integer, Player> playerLaps = new HashMap<>();
     private CompletableFuture<Boolean> useDoubleCannon;
     private CompletableFuture<Boolean> acceptAdventure;
     private CompletableFuture<Pair<Integer, Integer>> coordsBattery;
@@ -56,18 +58,18 @@ public class FlyghtController {
     private CompletableFuture<Pair<Integer, Integer>> astronautToRemove;
     private Stage playerStage;
 
-    // FXML Components
-    @FXML
-    private GridPane boardGrid; // Board centrale 5x5
 
     @FXML
-    private GridPane playerShipGrid; // Nave del player (basso a destra)
+    private GridPane boardGrid;
 
     @FXML
-    private VBox adventureCardArea; // Area carte avventura (alto a destra)
+    private GridPane playerShipGrid;
 
     @FXML
-    private HBox playersInfoBox; // Info giocatori
+    private VBox adventureCardArea;
+
+    @FXML
+    private HBox playersInfoBox;
 
     @FXML
     private Label currentPlayerLabel;
@@ -119,7 +121,7 @@ public class FlyghtController {
     @FXML
     private ScrollPane eventLogScrollPane;
 
-    // Dimensioni della board
+
     private static final int BOARD_SIZE = 5;
     private static final int CELL_WIDTH = 80;
     private static final int CELL_HEIGHT = 50;
@@ -135,8 +137,11 @@ public class FlyghtController {
         Platform.runLater(() -> infoLabel.setVisible(false));
     }
 
-
-
+    /**
+     * Adds a log message to the event log with a specific message type that determines its style.
+     * @param message the message to display in the log
+     * @param messageType the type of the message, which determines the color and font style
+     */
     public void addLogMessage(String message, String messageType) {
         Platform.runLater(() -> {
 
@@ -148,11 +153,11 @@ public class FlyghtController {
 
             switch (messageType) {
                 case "HIGHLIGHT":
-                    logEntry.setTextFill(javafx.scene.paint.Color.web("#DAA520")); // Oro
+                    logEntry.setTextFill(javafx.scene.paint.Color.web("#DAA520"));
                     logEntry.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
                     break;
                 case "ERROR":
-                    logEntry.setTextFill(javafx.scene.paint.Color.web("#FF0000")); // Rosso
+                    logEntry.setTextFill(javafx.scene.paint.Color.web("#FF0000"));
                     logEntry.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
                     break;
                 case "NOTIFICATION":
@@ -173,7 +178,10 @@ public class FlyghtController {
     }
 
 
-
+    /**
+     * Sets the current player's ship viewing stage (used when opening another player's ship view).
+     * @param playerStage the stage to associate with the player's ship view
+     */
     public void setPlayerStage(Stage playerStage) {
         this.playerStage = playerStage;
     }
@@ -181,6 +189,10 @@ public class FlyghtController {
         return playerStage;
     }
 
+    /**
+     * Creates and adds buttons for each other player, allowing the user to view their ship.
+     * @param otherPlayers the list of other players to display
+     */
     public void setupPlayerButtons(List<Player> otherPlayers) {
         Platform.runLater(() -> {
             playersButtonBox.getChildren().clear();
@@ -193,6 +205,10 @@ public class FlyghtController {
         });
     }
 
+    /**
+     * Displays the ship of a given player in a new window.
+     * @param nickname the nickname of the player whose ship will be shown
+     */
     public void showShipForPlayer(String nickname) {
         Optional<Player> optionalPlayer = gui.getClient().getOther_players_local().stream()
                 .filter(p -> p.getNickname().equals(nickname))
@@ -230,10 +246,17 @@ public class FlyghtController {
         }
     }
 
+    /**
+     * Updates the credit label shown on the UI with the current player's credit count.
+     * @param credits the number of credits to display
+     */
     public void updateCreditLabel(int credits) {
         Platform.runLater(() -> playerCreditsLabel.setText("Crediti: " + credits));
     }
 
+    /**
+     * @return a CompletableFuture with the coordinates of the astronaut to remove
+     */
     public CompletableFuture<Pair<Integer,Integer>> getAstronautToRemove() {
         if (astronautToRemove == null) {
             astronautToRemove = new CompletableFuture<>();
@@ -241,10 +264,19 @@ public class FlyghtController {
         return astronautToRemove;
     }
 
+    /**
+     * Resets the CompletableFuture used for selecting a crewmate to remove,
+     * allowing for a new selection to be made.
+     */
     public void resetastronautToRemove(){
         astronautToRemove = new CompletableFuture<>();
     }
 
+    /**
+     * Highlights the crew members (Living Units) present on the given ship
+     * and sets up mouse listeners for selecting one to remove.
+     * @param ship
+     */
     public void showCrewmates(Ship ship) {
         livingUnits.clear();
         if (this.astronautToRemove == null || this.astronautToRemove.isDone()) {
@@ -269,7 +301,6 @@ public class FlyghtController {
                             LivingUnit unit = (LivingUnit) component;
                             if (unit.getNum_crewmates() > 0) {
                                 livingUnits.add(new Pair<>(i, j));
-                                //addOverlay(i, j, "Astronaut");
                             }
                         }
                         cell.setStyle(cell.getStyle() + " -fx-cursor: default;");
@@ -277,7 +308,6 @@ public class FlyghtController {
                 }
             }
 
-            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
             for (Pair<Integer, Integer> currentCoords : livingUnits) {
                 int row = currentCoords.getKey();
                 int col = currentCoords.getValue();
@@ -303,7 +333,10 @@ public class FlyghtController {
         });
     }
 
-
+    /**
+     * Clears the UI overlays and click listeners used for selecting crewmates from the ship.
+     * @param ship
+     */
     public void clearCrewmates(Ship ship) {
         Platform.runLater(() -> {
             for (int i = 0; i < ship.getShip_board().length; i++) {
@@ -323,13 +356,13 @@ public class FlyghtController {
 
 
     /**
-     * Inizializza il controller
+     * Initializes the flight screen
      */
     public void initialize() {
         setupBoardGrid();
         setupPlayerShipGrid();
         setupAdventureCardArea();
-        addLogMessage("Benvenuto In Galaxy Trucker! Questa à la Fase di Volo","NOTIFICATION"); // Nuovo
+        addLogMessage("Benvenuto In Galaxy Trucker! Questa à la Fase di Volo","NOTIFICATION");
         eventLogVBox.heightProperty().addListener((observable, oldValue, newValue) -> {
             eventLogScrollPane.setVvalue(1.0);
         });
@@ -350,12 +383,16 @@ public class FlyghtController {
         coordsBattery = new CompletableFuture<>();
     }
 
+    /**
+     * Displays all batteries available on the ship that still have charge.
+     * @param ship the ship whose batteries will be displayed
+     */
     public void showBatteries(Ship ship) {
         batteries.clear();
         if (this.coordsBattery == null || this.coordsBattery.isDone()) {
             this.coordsBattery = new CompletableFuture<>();
         }
-        final CompletableFuture<Pair<Integer,Integer>> currentCoordsBatteryFuture = this.coordsBattery; // Capture it for the lambda
+        final CompletableFuture<Pair<Integer,Integer>> currentCoordsBatteryFuture = this.coordsBattery;
 
         Platform.runLater(() -> {
 
@@ -388,7 +425,6 @@ public class FlyghtController {
                 }
             }
 
-            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
             for (Pair<Integer, Integer> currentCoords : batteries) {
                 int row = currentCoords.getKey();
                 int col = currentCoords.getValue();
@@ -413,6 +449,12 @@ public class FlyghtController {
         });
     }
 
+    /**
+     * Highlights storages containing the specified type of cargo.
+     * Allows the player to choose one for cargo removal or interaction.
+     * @param ship
+     * @param cargo the cargo type to search for
+     */
     public void showStorage(Ship ship, Cargo cargo) {
         batteries.clear();
         if (this.coordsBattery == null || this.coordsBattery.isDone()) {
@@ -429,7 +471,6 @@ public class FlyghtController {
                         cell.setOnMouseClicked(null);
                         CardComponent component = ship.getShip_board()[i][j];
 
-                        // Celle non accessibili o vuote
                         if (component == null || component.getComponentType() == ComponentType.NotAccessible ||
                                 component.getComponentType() == ComponentType.Empty ||
                                 component.getComponentType() == ComponentType.MainUnitRed ||
@@ -439,21 +480,18 @@ public class FlyghtController {
                             cell.setStyle("-fx-background-color: transparent;");
                         }
 
-                        // Controlla i componenti di storage
                         if (cargo == Cargo.Red) {
-                            // Solo storage rossi per cargo rosso
                             if (component != null && component.getComponentType() == RedStorage) {
-                                Storage storage = (Storage) component; // Cast corretto a Storage
-                                if (storage.getCarried_cargos().size() > 0) { // Controlla se ha cargo
+                                Storage storage = (Storage) component;
+                                if (storage.getCarried_cargos().size() > 0) {
                                     batteries.add(new Pair<>(i, j));
                                 }
                             }
                         } else {
-                            // Storage rossi e blu per altri tipi di cargo
                             if (component != null && (component.getComponentType() == RedStorage ||
                                     component.getComponentType() == BlueStorage)) {
-                                Storage storage = (Storage) component; // Cast corretto a Storage
-                                if (storage.getCarried_cargos().size() > 0) { // Controlla se ha cargo
+                                Storage storage = (Storage) component;
+                                if (storage.getCarried_cargos().size() > 0) {
                                     batteries.add(new Pair<>(i, j));
                                 }
                             }
@@ -463,9 +501,7 @@ public class FlyghtController {
                 }
             }
 
-            // Controlla se ci sono storage disponibili
             if (batteries.isEmpty()) {
-                // Nessuno storage disponibile per questo tipo di cargo
                 String cargoType = cargo == Cargo.Red ? "rosso" : "blu/altro";
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Storage non disponibile");
@@ -473,12 +509,10 @@ public class FlyghtController {
                 alert.setContentText("Non hai storage disponibili per il cargo di tipo " + cargoType );
                 alert.showAndWait();
 
-                // Completa il future con coordinate negative per indicare che non c'è selezione
                 if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
                     currentCoordsBatteryFuture.complete(new Pair<>(-1, -1));
                 }
             } else {
-                // Evidenzia e imposta i listener per gli storage validi
                 for (Pair<Integer, Integer> currentCoords : batteries) {
                     int row = currentCoords.getKey();
                     int col = currentCoords.getValue();
@@ -488,7 +522,6 @@ public class FlyghtController {
                     if (cell != null) {
                         highlightCell(row, col);
                         cell.setOnMouseClicked(e -> {
-                            // Non rimuovere nulla qui - lascia che sia il metodo chiamante a gestire la logica
                             if (currentCoordsBatteryFuture != null && !currentCoordsBatteryFuture.isDone()) {
                                 currentCoordsBatteryFuture.complete(new Pair<>(row, col));
                             }
@@ -504,7 +537,10 @@ public class FlyghtController {
     }
 
 
-
+    /**
+     * Clears all mouse listeners and highlighting effects from the ship grid.
+     * @param ship
+     */
     public void clearShipListeners(Ship ship) {
         Platform.runLater(() -> {
             dontusebattery.setVisible(false);
@@ -520,7 +556,12 @@ public class FlyghtController {
         });
     }
 
-
+    /**
+     * @param gridPane the GridPane to search
+     * @param col the column index
+     * @param row the row index
+     * @return the Node at the specified position, or null if not found
+     */
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) != null && GridPane.getRowIndex(node) != null &&
@@ -531,7 +572,11 @@ public class FlyghtController {
         return null;
     }
 
-
+    /**
+     * Returns a CompletableFuture that completes with true or false based on the player's choice
+     * to activate the double cannon ability.
+     * @return CompletableFuture<Boolean> indicating whether the double cannon is used
+     */
     public CompletableFuture<Boolean> getUseDoubleCannon() {
         if (useDoubleCannon == null) {
             useDoubleCannon = new CompletableFuture<>();
@@ -543,7 +588,12 @@ public class FlyghtController {
         useDoubleCannon = new CompletableFuture<>();
     }
 
-
+    /**
+     * Displays the UI prompt asking the player whether they want to use the double cannon
+     * at the specified coordinates.
+     * @param x the row coordinate
+     * @param y the column coordinate
+     */
     public void showdc(int x, int y) {
         Platform.runLater(() -> {
         dclabel.setText("Decidere se attivare la carta alle coordinate (" + x + ", " + y + ")");
@@ -573,7 +623,11 @@ public class FlyghtController {
         reject.setVisible(false);
     }
 
-
+    /**
+     * Displays a yes/no prompt for accepting an adventure card.
+     * @param prompt the message shown to the player
+     * @return true if the player accepts the adventure, false otherwise
+     */
     public Boolean acceptAdv(String prompt) {
 
         acceptAdventure = new CompletableFuture<>();
@@ -601,17 +655,16 @@ public class FlyghtController {
         }
     }
 
-
-
     /**
-     * Imposta la GUI di riferimento
+     * Sets the reference to the GUI instance.
+     * @param gui the main GUI object
      */
     public void setGUI(GUI gui) {
         this.gui = gui;
     }
 
     /**
-     * Configura la griglia della board centrale (5x5)
+     * Initializes the central board grid (5x5) with styled cells.
      */
     private void setupBoardGrid() {
         boardGrid.getChildren().clear();
@@ -628,7 +681,10 @@ public class FlyghtController {
     }
 
     /**
-     * Crea una singola cella della board (non cliccabile, solo visualizzazione)
+     * Creates a single board cell with consistent styling.
+     * @param row the row index
+     * @param col the column index
+     * @return the created StackPane representing the cell
      */
     private StackPane createBoardCell(int row, int col) {
         StackPane cell = new StackPane();
@@ -636,12 +692,11 @@ public class FlyghtController {
         cell.setMinSize(CELL_WIDTH, CELL_HEIGHT);
         cell.setMaxSize(CELL_WIDTH, CELL_HEIGHT);
 
-        // Stile con angoli arrotondati, contorno e sfondo personalizzati
         cell.setStyle(
-                "-fx-border-color: #3a0066; " +         // Viola scuro
+                "-fx-border-color: #3a0066; " +
                         "-fx-border-width: 2px; " +
                         "-fx-border-radius: 10px; " +
-                        "-fx-background-color: #bfa3ff; " +     // Viola chiaro
+                        "-fx-background-color: #bfa3ff; " +
                         "-fx-background-radius: 10px;"
         );
 
@@ -650,7 +705,7 @@ public class FlyghtController {
 
 
     /**
-     * Configura la griglia della nave del player (basso a destra)
+     * Initializes the grid for the player's ship (7x5).
      */
     private void setupPlayerShipGrid() {
         playerShipGrid.getChildren().clear();
@@ -658,7 +713,6 @@ public class FlyghtController {
         playerShipGrid.setMinSize(7 * SHIP_CELL_SIZE, 5 * SHIP_CELL_SIZE);
         playerShipGrid.setMaxSize(7 * SHIP_CELL_SIZE, 5 * SHIP_CELL_SIZE);
 
-        // Inizializza la griglia della nave (7x5 come nel Buildcontroller)
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 StackPane cell = createShipCell(i, j);
@@ -668,7 +722,10 @@ public class FlyghtController {
     }
 
     /**
-     * Crea una singola cella della nave
+     * Creates a single ship cell.
+     * @param row the row index
+     * @param col the column index
+     * @return the created StackPane representing the ship cell
      */
     private StackPane createShipCell(int row, int col) {
         StackPane cell = new StackPane();
@@ -676,7 +733,6 @@ public class FlyghtController {
         cell.setMinSize(SHIP_CELL_SIZE, SHIP_CELL_SIZE);
         cell.setMaxSize(SHIP_CELL_SIZE, SHIP_CELL_SIZE);
 
-        // Posizioni non accessibili (come nel Buildcontroller)
         if ((row == 0 && col == 0) || (row == 1 && col == 0) ||
                 (row == 0 && col == 1) || (row == 0 && col == 3) ||
                 (row == 1 && col == 6) || (row == 0 && col == 5) ||
@@ -691,7 +747,7 @@ public class FlyghtController {
     }
 
     /**
-     * Configura l'area delle carte avventura
+     * Initializes the adventure card area UI with a title label.
      */
     private void setupAdventureCardArea() {
         adventureCardArea.getChildren().clear();
@@ -703,7 +759,7 @@ public class FlyghtController {
     }
 
     /**
-     * Aggiorna la visualizzazione della nave del player
+     * Updates the graphical representation of the player's ship on the grid.
      */
     public void updatePlayerShip() {
         if (gui == null || gui.getClient() == null) return;
@@ -749,6 +805,10 @@ public class FlyghtController {
         });
     }
 
+    /**
+     * Restores graphical overlays for crew members, batteries, and cargo storage
+     * @param ship
+     */
     public void restoreOverlays(Ship ship) {
         for (int i = 0; i < ship.getROWS(); i++) {
             for (int j = 0; j < ship.getCOLS(); j++) {
@@ -788,7 +848,10 @@ public class FlyghtController {
 
 
     /**
-     * Ottiene la cella della nave alle coordinate specificate
+     * Returns the ship cell at the specified grid coordinates.
+     * @param row the row index
+     * @param col the column index
+     * @return the StackPane representing the cell, or null if not found
      */
     private StackPane getShipCellAt(int row, int col) {
         for (Node node : playerShipGrid.getChildren()) {
@@ -806,23 +869,23 @@ public class FlyghtController {
     }
 
     /**
-     * Aggiorna le posizioni dei giocatori sulla board usando le Map posizione -> Player
+     * Updates the positions of all player pawns on the central board.
+     * @param positions a map of board positions to players
+     * @param laps a map of positions to players with lap count info
      */
     public void updatePlayerPositions(Map<Integer, Player> positions, Map<Integer, Player> laps) {
         this.playerPositions = positions;
         this.playerLaps = laps;
 
         Platform.runLater(() -> {
-            // Rimuovi fortutte le pedine esistenti
             clearPlayerPawns();
 
-            // Aggiungi le pedine per ogni posizione nella Map
             for (Map.Entry<Integer, Player> entry : positions.entrySet()) {
                 int position = entry.getKey();
                 Player player = entry.getValue();
 
                 if (player != null) {
-                    // Ottieni il numero di giri per questo giocatore (se presente)
+
                     Player lapPlayer = laps.get(position);
                     int lapCount = 0;
 
@@ -837,13 +900,13 @@ public class FlyghtController {
     }
 
     /**
-     * Rimuove tutte le pedine dalla board
+     * Removes all player pawns from the central board grid.
      */
     private void clearPlayerPawns() {
         for (Node node : boardGrid.getChildren()) {
             if (node instanceof StackPane cell) {
                 cell.getChildren().removeIf(child ->
-                        child instanceof VBox && // Cambiato da ImageView a VBox per contenere pedina + label
+                        child instanceof VBox &&
                                 playerPawns.containsValue(((VBox) child).getChildren().get(0)));
             }
         }
@@ -851,26 +914,25 @@ public class FlyghtController {
     }
 
     /**
-     * Aggiunge la pedina di un giocatore sulla board alla posizione specificata con il numero di giri
+     * Adds a player pawn to the central board grid at the specified position.
+     * @param player the player to place
+     * @param position the position on the board (0 to BOARD_SIZE * BOARD_SIZE - 1)
+     * @param lapCount the number of laps completed by the player
      */
     private void addPlayerPawnAtPosition(Player player, int position, int lapCount) {
-        // Converte la posizione lineare (0-24) in coordinate di griglia (row, col)
         int playerRow = position / BOARD_SIZE;
         int playerCol = position % BOARD_SIZE;
 
         StackPane cell = getBoardCellAt(playerRow, playerCol);
         if (cell == null) return;
 
-        // Crea un contenitore verticale per pedina + label giri
         VBox playerContainer = new VBox();
         playerContainer.setSpacing(0);
         playerContainer.setAlignment(javafx.geometry.Pos.CENTER);
 
-        // Crea l'immagine della pedina con il colore del player
         ImageView pawn = createPlayerPawn(player);
         playerPawns.put(player.getNickname(), pawn);
 
-        // Crea il label con nickname e giri
         Label playerInfo = new Label(player.getNickname() + " (" + lapCount + ")");
         playerInfo.setStyle("-fx-font-size: 8px; -fx-text-fill: black; " +
                 "-fx-background-color: white; -fx-background-radius: 3px; " +
@@ -881,7 +943,9 @@ public class FlyghtController {
     }
 
     /**
-     * Crea la pedina visuale per un giocatore con il suo colore
+     * Creates the visual pawn for a player based on their color.
+     * @param player the player whose pawn is to be created
+     * @return an ImageView representing the pawn
      */
     private ImageView createPlayerPawn(Player player) {
         ImageView pawn = new ImageView();
@@ -889,7 +953,6 @@ public class FlyghtController {
         pawn.setFitHeight(40);
         pawn.setPreserveRatio(true);
 
-        // Prima prova a caricare un'immagine specifica per il colore
         String pawnImagePath = getPawnImagePath(player.getColor());
 
         try {
@@ -897,19 +960,16 @@ public class FlyghtController {
                     getClass().getResourceAsStream(pawnImagePath)));
             pawn.setImage(image);
         } catch (Exception e) {
-            // Fallback: crea una pedina colorata semplice come cerchio
             pawn.setStyle("-fx-background-color: " + getColorHex(player.getColor()) +
                     "; -fx-background-radius: 12px; -fx-border-color: black; " +
                     "-fx-border-width: 2px; -fx-border-radius: 12px;");
 
-            // Se non c'è immagine, crea un piccolo cerchio colorato
             StackPane coloredPawn = new StackPane();
             coloredPawn.setPrefSize(25, 25);
             coloredPawn.setStyle("-fx-background-color: " + getColorHex(player.getColor()) +
                     "; -fx-background-radius: 12px; -fx-border-color: black; " +
                     "-fx-border-width: 2px; -fx-border-radius: 12px;");
 
-            // Restituisce l'ImageView ma con uno stile colorato
             pawn.setStyle("-fx-background-color: " + getColorHex(player.getColor()) +
                     "; -fx-background-radius: 12px;");
         }
@@ -917,9 +977,6 @@ public class FlyghtController {
         return pawn;
     }
 
-    /**
-     * Ottiene il percorso dell'immagine della pedina basato sul colore
-     */
     private String getPawnImagePath(Color color) {
         switch (color) {
             case BLUE:
@@ -935,9 +992,6 @@ public class FlyghtController {
         }
     }
 
-    /**
-     * Ottiene il codice esadecimale del colore
-     */
     private String getColorHex(Color color) {
         switch (color) {
             case BLUE:
@@ -954,7 +1008,10 @@ public class FlyghtController {
     }
 
     /**
-     * Ottiene la cella della board alle coordinate specificate
+     * Returns the board cell at the specified coordinates on the central board grid.
+     * @param row the row index
+     * @param col the column index
+     * @return the StackPane representing the board cell, or null if not found
      */
     private StackPane getBoardCellAt(int row, int col) {
         for (Node node : boardGrid.getChildren()) {
@@ -972,57 +1029,8 @@ public class FlyghtController {
     }
 
     /**
-     * Muove la pedina di un giocatore da una posizione all'altra
-     */
-//    public void movePlayerPawn(String nickname, int oldPosition, int newPosition) {
-//        Platform.runLater(() -> {
-//            // Rimuovi la pedina dalla posizione precedente
-//            if (oldPosition >= 0 && oldPosition < 25) {
-//                int oldRow = oldPosition / BOARD_SIZE;
-//                int oldCol = oldPosition % BOARD_SIZE;
-//                StackPane oldCell = getBoardCellAt(oldRow, oldCol);
-//                if (oldCell != null) {
-//                    ImageView pawn = playerPawns.get(nickname);
-//                    if (pawn != null) {
-//                        // Rimuovi il VBox contenitore della pedina
-//                        oldCell.getChildren().removeIf(child ->
-//                                child instanceof VBox &&
-//                                        ((VBox) child).getChildren().contains(pawn));
-//                    }
-//                }
-//            }
-//
-//            // Aggiungi la pedina alla nuova posizione
-//            if (newPosition >= 0 && newPosition < 25) {
-//                int newRow = newPosition / BOARD_SIZE;
-//                int newCol = newPosition % BOARD_SIZE;
-//                StackPane newCell = getBoardCellAt(newRow, newCol);
-//                if (newCell != null) {
-//                    // Trova il player e i suoi giri per la nuova posizione
-//                    Player player = playerPositions.get(newPosition);
-//                    Player lapPlayer = playerLaps.get(newPosition);
-//                    int lapCount = 0;
-//
-//                    if (player != null && player.getNickname().equals(nickname)) {
-//                        if (lapPlayer != null && lapPlayer.getNickname().equals(nickname)) {
-//                            // lapCount = lapPlayer.getLaps(); // Da implementare
-//                        }
-//                        addPlayerPawnAtPosition(player, newPosition, lapCount);
-//                    }
-//                }
-//            }
-//
-//            // Aggiorna la Map delle posizioni
-//            Player player = playerPositions.get(oldPosition);
-//            if (player != null && player.getNickname().equals(nickname)) {
-//                playerPositions.remove(oldPosition);
-//                playerPositions.put(newPosition, player);
-//            }
-//        });
-//    }
-
-    /**
-     * Aggiunge una carta avventura all'area delle carte
+     * Adds an adventure card to the adventure card area.
+     * @param card the adventure card to display
      */
     public void addAdventureCard(CardAdventure card) {
         Platform.runLater(() -> {
@@ -1051,7 +1059,7 @@ public class FlyghtController {
     }
 
     /**
-     * Pulisce l'area delle carte avventura
+     * Clears all adventure cards from the display area.
      */
     public void clearAdventureCards() {
         Platform.runLater(() -> {
@@ -1059,7 +1067,6 @@ public class FlyghtController {
         });
     }
 
-    // Getter per i CompletableFuture
 
     public CompletableFuture<Integer> getAdventureCardAction() {
         if (adventureCardAction == null || adventureCardAction.isDone()) {
@@ -1068,23 +1075,16 @@ public class FlyghtController {
         return adventureCardAction;
     }
 
-    // Reset methods
 
     public void resetAdventureCardAction() {
         adventureCardAction = new CompletableFuture<>();
     }
 
-    // Getter per le posizioni dei player
 
     public Map<Integer, Player> getPlayerPositions() {
         return new HashMap<>(playerPositions);
     }
 
-    // Utility methods
-
-    /**
-     * Ottiene la posizione di un giocatore sulla board
-     */
     public int getPlayerPosition(String nickname) {
         return playerPositions.entrySet().stream()
                 .filter(entry -> entry.getValue().getNickname().equals(nickname))
@@ -1094,7 +1094,8 @@ public class FlyghtController {
     }
 
     /**
-     * Aggiorna il label del giocatore corrente
+     * Updates the label to show whose turn it is.
+     * @param playerName the name of the current player
      */
     public void updateCurrentPlayer(String playerName) {
         Platform.runLater(() -> {
@@ -1104,6 +1105,11 @@ public class FlyghtController {
         });
     }
 
+    /**
+     * Highlights the specified cell on the ship grid.
+     * @param y the row index
+     * @param x the column index
+     */
     public void highlightCell(int y,int x) {
 
         for (Node node : playerShipGrid.getChildren()) {
@@ -1124,6 +1130,11 @@ public class FlyghtController {
         }
     }
 
+    /**
+     * Resets the visual highlight of the specified cell.
+     * @param y the row index
+     * @param x the column index
+     */
     public void resetHighlights(int y,int x) {
 
         for (Node node : playerShipGrid.getChildren()) {
@@ -1134,11 +1145,9 @@ public class FlyghtController {
             if (rowIndex == null) rowIndex = 0;
 
             if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                // Se la cella contiene un'immagine, rimuovi gli effetti dall'immagine
                 if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
-                    imageView.setStyle(""); // Rimuovi tutti gli stili
+                    imageView.setStyle("");
                 } else {
-                    // Se la cella è vuota, rimuovi il bordo dalla StackPane
                     cell.setStyle("-fx-background-color: gray;");
                 }
                 return;
@@ -1148,10 +1157,21 @@ public class FlyghtController {
 
     }
 
+    /**
+     * Creates a graphical overlay node for the specified type.
+     * @param type the type of overlay to create
+     * @return the overlay Node, or null if type is unknown
+     */
     private Node createOverlayForType(String type) {
         return createOverlayForType(type, -1);
     }
 
+    /**
+     * Creates a graphical overlay node for the specified type and count.
+     * @param type the type of overlay to create
+     * @param count the number of elements to display
+     * @return the overlay Node, or null if type is unknown
+     */
     private Node createOverlayForType(String type, int count) {
         String path;
 
@@ -1214,7 +1234,7 @@ public class FlyghtController {
             }
 
             case "RedCargo": {
-                path = "/images/icons/redCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                path = "/images/icons/redCargo.png";
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
@@ -1232,7 +1252,7 @@ public class FlyghtController {
             }
 
             case "BlueCargo": {
-                path = "/images/icons/blueCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                path = "/images/icons/blueCargo.png";
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
@@ -1250,7 +1270,7 @@ public class FlyghtController {
             }
 
             case "YellowCargo": {
-                path = "/images/icons/yellowCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                path = "/images/icons/yellowCargo.png";
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
@@ -1268,7 +1288,7 @@ public class FlyghtController {
             }
 
             case "GreenCargo": {
-                path = "/images/icons/greenCargo.png"; // Sostituisci con il percorso corretto della tua icona
+                path = "/images/icons/greenCargo.png";
                 HBox container = new HBox(0);
                 container.setAlignment(Pos.CENTER);
                 container.setMouseTransparent(true);
@@ -1290,6 +1310,13 @@ public class FlyghtController {
                 return null;
         }
     }
+
+    /**
+     * Updates the cargo overlay on a specific cell based on the cargo stored.
+     * @param row the row index
+     * @param col the column index
+     * @param ship the ship containing the component
+     */
     public void updateCargoOverlayAt(int row, int col, Ship ship) {
         CardComponent component = ship.getComponent(row, col);
 
@@ -1301,19 +1328,16 @@ public class FlyghtController {
 
         Storage storage = (Storage) component;
 
-        // Rimuovi tutti i cargo esistenti
         removeOverlay(row, col, "RedCargo");
         removeOverlay(row, col, "BlueCargo");
         removeOverlay(row, col, "YellowCargo");
         removeOverlay(row, col, "GreenCargo");
 
-        // Conta i cargo per tipo
         Map<Cargo, Integer> cargoCount = new HashMap<>();
         for (Cargo cargo : storage.getCarried_cargos()) {
             cargoCount.put(cargo, cargoCount.getOrDefault(cargo, 0) + 1);
         }
 
-        // Aggiungi gli overlay per ogni tipo di cargo
         for (Map.Entry<Cargo, Integer> entry : cargoCount.entrySet()) {
             Cargo cargoType = entry.getKey();
             int count = entry.getValue();
@@ -1327,8 +1351,7 @@ public class FlyghtController {
         }
     }
 
-    // Aggiorna il metodo restoreOverlays per includere i cargo
-        public void refreshAllCargoOverlays(Ship ship) {
+     public void refreshAllCargoOverlays(Ship ship) {
         Platform.runLater(() -> {
             for (int i = 0; i < ship.getROWS(); i++) {
                 for (int j = 0; j < ship.getCOLS(); j++) {
@@ -1343,6 +1366,12 @@ public class FlyghtController {
         });
     }
 
+    /**
+     * Checks if the given Node is an overlay of the specified type.
+     * @param node the node to check
+     * @param type the type identifier to match
+     * @return true if the node is an overlay of the given type
+     */
     private boolean isOverlayOfType(Node node, String type) {
         if (node == null) return false;
         String nodeId = node.getId();
@@ -1350,7 +1379,13 @@ public class FlyghtController {
     }
 
 
-
+    /**
+     * Adds an overlay to a specific ship cell.
+     * @param x the row index
+     * @param y the column index
+     * @param type the type of overlay
+     * @param count number of elements to show
+     */
     public void addOverlay(int x, int y, String type, int count) {
         Platform.runLater(() -> {StackPane cell = getShipCellAt(x, y);
             if (cell == null) return;
@@ -1362,7 +1397,12 @@ public class FlyghtController {
 
     }
 
-
+    /**
+     * Removes an overlay of a given type from a specific cell.
+     * @param x the row index
+     * @param y the column index
+     * @param type the type of overlay to remove
+     */
     public void removeOverlay(int x, int y, String type) {
         Platform.runLater(() -> {
             StackPane cell = getShipCellAt(x, y);
@@ -1382,7 +1422,12 @@ public class FlyghtController {
         });
     }
 
-
+    /**
+     * Updates the crewmate overlay for a specific cell, showing the correct type and count.
+     * @param row the row index
+     * @param col the column index
+     * @param ship the ship containing the LivingUnit
+     */
     public void updateCrewmateOverlayAt(int row, int col, Ship ship) {
             CardComponent component = ship.getComponent(row, col);
 
@@ -1403,132 +1448,4 @@ public class FlyghtController {
                 }
             }
     }
-
-
-
-
-
-
-    /*public CompletableFuture<Pair<Integer, Integer>> getBatterySelectionFuture() {
-        if (batterySelectionFuture == null) {
-            batterySelectionFuture = new CompletableFuture<>();
-        }
-        return batterySelectionFuture;
-    }
-
-    public void resetBatterySelectionFuture() {
-        batterySelectionFuture = null; // Resetta per il prossimo utilizzo
-        isWaitingForBatterySelection.set(false);
-    }
-
-    /**
-     * Mostra un alert per chiedere all'utente se vuole usare la batteria per il motore doppio.
-     * Restituisce un CompletableFuture<Boolean> che si completa con la scelta.
-     * True se vuole usare la batteria, False altrimenti.
-     */
-    /*public CompletableFuture<Boolean> askUseBatteryConfirmation(int engineRow, int engineCol) {
-        CompletableFuture<Boolean> futureConfirmation = new CompletableFuture<>();
-
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Motore Doppio");
-            alert.setHeaderText("Motore Doppio trovato a RIGA: " + engineRow + " COLONNA: " + engineCol);
-            alert.setContentText("Vuoi usare una batteria per attivare questo motore?");
-
-            ButtonType buttonUseBattery = new ButtonType("Usa Batteria");
-            ButtonType buttonDoNotUseBattery = new ButtonType("Non usare Batteria");
-
-            alert.getButtonTypes().setAll(buttonUseBattery, buttonDoNotUseBattery);
-
-            Optional<ButtonType> result = alert.showAndWait();
-
-            futureConfirmation.complete(result.isPresent() && result.get() == buttonUseBattery);
-        });
-        return futureConfirmation;
-    }
-
-    /**
-     * Evidenzia le celle delle batterie disponibili e imposta il listener per la selezione.
-     *
-     * @param batteryPositions Lista delle posizioni delle batterie disponibili.
-     */
-    /*public void highlightAndEnableBatterySelection(List<Pair<Integer, Integer>> batteryPositions) {
-        Platform.runLater(() -> {
-            isWaitingForBatterySelection.set(true); // Imposta lo stato di attesa
-
-
-            // Aggiungi un listener per i click sulla griglia per catturare la selezione della batteria
-            playerShipGrid.getChildren().forEach(node -> {
-                Integer colIndex = GridPane.getColumnIndex(node);
-                Integer rowIndex = GridPane.getRowIndex(node);
-
-                if (colIndex == null) colIndex = 0;
-                if (rowIndex == null) rowIndex = 0;
-
-                Pair<Integer, Integer> currentCellCoords = new Pair<>(rowIndex, colIndex);
-
-                if (node instanceof StackPane cell && batteryPositions.contains(currentCellCoords)) {
-                    // Aggiungi il listener solo alle celle che contengono batterie valide
-                    cell.setOnMouseClicked(event -> {
-                        if (isWaitingForBatterySelection.get()) { // Controlla lo stato
-                            // Completa il future con la posizione della batteria selezionata
-                            getBatterySelectionFuture().complete(currentCellCoords);
-                            // Rimuovi l'highlight e i listener dopo la selezione
-                            cell.setOnMouseClicked(null); // Rimuovi il listener da questa cella
-                            isWaitingForBatterySelection.set(false); // Resetta lo stato
-                        }
-                    });
-                }
-            });
-        });
-    }*/
-
-    /*public void askBattery(int engineRow, int engineCol) {
-        CompletableFuture<Integer> choice = new CompletableFuture<>();
-
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Motore Doppio");
-            alert.setHeaderText("Motore Doppio trovato a RIGA: " + engineRow + " COLONNA: " + engineCol);
-            alert.setContentText("Vuoi usare una batteria per attivare questo motore?");
-
-            ButtonType buttonUseBattery = new ButtonType("Usa Batteria");
-            ButtonType buttonDoNotUseBattery = new ButtonType("Non usare Batteria");
-
-            alert.getButtonTypes().setAll(buttonUseBattery, buttonDoNotUseBattery);
-
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == buttonUseBattery) {
-                choice.complete(1);
-                setBatteryChoice(1);
-            } else {
-                choice.complete(2);
-                 setBatteryChoice(1);
-            }
-        });
-    }*/
-
-
-    /*public void setBatteryChoice(int choice) {
-        if (batterychoice != null) {
-            if(choice==1){
-                batterychoice.complete(gui.useBattery(gui.getClient().getPlayer_local().getShip()));
-            }else{
-                batterychoice.complete(new Pair<>(-1,-1));
-            }
-        }
-    }
-
-    public CompletableFuture<Pair<Integer,Integer>> getBatteryChoice() {
-        if (batterychoice == null) {
-            batterychoice = new CompletableFuture<>();
-        }
-        return batterychoice;
-    }
-
-    public void resetChoice() {
-        batterychoice = new CompletableFuture<>();
-    }*/
-
 }

@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseEvent; // Questo import sembra inutilizzato, potresti volerlo rimuovere
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,6 +23,9 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Controller for the screen where the player selects their color.
+ */
 public class Choosecolorcontroller{
     private GUI gui;
     private CompletableFuture<Color> colorChosen;
@@ -39,11 +42,11 @@ public class Choosecolorcontroller{
         this.gui = gui;
     }
 
-
+    /**
+     * This method sets the visibility of the color rectangles based on the list of available colors.
+     * @param colors list of available colors to be enabled for selection
+     */
     public void setActiveButton(List<Color> colors) {
-        // È buona pratica impostare inizialmente tutti i bottoni a invisibile,
-        // e poi renderli visibili solo se il colore è disponibile.
-        // Questo evita problemi se lo stato precedente era visibile.
         blueRectangle.setVisible(false);
         redRectangle.setVisible(false);
         greenRectangle.setVisible(false);
@@ -68,6 +71,12 @@ public class Choosecolorcontroller{
 
     }
 
+    /**
+     * This method initializes and displays the color selection screen.
+     * The method should be called to start the color selection process.
+     * @param stage the JavaFX stage to show the color selection
+     * @throws Exception if the FXML file cannot be loaded
+     */
     public void start(Stage stage) throws Exception {
         this.colorChosen = new CompletableFuture<>();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChooseColor.fxml"));
@@ -76,7 +85,6 @@ public class Choosecolorcontroller{
         gui.setStage(stage);
         Scene scene = new Scene(root);
         stage.setTitle("Choosing Color");
-        // Chiamare setActiveButton qui è importante per inizializzare la visibilità
         setActiveButton(gui.getColorsavailable());
         stage.setScene(scene);
         stage.centerOnScreen();
@@ -87,6 +95,10 @@ public class Choosecolorcontroller{
         }));
     }
 
+    /**
+     * Disables all color buttons to prevent further selection.
+     * Called after a color has been chosen.
+     */
     private void disableAllColorButtons() {
         blueRectangle.setDisable(true);
         yellowRectangle.setDisable(true);
@@ -94,6 +106,9 @@ public class Choosecolorcontroller{
         greenRectangle.setDisable(true);
     }
 
+    /**
+     * Initializes the controller after its element has been completely processed.
+     */
     @FXML
     public void initialize() {
 
@@ -102,39 +117,59 @@ public class Choosecolorcontroller{
         }
     }
 
+    /**
+     * It completes the CompletableFuture with Color.BLUE, disables further interaction, and hides the rectangle.
+     * @param event the ActionEvent triggered by clicking the blue button
+     * @throws IOException if an error occurs
+     */
     @FXML
     public void blueChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.BLUE);
-        // Nascondi il bottone blu
         blueRectangle.setVisible(false);
         disableAllColorButtons();
     }
 
+    /**
+     * It completes the CompletableFuture with Color.YELLOW, disables further interaction, and hides the rectangle.
+     * @param event the ActionEvent triggered by clicking the blue button
+     * @throws IOException if an error occurs
+     */
     @FXML
     public void yellowChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.YELLOW);
-        // Nascondi il bottone giallo
         yellowRectangle.setVisible(false);
         disableAllColorButtons();
     }
 
+    /**
+     * It completes the CompletableFuture with Color.RED, disables further interaction, and hides the rectangle.
+     * @param event the ActionEvent triggered by clicking the blue button
+     * @throws IOException if an error occurs
+     */
     @FXML
     public void redChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.RED);
-        // Nascondi il bottone rosso
         redRectangle.setVisible(false);
         disableAllColorButtons();
 
     }
 
+    /**
+     * It completes the CompletableFuture with Color.GREEN, disables further interaction, and hides the rectangle.
+     * @param event the ActionEvent triggered by clicking the blue button
+     * @throws IOException if an error occurs
+     */
     @FXML
     public void greenChosen(ActionEvent event) throws IOException {
         colorChosen.complete(Color.GREEN);
-        // Nascondi il bottone verde
         greenRectangle.setVisible(false);
         disableAllColorButtons();
     }
 
+    /**
+     * Returns the CompletableFuture that will be completed once the user selects a color.
+     * @return a CompletableFuture<Color> that completes with the selected color
+     */
     public CompletableFuture<Color> getColorChosen() {
         if (colorChosen == null) {
             colorChosen = new CompletableFuture<>();

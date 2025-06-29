@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox style="-fx-background-color: lightyellow;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.CrewmateSelectionController">
+<VBox minWidth="410.0" prefHeight="420.0" prefWidth="411.0" style="-fx-background-color: lightyellow;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.CrewmateSelectionController">
     <children>
         <VBox alignment="CENTER" spacing="30.0" style="-fx-padding: 30;">
             <children>
-                <Label fx:id="cardInfoLabel" style="-fx-padding: 20; -fx-font-family: verdana; -fx-text-fill: #696969;" text="Seleziona il crewmate per questa Living Unit:" textAlignment="CENTER" wrapText="true">
+                <Label fx:id="cardInfoLabel" style="-fx-padding: 15; -fx-font-family: verdana; -fx-text-fill: #696969;" text="Seleziona il crewmate per questa Living Unit:" textAlignment="CENTER" wrapText="true">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>

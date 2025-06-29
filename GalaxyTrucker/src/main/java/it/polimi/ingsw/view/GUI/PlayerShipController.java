@@ -13,6 +13,11 @@ import javafx.scene.layout.StackPane;
 
 import java.util.Objects;
 
+/**
+ * Controller for displaying a player's ship in a separate window.
+ * This class is used both during the build phase and the flight phase
+ * to visualize the structure of a player's ship.
+ */
 public class PlayerShipController {
     @FXML
     private Label playerNameLabel;
@@ -28,14 +33,27 @@ public class PlayerShipController {
 
     private FlyghtController flyghtcontroller;
 
+    /**
+     * Sets the reference to the Buildcontroller for managing the stage during the build phase.
+     * @param buildcontroller the build controller to be referenced
+     */
     public void setBuildcontroller(Buildcontroller buildcontroller) {
         this.buildcontroller = buildcontroller;
     }
 
+    /**
+     * Sets the reference to the FlyghtController for managing the stage during the flight phase.
+     * @param flyghtcontroller the flight controller to be referenced
+     */
     public void setFlyghtcontroller(FlyghtController flyghtcontroller) {
         this.flyghtcontroller = flyghtcontroller;
     }
 
+    /**
+     * Populates the ship grid with the provided CardComponent.
+     * @param nickname   the nickname of the player whose ship is displayed
+     * @param shipBoard  a 2D array representing the player's ship grid with CardComponents
+     */
     public void setPlayerShip(String nickname, CardComponent[][] shipBoard) {
 
         playerNameLabel.setText("Nave di " + nickname);
@@ -69,21 +87,34 @@ public class PlayerShipController {
         }
     }
 
+    /**
+     * Makes the close button visible in the build phase view.
+     */
     public void showCloseButton() {
         Platform.runLater(() -> {
             closeButton.setVisible(true);
         });
     }
 
+    /**
+     * Makes the close button visible in the flight phase view.
+     */
     public void showCloseButtonFlyght() {
         Platform.runLater(() -> {
             closeButtonFlyght.setVisible(true);
         });
     }
 
+    /**
+     * Closes the stage associated with the Buildcontroller.
+     */
     public void closeStage(){
         buildcontroller.getPlayerStage().close();
     }
+
+    /**
+     * Closes the stage associated with the FlyghtController.
+     */
     public void closeStageFlyght(){
         flyghtcontroller.getPlayerStage().close();
     }

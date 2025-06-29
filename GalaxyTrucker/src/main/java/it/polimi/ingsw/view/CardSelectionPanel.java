@@ -8,6 +8,5 @@ public class CardSelectionPanel extends JPanel {
 
     public CardSelectionPanel(GUI gui) {
         this.gui = gui;
-        // qui dobbiamo gestire le carte da scegliere
     }
 }

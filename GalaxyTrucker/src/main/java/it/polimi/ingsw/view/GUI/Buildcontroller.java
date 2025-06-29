@@ -43,6 +43,9 @@ import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Universal;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
+/**
+ * Controller responsible for managing the ship building phase in the GUI.
+ */
 public class Buildcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
@@ -123,7 +126,7 @@ public class Buildcontroller {
 
             CardDisplayController cardDisplayController = loader.getController();
             cardDisplayController.setDeckName(deckName);
-            cardDisplayController.setCard(cardImagePath); // Passa il percorso dell'immagine e la descrizione
+            cardDisplayController.setCard(cardImagePath);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -132,7 +135,6 @@ public class Buildcontroller {
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
-            // Gestisci l'errore (es. mostra un alert all'utente)
         }
     }
 
@@ -200,7 +202,7 @@ public class Buildcontroller {
         if (timeline.getStatus() == Animation.Status.RUNNING) {
             timeline.stop();
         }
-            timeLeft = seconds; // Reset del tempo
+            timeLeft = seconds;
         Platform.runLater(() -> {
             timerLabel.setText(formatTime(timeLeft));
             timeline.playFromStart();
@@ -570,8 +572,8 @@ public class Buildcontroller {
      * @return 1 if the placement was successful, 0 otherwise
      */
     public int placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
-        int y = coords.getKey(); // RIGA
-        int x = coords.getValue(); // COLONNA
+        int y = coords.getKey();
+        int x = coords.getValue();
         if((y==0&x==0)||(y==1&x==0)||(y==0&x==1)||(y==0&x==3)||(y==1&x==6)||(y==0&x==5)||(y==0&x==6)){
             gui.showMessage("Posizione non valida!");
             return 0 ;
@@ -593,7 +595,6 @@ public class Buildcontroller {
 
         imageView.setRotate(card.getRotationAngle());
 
-        // Cerca la cella corretta nella GridPane
         for (Node node : shipGrid.getChildren()) {
             Integer colIndex = GridPane.getColumnIndex(node);
             Integer rowIndex = GridPane.getRowIndex(node);
@@ -616,7 +617,6 @@ public class Buildcontroller {
             }
         }
 
-        // Aggiorna il modello della nave con la carta piazzata (opzionale)
         CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
         shipboard[y][x] = card;
         return 1;
@@ -674,7 +674,6 @@ public class Buildcontroller {
         this.invalidConnectors = connectors;
 
         Platform.runLater(() -> {
-            // Fase 1: Reset di tutte le celle esistenti
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
                     StackPane cell = (StackPane) shipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
@@ -693,7 +692,6 @@ public class Buildcontroller {
                 }
             }
 
-            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
             for (Pair<Integer, Integer> currentCoords : connectors) {
                 int row = currentCoords.getKey();
                 int col = currentCoords.getValue();
@@ -727,11 +725,7 @@ public class Buildcontroller {
             if (!connectors.isEmpty()) {
                 gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
             } else {
-                // Se la lista passata è già vuota all'inizio
-                // Assicurati che il messaggio di successo sia comunque mostrato.
-                // Questa parte potrebbe essere ridondante se la logica di 'if (updatedInvalids.isEmpty())' è sempre raggiunta.
-                // Potrebbe essere utile se la funzione viene chiamata con una lista vuota dall'esterno.
-            }
+                }
         });
     }
 
@@ -756,7 +750,6 @@ public class Buildcontroller {
             if (rowIndex == null) rowIndex = 0;
 
             if (colIndex == col && rowIndex == row && node instanceof StackPane cell) {
-                // Pulisci la cella
                 cell.getChildren().clear();
                 cell.setOnMouseClicked(null);
                 cell.setStyle("-fx-background-color: transparent; -fx-cursor: default;");
@@ -821,20 +814,17 @@ public class Buildcontroller {
 
     public Node getCardPosition(int x, int y) {
         for (Node node : shipGrid.getChildren()) {
-            // *** MODIFICA QUI: Gestione dei valori null per gli indici ***
             Integer colIndex = GridPane.getColumnIndex(node);
             Integer rowIndex = GridPane.getRowIndex(node);
 
-            // Se gli indici non sono esplicitamente impostati, GridPane li considera 0
             if (colIndex == null) colIndex = 0;
             if (rowIndex == null) rowIndex = 0;
 
-            // Ora si usa && per trovare la cella esatta
             if (colIndex == x && rowIndex == y) {
-                return node; // Questo dovrebbe essere lo StackPane corretto
+                return node;
             }
         }
-        return null; // Nessuna cella trovata alle coordinate specificate
+        return null;
     }
 
     /**
@@ -843,7 +833,7 @@ public class Buildcontroller {
      * @return the overlay Node, or {@code null} if the type is unknown
      */
     public Node createoverlayfortype(String type) {
-        return createoverlayfortype(type, -1); // -1 = valore di default ignorato
+        return createoverlayfortype(type, -1);
     }
 
     /**
