@@ -32,8 +32,6 @@ public class GameManagerTest {
         assertEquals(1,gameManager.getAvaibleLobbies().size());
         assertEquals( 1,gameManager.getAllLobbies().size());
 
-
     }
-
 
 }

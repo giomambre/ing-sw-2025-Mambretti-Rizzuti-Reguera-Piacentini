@@ -263,8 +263,8 @@ public class PlayerShipController {
                 path = "/images/icons/battery.png";
                 for (int i = 0; i < count; i++) {
                     ImageView batteryImg = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-                    batteryImg.setFitWidth(27);
-                    batteryImg.setFitHeight(27);
+                    batteryImg.setFitWidth(22);
+                    batteryImg.setFitHeight(22);
                     batteryImg.setPreserveRatio(true);
                     container.getChildren().add(batteryImg);
                 }

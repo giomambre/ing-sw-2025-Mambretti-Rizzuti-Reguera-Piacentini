@@ -1669,6 +1669,8 @@ public class Server implements RemoteServer {
                 clients.remove(entry.getKey());
             }
         }
+        sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
+
         sendToClient(clientId, new ShipClientMessage(UTIL, "", clientId, player));
         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
         String nick = getNickname(clientId);
