@@ -663,6 +663,13 @@ public class GameController {
     }
 
 
+    public void executeEpidemic() {
+        Epidemic epidemic = new Epidemic(-1,0,CardAdventureType.Epidemic,"");
+        for(Player p : game.getPlayers()) {
+            epidemic.execute(p.getShip());
+        }
+    }
+
     /**
      * Execute this specific Adventure Card (the Client has no power to will in this one)
      * @param stardust

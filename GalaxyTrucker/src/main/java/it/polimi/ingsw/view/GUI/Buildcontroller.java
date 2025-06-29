@@ -610,7 +610,7 @@ public class Buildcontroller {
                 cell.setOnMouseEntered(null);
                 cell.setOnMouseExited(null);
                 cell.setEffect(null);
-
+                cell.setOnMouseClicked(null);
                 shipGrid.requestLayout();
                 shipGrid.layout();
                 break;

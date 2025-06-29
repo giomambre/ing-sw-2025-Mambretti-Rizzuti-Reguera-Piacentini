@@ -1469,6 +1469,7 @@ public class Server implements RemoteServer {
 
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(EPIDEMIC, "", adventure));
+                controller.executeEpidemic();
                 manageAdventure(controller.getRandomAdventure(), controller);
                 break;
 
