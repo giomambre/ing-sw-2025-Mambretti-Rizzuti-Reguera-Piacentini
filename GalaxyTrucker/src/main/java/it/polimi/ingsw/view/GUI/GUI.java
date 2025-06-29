@@ -659,12 +659,23 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method asks the player to choose a planet from a list of options, excluding already taken ones.
+     * @param planets a list of available planets, each represented by a list of cargos
+     * @param planets_taken a set of indices representing planets already selected by other players
+     * @return the index of the selected planet
+     */
     @Override
     public int askPlanet(List<List<Cargo>> planets, Set<Integer> planets_taken) {
         CargoSelector selector = new CargoSelector();
         return selector.askPlanet(planets, planets_taken);
     }
-
+    /**
+     * This method asks the player to provide coordinates for placing a card on the ship.
+     * @param ship
+     * @return a pair of integers representing the row and column of the selected coordinates;
+     *         returns (-1, -1) if the selected cell is not empty
+     */
     @Override
     public Pair<Integer, Integer> askCoords(Ship ship) {
         try {
@@ -686,7 +697,11 @@ public class GUI implements View {
             return null;
         }
     }
-
+    /**
+     * This method asks the player to select a reserved card from the available ones.
+     * @param securedCards a list of cards that have been previously reserved
+     * @return the index of the selected reserved card; returns -1 in case of error or cancellation
+     */
     @Override
     public int askSecuredCard(List<CardComponent> securedCards) {
         try {
@@ -743,6 +758,13 @@ public class GUI implements View {
     public void printFinalRanks(List<Player> finalRanks) {
     }
 
+    /**
+     * This method asks the player to select an action for a crewmate associated with the specified component.
+     *
+     * @param component the coordinates (row, column) of the ship component
+     * @return the index corresponding to the chosen crewmate action;
+     *         returns -1 in case of an error
+     */
     @Override
     public int crewmateAction(Pair<Integer,Integer> component) {
         try {
@@ -753,6 +775,11 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method retrieves the list of crewmate types supported by the component at the given coordinates.
+     * @param coords the coordinates (row, column) of the ship component
+     * @return a list of supported {@link CrewmateType}
+     */
     public List<CrewmateType> getCrewmates(Pair<Integer,Integer> coords) {
         CardComponent[][] ship = client.getPlayer_local().getShip().getShipBoard();
         CardComponent component = ship[coords.getKey()][coords.getValue()];
@@ -761,7 +788,11 @@ public class GUI implements View {
         return crewmateType;
     }
 
-
+    /**
+     * this method asks the player to decide whether to use a double cannon for the current attack.
+     * @return true if the player chooses to use the double cannon, false otherwise;
+     *         returns null in case of an error
+     */
     public Boolean useDoubleCannon() {
         try {
             Boolean selection=flyghtController.getUseDoubleCannon().get();
@@ -773,6 +804,11 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method asks the player to select the coordinates of a battery to activate.
+     * @return a pair of integers representing the selected battery's position (row, column);
+     *         returns null in case of an error
+     */
     public Pair<Integer,Integer> coordsBattery() {
         try {
             Pair<Integer,Integer> selection=flyghtController.getcoordsBattery().get();
@@ -784,6 +820,11 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method asks the player to select the coordinates of a crewmate (astronaut) to remove.
+     * @return a pair of integers representing the selected crewmate's position (row, column);
+     *         returns null in case of an error
+     */
     public Pair<Integer,Integer> coordsCrewmate() {
         try {
             Pair<Integer,Integer> selection=flyghtController.getAstronautToRemove().get();
@@ -800,6 +841,13 @@ public class GUI implements View {
         return 0;
     }
 
+    /**
+     * This method asks the player whether to activate an engine using a battery.
+     * Highlights the engine cell and displays a prompt to use a double cannon.
+     * If the player confirms, proceeds to battery selection.
+     * @param engine the coordinates (row, column) of the engine to activate
+     * @return the coordinates of the selected battery
+     */
     @Override
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> engine) {
         int i = engine.getKey();
@@ -818,6 +866,11 @@ public class GUI implements View {
 
     }
 
+    /**
+     * This method asks the player to select a battery card from the ship to activate it.
+     * @param ship
+     * @return the coordinates (row, column) of the selected battery;
+     */
     @Override
     public Pair<Integer, Integer> useBattery(Ship ship) {
         Pair<Integer, Integer> battery = new Pair<>(-1, -1);
@@ -855,8 +908,12 @@ public class GUI implements View {
 
     }
 
-
-
+    /**
+     * This method creates a pop-up alerting the player of an incoming meteor or cannon shot.
+     * The window shows the meteor's type, direction, and target coordinate, along with a related image.
+     * @param meteor a pair containing the {@link MeteorType} and its {@link Direction}
+     * @param coord the target coordinate (column or row) of the impact, depending on the direction
+     */
     @Override
     public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
         CountDownLatch latch = new CountDownLatch(1);
@@ -1052,6 +1109,12 @@ public class GUI implements View {
 
     }
 
+    /**
+     * This method asks the player to select one of the available ship pieces (connected components of tiles).
+     * @param pieces a list of ship pieces, each represented as a list of coordinate pairs
+     * @param ship
+     * @return the index of the selected piece; returns -1 in case of error
+     */
     @Override
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         CompletableFuture<Integer> result = new CompletableFuture<>();
@@ -1073,6 +1136,14 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method requests an updated version of the ship with invalid connections removed.
+     * The update is obtained asynchronously from the build controller.
+     * @param ship the original ship containing possibly invalid connections
+     * @param connectors a list of connector positions to be validated or removed
+     * @return the updated ship after connection validation;
+     *         returns null if an error occurs
+     */
     @Override
     public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
         try {
@@ -1083,7 +1154,11 @@ public class GUI implements View {
         }
     }
 
-
+    /**
+     * This method creates a popup showing that a card has been hit, indicating the direction of the hit.
+     * @param card the {@link CardComponent} that was hit
+     * @param direction the {@link Direction} from which the card was hit
+     */
         @Override
         public void showHittedCard(CardComponent card, Direction direction) {
             // Se non siamo sul JavaFX Application Thread, usa CountDownLatch
@@ -1104,6 +1179,13 @@ public class GUI implements View {
             flyghtController.updatePlayerShip();
         }
 
+    /**
+     * This method creates a popup window showing a hit card.
+     * The window displays the card image and hit direction.
+     * @param card the {@link CardComponent} that was hit
+     * @param direction the {@link Direction} of the incoming hit
+     * @param latch an optional {@link CountDownLatch} used to block the calling thread until the window is closed
+     */
     private void createAndShowStage(CardComponent card, Direction direction, CountDownLatch latch) {
         // Crea un nuovo stage
         Stage stage = new Stage();
@@ -1196,8 +1278,13 @@ public class GUI implements View {
 
     }
 
-
-
+    /**
+     * This method returns a mapping of ship components to the cargo they are carrying.
+     * This method currently returns an empty structure and is likely a placeholder
+     * for future cargo management logic.
+     * @param ship
+     * @return an empty map representing cargo distribution across components
+     */
     @Override
     public Map<CardComponent,Map <Cargo, Integer>> manageCargo(Ship ship){
         Map<CardComponent, Map<Cargo, Integer>> cargos = new HashMap<>();
@@ -1205,6 +1292,16 @@ public class GUI implements View {
         return cargos;
     }
 
+    /**
+     * This method asks the player to add a cargo to a valid storage component on their ship.
+     * The method opens a GUI for storage selection, then asks where to place the cargo inside it.
+     * @param ship the current state of the ship
+     * @param cargo the cargo to be added
+     * @return a pair containing:
+     *         - the coordinates (row, column) of the selected storage component
+     *         - the position inside the storage where the cargo will be placed;
+     *         returns null if the selection is invalid or canceled
+     */
     @Override
     public Pair<Pair<Integer, Integer>, Integer> addCargo(Ship ship, Cargo cargo) {
         Pair<Pair<Integer, Integer>, Integer> pair;
@@ -1262,8 +1359,13 @@ public class GUI implements View {
     }
 
 
-
-
+    /**
+     * This method updates the flight board with the current positions and lap information of all players.
+     * This method creates a new instance of {@link FlyghtController} and applies the updates,
+     * but does not display the board in the GUI.
+     * @param positions a map associating player order indexes with their current positions on the board
+     * @param laps a map associating player order indexes with the number of laps completed
+     */
     @Override
     public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
         FlyghtController controller = new FlyghtController();
@@ -1285,6 +1387,12 @@ public class GUI implements View {
 
     }
 
+    /**
+     * This method asks the player to remove a cargo from the ship.
+     * Uses the {@link CargoSelector} to manage the removal process,
+     * then updates the visual representation of the ship.
+     * @param ship
+     */
     @Override
     public void removeCargo(Ship ship) {
         CargoSelector cargoSelector = new CargoSelector();
@@ -1292,6 +1400,13 @@ public class GUI implements View {
         flyghtController.updatePlayerShip();
     }
 
+
+    /**
+     * This method asks the player to choose a crewmate (astronaut) to remove from the ship.
+     * Displays a visual representation of crewmates, then waits for the player’s input.
+     * @param ship the current state of the player's ship
+     * @return the coordinates (row, column) of the selected crewmate
+     */
     @Override
     public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
         getFlyghtController().showCrewmates(player_local.getShip());
@@ -1309,7 +1424,13 @@ public class GUI implements View {
 
 
 
-
+    /**
+     * This method asks the player whether to use a double cannon for a given cannon component,
+     * Highlights the selected cannon on the GUI, and if confirmed and
+     * requests battery coordinates to activate the cannon.
+     * @param cannon the coordinates of the cannon to be activated
+     * @return the coordinates of the selected battery; or (-1, -1) if the player declines
+     */
     @Override
     public Pair<Integer, Integer> askCannon(Pair<Integer, Integer> cannon) {
         int i = cannon.getKey();
@@ -1327,6 +1448,10 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method executes an epidemic event on the ship, simulating the loss of crewmates.
+     * @param ship
+     */
     @Override
     public void executeEpidemic(Ship ship) {
         Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic,"");
@@ -1335,6 +1460,11 @@ public class GUI implements View {
         getFlyghtController().updatePlayerShip();
     }
 
+    /**
+     * This method asks the player to choose one cargo from a list of available cargo types.
+     * @param cargos a list of available {@link Cargo} types
+     * @return the index of the selected cargo
+     */
     @Override
     public int askCargo(List<Cargo> cargos) {
         CargoSelector selector = new CargoSelector();
