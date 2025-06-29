@@ -1607,7 +1607,6 @@ public class Server implements RemoteServer {
 
 
         if(controller == null || controller.getGamestate() == FINISHED_GAME ){
-            connectedNames.remove(getNickname(clientId));
             System.out.println("Lobby cancellata 2");
 
 

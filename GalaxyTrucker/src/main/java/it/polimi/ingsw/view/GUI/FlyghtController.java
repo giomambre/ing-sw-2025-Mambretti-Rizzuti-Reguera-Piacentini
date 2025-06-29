@@ -611,12 +611,15 @@ public class FlyghtController {
             yesdc.setOnAction((ActionEvent event ) -> {
                 useDoubleCannon.complete(true);
                 hidedc();
+                resetUseDC();
+                resetHighlights(x, y);
             });
             nodc.setVisible(true);
             nodc.setOnAction((ActionEvent event) -> {
                 useDoubleCannon.complete(false);
                 hidedc();
-                resetHighlights(y, x);
+                resetUseDC();
+                resetHighlights(x, y);
             });
         });
     }

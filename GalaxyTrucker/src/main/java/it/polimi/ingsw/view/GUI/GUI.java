@@ -804,9 +804,7 @@ public class GUI implements View {
      */
     public Boolean useDoubleCannon() {
         try {
-            Boolean selection=flyghtController.getUseDoubleCannon().get();
-            flyghtController.resetUseDC();
-            return selection;
+            return flyghtController.getUseDoubleCannon().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
