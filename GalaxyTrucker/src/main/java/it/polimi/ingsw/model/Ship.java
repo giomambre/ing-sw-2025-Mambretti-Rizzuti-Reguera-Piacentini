@@ -135,7 +135,7 @@ public class Ship implements Serializable {
             }
         }
 
-        //player.utilePerTestare();
+        player.utilePerTestare();
 
     }
 

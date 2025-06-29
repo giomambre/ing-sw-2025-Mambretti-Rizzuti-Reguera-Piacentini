@@ -646,7 +646,7 @@ public class Buildcontroller {
             controller.setBuildcontroller(this);
 
 
-            controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
+            controller.setPlayerShip(player.getNickname(), player.getShip());
             controller.showCloseButton();
 
             Stage stage = new Stage();

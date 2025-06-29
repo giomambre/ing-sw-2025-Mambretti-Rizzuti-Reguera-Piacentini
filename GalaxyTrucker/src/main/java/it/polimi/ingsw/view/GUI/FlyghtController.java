@@ -234,7 +234,7 @@ public class FlyghtController {
 
             System.out.println("debug,nave di:"+player.getNickname());
             System.out.println("la shipboard invece è"+player.getShip().getShipBoard());
-            controller.setPlayerShip(player.getNickname(), player.getShip().getShipBoard());
+            controller.setPlayerShip(player.getNickname(), player.getShip());
             controller.showCloseButtonFlyght();
 
             Stage stage = new Stage();
