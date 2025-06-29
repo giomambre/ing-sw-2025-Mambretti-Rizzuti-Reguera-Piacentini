@@ -115,7 +115,8 @@ public class FlyghtController {
     @FXML
     private Label infoLabel;
 
-
+    @FXML
+    private Label extraComponentLabel;
     @FXML
     private VBox eventLogVBox;
     @FXML
@@ -262,6 +263,11 @@ public class FlyghtController {
             astronautToRemove = new CompletableFuture<>();
         }
         return astronautToRemove;
+    }
+
+
+    public void updateExtraComponentsLabel(int num) {
+        Platform.runLater(() ->extraComponentLabel .setText("Componenti Persi : " + num));
     }
 
     /**

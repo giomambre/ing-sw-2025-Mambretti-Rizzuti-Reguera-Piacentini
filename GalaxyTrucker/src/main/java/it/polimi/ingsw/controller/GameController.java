@@ -644,6 +644,8 @@ public class GameController {
         Ship ship;
         for (Player p : players) {
             ship = p.getShip();
+             total_crewmates = 0;
+
             for (int i = 0; i < ship.getROWS(); i++) {
                 for (int j = 0; j < ship.getCOLS(); j++) {
                     if (ship.getComponent(i, j).getComponentType() == ComponentType.LivingUnit)

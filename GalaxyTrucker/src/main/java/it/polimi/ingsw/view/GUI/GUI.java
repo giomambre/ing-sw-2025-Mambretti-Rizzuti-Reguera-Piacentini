@@ -861,12 +861,12 @@ public class GUI implements View {
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> engine) {
         int i = engine.getKey();
         int j = engine.getValue();
-        FlyghtController controller = getFlyghtController();
 
-        controller.highlightCell(i, j);
-        controller.showdc(i, j);
+
+        flyghtController.highlightCell(i, j);
+        flyghtController.showdc(i, j);
         Boolean useDC = useDoubleCannon();
-        getFlyghtController().resetHighlights(i, j);
+        flyghtController.resetHighlights(i, j);
         if (!useDC) {
             return new Pair<>(-1,-1);
         } else {
@@ -1424,10 +1424,10 @@ public class GUI implements View {
         int j = cannon.getValue();
         FlyghtController controller = getFlyghtController();
 
-        controller.highlightCell(i, j);
-        controller.showdc(i, j);
+        flyghtController.highlightCell(i, j);
+        flyghtController.showdc(i, j);
         Boolean useDC = useDoubleCannon();
-        getFlyghtController().resetHighlights(i, j);
+        flyghtController.resetHighlights(i, j);
         if (!useDC) {
             return new Pair<>(-1,-1);
         } else {

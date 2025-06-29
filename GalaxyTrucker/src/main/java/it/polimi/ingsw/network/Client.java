@@ -1472,12 +1472,17 @@ public class Client {
                     i++;
             int dummy = virtualView.nextMeteor();
 
+            if(virtualViewType == VirtualViewType.GUI){
+                ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
+
+            }
+
                 }
                 List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
 
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-
+                    return;
 
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
