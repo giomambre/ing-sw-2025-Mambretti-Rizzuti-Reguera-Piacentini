@@ -593,10 +593,11 @@ public class Client {
 
                         try {
                             player_local.addToShip(card_msg.getCardComponent(), coords.getKey(), coords.getValue());
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             networkAdapter.sendMessage(new CardComponentMessage(MessageType.DISMISSED_CARD, "", clientId, card_msg.getCardComponent()));
+                            System.out.println("Errore nel piazzamento");
                             elaborate(new Message(MessageType.BUILD_START, ""));
-                            break;
+
                         }
                         elaborate(new Message(MessageType.BUILD_START, ""));
                         player_local.getShip().getExtra_components().remove(card_msg.getCardComponent());
@@ -740,6 +741,7 @@ public class Client {
                     ((GUI) virtualView).createbuildscreen();
                     ((GUI) virtualView).getBuildcontroller().printShipImage(player_local.getShip().getShip_board());
                 }
+                elaborate(new Message(MessageType.BUILD_START,""));
                 break;
             case INVALID_CONNECTORS:
                 InvalidConnectorsMessage icm = (InvalidConnectorsMessage) msg;
@@ -1232,17 +1234,16 @@ public class Client {
      * @throws IOException If an I/O error occurs during communication.
      */
     public static void manageAdventure(CardAdventure adventure, String content) throws IOException {
-        virtualView.updateLocalPlayer(player_local);
-
         if (virtualViewType==VirtualViewType.GUI){
             ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
             ((GUI) virtualView).getFlyghtController().updatePlayerShip();
+        }
+        virtualView.updateLocalPlayer(player_local);
+
+        if(virtualViewType == VirtualViewType.GUI){
             ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
-            System.out.println("num extra comp " + player_local.getShip().getExtra_components().size());
 
         }
-
-
         switch (adventure.getType()) {
 
 
@@ -1254,30 +1255,7 @@ public class Client {
                 Battery card_battery = null;
 
 
-                for (int i = 0; i < ship.getROWS(); i++) {
-                    for (int j = 0; j < ship.getCOLS(); j++) {
-                        CardComponent card = ship.getComponent(i, j);
-
-                        if (card.getComponentType() == DoubleEngine) {
-
-                                battery = virtualView.askEngine(new Pair<>(i, j));
-                                if (battery.getKey() == -1 || battery.getValue() == -1) {
-
-                                    battery_usage_os.put(new Pair<>(i, j), false);
-
-                                } else {
-                                    battery_usage_os.put(new Pair<>(i, j), true);
-                                    card_battery = (Battery) ship.getComponent(battery.getKey(), battery.getValue());
-                                    card_battery.removeBattery();
-
-
-                                }
-
-
-                        }
-
-                    }
-                }
+                enginePower(0);
 
                 double power_m = ship.calculateEnginePower(battery_usage_os);
                 if(virtualViewType==VirtualViewType.GUI){
@@ -1495,7 +1473,6 @@ public class Client {
 
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-                    networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "", clientId, player_local));
                     return;
 
                 } else if (pieces.size() > 1) {

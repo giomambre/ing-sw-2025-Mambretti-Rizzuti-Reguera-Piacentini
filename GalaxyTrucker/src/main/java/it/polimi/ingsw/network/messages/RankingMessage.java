@@ -23,9 +23,8 @@ public class RankingMessage extends Message {
         Double less = 100.0;
         String player = "";
         List<Map.Entry<String, Double>> entries = new ArrayList<>(ranks.entrySet());
-        Collections.reverse(entries);
         for (Map.Entry<String, Double> entry : entries) {
-            if (entry.getValue() <= less) {
+            if (entry.getValue() < less) {
                 less = entry.getValue();
                 player = entry.getKey();
             }

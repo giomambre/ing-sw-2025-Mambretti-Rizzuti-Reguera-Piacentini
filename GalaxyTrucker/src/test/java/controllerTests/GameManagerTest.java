@@ -37,10 +37,10 @@ public class GameManagerTest {
 
     @Test
     public void testJoinPlayer() {
-        gameManager.joinLobby("Raffa",1);
-        assertEquals(0,gameManager.getAvaibleLobbies().size());
-        assertEquals(2,gameManager.getLobby(1).getPlayers().size());
-        assertEquals(2,gameManager.getLobby(1).getLimit());
+        gameManager.joinLobby("Raffa", 1);
+        assertEquals(0, gameManager.getAvaibleLobbies().size());
+        assertEquals(2, gameManager.getLobby(1).getPlayers().size());
+        assertEquals(2, gameManager.getLobby(1).getLimit());
         assertThrows(IllegalArgumentException.class, () -> {
             gameManager.joinLobby("Raffa", 1);
         });

@@ -1637,6 +1637,7 @@ public class Server implements RemoteServer {
                         disconnectedNames.remove(p.getNickname());
                     }
 
+
                 }
                 System.out.println("Client " + nickname + " rimosso.");
             }
@@ -1670,13 +1671,11 @@ public class Server implements RemoteServer {
         }
         sendToClient(clientId, new ShipClientMessage(UTIL, "", clientId, player));
         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
-      //  sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
         String nick = getNickname(clientId);
         switch (controller.getGamestate()) {
 
             case BUILD_PHASE:
 
-                sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
 
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 for (CardComponent card : controller.getFacedUpCards()) {

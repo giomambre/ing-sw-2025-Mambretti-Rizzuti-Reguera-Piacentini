@@ -101,8 +101,8 @@ public class Player implements Serializable {
      * @param component the component that the player wants to secure
      */
     public void secureComponent(CardComponent component) {
-            List<CardComponent> extra_components = ship.getExtra_components();
-                extra_components.add(component);
+
+                ship.getExtra_components().add(component);
 
     }
 

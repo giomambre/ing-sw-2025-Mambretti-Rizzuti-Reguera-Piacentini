@@ -69,7 +69,7 @@ public class Ship implements Serializable {
             throw new IllegalArgumentException("Position not Accessible");
 
         if (ship_board[row][col].getComponentType() != Empty)
-            throw new IllegalArgumentException("Position already in use" + row + " " + col);
+            throw new IllegalArgumentException("Position already in use " + row + " " + col);
 
 
         ship_board[row][col] = component;
@@ -135,7 +135,8 @@ public class Ship implements Serializable {
             }
         }
 
-        //player.utilePerTestare();
+
+
 
     }
 

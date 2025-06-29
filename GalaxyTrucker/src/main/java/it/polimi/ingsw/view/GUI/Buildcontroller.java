@@ -671,7 +671,7 @@ public class Buildcontroller {
 
         Platform.runLater(() -> {
 
-            try{
+
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
                     StackPane cell = (StackPane) shipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
@@ -693,9 +693,13 @@ public class Buildcontroller {
             for (Pair<Integer, Integer> currentCoords : connectors) {
                 int row = currentCoords.getKey();
                 int col = currentCoords.getValue();
-
-                StackPane cell = (StackPane) shipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
-
+                StackPane cell;
+                try {
+                    cell = (StackPane) shipGrid.getChildren().get(row * ship.getShip_board()[0].length + col);
+                }catch (Exception e) {
+                    System.out.println("tutto ok");
+                    break;
+                }
                 if (cell != null) {
                     highlightCell(currentCoords);
                     cell.setOnMouseClicked(e -> {
@@ -723,9 +727,7 @@ public class Buildcontroller {
             if (!connectors.isEmpty()) {
                 gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
             }
-            }catch (Exception e){
-                System.out.println("Tutto regolare");
-            }
+
         });
 
 
