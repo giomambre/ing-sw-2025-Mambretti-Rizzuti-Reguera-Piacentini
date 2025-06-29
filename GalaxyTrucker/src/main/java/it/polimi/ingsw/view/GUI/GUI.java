@@ -866,7 +866,6 @@ public class GUI implements View {
         flyghtController.highlightCell(i, j);
         flyghtController.showdc(i, j);
         Boolean useDC = useDoubleCannon();
-        flyghtController.resetHighlights(i, j);
         if (!useDC) {
             return new Pair<>(-1,-1);
         } else {
@@ -1419,22 +1418,20 @@ public class GUI implements View {
      * @return the coordinates of the selected battery; or (-1, -1) if the player declines
      */
     @Override
+
     public Pair<Integer, Integer> askCannon(Pair<Integer, Integer> cannon) {
         int i = cannon.getKey();
         int j = cannon.getValue();
-        FlyghtController controller = getFlyghtController();
 
         flyghtController.highlightCell(i, j);
         flyghtController.showdc(i, j);
         Boolean useDC = useDoubleCannon();
-        flyghtController.resetHighlights(i, j);
         if (!useDC) {
             return new Pair<>(-1,-1);
         } else {
             return useBattery(player_local.getShip());
         }
     }
-
     /**
      * This method executes an epidemic event on the ship, simulating the loss of crewmates.
      * @param ship
