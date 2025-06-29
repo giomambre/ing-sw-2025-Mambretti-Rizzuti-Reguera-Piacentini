@@ -1233,6 +1233,10 @@ public class Client {
         }
         virtualView.updateLocalPlayer(player_local);
 
+        if(virtualViewType == VirtualViewType.GUI){
+            ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
+
+        }
         switch (adventure.getType()) {
 
 
@@ -1359,6 +1363,12 @@ public class Client {
                 int i = 0;
                 for (Pair<MeteorType, Direction> m : meteors) {
 
+
+                    if(virtualViewType == VirtualViewType.GUI){
+                        ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
+
+                    }
+
                     virtualView.printMeteor(m, coordList.get(i));
 
 
@@ -1472,10 +1482,7 @@ public class Client {
                     i++;
             int dummy = virtualView.nextMeteor();
 
-            if(virtualViewType == VirtualViewType.GUI){
-                ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
 
-            }
 
                 }
                 List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
