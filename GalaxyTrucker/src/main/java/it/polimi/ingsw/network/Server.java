@@ -53,7 +53,9 @@ public class Server implements RemoteServer {
 
     private Map<Integer, LobbyTimer> lobbyTimers = new ConcurrentHashMap<>();
     private final ScheduledExecutorService heartbeatScheduler = Executors.newScheduledThreadPool(1);
-
+    /**
+     * Starts the server, initializing Socket, RMI, and message processing threads.
+     */
     public void start() {
         new Thread(this::startSocketServer).start();
         new Thread(this::startRmiServer).start();
@@ -61,7 +63,9 @@ public class Server implements RemoteServer {
         startHeartbeat();
         System.out.println("Server pronto.");
     }
-
+    /**
+     * Starts the Socket server to listen for new client connections.
+     */
     private void startSocketServer() {
         try (ServerSocket serverSocket = new ServerSocket(SOCKET_PORT)) {
             System.out.println("Server Socket in ascolto sulla porta " + SOCKET_PORT + "...");
@@ -76,7 +80,9 @@ public class Server implements RemoteServer {
             System.err.println("Errore server Socket: " + e.getMessage());
         }
     }
-
+    /**
+     * Starts the RMI server to allow remote method invocations from clients.
+     */
     private void startRmiServer() {
         try {
             RemoteServer stub = (RemoteServer) UnicastRemoteObject.exportObject(this, 0);
@@ -111,7 +117,9 @@ public class Server implements RemoteServer {
             messageQueue.add(message);
         }
     }
-
+    /**
+     * Continuously processes messages from the message queue in a loop.
+     */
     private void processMessages() {
         while (!Thread.currentThread().isInterrupted()) {
             Message msg;
@@ -128,7 +136,10 @@ public class Server implements RemoteServer {
             }
         }
     }
-
+    /**
+     * Handles a single message from the queue, directing it based on its type.
+     * @param msg The message to be handled.
+     */
     private void handleMessage(Message msg) {
 
         switch (msg.getType()) {
@@ -202,7 +213,7 @@ public class Server implements RemoteServer {
                 int lobby_id = Integer.parseInt(msg.getContent());
                 System.out.println("il player vuole entrare nella lobby :" + lobby_id);
 
-                synchronized (manager) {
+
 
                     if (manager.getAvaibleLobbies().contains(lobby_id)) {
                         System.out.println("Successo player joined lobby :" + lobby_id);
@@ -219,14 +230,14 @@ public class Server implements RemoteServer {
 
                             }
 
+
+                        }
+                    }else {
+                            System.out.println("Fail player joined lobby :" + lobby_id);
+                            sendToClient(msgClient.getId_client(), new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES, "Lobby full o partita iniziata \n", manager.getAvaibleLobbies()));
+
                         }
 
-                    } else {
-                        System.out.println("Fail player joined lobby :" + lobby_id);
-                        sendToClient(msgClient.getId_client(), new AvaiableLobbiesMessage(MessageType.SEE_LOBBIES, "Lobby full o partita iniziata \n", manager.getAvaibleLobbies()));
-
-                    }
-                }
 
                 break;
 
@@ -282,11 +293,24 @@ public class Server implements RemoteServer {
 
                                     for (Player p : controller.getPlayers()) {
 
+                                        if(lt.controller.getDisconnected_players().contains(p.getNickname())) {
+                                            try {
+                                                lt.getFinishOrder().remove(p.getNickname());
+                                            }catch (Exception e){
+                                                System.out.println("Player " + p.getNickname() + " disconesso ma non aveva terminato");
+                                            }
+
+
+                                        }
+
                                         if (!lt.getFinishOrder().contains(p.getNickname())) {
+
+
                                             lt.addPlayer(p.getNickname());
                                             sendToClient(getId_client(p.getNickname()), new Message(FORCE_BUILD_PHASE_END, lt.getPositionByPlayer(p.getNickname())));
 
                                         }
+
 
                                     }
                                 }
@@ -413,6 +437,15 @@ public class Server implements RemoteServer {
 
                             for (Player p : lt.getController().getPlayers()) {
 
+                                if(lt.controller.getDisconnected_players().contains(p.getNickname())) {
+                                    try {
+                                        lt.getFinishOrder().remove(p.getNickname());
+                                    }catch (Exception e){
+                                        System.out.println("Player " + p.getNickname() + " disconesso ma non aveva terminato");
+                                    }
+
+
+                                }
                                 if (!lt.getFinishOrder().contains(p.getNickname())) {
                                     lt.addPlayer(p.getNickname());
                                     sendToClient(getId_client(p.getNickname()), new Message(FORCE_BUILD_PHASE_END, lt.getPositionByPlayer(p.getNickname())));
@@ -589,21 +622,21 @@ public class Server implements RemoteServer {
                         Cargo.Yellow)
              ),"/images/cardAdventure/GT-planets_1.1.jpg" );
 
-//             CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
-//                        Arrays.asList(
-//                                Cargo.Red,
-//                                Cargo.Yellow,
-//                                Cargo.Yellow
-//                        ),
-//                        3,"/images/cardAdventure/GT-smugglers_1.jpg");
-             /*    adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
+              /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
+                        Arrays.asList(
+                                Cargo.Red,
+                                Cargo.Green,
+                                Cargo.Blue
+                        ),
+                        2,"/images/cardAdventure/GT-smugglers_1.jpg");*/
+                 adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
                         List.of(
                                 new Pair<>(MeteorType.LightCannonFire, North),
                                 new Pair<>(MeteorType.LightCannonFire, West),
                                 new Pair<>(MeteorType.LightCannonFire, East),
                                 new Pair<>(MeteorType.HeavyCannonFire, South)
                        ),"/images/cardAdventure/GT-combatZone_2.jpg"
-                )*/;
+                );
 
              /*    adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
                         List.of(
@@ -615,10 +648,10 @@ public class Server implements RemoteServer {
                         ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
                 );
 */
-                //CardAdventure adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
-                //CardAdventure adventure = controller.getRandomAdventure();
-                //adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
 
+                //CardAdventure adventure = controller.getRandomAdventure();
+              //  adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
+              //  adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
                 manageAdventure(adventure, controller);
 
 
@@ -1204,7 +1237,12 @@ public class Server implements RemoteServer {
 
     }
 
-
+    /**
+     * Manages the logic for a specific adventure card during the flight phase.
+     * It initializes the adventure and notifies the appropriate players.
+     * @param adventure The adventure card to be managed.
+     * @param controller The game controller managing the current game.
+     */
     public void manageAdventure(CardAdventure adventure, GameController controller) {
 
 
@@ -1226,7 +1264,7 @@ public class Server implements RemoteServer {
         if (adventure == null || controller.getActivePlayers().size() <= 1) {
 
             controller.setRewards();
-            List <Player> players = controller.getPlayers();
+            List <Player> players = new ArrayList<>();
             for(Player p : controller.getPlayers()) {
 
                 players.add(p.copyPlayer());
@@ -1431,6 +1469,7 @@ public class Server implements RemoteServer {
 
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(NEW_ADVENTURE_DRAWN, "", adventure));
                 sendToAllClients(controller.getLobby(), new AdventureCardMessage(EPIDEMIC, "", adventure));
+                controller.executeEpidemic();
                 manageAdventure(controller.getRandomAdventure(), controller);
                 break;
 
@@ -1480,7 +1519,11 @@ public class Server implements RemoteServer {
         return null;
     }
 
-
+    /**
+     * Sends a message to all clients in a specific lobby.
+     * @param l The lobby whose players will receive the message.
+     * @param msg The message to be sent.
+     */
     private void sendToAllClients(Lobby l, Message msg) {
         GameController controller = all_games.get(l.getLobbyId());
         for (String player : l.getPlayers()) {
@@ -1495,7 +1538,11 @@ public class Server implements RemoteServer {
         }
 
     }
-
+    /**
+     * Sends a message to a specific client identified by their UUID.
+     * @param id The UUID of the target client.
+     * @param msg The message to be sent.
+     */
     private void sendToClient(UUID id, Message msg) {
         ConnectionHandler client = clients.get(id);
         if (client != null) {
@@ -1508,7 +1555,11 @@ public class Server implements RemoteServer {
         }
     }
 
-
+    /**
+     * Gets the lobby ID for a specific client.
+     * @param id The UUID of the client.
+     * @return The ID of the lobby the client is in, or -1 if not found.
+     */
     private int getLobbyId(UUID id) {
         String nick = getNickname(id);
         if (nick == null) return -1;
@@ -1518,12 +1569,17 @@ public class Server implements RemoteServer {
                 .findFirst()
                 .orElse(-1);
     }
-
+    /**
+     * The main method to start the server application.
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         Server server = new Server();
         server.start();
     }
-
+    /**
+     * Starts a scheduled task to periodically check client connections via heartbeat.
+     */
     private void startHeartbeat() {
         heartbeatScheduler.scheduleAtFixedRate(() -> {
             for (Map.Entry<UUID, ConnectionHandler> entry : clients.entrySet()) {
@@ -1540,19 +1596,26 @@ public class Server implements RemoteServer {
             }
         }, 0, 4, TimeUnit.SECONDS);
     }
-
+    /**
+     * Handles the logic when a client disconnects from the server.
+     * This includes updating game state and notifying other players.
+     * @param clientId The UUID of the disconnected client.
+     */
     public void handleClientDisconnection(UUID clientId) {
         ConnectionHandler handler = clients.get(clientId);
         controller = all_games.get(getLobbyId(clientId));
 
 
-        if(controller == null){
+        if(controller == null || controller.getGamestate() == FINISHED_GAME ){
+            System.out.println("Lobby cancellata 2");
+
 
             clients.remove(clientId);
-            connectedNames.remove(getNickname(clientId));
             return;
 
         }
+
+        if(     controller.getLobby().getPlayers().contains(getNickname(clientId))) {}
 
         String nick = getNickname(clientId);
 
@@ -1611,10 +1674,8 @@ public class Server implements RemoteServer {
                                     handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
 
 
-
                             }else if(controller.getCurr_combatzone().equals("cw"))
                                     handleMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED,"cz_done",clientId,player_disc));
-
                             break;
                     }
                 }
@@ -1640,7 +1701,11 @@ public class Server implements RemoteServer {
         }
     }
 
-
+    /**
+     * Handles the logic for a client reconnecting to an ongoing game.
+     * It restores the player's state and updates them on the current game status.
+     * @param clientId The UUID of the reconnecting client.
+     */
     public void handleClientReconnection(UUID clientId) {
         controller = all_games.get(getLobbyId(clientId));
         controller.reConnect(getNickname(clientId));
@@ -1663,12 +1728,13 @@ public class Server implements RemoteServer {
         }
         sendToClient(clientId, new ShipClientMessage(UTIL, "", clientId, player));
         sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
+      //  sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
         String nick = getNickname(clientId);
         switch (controller.getGamestate()) {
 
             case BUILD_PHASE:
 
-                sendToClient(clientId, new ShipClientMessage(MessageType.BUILD_START, "", clientId, player));
+                sendToClient(clientId, new CardAdventureDeckMessage(MessageType.DECK_CARD_ADVENTURE_UPDATED, "", controller.seeDecksOnBoard()));
 
                 sendToAllClients(controller.getLobby(), new PlayersShipsMessage(MessageType.UPDATED_SHIPS, "", safePlayers));
                 for (CardComponent card : controller.getFacedUpCards()) {

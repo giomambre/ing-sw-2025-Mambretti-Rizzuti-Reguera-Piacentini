@@ -58,27 +58,41 @@ public class Client {
     private static CompletableFuture<Void> otherPlayersReady = new CompletableFuture<>();
     private static NetworkAdapter networkAdapter = null;
 
-
+    /**
+     * Sets the local list of other players and signals that the data is ready.
+     * @param players The list of players to set.
+     */
     public static void setOtherPlayersLocal(List<Player> players) {
         other_players_local = players;
-        otherPlayersReady.complete(null); // Sblocca l’attesa
+        otherPlayersReady.complete(null);
     }
-
+    /**
+     * Sets the nickname for the client.
+     * @param nickname The nickname to be assigned to the client.
+     */
     public static void setNickname(String nickname) {
         Client.nickname = nickname;
     }
-
+    /**
+     * Sets the unique identifier (UUID) for the client.
+     * @param id The UUID to be assigned to the client.
+     */
     public static void setClientId(java.util.UUID id) {
         clientId = id;
     }
 
-
+    /**
+     * The main entry point for the client application. It handles initial setup,
+     * connection to the server (Socket or RMI), user interface selection (TUI or GUI),
+     * and starts threads for managing incoming and outgoing messages.
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         try {
 
             Scanner scanner = new Scanner(System.in);
-            String host = "5.tcp.eu.ngrok.io";
-            int socketPort = 18783;
+            String host = "2.tcp.eu.ngrok.io";
+            int socketPort = 19551;
             int rmiPort = 1099;
             int choice = -1;
             System.out.print("Inserisci l'indirizzo IP del server (lascia vuoto per localhost): ");
@@ -242,7 +256,15 @@ public class Client {
         }
     }
 
-
+    /**
+     * Processes messages from the server that require direct user action.
+     * It handles the logic for different game phases, such as nickname requests,
+     * creating or selecting a lobby, and the ship-building phase.
+     * @param msg The message to process.
+     * @throws IOException If an I/O error occurs during communication.
+     * @throws ExecutionException If an error occurs during an asynchronous operation.
+     * @throws InterruptedException If the thread is interrupted.
+     */
     public static void elaborate(Message msg) throws IOException, ExecutionException, InterruptedException {
 
 
@@ -341,7 +363,7 @@ public class Client {
                     virtualView.showMessage("\n" + msg.getContent());
                 }
 
-                if (l_msg.getLobbies().size() == 0) {
+                if (l_msg.getLobbies().isEmpty()) {
 
                     virtualView.showMessage("\nNon ci sono Lobby disponibili!");
                     elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
@@ -353,6 +375,11 @@ public class Client {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
                     } else {
                         lobby_index = virtualView.showLobbies(l_msg.getLobbies());
+                    }
+
+                    if(lobby_index == -1){
+                        elaborate(new Message(MessageType.NAME_ACCEPTED, ""));
+                        break;
                     }
                     networkAdapter.sendMessage(new StandardMessageClient(MessageType.SELECT_LOBBY, "" + lobby_index, clientId));
 
@@ -431,8 +458,7 @@ public class Client {
                     if (virtualViewType == VirtualViewType.GUI) {
                         CompletableFuture<Integer> futureIndex = ((GUI) virtualView).getBuildcontroller().getFaceupCardIndexFuture();
                         int index = futureIndex.get();
-                        System.out.println("clientttt indice carta scartata" + index);
-                        ((GUI) virtualView).getBuildcontroller().resetfaceupCardIndex(); // opzionale
+                        ((GUI) virtualView).getBuildcontroller().resetfaceupCardIndex();
                         if (index == -1) {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                             break;
@@ -468,12 +494,12 @@ public class Client {
                         }
 
                     }
-                } else if (deck_selected == 3) {  //carte prenotate
+                } else if (deck_selected == 3) {
 
                     if (virtualViewType == VirtualViewType.GUI) {
                         CompletableFuture<Integer> futureIndex = ((GUI) virtualView).getBuildcontroller().getReservedCardIndexFuture();
                         int index = futureIndex.get();
-                        ((GUI) virtualView).getBuildcontroller().resetReservedCardIndex(); // opzionale
+                        ((GUI) virtualView).getBuildcontroller().resetReservedCardIndex();
                         if (index == -1) {
                             elaborate(new Message(MessageType.BUILD_START, ""));
                         } else if (index >= 0 && index < player_local.getShip().getExtra_components().size()) {
@@ -770,7 +796,15 @@ public class Client {
 
     }
 
-
+    /**
+     * Handles asynchronous notifications sent from the server. These messages update
+     * the client's state (e.g., game status, other players' actions) without
+     * requiring direct user input.
+     * @param msg The notification message to handle.
+     * @throws IOException If an I/O error occurs during communication.
+     * @throws ExecutionException If an error occurs during an asynchronous operation.
+     * @throws InterruptedException If the thread is interrupted.
+     */
     public static void handleNotification(Message msg) throws IOException, ExecutionException, InterruptedException {
 
 
@@ -971,7 +1005,7 @@ public class Client {
 
                 if (virtualViewType == VirtualViewType.TUI) {
                     ((TUI) virtualView).setLocal_board_position(local_board_positions);
-                    ((TUI) virtualView).setLocal_board_laps(local_board_positions);
+                    ((TUI) virtualView).setLocal_board_laps(local_board_laps);
 
                 }
                 int dummy = virtualView.nextMeteor();
@@ -1092,7 +1126,7 @@ public class Client {
                 }
 
                 manageAdventure(
-                        new MeteorSwarm(2, 0, CardAdventureType.MeteorSwarm,
+                        new MeteorSwarm(-1, 0, CardAdventureType.MeteorSwarm,
                                 List.of(
                                         new Pair<>(MeteorType.LightCannonFire, North),
                                         new Pair<>(MeteorType.LightCannonFire, West),
@@ -1184,7 +1218,14 @@ public class Client {
 
     }
 
-
+    /**
+     * Manages the resolution of a specific adventure card. Based on the adventure type,
+     * it interacts with the user to make choices and calculate outcomes, then
+     * communicates the result back to the server.
+     * @param adventure The adventure card to manage.
+     * @param content Additional information needed for the adventure (e.g., coordinates).
+     * @throws IOException If an I/O error occurs during communication.
+     */
     public static void manageAdventure(CardAdventure adventure, String content) throws IOException {
         if (virtualViewType==VirtualViewType.GUI){
             ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
@@ -1192,6 +1233,10 @@ public class Client {
         }
         virtualView.updateLocalPlayer(player_local);
 
+        if(virtualViewType == VirtualViewType.GUI){
+            ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
+
+        }
         switch (adventure.getType()) {
 
 
@@ -1229,6 +1274,9 @@ public class Client {
                 }
 
                 double power_m = ship.calculateEnginePower(battery_usage_os);
+                if(virtualViewType==VirtualViewType.GUI){
+                    ((GUI) virtualView).addLogEvent("Hai dichiarato una potenza di " + power_m,"");
+                }
                 virtualView.showMessage("\n\nLA TUA POTENZA MOTORE : " + power_m);
                 networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, String.valueOf(power_m), clientId, player_local));
 
@@ -1314,6 +1362,12 @@ public class Client {
 
                 int i = 0;
                 for (Pair<MeteorType, Direction> m : meteors) {
+
+
+                    if(virtualViewType == VirtualViewType.GUI){
+                        ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
+
+                    }
 
                     virtualView.printMeteor(m, coordList.get(i));
 
@@ -1428,12 +1482,14 @@ public class Client {
                     i++;
             int dummy = virtualView.nextMeteor();
 
+
+
                 }
                 List<List<Pair<Integer, Integer>>> pieces = player_local.getShip().findShipPieces();
 
                 if (pieces.isEmpty()) {
                     virtualView.showMessage(" ---- NON PUOI PIU CONTINUARE IL VOLO, NON HAI UNA NAVE VALIDA ! ---- ");
-
+                    return;
 
                 } else if (pieces.size() > 1) {
                     int piece = virtualView.askPiece(pieces, player_local.getShip().getShipBoard());
@@ -1508,8 +1564,11 @@ public class Client {
 
                         double power = enginePower(0);
 
-                        virtualView.showMessage("\n ----- POTENZA MOTORE TOTALE :  " + power + " -----\n");
 
+                        virtualView.showMessage("\n ----- POTENZA MOTORI TOTALE :  " + power + " -----\n");
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza MOTORI : " +power,"" );
+                        }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "eng " + String.valueOf(power), clientId, player_local));
                         break;
 
@@ -1519,6 +1578,9 @@ public class Client {
 
 
                         virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                        if(virtualViewType == VirtualViewType.GUI){
+                            ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                        }
 
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "can " + String.valueOf(power_c), clientId, player_local));
                         break;
@@ -1538,6 +1600,9 @@ public class Client {
 
 
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                }
 
 
                 if(power_c < smugglers.getCannons_strenght()) {
@@ -1558,7 +1623,9 @@ public class Client {
 
                     choice = virtualView.acceptAdventure("HAI SCONFITTO IL NEMICO, VUOI PRENDERE RICOMPENSA (e quindi perdere i giorni di volo)?");
                     if(choice ){
-                        cargoAction(smugglers.getCargo_rewards());
+                        List<Cargo> smugg_planets = new ArrayList<>(smugglers.getCargo_rewards());
+
+                        cargoAction(smugg_planets);
 
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
                         break;
@@ -1585,6 +1652,9 @@ public class Client {
                 virtualView.showMessage("\n DEVI DICHIARARE LA TUA POTENZA CANNONE , POTENZA NEMICO =  " +pirates.getCannons_strenght() +  " \n");
                 power_c =  cannonPower(pirates.getCannons_strenght());
                 virtualView.showMessage("\n ----- POTENZA CANNONI TOTALE :  " + power_c + " -----\n");
+                if(virtualViewType == VirtualViewType.GUI){
+                    ((GUI)virtualView).getFlyghtController().addLogMessage("Hai una potenza CANNONI : " +power_c,"" );
+                }
 
                 StringBuilder coords_m = new StringBuilder();
 
@@ -1607,6 +1677,9 @@ public class Client {
 
 
                     virtualView.showMessage("\nHAI PAREGGIATO LA POTENZA DEI NEMICI, non ti succede nulla, ma il nemico non è sconfitto");
+                    if(virtualViewType==VirtualViewType.GUI){
+                        ((GUI) virtualView).addLogEvent("HAI PAREGGIATO LA POTENZA DEI NEMICI " ,"");
+                    }
                     networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "d", clientId, player_local));
 
 
@@ -1622,6 +1695,9 @@ public class Client {
                         }
                         if(virtualViewType == VirtualViewType.TUI) {
                             virtualView.showMessage("\nHAI GUADAGNATO " + pirates.getCredits() + " crediti , ora ne hai " + player_local.getCredits());
+                        }else {
+                                ((GUI)virtualView).getFlyghtController().addLogMessage("HAI GUADAGNATO " + pirates.getCredits() + " crediti","" );
+
                         }
                         networkAdapter.sendMessage(new ShipClientMessage(MessageType.ADVENTURE_COMPLETED, "ww", clientId, player_local));
 
@@ -1708,7 +1784,14 @@ public class Client {
 
 
     }
-
+    /**
+     * Checks if a component hit by a meteor is protected by a shield.
+     * If protected, it asks the user whether to use a battery to activate the shield.
+     * Otherwise, or if the user declines, the component is destroyed.
+     * @param pair The coordinates of the hit component.
+     * @param m The meteor type and its direction of origin.
+     * @throws IOException If an I/O error occurs during communication.
+     */
     public static void checkProtection(Pair<Integer, Integer> pair, Pair<MeteorType, Direction> m) throws IOException {
         Battery card_battery;
         if (player_local.getShip().isProtected(m.getValue())) {
@@ -1745,7 +1828,12 @@ public class Client {
             removeComp(pair);
         }
     }
-
+    /**
+     * Removes a component from the player's ship at the specified coordinates.
+     * After removal, it checks if the ship has split into multiple pieces.
+     * @param pair The coordinates of the component to remove.
+     * @throws IOException If an I/O error occurs during communication.
+     */
     public static void removeComp(Pair<Integer, Integer> pair) throws IOException {
         player_local.getShip().removeComponent(pair.getKey(), pair.getValue());
         virtualView.showMessage("\n !!!!! COMPONENTE DISTRUTTO  !!!!! \n");
@@ -1759,7 +1847,12 @@ public class Client {
             player_local.getShip().choosePiece(piece);
         }
     }
-
+    /**
+     * Manages the user interaction for acquiring cargo.
+     * It displays available cargo and allows the player to select and place it
+     * in the free storage units of their ship.
+     * @param planet_cargos The list of available cargo.
+     */
     public static void cargoAction(List<Cargo> planet_cargos) {
         Pair<Pair<Integer, Integer>, Integer> new_position;
         Ship ship;
@@ -1774,7 +1867,7 @@ public class Client {
             Cargo c = planet_cargos.get(scelta);
             new_position = virtualView.addCargo(player_local.getShip(), c);
 
-            if (new_position != null) {
+            if (new_position != null ) {
                 ship = player_local.getShip();
                 planet_cargos.remove(scelta);
                 Storage s = ((Storage) ship.getComponent(new_position.getKey().getKey(), new_position.getKey().getValue()));
@@ -1832,7 +1925,11 @@ public class Client {
     public VirtualViewType getVirtualViewType() {
         return virtualViewType;
     }
-
+    /**
+     * Simulates rolling two six-sided dice.
+     * Used for Cards like Pirates (where there are meteors)
+     * @return The sum of the results of the two dice.
+     */
     public static int throwDice() {
         Random dice1 = new Random();
         Random dice2 = new Random();
@@ -1841,8 +1938,13 @@ public class Client {
     }
 
 
+    /**
+     * Calculates the total cannon power of the ship. It prompts the user
+     * if they wish to use batteries to power up double cannons, if present.
+     * @param val The enemy's firepower to compare against (used for informational output).
+     * @return The total cannon power.
+     */
     public static double cannonPower(int val){
-
         Map<Pair<Integer,Integer>,Boolean> battery_usage_c = new HashMap<>();
         Pair<Integer,Integer> battery = new Pair<>(-1, -1);
         Ship ship = player_local.getShip();
@@ -1886,7 +1988,12 @@ public class Client {
 
 
     }
-
+    /**
+     * Calculates the total engine power of the ship. It prompts the user
+     * if they wish to use batteries to power up double engines, if present.
+     * @param val A value used for informational output during interactions.
+     * @return The total engine power.
+     */
     public static double enginePower(int val){
 
 

@@ -8,6 +8,5 @@ public class AdventurePanel extends JPanel {
 
     public AdventurePanel(GUI gui) {
         this.gui = gui;
-        // qui mostreremo le carte avventura
     }
 }

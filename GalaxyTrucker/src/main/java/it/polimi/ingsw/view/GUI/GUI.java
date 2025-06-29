@@ -48,7 +48,9 @@ import java.util.concurrent.ExecutionException;
 
 import static it.polimi.ingsw.model.enumerates.ComponentType.*;
 
-
+/**
+ * Main graphical user interface (GUI) class for the Galaxy Trucker game.
+ */
 public class GUI implements View {
 
     Joingamecontroller joingamecontroller;
@@ -116,6 +118,9 @@ public class GUI implements View {
         this.stage = stage;
     }
 
+    /**
+     * This method is used to create the nickname screen
+     */
     public void createNicknamescreen(){
         Platform.runLater(() -> {
             try {
@@ -133,6 +138,11 @@ public class GUI implements View {
         });
     }
 
+    /**
+     * This method send the user's nickname to the client application.
+     * @param event the insertion of the name by the user
+     */
+
     @FXML
     public void sendNickname(ActionEvent event) {
         System.out.println("sendNickname() chiamato");
@@ -142,23 +152,18 @@ public class GUI implements View {
         }
         System.out.println("nicknamescelto: " + nicknamescelto);
     }
+
+    /**
+     * This method send the user's nickname to the client application.
+     */
     @Override
     public String askNickname()  {
         return nicknamescelto;
     }
 
-    /*public void createjoingamecontroller(){
-        Platform.runLater(() -> {
-            try {
-                Joingamecontroller joingamecontroller = new Joingamecontroller();
-                this.joingamecontroller = joingamecontroller;
-                joingamecontroller.setGui(this);
-                joingamecontroller.start(this.stage);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-    }*/
+    /**
+     * This method is used to create the screen in witch the player decide to enter a lobby or to join an existing one
+     */
 
     public void createjoingamecontroller(){
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -168,34 +173,48 @@ public class GUI implements View {
                 controller.setGui(this);
                 this.joingamecontroller = controller;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *This method send the user's nickname to the client application.
+     * @return 1 for creating a lobby, 0 to enter an existing one
+     */
+
     @Override
     public int askCreateOrJoin() {
         try {
-            return joingamecontroller.getChoiceFuture().get(); // blocca finché non c'è risposta
+            return joingamecontroller.getChoiceFuture().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return -1;
         }
     }
 
-
+    /**
+     * Add a message to Log Event
+     * @param msg the message to display
+     * @param type
+     */
     public void addLogEvent(String msg, String type) {
 
         flyghtController.addLogMessage(msg,type);
 
     }
+
+
+    /**
+     * This method is used to create the screen in witch the player decide how many players can join the lobby
+     */
 
     public void createnumplayerscontroller(){
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -205,17 +224,22 @@ public class GUI implements View {
                 controller.setGui(this);
                 this.numplayercontroller = controller;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     *This method send the number of player in the new lobby to the client application.
+     * @return the number of player
+     */
     @Override
     public int askNumPlayers() {
         try {
@@ -250,6 +274,11 @@ public class GUI implements View {
     public void updateFacedUpCards(List<CardComponent> facedUpDeck) {
 
     }
+
+    /**
+     * creates a pop-up to show a quick message
+     * @param message the message to be shown
+     */
 
     @Override
     public void showMessage(String message) {
@@ -287,6 +316,10 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method is used to create the screen in witch the player decide witch lobby to join
+     */
+
     public void createselectlobbyscreen(List<Integer> lobbies){
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
@@ -296,18 +329,22 @@ public class GUI implements View {
                 this.guiselectcontroller = controller;
                 this.lobbies = lobbies;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *This method send the number of the lobby chosen to the client application
+     * @return lobby ID
+     */
     @Override
     public int showLobbies(List<Integer> lobbies) {
         try {
@@ -317,7 +354,10 @@ public class GUI implements View {
             return -1;
         }
     }
-//
+
+    /**
+     * This method is used to create the screen in witch the player decide witch color he wants
+     */
     public void createchoosecolorscreen(List<Color> colors) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         Platform.runLater(() -> {
@@ -327,19 +367,22 @@ public class GUI implements View {
                 this.choosecolorcontroller = controller;
                 this.colorsavailable = colors;
                 controller.start(this.stage);
-                future.complete(null);  // Segnala che la GUI è pronta
+                future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
         try {
-            future.get(); // aspetta che la GUI venga inizializzata
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
-
+    /**
+     *This method send the color chosen to the client application
+     * @return RED,YELLOW,BLUE or GREEN
+     */
     @Override
     public Color askColor(List<Color> colors) {
         try {
@@ -349,6 +392,11 @@ public class GUI implements View {
             return null;
         }
     }
+
+    /**
+     * This method is called when a player chose a color to update the colors remaining for the other players
+     * @param newColors a list containing the remaining colors
+     */
     public void updateColors(List<Color> newColors) {
         Platform.runLater(() -> {
             this.colorsavailable = newColors;
@@ -359,13 +407,15 @@ public class GUI implements View {
         });
     }
 
-
+    /**
+     * This method is used to create the screen in witch the player build his ship
+     */
     public void createbuildscreen() {
         if (this.buildcontroller != null && isbuildscreenactive) {
             Platform.runLater(() -> {
                     stage.toFront();
                     stage.requestFocus();
-                    stage.show(); // riportala in primo piano
+                    stage.show();
                     buildcontroller.updateFaceUpCardsDisplay();
             });
             return;
@@ -376,8 +426,8 @@ public class GUI implements View {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/BuildShip.fxml"));
                 Parent root = loader.load();
 
-                Buildcontroller controller = loader.getController(); // usa controller FXML
-                controller.setGUI(this); // passa la GUI, con il client corretto
+                Buildcontroller controller = loader.getController();
+                controller.setGUI(this);
                 this.buildcontroller = controller;
 
                 Scene scene = new Scene(root);
@@ -405,18 +455,22 @@ public class GUI implements View {
         });
 
         try {
-            future.get(); // aspetta la GUI
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * This method is used to create the screen in witch the player can play
+     */
 
     public void createFlyghtScreen(Map<Integer, Player> positions, Map<Integer, Player> laps) {
         if (this.flyghtController != null && isFlyghtScreenActive) {
             Platform.runLater(() -> {
                 stage.toFront();
                 stage.requestFocus();
-                stage.show(); // riportala in primo piano
+                stage.show();
                 flyghtController.updatePlayerShip();
             });
             return;
@@ -428,8 +482,8 @@ public class GUI implements View {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FlyghtBoard.fxml"));
                 Parent root = loader.load();
 
-                FlyghtController controller = loader.getController(); // usa controller FXML
-                controller.setGUI(this); // passa la GUI, con il client corretto
+                FlyghtController controller = loader.getController();
+                controller.setGUI(this);
                 this.flyghtController = controller;
 
                 Scene scene = new Scene(root);
@@ -444,22 +498,19 @@ public class GUI implements View {
                     System.exit(0);
                 });
 
-                // Dopo che tutto è pronto, inizializza i componenti
                 controller.updatePlayerShip();
                 controller.setupPlayerButtons(client.getOther_players_local());
 
-                // Se ci sono già posizioni dei giocatori, aggiornale
                 if (client != null && client.getOther_players_local() != null) {
 
                      controller.updatePlayerPositions(positions, laps);
                 }
 
-                // Aggiorna il giocatore corrente se disponibile
                 if (client != null && client.getPlayer_local() != null) {
                     controller.updateCurrentPlayer(client.getPlayer_local().getNickname());
                 }
 
-                future.complete(null);  // GUI pronta
+                future.complete(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 future.completeExceptionally(ex);
@@ -467,7 +518,7 @@ public class GUI implements View {
         });
 
         try {
-            future.get(); // aspetta la GUI
+            future.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -476,6 +527,11 @@ public class GUI implements View {
     public FlyghtController getFlyghtController() {
         return flyghtController;
     }
+
+    /**
+     * This method returns the action that the player wants to do in the build screen
+     * @return 1 ask for a random card, 2 for a face up card, 3 for a reserved card
+     */
 
     @Override
     public int selectDeck() {
@@ -492,6 +548,10 @@ public class GUI implements View {
     public CardComponent getActualcard() {
         return actualcard;
     }
+
+    /**
+     * This method is used to create the screen in witch the player decide what to do with the drawn card
+     */
     public void createrandomcardcontroller(CardComponent card) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         this.actualcard = card;
@@ -503,13 +563,12 @@ public class GUI implements View {
                 Randomcardcontroller controller = loader.getController();
 
                 controller.setGui(this);
-                Stage stage = new Stage(); // Crea la stage qui
-                controller.setStage(stage);// Passa la stage al controller
+                Stage stage = new Stage();
+                controller.setStage(stage);
                 if (player_local.getShip().getExtra_components().contains(card) || player_local.getShip().getExtra_components().size()>1) {
                     controller.setBookButton();
                 }
 
-                //controller.setComboBox();
                 controller.showCardImage(card);
 
                 stage.setTitle("Random Card");
@@ -534,10 +593,6 @@ public class GUI implements View {
 
                 stage.show();
 
-            /*stage.setOnCloseRequest(event -> {
-                Platform.exit();
-                System.exit(0);
-            });*/
 
                 this.randomcardcontroller = controller;
 
@@ -553,7 +608,9 @@ public class GUI implements View {
             e.printStackTrace();
         }
     }
-
+    /**
+     * This method is used to create the screen in witch the player decide witch type of crewmate he wants
+     */
     public void createCrewmateSelectionController(Pair<Integer, Integer> coords, List<CrewmateType> supportedCrewmates) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -563,22 +620,29 @@ public class GUI implements View {
                 Parent root = loader.load();
                 CrewmateSelectionController controller = loader.getController();
 
-                controller.setCardWithSupportedCrewmates(coords, supportedCrewmates); // usa il metodo alternativo
-                controller.setStage(new Stage());
+                controller.setCardWithSupportedCrewmates(coords, supportedCrewmates);
+                Stage stage = new Stage();
+                controller.setStage(stage);
 
-                Stage stage = controller.getStage();
                 stage.setTitle("Crewmate Selection");
                 stage.setScene(new Scene(root));
-                stage.centerOnScreen();
+
+                // Calcola posizione: sinistra + centro verticale
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                double x = 20; // Margine da sinistra
+                double y = (screenBounds.getHeight() - root.prefHeight(-1)) / 2 - 50;
+                stage.setX(x);
+                stage.setY(y);
+
                 stage.show();
 
                 this.crewmateSelectionController = controller;
-
                 future.complete(null);
             } catch (Exception ex) {
                 future.completeExceptionally(ex);
             }
         });
+
 
         try {
             future.get();
@@ -587,6 +651,13 @@ public class GUI implements View {
         }
     }
 
+
+
+    /**
+     * This method sends to the client the action that the player wants to do with a card
+     * @param card
+     * @return 1 rotate, 2 place card on ship, 3 discard, 4 reserve
+     */
     @Override
     public int showCard(CardComponent card) {
         try {
@@ -597,12 +668,23 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method asks the player to choose a planet from a list of options, excluding already taken ones.
+     * @param planets a list of available planets, each represented by a list of cargos
+     * @param planets_taken a set of indices representing planets already selected by other players
+     * @return the index of the selected planet
+     */
     @Override
     public int askPlanet(List<List<Cargo>> planets, Set<Integer> planets_taken) {
         CargoSelector selector = new CargoSelector();
         return selector.askPlanet(planets, planets_taken);
     }
-
+    /**
+     * This method asks the player to provide coordinates for placing a card on the ship.
+     * @param ship
+     * @return a pair of integers representing the row and column of the selected coordinates;
+     *         returns (-1, -1) if the selected cell is not empty
+     */
     @Override
     public Pair<Integer, Integer> askCoords(Ship ship) {
         try {
@@ -624,7 +706,11 @@ public class GUI implements View {
             return null;
         }
     }
-
+    /**
+     * This method asks the player to select a reserved card from the available ones.
+     * @param securedCards a list of cards that have been previously reserved
+     * @return the index of the selected reserved card; returns -1 in case of error or cancellation
+     */
     @Override
     public int askSecuredCard(List<CardComponent> securedCards) {
         try {
@@ -637,12 +723,15 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method is used to create the screen of the final ranking
+     */
     public void createrankingscreen(List<Player> finalRanks) {
         if (this.finalRanksScreen != null) {
             Platform.runLater(() -> {
                 stage.toFront();
                 stage.requestFocus();
-                stage.show(); // riportala in primo piano
+                stage.show();
             });
             return;
         }
@@ -651,8 +740,8 @@ public class GUI implements View {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ranking.fxml"));
                 Parent root = loader.load();
 
-                FinalRanksScreen controller = loader.getController(); // usa controller FXML
-                controller.setGUI(this); // passa la GUI, con il client corretto
+                FinalRanksScreen controller = loader.getController();
+                controller.setGUI(this);
                 this.finalRanksScreen = controller;
 
                 Scene scene = new Scene(root);
@@ -678,6 +767,13 @@ public class GUI implements View {
     public void printFinalRanks(List<Player> finalRanks) {
     }
 
+    /**
+     * This method asks the player to select an action for a crewmate associated with the specified component.
+     *
+     * @param component the coordinates (row, column) of the ship component
+     * @return the index corresponding to the chosen crewmate action;
+     *         returns -1 in case of an error
+     */
     @Override
     public int crewmateAction(Pair<Integer,Integer> component) {
         try {
@@ -688,6 +784,11 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method retrieves the list of crewmate types supported by the component at the given coordinates.
+     * @param coords the coordinates (row, column) of the ship component
+     * @return a list of supported {@link CrewmateType}
+     */
     public List<CrewmateType> getCrewmates(Pair<Integer,Integer> coords) {
         CardComponent[][] ship = client.getPlayer_local().getShip().getShipBoard();
         CardComponent component = ship[coords.getKey()][coords.getValue()];
@@ -696,18 +797,25 @@ public class GUI implements View {
         return crewmateType;
     }
 
-
+    /**
+     * this method asks the player to decide whether to use a double cannon for the current attack.
+     * @return true if the player chooses to use the double cannon, false otherwise;
+     *         returns null in case of an error
+     */
     public Boolean useDoubleCannon() {
         try {
-            Boolean selection=flyghtController.getUseDoubleCannon().get();
-            flyghtController.resetUseDC();
-            return selection;
+            return flyghtController.getUseDoubleCannon().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    /**
+     * This method asks the player to select the coordinates of a battery to activate.
+     * @return a pair of integers representing the selected battery's position (row, column);
+     *         returns null in case of an error
+     */
     public Pair<Integer,Integer> coordsBattery() {
         try {
             Pair<Integer,Integer> selection=flyghtController.getcoordsBattery().get();
@@ -719,6 +827,11 @@ public class GUI implements View {
         }
     }
 
+    /**
+     * This method asks the player to select the coordinates of a crewmate (astronaut) to remove.
+     * @return a pair of integers representing the selected crewmate's position (row, column);
+     *         returns null in case of an error
+     */
     public Pair<Integer,Integer> coordsCrewmate() {
         try {
             Pair<Integer,Integer> selection=flyghtController.getAstronautToRemove().get();
@@ -732,27 +845,25 @@ public class GUI implements View {
 
     @Override
     public int nextMeteor() {
-//        try {
-//            return flyghtController.getNextMeteor().get();
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//            return -1;
-//        } finally {
-//            flyghtController.resetNextMeteor();
-//        }
         return 0;
     }
 
+    /**
+     * This method asks the player whether to activate an engine using a battery.
+     * Highlights the engine cell and displays a prompt to use a double cannon.
+     * If the player confirms, proceeds to battery selection.
+     * @param engine the coordinates (row, column) of the engine to activate
+     * @return the coordinates of the selected battery
+     */
     @Override
     public Pair<Integer, Integer> askEngine(Pair<Integer, Integer> engine) {
         int i = engine.getKey();
         int j = engine.getValue();
-        FlyghtController controller = getFlyghtController();
 
-        controller.highlightCell(i, j);
-        controller.showdc(i, j);
+
+        flyghtController.highlightCell(i, j);
+        flyghtController.showdc(i, j);
         Boolean useDC = useDoubleCannon();
-        getFlyghtController().resetHighlights(i, j);
         if (!useDC) {
             return new Pair<>(-1,-1);
         } else {
@@ -761,6 +872,11 @@ public class GUI implements View {
 
     }
 
+    /**
+     * This method asks the player to select a battery card from the ship to activate it.
+     * @param ship
+     * @return the coordinates (row, column) of the selected battery;
+     */
     @Override
     public Pair<Integer, Integer> useBattery(Ship ship) {
         Pair<Integer, Integer> battery = new Pair<>(-1, -1);
@@ -798,13 +914,16 @@ public class GUI implements View {
 
     }
 
-
-
+    /**
+     * This method creates a pop-up alerting the player of an incoming meteor or cannon shot.
+     * The window shows the meteor's type, direction, and target coordinate, along with a related image.
+     * @param meteor a pair containing the {@link MeteorType} and its {@link Direction}
+     * @param coord the target coordinate (column or row) of the impact, depending on the direction
+     */
     @Override
     public void printMeteor(Pair<MeteorType, Direction> meteor, int coord) {
         CountDownLatch latch = new CountDownLatch(1);
 
-        // Esegui tutto sul thread JavaFX
         Platform.runLater(() -> {
             try {
                 Stage meteorStage = new Stage();
@@ -847,20 +966,18 @@ public class GUI implements View {
                 coordLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
                 coordLabel.setStyle("-fx-text-fill: #043a7e;");
 
-                // Bottone Continua
+
                 Button continueButton = new Button("Continua");
                 continueButton.setId("continue-button");
                 continueButton.setPrefWidth(120);
 
-                // Event handler per il bottone
                 continueButton.setOnAction(e -> {
                     meteorStage.close();
-                    latch.countDown(); // Rilascia il thread in attesa
+                    latch.countDown();
                 });
 
-                // Aggiungi anche la possibilità di chiudere con ESC o clic sulla X
                 meteorStage.setOnCloseRequest(e -> {
-                    latch.countDown(); // Rilascia il thread anche se chiuso diversamente
+                    latch.countDown();
                 });
 
                 mainContainer.getChildren().addAll(meteorImage, meteorTypeLabel, directionLabel, coordLabel, continueButton);
@@ -884,11 +1001,10 @@ public class GUI implements View {
             } catch (Exception e) {
                 System.err.println("Errore durante la visualizzazione dell'allarme meteorite.");
                 e.printStackTrace();
-                latch.countDown(); // Rilascia in caso di errore
+                latch.countDown();
             }
-        }); // Fine di Platform.runLater
+        });
 
-        // Blocca il thread corrente finché l'utente non preme Continua
         try {
             latch.await();
         } catch (InterruptedException e) {
@@ -896,7 +1012,7 @@ public class GUI implements View {
             System.err.println("Il thread è stato interrotto durante l'attesa dell'allarme meteora.");
         }
     } ;
-    // Metodo ausiliario per ottenere il percorso dell'immagine
+
     private String getMeteorImagePath(MeteorType type) {
         return switch (type) {
             case LargeMeteor -> "/images/meteortype/large_meteor.jpg";
@@ -906,7 +1022,6 @@ public class GUI implements View {
         };
     }
 
-    // Metodo ausiliario per ottenere il testo del tipo di meteora
     private String getMeteorTypeText(MeteorType type) {
         return switch (type) {
             case LargeMeteor -> "METEORA GROSSA";
@@ -916,7 +1031,6 @@ public class GUI implements View {
         };
     }
 
-    // Metodo ausiliario per ottenere il testo della direzione
     private String getDirectionText(Direction direction) {
         return switch (direction) {
             case South -> "da SUD";
@@ -926,13 +1040,12 @@ public class GUI implements View {
         };
     }
 
-    // Metodo ausiliario per ruotare l'immagine basata sulla direzione
     private void rotateMeteorImage(ImageView imageView, Direction direction) {
         double rotation = switch (direction) {
-            case North -> 0;      // Verso il basso
-            case South -> 180;    // Verso l'alto
-            case East -> 270;     // Verso sinistra
-            case West -> 90;      // Verso destra
+            case North -> 0;
+            case South -> 180;
+            case East -> 270;
+            case West -> 90;
         };
         imageView.setRotate(rotation);
     }
@@ -995,6 +1108,12 @@ public class GUI implements View {
 
     }
 
+    /**
+     * This method asks the player to select one of the available ship pieces (connected components of tiles).
+     * @param pieces a list of ship pieces, each represented as a list of coordinate pairs
+     * @param ship
+     * @return the index of the selected piece; returns -1 in case of error
+     */
     @Override
     public int askPiece(List<List<Pair<Integer, Integer>>> pieces, CardComponent[][] ship) {
         CompletableFuture<Integer> result = new CompletableFuture<>();
@@ -1007,15 +1126,23 @@ public class GUI implements View {
             controller.getSelectedPieceFuture().thenAccept(result::complete);
         });
 
-        // Aspetta che l'utente selezioni il pezzo
+
         try {
-            return result.get(); // blocca fino a quando viene completato
+            return result.get();
         } catch (Exception e) {
             e.printStackTrace();
-            return -1; // fallback in caso di errore
+            return -1;
         }
     }
 
+    /**
+     * This method requests an updated version of the ship with invalid connections removed.
+     * The update is obtained asynchronously from the build controller.
+     * @param ship the original ship containing possibly invalid connections
+     * @param connectors a list of connector positions to be validated or removed
+     * @return the updated ship after connection validation;
+     *         returns null if an error occurs
+     */
     @Override
     public Ship removeInvalidsConnections(Ship ship, List<Pair<Integer, Integer>> connectors) {
         try {
@@ -1025,84 +1152,43 @@ public class GUI implements View {
             return null;
         }
     }
-/*
-    @Override
-    public int nextMeteor() {
-//        CountDownLatch latch = new CountDownLatch(1);
-//
-//        Platform.runLater(() -> {
-//            Stage popupStage = new Stage();
-//            popupStage.initModality(Modality.APPLICATION_MODAL);
-//            popupStage.setTitle("Continua l'Avventura");
-//            popupStage.setResizable(false);
-//
-//            VBox mainContainer = new VBox(15);
-//            mainContainer.setAlignment(Pos.CENTER);
-//            mainContainer.setPadding(new Insets(20));
-//            mainContainer.setStyle("-fx-background-color: #2c3e50;");
-//
-//            Label messageLabel = new Label("Premi Continua per proseguire.");
-//            messageLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-//            messageLabel.setStyle("-fx-text-fill: #ecf0f1;");
-//
-//            Button continueButton = new Button("Continua");
-//            continueButton.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-//            continueButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-cursor: hand;");
-//            continueButton.setPrefWidth(100);
-//
-//            continueButton.setOnAction(e -> {
-//                popupStage.close();
-//                latch.countDown(); // Rilascia il thread in attesa
-//            });
-//
-//            mainContainer.getChildren().addAll(messageLabel, continueButton);
-//
-//            Scene scene = new Scene(mainContainer, 250, 150);
-//            popupStage.setScene(scene);
-//
-//            popupStage.show();
-//        });
-//
-//        try {
-//            latch.await(); // Aspetta che l'utente prema il bottone
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
-//            System.err.println("Il thread è stato interrotto durante l'attesa per il popup Continua.");
-//            return 0; // Ritorna 0 in caso di interruzione
-//        }
-//
-      return 1;
-   }*/
 
-
+    /**
+     * This method creates a popup showing that a card has been hit, indicating the direction of the hit.
+     * @param card the {@link CardComponent} that was hit
+     * @param direction the {@link Direction} from which the card was hit
+     */
         @Override
         public void showHittedCard(CardComponent card, Direction direction) {
-            // Se non siamo sul JavaFX Application Thread, usa CountDownLatch
             if (!Platform.isFxApplicationThread()) {
                 CountDownLatch latch = new CountDownLatch(1);
                 Platform.runLater(() -> {
                     createAndShowStage(card, direction, latch);
                 });
                 try {
-                    latch.await(); // Aspetta che la finestra venga chiusa
+                    latch.await();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             } else {
-                // Se siamo già sul JavaFX thread, crea direttamente lo stage
                 createAndShowStage(card, direction, null);
             }
             flyghtController.updatePlayerShip();
         }
 
+    /**
+     * This method creates a popup window showing a hit card.
+     * The window displays the card image and hit direction.
+     * @param card the {@link CardComponent} that was hit
+     * @param direction the {@link Direction} of the incoming hit
+     * @param latch an optional {@link CountDownLatch} used to block the calling thread until the window is closed
+     */
     private void createAndShowStage(CardComponent card, Direction direction, CountDownLatch latch) {
-        // Crea un nuovo stage
         Stage stage = new Stage();
         stage.setTitle("Carta Colpita");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
 
-        // Ottieni la finestra principale per impostare il proprietario
         Stage primaryStage = (Stage) Stage.getWindows().stream()
                 .filter(Window::isShowing)
                 .findFirst()
@@ -1111,52 +1197,44 @@ public class GUI implements View {
             stage.initOwner(primaryStage);
         }
 
-        // Layout principale
         VBox root = new VBox(20);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #D8B7DD;");
 
-        // Label informativa
         Label infoLabel = new Label("La carta è stata colpita \nin direzione: " + direction.toString());
         infoLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #043a7e;");
 
-        // ImageView per la carta
         ImageView cardImageView = new ImageView();
 
-        // Carica l'immagine della carta
         String imagePath = card.getImagePath();
         if(!imagePath.isEmpty()) {
             Image cardImage = new Image(imagePath);
             cardImageView.setImage(cardImage);
         }
-            // Imposta dimensioni dell'immagine
+
             cardImageView.setFitWidth(150);
             cardImageView.setFitHeight(200);
             cardImageView.setPreserveRatio(true);
 
-            // Applica la rotazione in base alla direzione
             cardImageView.setRotate(card.getRotationAngle());
 
-            // Container per l'immagine con bordo
             StackPane imageContainer = new StackPane();
             imageContainer.getChildren().add(cardImageView);
             imageContainer.setStyle("-fx-border-color: transparent; -fx-background-color: transparent;");
 
-        // Bottone OK
+
         Button okButton = new Button("OK");
         okButton.setId("continue-button");
         okButton.setOnAction(e -> {
             stage.close();
             if (latch != null) {
-                latch.countDown(); // Sblocca il thread chiamante
+                latch.countDown();
             }
         });
 
-        // Aggiunge tutti i componenti al layout
         root.getChildren().addAll(infoLabel, imageContainer, okButton);
 
-        // Crea la scena
         Scene scene = new Scene(root, 350, 300);
         stage.setScene(scene);
         scene.getStylesheets().add(getClass().getResource("/Meteor.css").toExternalForm());
@@ -1172,11 +1250,10 @@ public class GUI implements View {
         stage.setX(x);
         stage.setY(y);
 
-        // Mostra lo stage
         if (latch != null) {
-            stage.show(); // Non usa showAndWait() perché stiamo gestendo il blocking con CountDownLatch
+            stage.show();
         } else {
-            stage.showAndWait(); // Usa showAndWait() se siamo già sul JavaFX thread
+            stage.showAndWait();
         }
     }
 
@@ -1187,8 +1264,13 @@ public class GUI implements View {
 
     }
 
-
-
+    /**
+     * This method returns a mapping of ship components to the cargo they are carrying.
+     * This method currently returns an empty structure and is likely a placeholder
+     * for future cargo management logic.
+     * @param ship
+     * @return an empty map representing cargo distribution across components
+     */
     @Override
     public Map<CardComponent,Map <Cargo, Integer>> manageCargo(Ship ship){
         Map<CardComponent, Map<Cargo, Integer>> cargos = new HashMap<>();
@@ -1196,6 +1278,16 @@ public class GUI implements View {
         return cargos;
     }
 
+    /**
+     * This method asks the player to add a cargo to a valid storage component on their ship.
+     * The method opens a GUI for storage selection, then asks where to place the cargo inside it.
+     * @param ship the current state of the ship
+     * @param cargo the cargo to be added
+     * @return a pair containing:
+     *         - the coordinates (row, column) of the selected storage component
+     *         - the position inside the storage where the cargo will be placed;
+     *         returns null if the selection is invalid or canceled
+     */
     @Override
     public Pair<Pair<Integer, Integer>, Integer> addCargo(Ship ship, Cargo cargo) {
         Pair<Pair<Integer, Integer>, Integer> pair;
@@ -1205,9 +1297,7 @@ public class GUI implements View {
             Pair<Integer,Integer> selection = flyghtController.getcoordsBattery().get();
             flyghtController.resetcoordsBattery();
 
-            // Controlla se la selezione è valida (non -1, -1)
             if (selection.getKey() == -1 && selection.getValue() == -1) {
-                // Nessuno storage disponibile o selezione annullata
                 return null;
             }
             Storage selectedStorage = (Storage) ship.getComponent(selection.getKey(), selection.getValue());
@@ -1215,8 +1305,10 @@ public class GUI implements View {
             CargoSelector cargoSelector = new CargoSelector();
             int pos = cargoSelector.askCargo(selectedStorage.getCarried_cargos());
 
+            if(pos == -1 ) return null;
             pair = new Pair<>(selection, pos);
             flyghtController.updatePlayerShip();
+
             return pair;
 
         } catch (InterruptedException | ExecutionException e) {
@@ -1251,8 +1343,13 @@ public class GUI implements View {
     }
 
 
-
-
+    /**
+     * This method updates the flight board with the current positions and lap information of all players.
+     * This method creates a new instance of {@link FlyghtController} and applies the updates,
+     * but does not display the board in the GUI.
+     * @param positions a map associating player order indexes with their current positions on the board
+     * @param laps a map associating player order indexes with the number of laps completed
+     */
     @Override
     public void showBoard(Map<Integer, Player> positions, Map<Integer, Player> laps) {
         FlyghtController controller = new FlyghtController();
@@ -1274,6 +1371,12 @@ public class GUI implements View {
 
     }
 
+    /**
+     * This method asks the player to remove a cargo from the ship.
+     * Uses the {@link CargoSelector} to manage the removal process,
+     * then updates the visual representation of the ship.
+     * @param ship
+     */
     @Override
     public void removeCargo(Ship ship) {
         CargoSelector cargoSelector = new CargoSelector();
@@ -1281,6 +1384,13 @@ public class GUI implements View {
         flyghtController.updatePlayerShip();
     }
 
+
+    /**
+     * This method asks the player to choose a crewmate (astronaut) to remove from the ship.
+     * Displays a visual representation of crewmates, then waits for the player’s input.
+     * @param ship the current state of the player's ship
+     * @return the coordinates (row, column) of the selected crewmate
+     */
     @Override
     public Pair<Integer, Integer> chooseAstronautLosses(Ship ship) {
         getFlyghtController().showCrewmates(player_local.getShip());
@@ -1298,24 +1408,32 @@ public class GUI implements View {
 
 
 
-
+    /**
+     * This method asks the player whether to use a double cannon for a given cannon component,
+     * Highlights the selected cannon on the GUI, and if confirmed and
+     * requests battery coordinates to activate the cannon.
+     * @param cannon the coordinates of the cannon to be activated
+     * @return the coordinates of the selected battery; or (-1, -1) if the player declines
+     */
     @Override
+
     public Pair<Integer, Integer> askCannon(Pair<Integer, Integer> cannon) {
         int i = cannon.getKey();
         int j = cannon.getValue();
-        FlyghtController controller = getFlyghtController();
 
-        controller.highlightCell(i, j);
-        controller.showdc(i, j);
+        flyghtController.highlightCell(i, j);
+        flyghtController.showdc(i, j);
         Boolean useDC = useDoubleCannon();
-        getFlyghtController().resetHighlights(i, j);
         if (!useDC) {
             return new Pair<>(-1,-1);
         } else {
             return useBattery(player_local.getShip());
         }
     }
-
+    /**
+     * This method executes an epidemic event on the ship, simulating the loss of crewmates.
+     * @param ship
+     */
     @Override
     public void executeEpidemic(Ship ship) {
         Epidemic epidemic = new Epidemic(1,0,CardAdventureType.Epidemic,"");
@@ -1324,6 +1442,11 @@ public class GUI implements View {
         getFlyghtController().updatePlayerShip();
     }
 
+    /**
+     * This method asks the player to choose one cargo from a list of available cargo types.
+     * @param cargos a list of available {@link Cargo} types
+     * @return the index of the selected cargo
+     */
     @Override
     public int askCargo(List<Cargo> cargos) {
         CargoSelector selector = new CargoSelector();

@@ -12,7 +12,9 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
 
 import java.util.concurrent.CompletableFuture;
-
+/**
+ * Controller for the screen where the host selects the number of players for the game.
+ */
 public class Numplayercontroller {
     @FXML
     private Spinner<Integer> playerNumberSpinner;
@@ -24,14 +26,23 @@ public class Numplayercontroller {
     private CompletableFuture<Integer> playerNumber = new CompletableFuture<>();
     private GUI gui;
 
+    /**
+     * Initializes the spinner that allows the host to select the number of players.
+     * The spinner range is set from 2 to 4, which are the allowed player counts.
+     */
+
     @FXML
     public void initializespinner() {
-        // Imposta i valori min, max e il valore iniziale
         SpinnerValueFactory<Integer> valueFactory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(2, 4); // da 2 a 4 giocatori, valore iniziale 2
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(2, 4);
         playerNumberSpinner.setValueFactory(valueFactory);
     }
 
+    /**
+     * Sets up the stage, scene, and spinner component for player selection.
+     * @param stage
+     * @throws Exception if the FXML file cannot be loaded
+     */
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/NumPlayers.fxml"));
         loader.setController(this);
@@ -50,14 +61,26 @@ public class Numplayercontroller {
         }));
     }
 
+    /**
+     * Sets the GUI reference for this controller.
+     * @param gui the GUI instance to associate with this controller
+     */
+
     public void setGui(GUI gui) {
         this.gui=gui;
     }
 
+    /**
+     * @return a CompletableFuture containing the selected player count
+     */
     public CompletableFuture<Integer> getPlayerNumber() {
         return playerNumber;
     }
 
+    /**
+     * Handles the confirmation of the selected number of players.
+     * @param event the action event triggered by clicking the confirm button
+     */
     @FXML
     public void setPlayerNumber(ActionEvent event) {
         gui.showMessage("In attesa di player nella lobby");

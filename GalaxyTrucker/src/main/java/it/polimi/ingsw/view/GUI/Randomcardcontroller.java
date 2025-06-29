@@ -22,6 +22,11 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Controller for the window that displays a randomly drawn component card.
+ * It allows the user to rotate, place, discard, or reserve the card,
+ * and to select coordinates for positioning it on the ship.
+ */
 public class Randomcardcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
@@ -49,32 +54,33 @@ public class Randomcardcontroller {
 
     private Stage stage;
 
+    /**
+     * Sets the reference to the main GUI object.
+     * @param gui the main GUI instance
+     */
     public void setGui(GUI gui) {
         this.gui = gui;
     }
 
-    /*public void setComboBox() {
-        ObservableList<Integer> coordinateValuesy = FXCollections.observableArrayList();
-        for (int i = 0; i <= 4; i++) {
-            coordinateValuesy.add(i);
-        }
-        yComboBox.setItems(coordinateValuesy);
-        ObservableList<Integer> coordinateValuesx = FXCollections.observableArrayList();
-        for (int i = 0; i <= 6; i++) {
-            coordinateValuesx.add(i);
-        }
-        xComboBox.setItems(coordinateValuesx);
-
-    }*/
-
+    /**
+     * Disables the "Reserve" button.
+     */
     public void setBookButton(){
         bookButton.setDisable(true);
     }
 
+    /**
+     * Disables the "Discard" button.
+     */
     public void setDiscardButton(){
         discardButton.setDisable(true);
     }
 
+    /**
+     * Initializes and displays the window for interacting with a randomly drawn card.
+     * @param card the component card to be displayed in the window
+     * @throws Exception if an error occurs while loading the FXML resource
+     */
     public void start(CardComponent card) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/RandomCard.fxml"));
         Parent root = loader.load();
@@ -86,17 +92,13 @@ public class Randomcardcontroller {
         randomCardStage.setScene(new Scene(root));
         randomCardStage.centerOnScreen();
         randomCardStage.show();
-
-
         controller.showCardImage(card);
-
-
-        /*randomCardStage.setOnCloseRequest(event -> {
-            Platform.exit();
-            System.exit(0);
-        });*/
-
     }
+
+    /**
+     * Sets the stage used by this controller.
+     * @param stage the stage to be assigned
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -111,39 +113,17 @@ public class Randomcardcontroller {
             action.complete(4);
         }
 
-        // Chiudi la finestra della carta random
         if (stage != null) {
             stage.close();
         }
     }
-    /*@FXML
-    public void setThree(ActionEvent event) {
-        gui.getBuildcontroller().addFaceUpCard(gui.getActualcard());
-
-        if (!action.isDone()) {
-            action.complete(3);
-        }
-
-        // Chiudi la finestra della carta random
-        if (stage != null) {
-            stage.close();
-        }
-    }*/
     @FXML
     public void setThree(ActionEvent event) {
-        // Non aggiungiamo più direttamente alla GUI locale
-        // La carta verrà scartata e il server invierà un messaggio FACED_UP_CARD_UPDATED
-        // che aggiornerà automaticamente tutte le GUI dei client
-
         if (!action.isDone()) {
             action.complete(3);
             if (gui.getPlayer_local().getShip().getExtra_components().contains(gui.getActualcard())) gui.getBuildcontroller().addReservedCard(gui.getActualcard());
         }
 
-
-
-
-        // Chiudi la finestra della carta random
         if (stage != null) {
             stage.close();
         }
@@ -162,18 +142,14 @@ public class Randomcardcontroller {
 
     @FXML
     public void setOne(ActionEvent event) throws Exception {
-        //gui.getBuildcontroller().resetAction();
-        // Ruota solo l'immagine nella finestra corrente
-        //currentRotation = gui.getActualcard().getRotationAngle();
-//        currentRotation = (currentRotation + 90) % 360;
-//        cardImageView.setRotate(currentRotation);
-//        gui.getActualcard().setRotationAngle(currentRotation);
-
         if (!action.isDone()) action.complete(1);
         action = new CompletableFuture<>();
         stage.close();
     }
 
+    /**
+     * @return a CompletableFuture<Integer> with the action code (1=rotate, 2=place, 3=discard, 4=reserve)
+     */
     public CompletableFuture<Integer> getAction() {
         if (action == null || action.isDone()) {
             action = new CompletableFuture<>();
@@ -181,12 +157,10 @@ public class Randomcardcontroller {
         return action;
     }
 
-   /* public CompletableFuture<Pair<Integer,Integer>> getCoords() {
-        if (coords == null || coords.isDone()) {
-            coords = new CompletableFuture<>();
-        }
-        return coords;
-    }*/
+    /**
+     * Displays the image of the provided card in the ImageView.
+     * @param card the card to be displayed
+     */
     public void showCardImage(CardComponent card) {
         String imagePath = card.getImagePath();
         InputStream stream = getClass().getResourceAsStream(imagePath);
@@ -198,22 +172,22 @@ public class Randomcardcontroller {
         cardImageView.setRotate(card.getRotationAngle());
     }
 
+    /**
+     * Completes the corresponding CompletableFuture with the selected x and y values.
+     * @param event the action event triggered by the confirmation button
+     */
     @FXML
     public void confirmCoords(ActionEvent event) {
         Integer x = xComboBox.getValue();
         Integer y = yComboBox.getValue();
 
         if (x == null || y == null) {
-            // Mostra errore o ignora l'input incompleto
             System.out.println("Coordinate non selezionate");
             return;
         }
 
-        // Completa la future solo se non è già completata
         if (!coords.isDone()) {
             coords.complete(new Pair<>(x, y));
-
-            // Nascondi o disabilita il box se vuoi
             coordinatesBox.setVisible(false);
             System.out.println("Coordinate confermate: " + x + ", " + y);
         }
@@ -222,10 +196,15 @@ public class Randomcardcontroller {
             stage.close();
         }
     }
+
     public Stage getStage() {
         return stage;
     }
 
+    /**
+     * Updates the ImageView.
+     * @param card the card whose image should be shown
+     */
     public void updateImage(CardComponent card) {
             String imagePath = card.getImagePath();
             InputStream stream = getClass().getResourceAsStream(imagePath);

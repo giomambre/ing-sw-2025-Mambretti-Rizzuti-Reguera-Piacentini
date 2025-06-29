@@ -250,7 +250,6 @@ public class Player implements Serializable {
         Player original = this;
         Player copy = new Player(getNickname(),getColor(),getGame());  // o costruttore adatto
 
-        // Copia la Ship e il suo stato
         Ship copiedShip = new Ship(this);  // dipende dalla tua implementazione
         copiedShip.setShip_board(ship.deepCopyBoard(original.getShip().getShipBoard()));
         copy.setShip(copiedShip);

@@ -754,7 +754,7 @@ public class Ship implements Serializable {
                         System.out.println(checkAlienSupport(card));
 
                         if (!checkAlienSupport(card).contains(((LivingUnit) card).getCrewmate_type())) {
-                            //kill the alien
+
                             ((LivingUnit) card).removeCrewmates(1);
 
                         }

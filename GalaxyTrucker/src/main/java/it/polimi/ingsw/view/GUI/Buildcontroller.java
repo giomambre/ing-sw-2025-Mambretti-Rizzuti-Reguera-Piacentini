@@ -43,6 +43,9 @@ import static it.polimi.ingsw.model.enumerates.ConnectorType.Empty_Connector;
 import static it.polimi.ingsw.model.enumerates.ConnectorType.Universal;
 import static it.polimi.ingsw.model.enumerates.Direction.*;
 
+/**
+ * Controller responsible for managing the ship building phase in the GUI.
+ */
 public class Buildcontroller {
     private GUI gui;
     private CompletableFuture<Integer> action = new CompletableFuture<>();
@@ -112,10 +115,9 @@ public class Buildcontroller {
     }
 
     /**
-     * Metodo di supporto per aprire una nuova schermata per mostrare la carta in cima al mazzo.
-     * @param deckName Il nome del mazzo (es. "South Deck")
-     * @param cardImagePath Il percorso relativo dell'immagine della carta all'interno del progetto.
-     * Ad esempio: "/it/polimi/ingsw/view/GUI/images/cards/my_card.png"
+     * This method opens a modal window displaying the first card of a deck.
+     * @param deckName the name of the deck
+     * @param cardImagePath the path to the image to be displayed
      */
     private void openCardDisplayScreen(String deckName, String cardImagePath) {
         try {
@@ -124,7 +126,7 @@ public class Buildcontroller {
 
             CardDisplayController cardDisplayController = loader.getController();
             cardDisplayController.setDeckName(deckName);
-            cardDisplayController.setCard(cardImagePath); // Passa il percorso dell'immagine e la descrizione
+            cardDisplayController.setCard(cardImagePath);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -133,11 +135,12 @@ public class Buildcontroller {
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
-            // Gestisci l'errore (es. mostra un alert all'utente)
         }
     }
 
-
+    /**
+     * Starts a blinking animation on the timer label to alert the player in the last seconds.
+     */
     private void startBlinking() {
         blinkTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.5), e -> {
@@ -153,6 +156,9 @@ public class Buildcontroller {
         blinkTimeline.play();
     }
 
+    /**
+     * Stops the blinking effect on the timer label and resets its style.
+     */
     private void stopBlinking() {
         if (blinkTimeline != null) {
             blinkTimeline.stop();
@@ -161,6 +167,11 @@ public class Buildcontroller {
         }
     }
 
+    /**
+     * This method initializes the countdown timer and its label,
+     * starts the timeline and updates the display every second and
+     * triggers blinking effect when 30 seconds remain.
+     */
     @FXML
     public void initialize() {
         timeLeft = 270;
@@ -183,12 +194,15 @@ public class Buildcontroller {
         timeline.setCycleCount(Animation.INDEFINITE);
     }
 
-
+    /**
+     * This method starts or restarts the countdown timer with a specified duration.
+     * @param seconds the duration of the timer in seconds
+     */
     public void starttimer(int seconds) {
         if (timeline.getStatus() == Animation.Status.RUNNING) {
             timeline.stop();
         }
-            timeLeft = seconds; // Reset del tempo
+            timeLeft = seconds;
         Platform.runLater(() -> {
             timerLabel.setText(formatTime(timeLeft));
             timeline.playFromStart();
@@ -196,13 +210,21 @@ public class Buildcontroller {
 
     }
 
+    /**
+     * This method formats a time in seconds into MM:SS format.
+     * @param seconds the time in seconds
+     * @return a string in the format "MM:SS"
+     */
     private String formatTime(int seconds) {
         int minutes = seconds / 60;
         int remainingSeconds = seconds % 60;
         return String.format("%02d:%02d", minutes, remainingSeconds);
     }
 
-    // Metodo aggiornato per sincronizzare con facedUp_deck_local del Client
+    /**
+     * This method updates the visual display of the face-up cards currently available.
+     * Each card is shown as a clickable image, which triggers selection logic.
+     */
     public void updateFaceUpCardsDisplay() {
         Platform.runLater(() -> {
             faceupCardPreview.getChildren().clear();
@@ -267,6 +289,11 @@ public class Buildcontroller {
         action = new CompletableFuture<>();
     }
 
+    /**
+    * This method adds a reserved card to the reserved cards area.
+    * Allows up to 2 reserved cards at a time. When the card is clicked, it is removed from the reserved cards area
+    * @param card the {@link CardComponent} to reserve and display
+    */
     public void addReservedCard(CardComponent card) {
         if (reservedCards.size() >= 2) return;
 
@@ -297,33 +324,11 @@ public class Buildcontroller {
         reservedCardPreview.setManaged(true);
     }
 
-
-    @FXML
-    public void showReservedCardPreview() {
-        reservedCardPreview.getChildren().clear();
-        List<CardComponent> reserved = gui.getClient().getPlayer_local().getShip().getExtra_components();
-
-        for (CardComponent card : reserved) {
-            ImageView view = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream(card.getImagePath()))));
-            view.setFitWidth(77.5);
-            view.setFitHeight(77.5);
-            view.setPreserveRatio(true);
-            reservedCardPreview.getChildren().add(view);
-        }
-        reservedCardPreview.setVisible(true);
-        reservedCardPreview.setManaged(true);
-    }
-
-    @FXML
-    public void hideReservedCardPreview() {
-        reservedCardPreview.setVisible(false);
-        reservedCardPreview.setManaged(false);
-    }
-
-    public GridPane getShipGrid() {
-        return shipGrid;
-    }
-
+    /**
+     *This method initializes the ship grid display based on the current player's ship layout,
+     * each cell corresponds to a {@link CardComponent}, and handles interaction for placing cards.
+     * The main unit is automatically placed in the center of the grid based on the player's color.
+     */
     public void initializeShipBoard() {
         shipGrid.getChildren().clear();
         shipGrid.setPrefSize(540, 386.25);
@@ -344,7 +349,7 @@ public class Buildcontroller {
                     cell.setStyle("-fx-background-color: transparent;");
                 } else {
                     if(shipboard[i][j].getComponentType()==ComponentType.Empty) {
-                        cell.setPrefSize(77.5,77.5);
+                        cell.setPrefSize(77.5, 77.5);
                         cell.setStyle("-fx-background-color: transparent;");
 
                         final Effect originalEffect = cell.getEffect();
@@ -361,23 +366,28 @@ public class Buildcontroller {
 
                         final int a = i;
                         final int b = j;
-                        cell.setOnMouseClicked(e -> {
-                            coords.complete(new Pair<>(a, b));
+                        if (i != 2 || j != 3) {
+                            cell.setOnMouseClicked(e -> {
+                                coords.complete(new Pair<>(a, b));
 
-                            if (gui.getRandomcardcontroller().getStage() != null) {
-                                gui.getRandomcardcontroller().getStage().close();
-                            }
-                        });
+                                if (gui.getRandomcardcontroller().getStage() != null) {
+                                    gui.getRandomcardcontroller().getStage().close();
+                                }
+                            });
+                        }else
+                        {
+                            cell.setOnMouseEntered(null);
+                            cell.setOnMouseExited(null);
+                            cell.setEffect(null);
+                            cell.setOnMouseClicked(null);
+                        }
                     }
 
                 }
                 if (i == 2 && j == 3) {
                     Color color = gui.getClient().getPlayer_local().getColor();
                     String imagePath = null;
-                    cell.setOnMouseEntered(null);
-                    cell.setOnMouseExited(null);
-                    cell.setEffect(null);
-                    cell.setOnMouseClicked(null);
+                    ;
 
 
                     Map<Direction, ConnectorType> connectors = new EnumMap<>(Direction.class);
@@ -438,7 +448,10 @@ public class Buildcontroller {
         this.gui = gui;
     }
 
-
+    /**
+     * This method sets up the buttons that allow viewing other players' ships.
+     * @param otherPlayers a list of the other players in the match
+     */
     public void setupPlayerButtons(List<Player> otherPlayers) {
         Platform.runLater(() -> {
             playersButtonBox.getChildren().clear();
@@ -484,6 +497,11 @@ public class Buildcontroller {
         return crewmate;
     }
 
+    /**
+     * This method highlights a specific cell on the ship grid by applying a red border and shadow effect.
+     * This is used to visually indicate a selected or target cell.
+     * @param coords the coordinates (row, column) of the cell to highlight
+     */
     public void highlightCell(Pair<Integer, Integer> coords) {
         int y = coords.getKey();
         int x = coords.getValue();
@@ -519,6 +537,10 @@ public class Buildcontroller {
         }
     }
 
+    /**
+     * Removes the highlight and any visual effects from the specified cell.
+     * @param coords the coordinates (row, column) of the cell to reset
+     */
     public void resetHighlights(Pair<Integer, Integer> coords) {
         int y = coords.getKey();
         int x = coords.getValue();
@@ -542,11 +564,16 @@ public class Buildcontroller {
         }
     }
 
-
-
+    /**
+     * This method places a card visually on the ship grid.
+     * it displays an error if the position is invalid or already used.
+     * @param card the {@link CardComponent} to place
+     * @param coords the coordinates (row, column) where the card should be placed
+     * @return 1 if the placement was successful, 0 otherwise
+     */
     public int placeCardOnShip(CardComponent card, Pair<Integer, Integer> coords) {
-        int y = coords.getKey(); // RIGA
-        int x = coords.getValue(); // COLONNA
+        int y = coords.getKey();
+        int x = coords.getValue();
         if((y==0&x==0)||(y==1&x==0)||(y==0&x==1)||(y==0&x==3)||(y==1&x==6)||(y==0&x==5)||(y==0&x==6)){
             gui.showMessage("Posizione non valida!");
             return 0 ;
@@ -568,7 +595,6 @@ public class Buildcontroller {
 
         imageView.setRotate(card.getRotationAngle());
 
-        // Cerca la cella corretta nella GridPane
         for (Node node : shipGrid.getChildren()) {
             Integer colIndex = GridPane.getColumnIndex(node);
             Integer rowIndex = GridPane.getRowIndex(node);
@@ -584,19 +610,22 @@ public class Buildcontroller {
                 cell.setOnMouseEntered(null);
                 cell.setOnMouseExited(null);
                 cell.setEffect(null);
-
+                cell.setOnMouseClicked(null);
                 shipGrid.requestLayout();
                 shipGrid.layout();
                 break;
             }
         }
 
-        // Aggiorna il modello della nave con la carta piazzata (opzionale)
         CardComponent[][] shipboard = gui.getClient().getPlayer_local().getShip().getShipBoard();
         shipboard[y][x] = card;
         return 1;
     }
 
+    /**
+     * This method opens a window displaying the ship of a specific player by nickname.
+     * @param nickname the nickname of the player whose ship to display
+     */
     public void showShipForPlayer(String nickname) {
         Optional<Player> optionalPlayer = gui.getClient().getOther_players_local().stream()
                 .filter(p -> p.getNickname().equals(nickname))
@@ -636,12 +665,15 @@ public class Buildcontroller {
     }
 
 
-
+    /**
+     * This method highlights all invalid connectors on the ship grid, allowing the player to click and remove them.
+     * @param ship the current ship with invalid connections
+     * @param connectors the list of invalid connector coordinates (row, column)
+     */
     public void printInvalidsConnector(Ship ship, List<Pair<Integer, Integer>> connectors) {
         this.invalidConnectors = connectors;
 
         Platform.runLater(() -> {
-            // Fase 1: Reset di tutte le celle esistenti
             for (int i = 0; i < ship.getShip_board().length; i++) {
                 for (int j = 0; j < ship.getShip_board()[0].length; j++) {
                     StackPane cell = (StackPane) shipGrid.getChildren().get(i * ship.getShip_board()[0].length + j);
@@ -660,7 +692,6 @@ public class Buildcontroller {
                 }
             }
 
-            // Fase 2: Evidenzia e imposta i listener solo per i connettori invalidi correnti
             for (Pair<Integer, Integer> currentCoords : connectors) {
                 int row = currentCoords.getKey();
                 int col = currentCoords.getValue();
@@ -694,11 +725,7 @@ public class Buildcontroller {
             if (!connectors.isEmpty()) {
                 gui.showMessage("Clicca sulle carte evidenziate in rosso per rimuoverle (connettori invalidi)");
             } else {
-                // Se la lista passata è già vuota all'inizio
-                // Assicurati che il messaggio di successo sia comunque mostrato.
-                // Questa parte potrebbe essere ridondante se la logica di 'if (updatedInvalids.isEmpty())' è sempre raggiunta.
-                // Potrebbe essere utile se la funzione viene chiamata con una lista vuota dall'esterno.
-            }
+                }
         });
     }
 
@@ -708,7 +735,12 @@ public class Buildcontroller {
         });
     }
 
-    // Metodo helper per aggiornare visivamente una singola cella
+    /**
+     * This method updates the visual state of a specific cell in the ship grid by clearing its content,
+     * removing any click handlers, and resetting its style to a transparent default.
+     * @param row the row index of the cell to update
+     * @param col the column index of the cell to update
+     */
     private void updateCellVisually(int row, int col) {
         for (Node node : shipGrid.getChildren()) {
             Integer colIndex = GridPane.getColumnIndex(node);
@@ -718,7 +750,6 @@ public class Buildcontroller {
             if (rowIndex == null) rowIndex = 0;
 
             if (colIndex == col && rowIndex == row && node instanceof StackPane cell) {
-                // Pulisci la cella
                 cell.getChildren().clear();
                 cell.setOnMouseClicked(null);
                 cell.setStyle("-fx-background-color: transparent; -fx-cursor: default;");
@@ -727,7 +758,7 @@ public class Buildcontroller {
         }
     }
 
-    // Metodo per ottenere la nave aggiornata in modo asincrono
+
     public CompletableFuture<Ship> getUpdatedShip() {
         if (shipUpdateFuture == null || shipUpdateFuture.isDone()) {
             shipUpdateFuture = new CompletableFuture<>();
@@ -735,30 +766,8 @@ public class Buildcontroller {
         return shipUpdateFuture;
     }
 
-    // Metodo per ottenere la nave aggiornata attuale (sincrono)
-    public CardComponent[][] getCurrentUpdatedShip() {
-        return currentShipBoard;
-    }
-
 
     public void addObject(int x, int y, String type) {
-        Node cardNode = getCardPosition(x, y); // Il nodo recuperato
-
-        if (cardNode == null) {
-            System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
-            return;
-        }
-
-        StackPane cell = (StackPane) cardNode; // Ora il cast è sicuro e corretto
-        Node overlay = createoverlayfortype(type);
-        if (overlay != null) { // Aggiungi l'overlay solo se è stato creato con successo
-            cell.getChildren().add(overlay);
-        } else {
-            System.out.println("ERROR: Impossibile creare l'overlay per il tipo: " + type);
-        }
-    }
-
-    public void removeObject(int x, int y, String type) {
         Node cardNode = getCardPosition(x, y);
 
         if (cardNode == null) {
@@ -767,24 +776,22 @@ public class Buildcontroller {
         }
 
         StackPane cell = (StackPane) cardNode;
-
-        // Trova e rimuovi l'overlay del tipo specificato
-        Node overlayToRemove = null;
-        for (Node child : cell.getChildren()) {
-            if (isOverlayOfType(child, type)) {
-                overlayToRemove = child;
-                break;
-            }
-        }
-
-        if (overlayToRemove != null) {
-            cell.getChildren().remove(overlayToRemove);
-            System.out.println("Overlay rimosso per il tipo: " + type);
+        Node overlay = createoverlayfortype(type);
+        if (overlay != null) {
+            cell.getChildren().add(overlay);
         } else {
-            System.out.println("ERROR: Nessun overlay trovato per il tipo: " + type);
+            System.out.println("ERROR: Impossibile creare l'overlay per il tipo: " + type);
         }
     }
 
+    /**
+     * This method adds a visual overlay to a battery card located at the specified coordinates on the ship grid.
+     * The overlay indicates the battery type and the number of charges remaining.
+     * @param x the column index of the battery card
+     * @param y the row index of the battery card
+     * @param type the type of battery (used to determine the overlay style or icon)
+     * @param count the number of battery charges to display
+     */
     public void addBattery(int x, int y, String type, int count) {
         Node cardNode = getCardPosition(x, y);
 
@@ -804,57 +811,39 @@ public class Buildcontroller {
         }
     }
 
-    public void removeBattery(int x, int y, String type) {
-        Node cardNode = getCardPosition(x, y);
-
-        if (cardNode == null) {
-            System.out.println("CARTA NON TROVATA (cella Grid non trovata alle coordinate specificate)");
-            return;
-        }
-        System.out.println("CARTA TROVATA");
-
-        StackPane cell = (StackPane) cardNode;
-
-        // Trova e rimuovi l'overlay del tipo specificato
-        Node overlayToRemove = null;
-        for (Node child : cell.getChildren()) {
-            if (isOverlayOfType(child, type)) {
-                overlayToRemove = child;
-                break;
-            }
-        }
-
-        if (overlayToRemove != null) {
-            cell.getChildren().remove(overlayToRemove);
-            System.out.println("Overlay rimosso per il tipo: " + type);
-        } else {
-            System.out.println("ERROR: Nessun overlay trovato per il tipo: " + type);
-        }
-    }
-
 
     public Node getCardPosition(int x, int y) {
         for (Node node : shipGrid.getChildren()) {
-            // *** MODIFICA QUI: Gestione dei valori null per gli indici ***
             Integer colIndex = GridPane.getColumnIndex(node);
             Integer rowIndex = GridPane.getRowIndex(node);
 
-            // Se gli indici non sono esplicitamente impostati, GridPane li considera 0
             if (colIndex == null) colIndex = 0;
             if (rowIndex == null) rowIndex = 0;
 
-            // Ora si usa && per trovare la cella esatta
             if (colIndex == x && rowIndex == y) {
-                return node; // Questo dovrebbe essere lo StackPane corretto
+                return node;
             }
         }
-        return null; // Nessuna cella trovata alle coordinate specificate
+        return null;
     }
 
+    /**
+     * This method creates a visual overlay Node for a specific element type without a count.
+     * @param type the type of the element
+     * @return the overlay Node, or {@code null} if the type is unknown
+     */
     public Node createoverlayfortype(String type) {
-        return createoverlayfortype(type, -1); // -1 = valore di default ignorato
+        return createoverlayfortype(type, -1);
     }
 
+    /**
+     * This metho creates a visual overlay Node representing a specific element type and optional count.
+     * @param type the type of the element
+     * @param count the number of elements to show (used for types like "Battery" and "Astronaut")
+     *              Use -1 if the count is not applicable
+     * @return a JavaFX Node (either an {@link ImageView} or a container like {@link HBox}) representing the overlay,
+     *         or {@code null} if the type is unrecognized
+     */
     public Node createoverlayfortype(String type, int count) {
         String path;
 
@@ -922,11 +911,11 @@ public class Buildcontroller {
         }
     }
 
-    private boolean isOverlayOfType(Node node, String type) {
-        String nodeId = node.getId();
-        return nodeId != null && nodeId.equals("overlay-" + type);
-    }
-
+    /**
+     * Renders the ship's layout by displaying each card image from the provided ship board
+     * into the appropriate cell of the grid.
+     * @param shipBoard a 2D array representing the current state of the ship's components
+     */
     public void printShipImage( CardComponent[][] shipBoard) {
         Platform.runLater(() -> {
 
@@ -972,6 +961,9 @@ public class Buildcontroller {
         });
     }
 
+    /**
+     * Disables all cells in the ship grid by removing mouse event handlers.
+     */
     public void disableShipGridCells() {
         for (javafx.scene.Node node : shipGrid.getChildren()) {
 
@@ -981,8 +973,6 @@ public class Buildcontroller {
             cell.setOnMouseEntered(null);
             cell.setOnMouseExited(null);
 
-            //cell.setOpacity(0.7);
-            //cell.setStyle("-fx-background-color: #A9A9A9;");
         }
     }
 
