@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import javax.smartcardio.Card;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -605,16 +606,15 @@ public class FlyghtController {
             dclabel.setText("Decidere se attivare la carta alle coordinate (" + x + ", " + y + ")");
             dclabel.setVisible(true);
             yesdc.setVisible(true);
-            yesdc.setOnAction((ActionEvent event) -> {
+            yesdc.setOnAction((ActionEvent event ) -> {
                 useDoubleCannon.complete(true);
                 hidedc();
-               // resetHighlights(x, y);
             });
             nodc.setVisible(true);
             nodc.setOnAction((ActionEvent event) -> {
                 useDoubleCannon.complete(false);
                 hidedc();
-              //  resetHighlights(x, y);
+                resetHighlights(y, x);
             });
         });
     }
