@@ -592,66 +592,7 @@ public class Server implements RemoteServer {
                 sendToAllClients(controller.getLobby(), new Message(START_FLIGHT, ""));
                 sendToAllClients(controller.getLobby(), new BoardMessage(UPDATE_BOARD, "", controller.getBoard().copyPlayerPositions(), controller.getBoard().copyLaps()));
 
-                //CardAdventure adventure = controller.getRandomAdventure();
-
-                CardAdventure adventure = new Epidemic(1, 0, CardAdventureType.Epidemic, "/images/cardAdventure/GT-epidemic_2.jpg");
-
-
-                /*CardAdventure adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 8,
-                        Arrays.asList(
-                                Cargo.Red,
-                                Cargo.Yellow,
-                                Cargo.Yellow
-                        ),
-                        3,"");*/
-
-
-                /*CardAdventure adventure= new AbandonedShip(1,0,CardAdventureType.AbandonedShip,2,2,"/images/cardAdventure/GT-abandonedShip_1.1.jpg");*/
-
-             adventure = new Planets(1,0,CardAdventureType.Planets, Arrays.asList(Arrays.asList(
-                     Cargo.Red,
-                     Cargo.Yellow,
-                     Cargo.Yellow),
-                Arrays.asList(
-                        Cargo.Red,
-                        Cargo.Yellow,
-                        Cargo.Yellow),
-                Arrays.asList(
-                        Cargo.Red,
-                        Cargo.Yellow,
-                        Cargo.Yellow)
-             ),"/images/cardAdventure/GT-planets_1.1.jpg" );
-
-              /*adventure = new Smugglers(2, 1, CardAdventureType.Smugglers, 4,
-                        Arrays.asList(
-                                Cargo.Red,
-                                Cargo.Green,
-                                Cargo.Blue
-                        ),
-                        2,"/images/cardAdventure/GT-smugglers_1.jpg");*/
-                 adventure = new CombatZone(2, 4, CardAdventureType.CombatZone, 0, 0, 3,
-                        List.of(
-                                new Pair<>(MeteorType.LightCannonFire, North),
-                                new Pair<>(MeteorType.LightCannonFire, West),
-                                new Pair<>(MeteorType.LightCannonFire, East),
-                                new Pair<>(MeteorType.HeavyCannonFire, South)
-                       ),"/images/cardAdventure/GT-combatZone_2.jpg"
-                );
-
-             /*    adventure = new MeteorSwarm(1, 0, CardAdventureType.MeteorSwarm,
-                        List.of(
-                                new Pair<>(MeteorType.SmallMeteor, North),
-                                new Pair<>(MeteorType.SmallMeteor, North),
-                                new Pair<>(MeteorType.SmallMeteor, West),
-                                new Pair<>(MeteorType.SmallMeteor, East),
-                                new Pair<>(MeteorType.SmallMeteor, South)
-                        ),"/images/cardAdventure/GT-meteorSwarm_1.2.jpg"
-                );
-*/
-
-                //CardAdventure adventure = controller.getRandomAdventure();
-              //  adventure = new Slavers(1, 1, CardAdventureType.Slavers, 6, 3, 5,"/images/cardAdventure/GT-slavers_1.jpg");
-              //  adventure = new Stardust(1,0,CardAdventureType.Stardust,"");
+                CardAdventure adventure = controller.getRandomAdventure();
                 manageAdventure(adventure, controller);
 
 

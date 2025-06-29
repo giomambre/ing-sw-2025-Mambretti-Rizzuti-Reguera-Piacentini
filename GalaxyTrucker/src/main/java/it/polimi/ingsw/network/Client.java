@@ -1227,16 +1227,17 @@ public class Client {
      * @throws IOException If an I/O error occurs during communication.
      */
     public static void manageAdventure(CardAdventure adventure, String content) throws IOException {
+        virtualView.updateLocalPlayer(player_local);
+
         if (virtualViewType==VirtualViewType.GUI){
             ((GUI) virtualView).getFlyghtController().updatePlayerPositions(local_board_positions,local_board_laps );
             ((GUI) virtualView).getFlyghtController().updatePlayerShip();
-        }
-        virtualView.updateLocalPlayer(player_local);
-
-        if(virtualViewType == VirtualViewType.GUI){
             ((GUI)virtualView).getFlyghtController().updateExtraComponentsLabel(player_local.getShip().getExtra_components().size());
+            System.out.println("num extra comp " + player_local.getShip().getExtra_components().size());
 
         }
+
+
         switch (adventure.getType()) {
 
 
