@@ -25,7 +25,7 @@
                     <children>
                         <Label style="-fx-font-size: 15; -fx-font-family: 'Verdana'; -fx-text-fill: #D8B7DD;" text="Info Giocatori" />
                         <Label fx:id="playerCreditsLabel" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-font-family: 'Verdana'; -fx-text-fill: #DAA520;" text="Crediti: 0" />
-                  <Label  fx:id="extraComponentLabel" style="-fx-font-size: 15; -fx-font-family: 'Verdana'; -fx-text-fill: gray; -fx-font-weight: bold;" text="Componenti Persi: 0" />
+                        <Label fx:id="extraComponentLabel" style="-fx-font-size: 15; -fx-font-family: 'Verdana'; -fx-text-fill: gray; -fx-font-weight: bold;" text="Componenti Persi: 0" />
                     </children>
                 </HBox>
             </children>

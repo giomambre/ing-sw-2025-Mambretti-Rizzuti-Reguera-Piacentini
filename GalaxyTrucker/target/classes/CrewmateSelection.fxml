@@ -18,18 +18,21 @@
                 <!-- Buttons Container -->
                 <VBox alignment="CENTER" spacing="20.0" style="-fx-padding: 20 0 0 0;">
                     <children>
-                        <Button fx:id="astronautButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #4A90E2; -fx-text-fill: #BFEFFF; -fx-font-weight: bold; -fx-background-radius: 10;" text="Astronaut">
+                        <Button fx:id="astronautButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #4A90E2; -fx-text-fill: #BFEFFF; -fx-font-weight: bold; -fx-background-radius: 10;" text="Astronaut"
+                                >
                             <font>
                                 <Font size="16.0" />
                             </font>
                         </Button>
-                        <Button fx:id="pinkAlienButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #E24A90; -fx-text-fill: #FFD1DC; -fx-font-weight: bold; -fx-background-radius: 10;" text="Pink Alien">
+                        <Button fx:id="pinkAlienButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #E24A90; -fx-text-fill: #FFD1DC; -fx-font-weight: bold; -fx-background-radius: 10;" text="Pink Alien"
+                                >
                             <font>
                                 <Font size="16.0" />
                             </font>
                         </Button>
 
-                        <Button fx:id="brownAlienButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #8B4513; -fx-text-fill: #BC987E; -fx-font-weight: bold; -fx-background-radius: 10;" text="Brown Alien">
+                        <Button fx:id="brownAlienButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #8B4513; -fx-text-fill: #BC987E; -fx-font-weight: bold; -fx-background-radius: 10;" text="Brown Alien"
+                            >
                             <font>
                                 <Font size="16.0" />
                             </font>

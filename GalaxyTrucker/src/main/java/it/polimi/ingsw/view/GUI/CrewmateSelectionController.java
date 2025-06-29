@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import javafx.scene.input.MouseEvent;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -87,6 +88,24 @@ public class CrewmateSelectionController {
         brownAlienButton.setVisible(supportedCrewmates.contains(CrewmateType.BrownAlien));
         brownAlienButton.setManaged(supportedCrewmates.contains(CrewmateType.BrownAlien));
     }
+
+    @FXML
+    private void handleMouseEntered(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setTranslateY(-2);
+        button.setScaleX(1.05);
+        button.setScaleY(1.05);
+    }
+
+    @FXML
+    private void handleMouseExited(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        button.setTranslateY(0);
+        button.setScaleX(1.0);
+        button.setScaleY(1.0);
+    }
+
+
 
     public CompletableFuture<Integer> getCrewmateSelection() {
         return crewmateSelection;
