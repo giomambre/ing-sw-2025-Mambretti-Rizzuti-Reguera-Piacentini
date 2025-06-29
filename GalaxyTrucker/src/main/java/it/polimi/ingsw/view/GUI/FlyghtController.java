@@ -605,7 +605,7 @@ public class FlyghtController {
      */
     public void showdc(int x, int y) {
         Platform.runLater(() -> {
-            dclabel.setText("Decidere se attivare la carta alle coordinate (" + x + ", " + y + ")");
+            dclabel.setText("Decidere se attivare la carta alle coordinate (" + (x+5) + ", " + (y+4) + ")");
             dclabel.setVisible(true);
             yesdc.setVisible(true);
             yesdc.setOnAction((ActionEvent event ) -> {
@@ -1140,24 +1140,25 @@ public class FlyghtController {
      * @param y the row index
      * @param x the column index
      */
-    public void highlightCell(int y,int x) {
+    public void highlightCell(int y, int x) {
+        Platform.runLater(() -> {
+            for (Node node : playerShipGrid.getChildren()) {
+                Integer colIndex = GridPane.getColumnIndex(node);
+                Integer rowIndex = GridPane.getRowIndex(node);
 
-        for (Node node : playerShipGrid.getChildren()) {
-            Integer colIndex = GridPane.getColumnIndex(node);
-            Integer rowIndex = GridPane.getRowIndex(node);
+                if (colIndex == null) colIndex = 0;
+                if (rowIndex == null) rowIndex = 0;
 
-            if (colIndex == null) colIndex = 0;
-            if (rowIndex == null) rowIndex = 0;
-
-            if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
-                if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
-                    imageView.setStyle("-fx-effect: dropshadow(gaussian, gold, 5, 0.8, 0, 0); -fx-border-color: gold; -fx-border-width: 3px;");
-                } else {
-                    cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
+                if (colIndex == x && rowIndex == y && node instanceof StackPane cell) {
+                    if (!cell.getChildren().isEmpty() && cell.getChildren().get(0) instanceof ImageView imageView) {
+                        imageView.setStyle("-fx-effect: dropshadow(gaussian, gold, 5, 0.8, 0, 0); -fx-border-color: gold; -fx-border-width: 3px;");
+                    } else {
+                        cell.setStyle("-fx-border-color: gold; -fx-border-width: 3px;");
+                    }
+                    return;
                 }
-                return;
             }
-        }
+        });
     }
 
     /**

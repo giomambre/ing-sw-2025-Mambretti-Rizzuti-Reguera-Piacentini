@@ -860,7 +860,6 @@ public class GUI implements View {
         int i = engine.getKey();
         int j = engine.getValue();
 
-
         flyghtController.highlightCell(i, j);
         flyghtController.showdc(i, j);
         Boolean useDC = useDoubleCannon();
@@ -869,7 +868,6 @@ public class GUI implements View {
         } else {
             return useBattery(player_local.getShip());
         }
-
     }
 
     /**
