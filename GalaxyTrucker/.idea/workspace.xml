@@ -6,15 +6,53 @@
   <component name="ChangeListManager">
     <list default="true" id="5c5cb133-92eb-4985-ac14-f07ef32a779d" name="Changes" comment="Qualchep fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/network/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/FlyghtController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/FlyghtController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/PlayerShipController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/polimi/ingsw/view/GUI/PlayerShipController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/FlyghtBoard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/FlyghtBoard.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/controllerTests/GameManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controllerTests/GameManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/PlayerShipController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/PlayerShipController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/FlyghtBoard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/FlyghtBoard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/network/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/it/polimi/ingsw/view/GUI/FlyghtController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameManagerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-controllerTests.GameManagerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedShipTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedShipTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedStationTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.AbandonedStationTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BaseGameTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BaseGameTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BatteryTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BatteryTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BoardTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.BoardTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardAdventureTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardAdventureTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentLoaderTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentLoaderTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CardComponentTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CombatZoneTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.CombatZoneTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.EpidemicTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.EpidemicTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.GameControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.GameControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LivingUnitTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LivingUnitTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LobbyTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.LobbyTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.MeteorSwarmTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.MeteorSwarmTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PiratesTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PiratesTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlanetsTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlanetsTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlayerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.PlayerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickGameTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickGameTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickShipTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.QuickShipTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShieldTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShieldTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShipTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.ShipTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SlaversTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SlaversTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SmugglersTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.SmugglersTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.StorageTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-it.polimi.ingsw.StorageTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.AbandonedStationTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.AbandonedStationTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.BaseGameTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.BaseGameTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.BoardTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.BoardTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardComponentLoaderTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardComponentLoaderTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardComponentTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.CardComponentTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.EpidemicTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.EpidemicTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.GameControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.GameControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.LivingUnitTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.LivingUnitTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.LobbyTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.LobbyTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.MeteorSwarmTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.MeteorSwarmTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.PlanetsTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.PlanetsTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.ShipTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.ShipTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.SmugglersTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.SmugglersTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.StorageTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/it.polimi.ingsw.StorageTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/controllerTests/GameManagerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/controllerTests/GameManagerTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,6 +162,7 @@
     &quot;JUnit.GameControllerTest.testCrewmateSupply.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.GameControllerTest.testEndPlayerBuildPhase.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.GameControllerTest.testsecureComponent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameManagerTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.GameManagerTest.testCreateLobby.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.GameManagerTest.testGameManager.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.GameManagerTest.testJoinPlayer.executor&quot;: &quot;Run&quot;,
@@ -192,7 +231,7 @@
       <recent name="C:\Users\gioma\IdeaProjects\ing-sw-2025-Mambretti-Rizzuti-Reguera-Piacentini\GalaxyTrucker\src\main\resources\fxml" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.GameManagerTest.testJoinPlayer">
+  <component name="RunManager" selected="Application.ClientMultiplo">
     <configuration name="ClientMultiplo" type="Application" factoryName="Application" singleton="false">
       <option name="MAIN_CLASS_NAME" value="it.polimi.ingsw.network.Client" />
       <module name="PSP17" />
@@ -501,15 +540,8 @@
       <workItem from="1751027426021" duration="6181000" />
       <workItem from="1751037278176" duration="14654000" />
       <workItem from="1751126791663" duration="1248000" />
-      <workItem from="1751228790646" duration="2421000" />
-    </task>
-    <task id="LOCAL-00179" summary="un po di test">
-      <option name="closed" value="true" />
-      <created>1750698007516</created>
-      <option name="number" value="00179" />
-      <option name="presentableId" value="LOCAL-00179" />
-      <option name="project" value="LOCAL" />
-      <updated>1750698007516</updated>
+      <workItem from="1751228790646" duration="2798000" />
+      <workItem from="1751231609233" duration="65000" />
     </task>
     <task id="LOCAL-00180" summary="un po di test">
       <option name="closed" value="true" />
@@ -895,7 +927,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751229976782</updated>
     </task>
-    <option name="localTasksCounter" value="228" />
+    <task id="LOCAL-00228" summary="Qualchep fix">
+      <option name="closed" value="true" />
+      <created>1751231242149</created>
+      <option name="number" value="00228" />
+      <option name="presentableId" value="LOCAL-00228" />
+      <option name="project" value="LOCAL" />
+      <updated>1751231242149</updated>
+    </task>
+    <option name="localTasksCounter" value="229" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
