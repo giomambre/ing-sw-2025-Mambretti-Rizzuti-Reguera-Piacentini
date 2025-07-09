@@ -1,8 +1,5 @@
 # PROVA FINALE INGSW 2025
-Gruppo numero 17<br>
-Galaxy Trucker in java<br>
-Prova Finale ingegneria del software , San Pietro<br>
-Tutor : Matteo Bianchi
+##GRADE 30L/30
 ## 👥 Members
 
 Giovanni Mambretti<br>
