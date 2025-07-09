@@ -16,7 +16,7 @@ Alice Piacentini
 | Socket  | ✅  |
 | Rmi  | ✅  |
 | Multiples Games | ✅  |
-| Client Disconecctions | ✅  |
+| Client Disconnections | ✅  |
 
 
 *Volo di prova : model full implemented and Tested  
