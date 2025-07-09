@@ -1,5 +1,5 @@
 # PROVA FINALE INGSW 2025
-##GRADE 30L/30
+## GRADE 30L/30
 ## 👥 Members
 
 Giovanni Mambretti<br>
@@ -10,14 +10,14 @@ Alice Piacentini
 ## 📋 Implemented Features
 | FA            | State |
 | ------------- | ------------- |
-| Regole Complete  | ✅  |
+| Complete Rules  | ✅  |
 | TUI  | ✅  |
 | GUI  | ✅  |
 | Socket  | ✅  |
 | Rmi  | ✅  |
-|Partite Multiple | ✅  |
-|Disconessioni Client | ✅  |
-|Volo di Prova* | 1/3   |
+| Multiples Games | ✅  |
+| Client Disconecctions | ✅  |
+
 
 *Volo di prova : model full implemented and Tested  
 
