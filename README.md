@@ -1,4 +1,4 @@
-# PROVA FINALE INGSW 2025
+# Galaxy Trucker (board game)
 ## GRADE 30L/30
 ## 👥 Members
 
