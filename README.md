@@ -21,6 +21,12 @@ Alice Piacentini
 
 *Volo di prova : model full implemented and Tested  
 
+
+
+![inserimento](https://github.com/user-attachments/assets/e2d4c0f5-4f33-418b-a874-9c966e099708)
+
+
+
 ### Jar Guide
 #### There are 2 Jar file, Client and Server :
 
