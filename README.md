@@ -22,11 +22,17 @@ Alice Piacentini
 *Volo di prova : model full implemented and Tested  
 
 
-
+Build phase :
+<br>
 ![inserimento](https://github.com/user-attachments/assets/e2d4c0f5-4f33-418b-a874-9c966e099708)
 
+<br>
 
+Flight phase (Metor swarm example card) :
+<br>
+![Registrazione 2025-07-26 121437](https://github.com/user-attachments/assets/44ed50a8-7dd1-445c-bfcc-9a5bfc5ed7e6)
 
+<br>
 ### Jar Guide
 #### There are 2 Jar file, Client and Server :
 
